@@ -23,6 +23,7 @@ namespace WarTornLands
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            Window.Title = "WarTornLands";
         }
 
         /// <summary>
