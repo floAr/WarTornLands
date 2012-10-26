@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="DialogManager.cs" />
     <Compile Include="Dungeon.cs" />
     <Compile Include="Entity.cs" />
