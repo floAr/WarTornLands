@@ -19,9 +19,12 @@ namespace WarTornLands
     {
         GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
+        public Texture2D TileSetTexture;
         //GameServiceContainer services;
         public Inputmanager input;
         Player player;
+
+        Level testLevel; // TODO remove
 
         public Game1()
         {
@@ -32,6 +35,20 @@ namespace WarTornLands
 
             player = new Player(this);
 
+            testLevel = new Level(this);
+            int[,] layer0 = new int[,] {
+                            {0,0,0,0,0,0,0,0},
+                            {0,9,9,9,9,9,9,0},
+                            {0,9,9,9,9,9,9,0},
+                            {0,9,9,54,111,111,9,0},
+                            {0,9,9,9,111,111,9,0},
+                            {0,9,9,9,9,54,9,0},
+                            {0,9,9,9,9,9,9,0},
+                            {0,0,0,0,0,0,0,0}};
+            layer0[1, 5] = 65;
+            testLevel.AddLayer(0, layer0);
+
+            this.Components.Add(testLevel);
             this.Components.Add(player);
             this.Components.Add(input);
         }
@@ -58,8 +75,9 @@ namespace WarTornLands
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            TileSetTexture = Content.Load<Texture2D>("dg_grounds32");
             player.LoadContent(Content);
-
+            
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
 
