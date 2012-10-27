@@ -13,6 +13,12 @@ namespace WarTornLands
         private Vector2 _position;
         private Vector2 _offset;
 
+        public Entity(Game game, Vector2 position) : base(game)
+        {
+            this._position = position;
+            this._offset = Vector2.Zero;
+        }
+
         public override void Initialize()
         {
             base.Initialize();
