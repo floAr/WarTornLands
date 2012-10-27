@@ -20,7 +20,7 @@ namespace WarTornLands
         GraphicsDeviceManager _graphics;
         public SpriteBatch _spriteBatch;
         public Texture2D _tileSetTexture;
-        public Texture2D TreeTexture;
+        public Texture2D _treeTexture;
         //GameServiceContainer services;
         public InputManager _input;
         public Player _player;
@@ -56,7 +56,7 @@ namespace WarTornLands
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _tileSetTexture = Content.Load<Texture2D>("grass");
-            TreeTexture = Content.Load<Texture2D>("tree");
+            _treeTexture = Content.Load<Texture2D>("tree");
 
             _input = new InputManager(this);
 
