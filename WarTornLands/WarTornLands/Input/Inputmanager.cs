@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace WarTornLands
 {
-    public class Inputmanager : GameComponent
+    public class InputManager : GameComponent
     {
         //public enum Inputmode
         //{
@@ -21,7 +21,7 @@ namespace WarTornLands
         private int _mode = 0;       // 0 = Keyboard, 1 = GamePad
         private List<InputKey> _inputList;
 
-        public Inputmanager(Game game)
+        public InputManager(Game game)
             : base(game)
         {
             _inputList = new List<InputKey>();
@@ -37,13 +37,19 @@ namespace WarTornLands
             _inputList.Add(_hit);
             _inputList.Add(_jump);
             _inputList.Add(_move);
+
+            foreach(InputKey ik in _inputList)
+            {
+                int defaultMode = 0;     // 0 = Keyboard, 1 = GamePad
+                ik.SetMode(defaultMode);
+            }
         }
 
         public override void Update(GameTime gt)
         {
             foreach (InputKey ik in _inputList)
             {
-                ik.Update(_mode);
+                ik.Update(gt);
             }
         }
 
@@ -63,6 +69,11 @@ namespace WarTornLands
         public Type GetService()
         {
             return null;
+        }
+
+        public bool SetMapping(Microsoft.Xna.Framework.Input.Keys key, InputKey inputKey)
+        {
+            throw new System.NotImplementedException();
         }
 
     }

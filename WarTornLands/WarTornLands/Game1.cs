@@ -21,17 +21,17 @@ namespace WarTornLands
         public SpriteBatch spriteBatch;
         public Texture2D TileSetTexture;
         //GameServiceContainer services;
-        public Inputmanager input;
+        public InputManager input;
         Player player;
         XML_Parser _parser;
-        Level testLevel; // TODO remove
+        public Level testLevel; // TODO remove
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            input = new Inputmanager(this);
+            input = new InputManager(this);
 
             player = new Player(this);
             _parser = new XML_Parser(this);
@@ -46,20 +46,25 @@ namespace WarTornLands
             {
                 testLevel = new Level(this);
                 int[,] layer0 = new int[,] {
-                            {0,0,0,0,0,0,0,0},
-                            {0,9,9,9,9,9,9,0},
-                            {0,9,9,9,9,9,9,0},
-                            {0,9,9,54,111,111,9,0},
-                            {0,9,9,9,111,111,9,0},
-                            {0,9,9,9,9,54,9,0},
-                            {0,9,9,9,9,9,9,0},
-                            {0,0,0,0,0,0,0,0}};
+                            {1,1,1,1,1,1,1,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,9,9,54,111,111,9,1},
+                            {1,9,9,9,111,111,9,1},
+                            {1,9,9,9,9,54,9,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,1,1,1,1,1,1,1}};
+            int[,] layer1 = {{0,0,0,0},{0,0,0,0},{0,0,0,87}};
                 layer0[1, 5] = 65;
                 testLevel.AddLayer(0, layer0);
+                testLevel.AddLayer(1, layer1);
             }
+            testLevel.AddLayer(2, new int[0, 0]);
 
-            this.Components.Add(testLevel);
+            PlayerClasses.CollisionDetector.Setup(testLevel);
+
             this.Components.Add(player);
+            this.Components.Add(testLevel);
             this.Components.Add(input);
         }
 
@@ -125,6 +130,12 @@ namespace WarTornLands
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Fügen Sie Ihren Zeichnungscode hier hinzu
+
+            // Kapseln in eigene Klasse, für Menüs etc.
+            testLevel.Draw(gameTime, 0);
+            player.Draw(gameTime);
+            testLevel.Draw(gameTime, 1);
+            testLevel.Draw(gameTime, 2);
 
             base.Draw(gameTime);
         }

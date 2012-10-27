@@ -28,20 +28,47 @@ namespace WarTornLands
         {
             get { return _value; }
         }
-
-        public void Update(int mode)
+        public int Held()
         {
-            if (mode == 0)
+            return _held;
+        }
+
+        public void Update(GameTime gt)
+        {
+            if (_mode == 0)
             {
                 KeyboardState state = Keyboard.GetState();
 
-                _value = state.IsKeyDown(_key);
+                if (state.IsKeyDown(_key))
+                {
+                    _value = true;
+                    _held += gt.ElapsedGameTime.Milliseconds;
+                }
+                else 
+                {
+                    _value = false;
+                    _held = 0;
+                }
             }
 
-            if (mode == 1)
+            if (_mode == 1)
             {
-                _value = GamePad.GetState(PlayerIndex.One).IsButtonDown(_button);
+                if (GamePad.GetState(PlayerIndex.One).IsButtonDown(_button))
+                {
+                    _value = true;
+                    _held += gt.ElapsedGameTime.Milliseconds;
+                }
+                else
+                {
+                    _value = false;
+                    _held = 0;
+                }
             }
+        }
+
+        public void SetMode(int mode)
+        {
+            _mode = mode;
         }
     }
 }

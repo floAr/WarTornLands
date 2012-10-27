@@ -8,6 +8,9 @@ namespace WarTornLands
 {
     public interface InputKey
     {
-        void Update(int mode);
+        void Update(GameTime gt);
+        void SetMode(int mode);
+
+        int Held();
     }
 }
