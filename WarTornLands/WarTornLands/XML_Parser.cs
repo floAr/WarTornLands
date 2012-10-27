@@ -214,19 +214,21 @@ namespace WarTornLands
             List<Entity> units = new List<Entity>();
             Entity unit;
 
+            Level level = new Level(_game);
+
             for (int i = 0; i < split.Length; i++)
             {
                 splitvektor = split[i].Split(',');
                 Vector2 vektor = new Vector2(int.Parse(splitvektor[0]), int.Parse(splitvektor[1]));
-                unit = new Entity(_game, vektor);
-                units.Add(unit);
+                unit = new Entity(_game, vektor, "tree");
+                level.AddDynamics(unit);
             }
 
-            Level level = new Level(_game);
-            level.AddLayer(0, ebene0);
+            /*level.AddLayer(0, ebene0);
             level.AddLayer(1, ebene1);
-            level.AddLayer(2, ebene2);
-            level.AddDynamics(units);
+            level.AddLayer(2, ebene2);*/
+            level.AddFloor(ebene0);
+            level.AddCeiling(ebene2);
 
             return level;
         }

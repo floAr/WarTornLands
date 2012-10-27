@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WarTornLands
 {
-    public class Entity : DrawableGameComponent
+    public class Entity : GameComponent
     {
         private Texture2D _texture;
         private Vector2 _position;
@@ -32,10 +32,11 @@ namespace WarTornLands
             return 0;
         }
 
-        public Entity(Game game, Vector2 position) : base(game)
+        public Entity(Game game, Vector2 position, String texture) : base(game)
         {
             this._position = position;
             this._offset = Vector2.Zero;
+            this._texture = (Game as Game1).TreeTexture;
         }
 
         public override void Initialize()
@@ -43,10 +44,18 @@ namespace WarTornLands
             base.Initialize();
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
-            ((SpriteBatch)Game.Services.GetService(typeof(SpriteBatch))).Draw(_texture, _position *Constants.TileSize + _offset, Color.White);
-            base.Draw(gameTime);
+            Vector2 center = (Game as Game1).player.GetPosition();
+            int width = (int)Math.Floor((double)(Game as Game1).TileSetTexture.Width / Constants.TileSize);
+            Vector2 size = GetSize();
+            (Game as Game1).spriteBatch.Begin();
+            (Game as Game1).spriteBatch.Draw(
+                        _texture,
+                        new Rectangle((int)(_position.X - center.X + (int)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f)),
+                            (int)(_position.Y - (int)center.Y + (int)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f)),
+                            (int)size.X, (int)size.Y), Color.White);
+            (Game as Game1).spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
@@ -74,6 +83,25 @@ namespace WarTornLands
             }
             base.Update(gameTime);
         }
-      
+
+        public Vector2 GetPosition()
+        {
+            return _position;
+        }
+
+        public Vector2 GetSize()
+        {
+            if (_texture == null)
+            {
+                return new Vector2(0, 0);
+            } else {
+                return new Vector2(_texture.Width, _texture.Height);
+            }
+        }
+
+        public void LoadTexture(String filename)
+        {
+            // TODO
+        }
     }
 }

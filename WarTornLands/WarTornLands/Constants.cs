@@ -7,6 +7,6 @@ namespace WarTornLands
 {
     static class Constants
     {
-        public static int TileSize = 32;
+        public static int TileSize = 64;
     }
 }

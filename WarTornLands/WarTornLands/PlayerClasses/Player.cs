@@ -43,7 +43,10 @@ namespace WarTornLands.PlayerClasses
             if (_hitTimer <= 0)
             {
                 _hitTimer = _maxHitTime;
-                // TODO hit
+
+                // TODO Display hit Animation
+               
+                // TODO Find tile / entity to be hit
             }
         }
 

@@ -20,6 +20,7 @@ namespace WarTornLands
         GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
         public Texture2D TileSetTexture;
+        public Texture2D TreeTexture;
         //GameServiceContainer services;
         public InputManager input;
         public Player player;
@@ -30,42 +31,6 @@ namespace WarTornLands
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-            input = new InputManager(this);
-
-            player = new Player(this);
-            _parser = new XML_Parser(this);
-            _parser.SetFilename("0");
-            //_parser.SetLevel();
-            //_parser.SaveLevel();
-            try
-            {
-                _parser.LoadLevel();
-                testLevel = _parser.GetLevel();
-            }catch(Exception e)
-            {
-                testLevel = new Level(this);
-                int[,] layer0 = new int[,] {
-                            {1,1,1,1,1,1,1,1},
-                            {1,9,9,9,9,9,9,1},
-                            {1,9,9,9,9,9,9,1},
-                            {1,9,9,54,111,111,9,1},
-                            {1,9,9,9,111,111,9,1},
-                            {1,9,9,9,9,54,9,1},
-                            {1,9,9,9,9,9,9,1},
-                            {1,1,1,1,1,1,1,1}};
-            int[,] layer1 = {{0,0,0,0},{0,0,0,0},{0,0,0,87}};
-                layer0[1, 5] = 65;
-                testLevel.AddLayer(0, layer0);
-                testLevel.AddLayer(1, layer1);
-                testLevel.AddLayer(2, new int[0, 0]);
-            }
-
-            PlayerClasses.CollisionDetector.Setup(testLevel);
-
-            this.Components.Add(player);
-            this.Components.Add(testLevel);
-            this.Components.Add(input);
         }
 
         /// <summary>
@@ -90,7 +55,45 @@ namespace WarTornLands
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            TileSetTexture = Content.Load<Texture2D>("dg_grounds32");
+            TileSetTexture = Content.Load<Texture2D>("grass");
+            TreeTexture = Content.Load<Texture2D>("tree");
+
+            input = new InputManager(this);
+
+            player = new Player(this);
+            _parser = new XML_Parser(this);
+            _parser.SetFilename("0");
+            //_parser.SetLevel();
+            //_parser.SaveLevel();
+            try
+            {
+                _parser.LoadLevel();
+                testLevel = _parser.GetLevel();
+            }
+            catch (Exception e)
+            {
+                testLevel = new Level(this);
+                int[,] layer0 = new int[,] {
+                            {1,1,1,1,1,1,1,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,9,9,54,111,111,9,1},
+                            {1,9,9,9,111,111,9,1},
+                            {1,9,9,9,9,54,9,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,1,1,1,1,1,1,1}};
+                int[,] layer1 = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 87 } };
+                layer0[1, 5] = 65;
+                testLevel.AddFloor(layer0);
+                testLevel.AddCeiling(new int[0, 0]);
+            }
+
+            PlayerClasses.CollisionDetector.Setup(testLevel);
+
+            this.Components.Add(player);
+            this.Components.Add(testLevel);
+            this.Components.Add(input);
+
             player.LoadContent(Content);
             
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
@@ -134,8 +137,8 @@ namespace WarTornLands
             // Kapseln in eigene Klasse, für Menüs etc.
             testLevel.Draw(gameTime, 0);
             player.Draw(gameTime);
+            testLevel.DrawEntities(gameTime);
             testLevel.Draw(gameTime, 1);
-            testLevel.Draw(gameTime, 2);
 
             base.Draw(gameTime);
         }
