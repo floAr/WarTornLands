@@ -15,7 +15,7 @@ namespace WarTornLands.PlayerClasses
             _level = level;
         }
 
-        public static Vector2 GetPosition(Vector2 start, Vector2 toGoal, float radius)
+        public static Vector2 GetPosition(Vector2 start, Vector2 toGoal, float radius, Entity source)
         {
             float range = toGoal.Length();
             toGoal.Normalize();
@@ -35,6 +35,18 @@ namespace WarTornLands.PlayerClasses
             {
                 return curGoal - toGoal * radius;
             }
+            else
+            {
+                if (source != null)
+                {
+                    Entity ent = _level.GetEntityAt(curGoal);
+                    ent.OnCollide(source);
+                    if (ent.CanBePickedUp())
+                    {
+                        return curGoal - toGoal * radius;
+                    }
+                }
+            }
 
             while (!_level.IsPixelAccessible((curGoal)))
             {
@@ -52,6 +64,18 @@ namespace WarTornLands.PlayerClasses
                 if (_level.IsPixelAccessible((curGoal)))
                 {
                     return curGoal - toGoal * radius;
+                }
+                else
+                {
+                    if (source != null)
+                    {
+                        Entity ent = _level.GetEntityAt(curGoal);
+                        ent.OnCollide(source);
+                        if (ent.CanBePickedUp())
+                        {
+                            return curGoal - toGoal * radius;
+                        }
+                    }
                 }
             }
 

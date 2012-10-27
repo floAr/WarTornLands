@@ -17,55 +17,21 @@ namespace WarTornLands
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        public SpriteBatch spriteBatch;
-        public Texture2D TileSetTexture;
+        GraphicsDeviceManager _graphics;
+        public SpriteBatch _spriteBatch;
+        public Texture2D _tileSetTexture;
+        public Texture2D _treeTexture;
+        public Texture2D _gruselUteTexture;
         //GameServiceContainer services;
-        public InputManager input;
-        public Player player;
+        public InputManager _input;
+        public Player _player;
         XML_Parser _parser;
-        public Level testLevel; // TODO remove
+        public Level _testLevel; // TODO remove
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-            input = new InputManager(this);
-
-            player = new Player(this);
-            _parser = new XML_Parser(this);
-            _parser.SetFilename("0");
-            //_parser.SetLevel();
-            //_parser.SaveLevel();
-            try
-            {
-                _parser.LoadLevel();
-                testLevel = _parser.GetLevel();
-            }catch(Exception e)
-            {
-                testLevel = new Level(this);
-                int[,] layer0 = new int[,] {
-                            {1,1,1,1,1,1,1,1},
-                            {1,9,9,9,9,9,9,1},
-                            {1,9,9,9,9,9,9,1},
-                            {1,9,9,54,111,111,9,1},
-                            {1,9,9,9,111,111,9,1},
-                            {1,9,9,9,9,54,9,1},
-                            {1,9,9,9,9,9,9,1},
-                            {1,1,1,1,1,1,1,1}};
-            int[,] layer1 = {{0,0,0,0},{0,0,0,0},{0,0,0,87}};
-                layer0[1, 5] = 65;
-                testLevel.AddLayer(0, layer0);
-                testLevel.AddLayer(1, layer1);
-                testLevel.AddLayer(2, new int[0, 0]);
-            }
-
-            PlayerClasses.CollisionDetector.Setup(testLevel);
-
-            this.Components.Add(player);
-            this.Components.Add(testLevel);
-            this.Components.Add(input);
         }
 
         /// <summary>
@@ -88,10 +54,47 @@ namespace WarTornLands
         protected override void LoadContent()
         {
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            TileSetTexture = Content.Load<Texture2D>("dg_grounds32");
-            player.LoadContent(Content);
+            _tileSetTexture = Content.Load<Texture2D>("grass");
+            _treeTexture = Content.Load<Texture2D>("tree");
+            _gruselUteTexture = Content.Load<Texture2D>("gruselute");
+
+            _input = new InputManager(this);
+
+            _player = new Player(this);
+            _parser = new XML_Parser(this);
+            _parser.SetFilename("0");
+            //_parser.SetLevel();
+            //_parser.SaveLevel();
+            try
+            {
+                _parser.LoadLevel();
+                _testLevel = _parser.GetLevel();
+            }
+            catch (Exception e)
+            {
+                _testLevel = new Level(this);
+                int[,] layer0 = new int[,] {
+                            {1,1,1,1,1,1,1,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,9,9,54,111,111,9,1},
+                            {1,9,9,9,111,111,9,1},
+                            {1,9,9,9,9,54,9,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,1,1,1,1,1,1,1}};
+                int[,] layer1 = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 87 } };
+                layer0[1, 5] = 65;
+                _testLevel.AddFloor(layer0);
+                _testLevel.AddCeiling(new int[0, 0]);
+            }
+
+            PlayerClasses.CollisionDetector.Setup(_testLevel);
+
+            this.Components.Add(_input);
+
+            _player.LoadContent(Content);
             
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
@@ -116,7 +119,8 @@ namespace WarTornLands
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Fügen Sie Ihre Aktualisierungslogik hier hinzu
+            _player.Update(gameTime);
+            _testLevel.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -132,10 +136,10 @@ namespace WarTornLands
             // TODO: Fügen Sie Ihren Zeichnungscode hier hinzu
 
             // Kapseln in eigene Klasse, für Menüs etc.
-            testLevel.Draw(gameTime, 0);
-            player.Draw(gameTime);
-            testLevel.Draw(gameTime, 1);
-            testLevel.Draw(gameTime, 2);
+            _testLevel.Draw(gameTime, 0);
+            _testLevel.DrawEntities(gameTime);
+            _player.Draw(gameTime);
+            _testLevel.Draw(gameTime, 1);
 
             base.Draw(gameTime);
         }
