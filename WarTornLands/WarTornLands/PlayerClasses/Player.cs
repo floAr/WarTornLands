@@ -61,6 +61,7 @@ namespace WarTornLands.PlayerClasses
             }
 
             _cm.Update(gameTime);
+
         }
 
         public void LoadContent(ContentManager cm)
