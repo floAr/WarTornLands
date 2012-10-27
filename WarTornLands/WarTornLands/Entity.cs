@@ -42,12 +42,15 @@ namespace WarTornLands
             this._position = position;
             this._offset = Vector2.Zero;
             this._texture = texture;
-            this._health = 10;
+            this._health = 100;
+
+            //_canbepickedup = true;
+            _canbeattacked = true;
         }
 
-        public void Initialize()
+        public bool CanBePickedUp()
         {
-
+            return _canbepickedup;
         }
 
         public void Draw(GameTime gameTime)
@@ -58,15 +61,14 @@ namespace WarTornLands
             (Game as Game1)._spriteBatch.Begin();
             (Game as Game1)._spriteBatch.Draw(
                         _texture,
-                        new Rectangle((int)(_position.X - center.X + (int)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f)),
-                            (int)(_position.Y - (int)center.Y + (int)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f)),
+                        new Rectangle((int)(_position.X - center.X - _texture.Width * 0.5f + (int)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f)),
+                            (int)(_position.Y - (int)center.Y - _texture.Height * 0.5f + (int)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f)),
                             (int)size.X, (int)size.Y), Color.White);
             (Game as Game1)._spriteBatch.End();
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-          //  (InputManager)Game.Services.GetService(typeof(InputManager)));
             if (_offset.X >= Constants.TileSize/2)
             {
                 _offset.X -= Constants.TileSize;
@@ -130,6 +132,20 @@ namespace WarTornLands
         public void OnDie()
         {
             // Fucking explode!!!!
+        }
+
+        public void OnCollide(Entity source)
+        {
+            // "einsammeln"
+            if (_canbepickedup)
+            {
+                if (source == (Game as Game1)._player)
+                {
+                    this._health = 0;
+                    
+                    // TODO give player some item
+                }    
+            }
         }
     }
 }
