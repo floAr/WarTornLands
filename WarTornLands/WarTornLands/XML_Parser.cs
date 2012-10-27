@@ -255,12 +255,14 @@ namespace WarTornLands
             {
                 splitvektor = split[i].Split(',');
                 Vector2 vektor = new Vector2(int.Parse(splitvektor[0]), int.Parse(splitvektor[1]));
-                unit = new Entity(_game, vektor);
+                unit = new Entity(_game, vektor, "tree");
                 level.AddDynamics(unit);
             }
 
-            level.AddLayer(0, ebene0);
-            level.AddLayer(2, ebene2);
+            /*level.AddLayer(0, ebene0);
+            level.AddLayer(2, ebene2);*/
+            level.AddFloor(ebene0);
+            level.AddCeiling(ebene2);
 
             return level;
         }
