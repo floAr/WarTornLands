@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Counter.cs" />
+    <Compile Include="DialogSystem.cs" />
     <Compile Include="Dungeon.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Input\Direction.cs" />
