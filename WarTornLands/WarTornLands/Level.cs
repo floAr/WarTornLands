@@ -39,17 +39,24 @@ namespace WarTornLands
 
         public override void Draw(GameTime gameTime)
         {
+            (Game as Game1).spriteBatch.Begin();
             for (int y=0; y<grid[0].GetLength(1); ++y)
             {
                 for (int x=0; x<grid[0].GetLength(0); ++x)
                 {
-                    /*((SpriteBatch)Game.Services.GetService(typeof(SpriteBatch))).Draw(
-                        _texture,
+                    if ((Game as Game1).TileSetTexture == null)
+                    {
+                        throw new Exception("BLa!");
+                    }
+                    (Game as Game1).spriteBatch.Draw(
+                        (Game as Game1).TileSetTexture,
                         new Rectangle(x*Constants.TileSize, y*Constants.TileSize, Constants.TileSize, Constants.TileSize),
-                        ,
-                        Color.White);*/
+                        new Rectangle((grid[0][x, y] % 9) * Constants.TileSize, (grid[0][x, y] / 9) * Constants.TileSize, Constants.TileSize, Constants.TileSize),
+                        Color.White);
                 }
             }
+            (Game as Game1).spriteBatch.End();
+
             base.Draw(gameTime);
         }
 
