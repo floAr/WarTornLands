@@ -36,7 +36,8 @@ namespace WarTornLands
             return 0;
         }
 
-        public Entity(Game game, Vector2 position, Texture2D texture) : base(game)
+        public Entity(Game game, Vector2 position, Texture2D texture)
+            : base(game)
         {
             _game = game;
             this._position = position;
@@ -69,22 +70,22 @@ namespace WarTornLands
 
         public override void Update(GameTime gameTime)
         {
-            if (_offset.X >= Constants.TileSize/2)
+            if (_offset.X >= Constants.TileSize / 2)
             {
                 _offset.X -= Constants.TileSize;
                 _position.X++;
             }
-            if (_offset.Y >= Constants.TileSize/2)
+            if (_offset.Y >= Constants.TileSize / 2)
             {
                 _offset.Y -= Constants.TileSize;
                 _position.Y++;
             }
-            if (_offset.X <= -Constants.TileSize/2)
+            if (_offset.X <= -Constants.TileSize / 2)
             {
                 _offset.X += Constants.TileSize;
                 _position.X--;
             }
-            if (_offset.Y <= -Constants.TileSize/2)
+            if (_offset.Y <= -Constants.TileSize / 2)
             {
                 _offset.Y += Constants.TileSize;
                 _position.Y--;
@@ -101,7 +102,9 @@ namespace WarTornLands
             if (_texture == null)
             {
                 return new Vector2(0, 0);
-            } else {
+            }
+            else
+            {
                 return new Vector2(_texture.Width, _texture.Height);
             }
         }
@@ -142,9 +145,9 @@ namespace WarTornLands
                 if (source == (Game as Game1)._player)
                 {
                     this._health = 0;
-                    
+
                     // TODO give player some item
-                }    
+                }
             }
         }
     }
