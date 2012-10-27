@@ -11,6 +11,7 @@ namespace WarTornLands.PlayerClasses
     class Player : DrawableGameComponent
     {
         Vector2 _position = Vector2.Zero;
+        float _radius = 16;
         Texture2D _texture;
 
         public Player(Game game) : base(game) { }
@@ -19,9 +20,7 @@ namespace WarTornLands.PlayerClasses
         {
             InputManager input = (Game as Game1).input;
 
-            Vector2 goal = _position + input.Move;
-
-            _position = CollisionDetector.GetPosition(_position, goal);
+            _position = CollisionDetector.GetPosition(_position, input.Move * _radius);
 
             base.Update(gameTime);
         }
