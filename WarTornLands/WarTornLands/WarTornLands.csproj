@@ -78,7 +78,6 @@
     <Compile Include="DialogManager.cs" />
     <Compile Include="Dungeon.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="InputKey.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Input\Direction.cs" />
     <Compile Include="Input\InputKey.cs" />

@@ -30,6 +30,7 @@ namespace WarTornLands
 
         StorageDevice _storagedevice;
         string _filename;
+        Game _game;
 
         IAsyncResult _result;
 
@@ -38,8 +39,9 @@ namespace WarTornLands
 
         #region Konstruktor
 
-        public XML_Parser()
+        public XML_Parser(Game game)
         {
+            _game = game;
         }
         #endregion
 
@@ -152,7 +154,7 @@ namespace WarTornLands
 
             // Erzeugung von Liste mit Einheiten
 
-            Level level = new Level(ebene0, ebene1, ebene2);
+            Level level = new Level(_game, ebene0, ebene1, ebene2);
 
             return level;
         }
