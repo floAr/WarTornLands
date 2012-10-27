@@ -27,24 +27,24 @@ namespace WarTornLands
         public override void Update(GameTime gameTime)
         {
           //  (InputManager)Game.Services.GetService(typeof(InputManager)));
-            if (_offset.X >= 16)
+            if (_offset.X >= Constants.TileSize/2)
             {
-                _offset.X -= 16;
+                _offset.X -= Constants.TileSize;
                 _position.X++;
             }
-            if (_offset.Y >= 16)
+            if (_offset.Y >= Constants.TileSize/2)
             {
-                _offset.Y -= 16;
+                _offset.Y -= Constants.TileSize;
                 _position.Y++;
             }
-            if (_offset.X <= -16)
+            if (_offset.X <= -Constants.TileSize/2)
             {
-                _offset.X += 16;
+                _offset.X += Constants.TileSize;
                 _position.X--;
             }
-            if (_offset.Y <= -16)
+            if (_offset.Y <= -Constants.TileSize/2)
             {
-                _offset.Y += 16;
+                _offset.Y += Constants.TileSize;
                 _position.Y--;
             }
             base.Update(gameTime);
