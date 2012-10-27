@@ -23,7 +23,7 @@ namespace WarTornLands
         //GameServiceContainer services;
         public Inputmanager input;
         Player player;
-
+        XML_Parser _parser;
         Level testLevel; // TODO remove
 
         public Game1()
@@ -34,9 +34,18 @@ namespace WarTornLands
             input = new Inputmanager(this);
 
             player = new Player(this);
-
-            testLevel = new Level(this);
-            int[,] layer0 = new int[,] {
+            _parser = new XML_Parser(this);
+            _parser.SetFilename("0");
+            _parser.SetLevel();
+            _parser.SaveLevel();
+            try
+            {
+                _parser.LoadLevel();
+                testLevel = _parser.GetLevel();
+            }catch(Exception e)
+            {
+                testLevel = new Level(this);
+                int[,] layer0 = new int[,] {
                             {0,0,0,0,0,0,0,0},
                             {0,9,9,9,9,9,9,0},
                             {0,9,9,9,9,9,9,0},
@@ -45,8 +54,9 @@ namespace WarTornLands
                             {0,9,9,9,9,54,9,0},
                             {0,9,9,9,9,9,9,0},
                             {0,0,0,0,0,0,0,0}};
-            layer0[1, 5] = 65;
-            testLevel.AddLayer(0, layer0);
+                layer0[1, 5] = 65;
+                testLevel.AddLayer(0, layer0);
+            }
 
             this.Components.Add(testLevel);
             this.Components.Add(player);

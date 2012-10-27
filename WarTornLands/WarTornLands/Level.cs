@@ -10,7 +10,7 @@ namespace WarTornLands
     public class Level : DrawableGameComponent
     {
         private int[][,] grid;
-        private List<Entity> dynamics;
+        private List<Entity> dynamics = new List<Entity>();
 
         public Level(Game game) : base(game)
         {
