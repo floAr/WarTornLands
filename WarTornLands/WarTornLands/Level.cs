@@ -12,17 +12,24 @@ namespace WarTornLands
         private int[][,] grid;
         private List<Entity> dynamics;
 
-        public Level(Game game, int[,] layer0, int[,] layer1, int[,] layer2) : base(game)
+        public Level(Game game) : base(game)
         {
             grid = new int[3][,];
-            grid[0] = layer0;
-            grid[1] = layer1;
-            grid[2] = layer2;
         }
 
-        public void AddDynamicObject(Entity obj)
+        public void AddLayer(int layerNumber, int[,] layer)
         {
-            dynamics.Add(obj);
+            if (layerNumber < 0 || layerNumber > 2)
+            {
+                throw new Exception("Invalid layer number: 0 <= layer number <= 2!");
+            }
+
+            grid[layerNumber] = layer;
+        }
+
+        public void AddDynamics(List<Entity> obj)
+        {
+            dynamics.Concat(obj);
         }
 
         public override void Initialize()
@@ -36,9 +43,11 @@ namespace WarTornLands
             {
                 for (int x=0; x<grid[0].GetLength(0); ++x)
                 {
-                    ((SpriteBatch)Game.Services.GetService(typeof(SpriteBatch))).Draw(
-                        _texture, new Rectangle(x*Constants.TileSize, y*Constants.TileSize, Constants.TileSize, Constants.TileSize),
-                         /* some texture */, Color.White);
+                    /*((SpriteBatch)Game.Services.GetService(typeof(SpriteBatch))).Draw(
+                        _texture,
+                        new Rectangle(x*Constants.TileSize, y*Constants.TileSize, Constants.TileSize, Constants.TileSize),
+                        ,
+                        Color.White);*/
                 }
             }
             base.Draw(gameTime);
@@ -47,4 +56,3 @@ namespace WarTornLands
 
     }
 }
-.
