@@ -7,5 +7,6 @@ namespace WarTornLands
 {
     public class Camera : Microsoft.Xna.Framework.GameComponent
     {
+        public Camera(Game1 game) : base(game) { }
     }
 }

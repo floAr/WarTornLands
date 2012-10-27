@@ -11,7 +11,8 @@ namespace WarTornLands
         private int[][,] grid;
         private List<Entity> dynamics;
 
-        public Level()
+        public Level(Game game) 
+            : base(game)
         {
         }
 

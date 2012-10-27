@@ -5,7 +5,8 @@ using System.Text;
 
 namespace WarTornLands
 {
-    public class DialogManager : Microsoft.Xna.Framework.GameComponent
+    public class DialogManager
     {
+
     }
 }

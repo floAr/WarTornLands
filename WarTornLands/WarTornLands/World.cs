@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WarTornLands
 {
-    public class World : Level
+    public class World
     {
     }
 }

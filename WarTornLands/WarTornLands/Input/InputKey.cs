@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace WarTornLands
 {
-    interface InputKey
+    public interface InputKey
     {
         void Update(GameTime gt);
         void SetMode(int mode);

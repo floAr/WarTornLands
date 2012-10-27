@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WarTornLands
 {
-    public class Dungeon : Level
+    public class Dungeon
     {
     }
 }

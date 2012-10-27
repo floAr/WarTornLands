@@ -71,5 +71,10 @@ namespace WarTornLands
             return null;
         }
 
+        public bool SetMapping(Microsoft.Xna.Framework.Input.Keys key, InputKey inputKey)
+        {
+            throw new System.NotImplementedException();
+        }
+
     }
 }
