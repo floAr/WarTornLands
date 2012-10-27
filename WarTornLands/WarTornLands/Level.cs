@@ -75,9 +75,6 @@ namespace WarTornLands
             }
 
 
-            //grid[1][tile.X, tile.Y];
-
-
             // Check dynamic object collision
 
 
