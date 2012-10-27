@@ -39,18 +39,18 @@ namespace WarTornLands
 
         public void Draw(GameTime gameTime, int layer)
         {
-            Vector2 center = (Game as Game1).player.GetPosition();
+            Vector2 center = (Game as Game1)._player.GetPosition();
 
             // Layer evtl. in Klasse (DrawableGameComponent) kapseln
 
-            (Game as Game1).spriteBatch.Begin();
+            (Game as Game1)._spriteBatch.Begin();
             for (int y=0; y<grid[layer].GetLength(1); ++y)
             {
                 for (int x = 0; x < grid[layer].GetLength(0); ++x)
                 {
-                    int width = (int)Math.Floor((double)(Game as Game1).TileSetTexture.Width / Constants.TileSize);
-                    (Game as Game1).spriteBatch.Draw(
-                        (Game as Game1).TileSetTexture,
+                    int width = (int)Math.Floor((double)(Game as Game1)._tileSetTexture.Width / Constants.TileSize);
+                    (Game as Game1)._spriteBatch.Draw(
+                        (Game as Game1)._tileSetTexture,
                         new Rectangle(x * Constants.TileSize - (int)center.X + (int)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f),
                             y * Constants.TileSize - (int)center.Y + (int)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f),
                             Constants.TileSize, Constants.TileSize),

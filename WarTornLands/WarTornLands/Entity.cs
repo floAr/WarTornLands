@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using WarTornLands.Counter;
 
 namespace WarTornLands
 {
     public class Entity : GameComponent
     {
+        private Game _game;
         private Texture2D _texture;
         private Vector2 _position;
         private Vector2 _offset;
@@ -25,26 +27,27 @@ namespace WarTornLands
         /// Gibt den Objekttyp als Zahl zurück.
         /// </summary>
         /// <returns>0 = keine Aktionmöglich, 1 = Angreifbar, 2 = Ansprechbar, 3 = Benutzbar(öffnen), 4 = Aufhebbar</returns>
-        public int IdentifeyObjektTyp()
+        public int IdentifyObjektTyp()
         {
-            if(_canbeattacked) return 1;
-            if(_canspeak) return 2;
-            if(_canbeused) return 3;
+            if (_canbeattacked) return 1;
+            if (_canspeak) return 2;
+            if (_canbeused) return 3;
             if (_canbepickedup) return 4;
             return 0;
         }
 
         public Entity(Game game, Vector2 position, Texture2D texture) : base(game)
         {
+            _game = game;
             this._position = position;
             this._offset = Vector2.Zero;
             this._texture = texture;
             this._health = 10;
         }
 
-        public override void Initialize()
+        public void Initialize()
         {
-            base.Initialize();
+
         }
 
         public void Draw(GameTime gameTime)
@@ -61,7 +64,7 @@ namespace WarTornLands
             (Game as Game1).spriteBatch.End();
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
           //  (InputManager)Game.Services.GetService(typeof(InputManager)));
             if (_offset.X >= Constants.TileSize/2)
@@ -84,7 +87,6 @@ namespace WarTornLands
                 _offset.Y += Constants.TileSize;
                 _position.Y--;
             }
-            base.Update(gameTime);
         }
 
         public Vector2 GetPosition()
