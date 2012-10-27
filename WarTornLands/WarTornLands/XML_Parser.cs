@@ -24,13 +24,19 @@ namespace WarTornLands
         public string _ebenengroeße;
     }
 
+    public struct GameDialogData
+    {
+        public string _einmaligegespraeche;
+        public string _standardtext;
+    }
+
     class XML_Parser
     {
         #region Variablen
 
         StorageDevice _storagedevice;
         string _filename;
-        
+        GameDialogData _dialog;
         Game _game;
 
         IAsyncResult _result;
@@ -53,6 +59,49 @@ namespace WarTornLands
             _filename = name;
         }
 
+        public bool LoadText()
+        {
+            Initialise();
+
+            _filename = "Dialog_" + _filename;
+
+            //Open a storage container
+            _result = _storagedevice.BeginOpenContainer("Dialog", null, null);
+
+            //Wait for the WaitHandle to become signaled
+            _result.AsyncWaitHandle.WaitOne();
+
+            StorageContainer container = _storagedevice.EndOpenContainer(_result);
+
+            //Close the wait handle.
+            _result.AsyncWaitHandle.Close();
+
+            _filename = _filename + ".sav";
+
+            //Check to see whether the save exists.
+            if (!container.FileExists(_filename))
+            {
+                //If not, dispose of the container an return.
+                container.Dispose();
+                return false;
+            }
+
+            //Open the file.
+            Stream stream = container.OpenFile(_filename, FileMode.Open);
+
+            XmlSerializer serializer = new XmlSerializer(typeof(GameDialogData));
+
+            _dialog = (GameDialogData)serializer.Deserialize(stream);
+
+            //Close the file.
+            stream.Close();
+
+            //Dispose the Container.
+            container.Dispose();
+
+            return true;
+        }
+
         public bool LoadLevel()
         {
             Initialise();
@@ -60,15 +109,15 @@ namespace WarTornLands
             _filename = "Level_" + _filename;
 
             //Open a storage container
-            IAsyncResult result = _storagedevice.BeginOpenContainer("Level", null, null);
+            _result = _storagedevice.BeginOpenContainer("Level", null, null);
 
             //Wait for the WaitHandle to become signaled
-            result.AsyncWaitHandle.WaitOne();
+            _result.AsyncWaitHandle.WaitOne();
 
-            StorageContainer container = _storagedevice.EndOpenContainer(result);
+            StorageContainer container = _storagedevice.EndOpenContainer(_result);
 
             //Close the wait handle.
-            result.AsyncWaitHandle.Close();
+            _result.AsyncWaitHandle.Close();
 
             _filename = _filename + ".sav";
 
