@@ -20,7 +20,7 @@ namespace WarTornLands
         public string _ebene_0_Grundtextur;
         public string _ebene_1_untereObjekts;
         public string _ebene_2_obereObjekts;
-        public string _unitsposition;
+        public string _unitsposition;   
         public string _ebenengroeße;
     }
 
@@ -30,6 +30,8 @@ namespace WarTornLands
 
         StorageDevice _storagedevice;
         string _filename;
+        
+        Game _game;
 
         IAsyncResult _result;
 
@@ -38,8 +40,9 @@ namespace WarTornLands
 
         #region Konstruktor
 
-        public XML_Parser()
+        public XML_Parser(Game game)
         {
+            this._game = game;
         }
         #endregion
 
@@ -151,8 +154,23 @@ namespace WarTornLands
             }
 
             // Erzeugung von Liste mit Einheiten
+            split = _level._unitsposition.Split(';');
+            List<Entity> units = new List<Entity>();
+            Entity unit;
 
-            Level level = new Level(ebene0, ebene1, ebene2);
+            for (int i = 0; i < split.Length; i++)
+            {
+                splitvektor = split[i].Split(',');
+                Vector2 vektor = new Vector2(int.Parse(splitvektor[0]), int.Parse(splitvektor[1]));
+                unit = new Entity(_game, vektor);
+                units.Add(unit);
+            }
+
+            Level level = new Level();
+            level.AddLayer(0, ebene0);
+            level.AddLayer(1, ebene1);
+            level.AddLayer(2, ebene2);
+            level.AddDynamics(units);
 
             return level;
         }
