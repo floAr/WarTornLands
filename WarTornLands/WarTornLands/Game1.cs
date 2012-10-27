@@ -22,7 +22,7 @@ namespace WarTornLands
         public Texture2D TileSetTexture;
         //GameServiceContainer services;
         public InputManager input;
-        Player player;
+        public Player player;
         XML_Parser _parser;
         public Level testLevel; // TODO remove
 
@@ -58,8 +58,8 @@ namespace WarTornLands
                 layer0[1, 5] = 65;
                 testLevel.AddLayer(0, layer0);
                 testLevel.AddLayer(1, layer1);
+                testLevel.AddLayer(2, new int[0, 0]);
             }
-            testLevel.AddLayer(2, new int[0, 0]);
 
             PlayerClasses.CollisionDetector.Setup(testLevel);
 

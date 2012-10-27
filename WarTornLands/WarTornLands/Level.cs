@@ -39,6 +39,8 @@ namespace WarTornLands
 
         public void Draw(GameTime gameTime, int layer)
         {
+            Vector2 center = (Game as Game1).player.GetPosition();
+
             // Layer evtl. in Klasse (DrawableGameComponent) kapseln
 
             (Game as Game1).spriteBatch.Begin();
@@ -49,7 +51,9 @@ namespace WarTornLands
                     int width = (int)Math.Floor((double)(Game as Game1).TileSetTexture.Width / Constants.TileSize);
                     (Game as Game1).spriteBatch.Draw(
                         (Game as Game1).TileSetTexture,
-                        new Rectangle(x*Constants.TileSize, y*Constants.TileSize, Constants.TileSize, Constants.TileSize),
+                        new Rectangle(x * Constants.TileSize - (int)center.X + (int)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f),
+                            y * Constants.TileSize - (int)center.Y + (int)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f),
+                            Constants.TileSize, Constants.TileSize),
                         new Rectangle((grid[layer][x, y] % width) * Constants.TileSize, (grid[layer][x, y] / width) * Constants.TileSize, Constants.TileSize, Constants.TileSize),
                         Color.White);
                 }
@@ -65,6 +69,12 @@ namespace WarTornLands
             // find corresponding tile
             Vector2 tile = new Vector2((float)Math.Floor(pixel.X / Constants.TileSize), (float)Math.Floor(pixel.Y / Constants.TileSize));
             Vector2 offset = new Vector2(pixel.X % Constants.TileSize, pixel.Y % Constants.TileSize);
+
+            if (tile.X < 0 || tile.Y < 0)
+            {
+                // Walking out of the map, yeah!
+                return true;
+            }
 
             if (tile.X < grid[1].GetLength(0) && tile.Y < grid[1].GetLength(1))
             {
