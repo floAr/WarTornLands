@@ -36,8 +36,8 @@ namespace WarTornLands
             player = new Player(this);
             _parser = new XML_Parser(this);
             _parser.SetFilename("0");
-            _parser.SetLevel();
-            _parser.SaveLevel();
+            //_parser.SetLevel();
+            //_parser.SaveLevel();
             try
             {
                 _parser.LoadLevel();
