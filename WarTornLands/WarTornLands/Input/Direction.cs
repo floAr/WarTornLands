@@ -54,7 +54,8 @@ namespace WarTornLands
                 _value = CalcGamePad(gt);
             }
 
-            _value.Normalize();
+            if(!_value.Equals(Vector2.Zero))
+                _value.Normalize();
         }
 
         private Vector2 CalcKeyboard(GameTime gt)

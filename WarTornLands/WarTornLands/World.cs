@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace WarTornLands
 {
-    public class World
+    public class World : Level
     {
         public World(Game game) : base(game)
         {
