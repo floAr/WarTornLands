@@ -3,7 +3,7 @@
   <Class Name="WarTornLands.Game1" Collapsed="true">
     <Position X="12" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAEEAAAAAAAwAAAAAAAAAAAAAAAAgAAAAAAAAAAAQ=</HashCode>
+      <HashCode>AAQAEEAAAAAAAwAAAAAAAAAAAAAAABgBAAAAAAAAAAQ=</HashCode>
       <FileName>Game1.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -12,13 +12,6 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Program.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="WarTornLands.InputManager">
-    <Position X="1" Y="2.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAEAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>InputManager.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WarTornLands.World">
@@ -36,21 +29,21 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WarTornLands.TileEngine" Collapsed="true">
-    <Position X="12" Y="1.5" Width="1.5" />
+    <Position X="11.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>TileEngine.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WarTornLands.Camera">
-    <Position X="9" Y="1.5" Width="1.5" />
+    <Position X="9.5" Y="2.75" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Camera.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WarTornLands.DialogManager">
-    <Position X="7.25" Y="1.5" Width="1.5" />
+    <Position X="7.25" Y="1.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DialogManager.cs</FileName>
@@ -80,12 +73,19 @@
       <FileName>Entity.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WarTornLands.InputKey">
-    <Position X="0.75" Y="0.5" Width="1.5" />
+  <Class Name="WarTornLands.InputManager">
+    <Position X="1" Y="2.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>InputKey.cs</FileName>
+      <HashCode>AAQAQACAAoAAAAQAAgIIAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Input\InputManager.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Interface Name="WarTornLands.InputKey" Collapsed="true">
+    <Position X="1.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Input\InputKey.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

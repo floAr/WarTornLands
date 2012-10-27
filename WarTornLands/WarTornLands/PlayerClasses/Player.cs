@@ -17,7 +17,7 @@ namespace WarTornLands.PlayerClasses
 
         public override void Update(GameTime gameTime)
         {
-            Inputmanager input = (Game as Game1).input;
+            InputManager input = (Game as Game1).input;
 
             _position += input.Move;
 

@@ -20,7 +20,7 @@ namespace WarTornLands
         GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
         //GameServiceContainer services;
-        public Inputmanager input;
+        public InputManager input;
         Player player;
 
         public Game1()
@@ -28,7 +28,7 @@ namespace WarTornLands
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            input = new Inputmanager(this);
+            input = new InputManager(this);
 
             player = new Player(this);
 
