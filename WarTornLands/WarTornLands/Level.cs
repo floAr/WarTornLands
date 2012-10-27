@@ -64,15 +64,19 @@ namespace WarTornLands
 
         public override void Update(GameTime gameTime)
         {
-            foreach (Entity ent in dynamics)
+            try
             {
-                if (ent.GetHealth() == 0)
+                foreach (Entity ent in dynamics)
                 {
-                    ent.OnDie();
-                    dynamics.Remove(ent);
-                    GC.Collect();
+                    if (ent.GetHealth() == 0)
+                    {
+                        ent.OnDie();
+                        dynamics.Remove(ent);
+                        GC.Collect();
+                    }
                 }
             }
+            catch { }
         }
 
         public void DrawEntities(GameTime gameTime)
@@ -100,8 +104,8 @@ namespace WarTornLands
                 Vector2 pos = ent.GetPosition();
                 Vector2 size = ent.GetSize();
 
-                if (pixel.X >= pos.X && pixel.X < pos.X + size.X &&
-                    pixel.Y >= pos.Y && pixel.Y < pos.Y + size.Y)
+                if (pixel.X >= pos.X - size.X * 0.5f && pixel.X < pos.X + size.X * 0.5f &&
+                    pixel.Y >= pos.Y - size.Y * 0.5f && pixel.Y < pos.Y + size.Y * 0.5f)
                 {
                     return ent;
                 }

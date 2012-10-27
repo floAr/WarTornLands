@@ -9,13 +9,14 @@ using WarTornLands.Counter;
 
 namespace WarTornLands.PlayerClasses
 {
-    public class Player
+    public class Player : Entity
     {
         Game _game;
         Vector2 _position = Vector2.Zero;
         Vector2 _weaponPos;
         float _radius = Constants.Radius;
         float _speed = Constants.Speed;
+        Vector2 _direction;
         Texture2D _texture;
         Texture2D _weaponTex;
         CounterManager _cm;
@@ -23,7 +24,7 @@ namespace WarTornLands.PlayerClasses
 
         string _hitCounter = "hit_counter";
 
-        public Player(Game game)
+        public Player(Game game) : base(game, Vector2.Zero, null)
         {
             _game = game;
 
@@ -36,10 +37,13 @@ namespace WarTornLands.PlayerClasses
         public void Update(GameTime gameTime)
         {
             InputManager input = (_game as Game1)._input;
-            
+
+            Vector2 oldPos = _position;
             _position = CollisionDetector.GetPosition(_position,
                                                       input.Move * _speed * gameTime.ElapsedGameTime.Milliseconds,
-                                                      _radius);
+                                                      _radius, this);
+            _direction = oldPos - _position;
+            _direction.Normalize();
 
             // Attack! Attack!
             if (input.Hit)
@@ -59,11 +63,6 @@ namespace WarTornLands.PlayerClasses
             _cm.Update(gameTime);
         }
 
-        private void Hit(GameTime gameTime)
-        {
-
-        }
-
         public void LoadContent(ContentManager cm)
         {
             _texture = cm.Load<Texture2D>("player");
@@ -81,7 +80,7 @@ namespace WarTornLands.PlayerClasses
 
             sb.Begin();
 
-            Vector2 drawPos = new Vector2((float)Math.Round((_game as Game1).Window.ClientBounds.Width / 2.0 -_texture.Width * 0.5f),
+            Vector2 drawPos = new Vector2((float)Math.Round((_game as Game1).Window.ClientBounds.Width / 2.0 - _texture.Width * 0.5f),
                                           (float)Math.Round((_game as Game1).Window.ClientBounds.Height / 2.0 - _texture.Height * 0.5f));
 
             sb.Draw(_texture,
@@ -96,7 +95,15 @@ namespace WarTornLands.PlayerClasses
                 float finalAngle = _cm.GetPercentage(_hitCounter) * maxAddition + baseAngle;
                 _weaponPos = new Vector2(_weaponRange * (float)Math.Cos(finalAngle),
                                                 _weaponRange * (float)Math.Sin(finalAngle));
+
+                Entity victim = (_game as Game1)._testLevel.GetEntityAt(_position + _weaponPos);
+                if (victim != null)
+                {
+                    victim.Damage(8);
+                }
+
                 _weaponPos += drawPos;
+                
                 sb.Draw(_weaponTex, _weaponPos, null, Color.White, 0, Vector2.Zero, .1f, SpriteEffects.None, 0);
             }
 

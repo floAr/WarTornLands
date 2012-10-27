@@ -21,6 +21,7 @@ namespace WarTornLands
         public SpriteBatch _spriteBatch;
         public Texture2D _tileSetTexture;
         public Texture2D _treeTexture;
+        public Texture2D _gruselUteTexture;
         //GameServiceContainer services;
         public InputManager _input;
         public Player _player;
@@ -57,6 +58,7 @@ namespace WarTornLands
 
             _tileSetTexture = Content.Load<Texture2D>("grass");
             _treeTexture = Content.Load<Texture2D>("tree");
+            _gruselUteTexture = Content.Load<Texture2D>("gruselute");
 
             _input = new InputManager(this);
 
@@ -118,6 +120,7 @@ namespace WarTornLands
                 this.Exit();
 
             _player.Update(gameTime);
+            _testLevel.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -134,8 +137,8 @@ namespace WarTornLands
 
             // Kapseln in eigene Klasse, für Menüs etc.
             _testLevel.Draw(gameTime, 0);
-            _player.Draw(gameTime);
             _testLevel.DrawEntities(gameTime);
+            _player.Draw(gameTime);
             _testLevel.Draw(gameTime, 1);
 
             base.Draw(gameTime);
