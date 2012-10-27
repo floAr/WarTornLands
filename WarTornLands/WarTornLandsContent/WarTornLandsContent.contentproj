@@ -51,13 +51,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="dg_grounds64.png">
-      <Name>dg_grounds64</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="weapontest.png">
       <Name>weapontest</Name>
       <Importer>TextureImporter</Importer>
