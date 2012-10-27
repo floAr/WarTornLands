@@ -34,11 +34,11 @@ namespace WarTornLands
             return 0;
         }
 
-        public Entity(Game game, Vector2 position, String texture) : base(game)
+        public Entity(Game game, Vector2 position, Texture2D texture) : base(game)
         {
             this._position = position;
             this._offset = Vector2.Zero;
-            this._texture = (Game as Game1).TreeTexture;
+            this._texture = texture;
             this._health = 10;
         }
 
