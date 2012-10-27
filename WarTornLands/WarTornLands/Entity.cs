@@ -52,16 +52,16 @@ namespace WarTornLands
 
         public void Draw(GameTime gameTime)
         {
-            Vector2 center = (Game as Game1).player.GetPosition();
-            int width = (int)Math.Floor((double)(Game as Game1).TileSetTexture.Width / Constants.TileSize);
+            Vector2 center = (Game as Game1)._player.GetPosition();
+            int width = (int)Math.Floor((double)(Game as Game1)._tileSetTexture.Width / Constants.TileSize);
             Vector2 size = GetSize();
-            (Game as Game1).spriteBatch.Begin();
-            (Game as Game1).spriteBatch.Draw(
+            (Game as Game1)._spriteBatch.Begin();
+            (Game as Game1)._spriteBatch.Draw(
                         _texture,
                         new Rectangle((int)(_position.X - center.X + (int)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f)),
                             (int)(_position.Y - (int)center.Y + (int)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f)),
                             (int)size.X, (int)size.Y), Color.White);
-            (Game as Game1).spriteBatch.End();
+            (Game as Game1)._spriteBatch.End();
         }
 
         public void Update(GameTime gameTime)
@@ -109,7 +109,7 @@ namespace WarTornLands
             // TODO
         }
 
-        public int OnDamage(int damage)
+        public int Damage(int damage)
         {
             if (this._canbeattacked)
             {

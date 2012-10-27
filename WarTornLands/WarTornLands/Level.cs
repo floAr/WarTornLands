@@ -59,7 +59,7 @@ namespace WarTornLands
                 }
             }
 
-            (Game as Game1).spriteBatch.End();
+            (Game as Game1)._spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)

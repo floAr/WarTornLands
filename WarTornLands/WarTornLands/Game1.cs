@@ -53,12 +53,12 @@ namespace WarTornLands
         protected override void LoadContent()
         {
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            TileSetTexture = Content.Load<Texture2D>("grass");
+            _tileSetTexture = Content.Load<Texture2D>("grass");
             TreeTexture = Content.Load<Texture2D>("tree");
 
-            input = new InputManager(this);
+            _input = new InputManager(this);
 
             _player = new Player(this);
             _parser = new XML_Parser(this);
@@ -84,15 +84,15 @@ namespace WarTornLands
                             {1,1,1,1,1,1,1,1}};
                 int[,] layer1 = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 87 } };
                 layer0[1, 5] = 65;
-                testLevel.AddFloor(layer0);
-                testLevel.AddCeiling(new int[0, 0]);
+                _testLevel.AddFloor(layer0);
+                _testLevel.AddCeiling(new int[0, 0]);
             }
 
             PlayerClasses.CollisionDetector.Setup(_testLevel);
 
             this.Components.Add(_input);
 
-            player.LoadContent(Content);
+            _player.LoadContent(Content);
             
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
@@ -133,10 +133,10 @@ namespace WarTornLands
             // TODO: Fügen Sie Ihren Zeichnungscode hier hinzu
 
             // Kapseln in eigene Klasse, für Menüs etc.
-            testLevel.Draw(gameTime, 0);
-            player.Draw(gameTime);
-            testLevel.DrawEntities(gameTime);
-            testLevel.Draw(gameTime, 1);
+            _testLevel.Draw(gameTime, 0);
+            _player.Draw(gameTime);
+            _testLevel.DrawEntities(gameTime);
+            _testLevel.Draw(gameTime, 1);
 
             base.Draw(gameTime);
         }
