@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using WarTornLands.PlayerClasses;
 
 namespace WarTornLands
 {
@@ -17,13 +18,22 @@ namespace WarTornLands
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        public SpriteBatch spriteBatch;
+        //GameServiceContainer services;
+        public Inputmanager input;
+        Player player;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            Window.Title = "WarTornLands";
+
+            input = new Inputmanager(this);
+
+            player = new Player(this);
+
+            this.Components.Add(player);
+            this.Components.Add(input);
         }
 
         /// <summary>
@@ -47,6 +57,8 @@ namespace WarTornLands
         {
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            player.LoadContent(Content);
 
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }

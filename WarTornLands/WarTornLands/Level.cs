@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace WarTornLands
 {
@@ -9,6 +10,21 @@ namespace WarTornLands
     {
         private int[][,] grid;
         private List<Entity> dynamics;
+
+        public Level()
+        {
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            //((SpriteBatch)Game.Services.GetService(typeof(SpriteBatch))).Draw(_texture, _position * Constants.TileSize + _offset, Color.White);
+            base.Draw(gameTime);
+        }
 
 
     }
