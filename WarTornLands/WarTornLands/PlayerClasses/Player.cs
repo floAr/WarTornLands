@@ -16,6 +16,7 @@ namespace WarTornLands.PlayerClasses
         Vector2 _weaponPos;
         float _radius = Constants.Radius;
         float _speed = Constants.Speed;
+        Vector2 _direction;
         Texture2D _texture;
         Texture2D _weaponTex;
         CounterManager _cm;
@@ -36,10 +37,13 @@ namespace WarTornLands.PlayerClasses
         public void Update(GameTime gameTime)
         {
             InputManager input = (_game as Game1)._input;
-            
+
+            Vector2 oldPos = _position;
             _position = CollisionDetector.GetPosition(_position,
                                                       input.Move * _speed * gameTime.ElapsedGameTime.Milliseconds,
                                                       _radius, this);
+            _direction = oldPos - _position;
+            _direction.Normalize();
 
             // Attack! Attack!
             if (input.Hit)
