@@ -5,51 +5,69 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using WarTornLands.Counter;
 
 namespace WarTornLands.PlayerClasses
 {
-    public class Player : GameComponent
+    public class Player
     {
+        Game _game;
         Vector2 _position = Vector2.Zero;
-        float _radius = 16;
-        float _speed = .125f;
+        Vector2 _weaponPos;
+        float _radius = Constants.Radius;
+        float _speed = Constants.Speed;
         Texture2D _texture;
+        Texture2D _weaponTex;
+        CounterManager _cm;
+        float _weaponRange = Constants.WeaponRange;
 
-        float _hitTimer;
-        const float _maxHitTime = 1.0f;
+        string _hitCounter = "hit_counter";
 
-        public Player(Game game) : base(game) { }
-
-        public override void Update(GameTime gameTime)
+        public Player(Game game)
         {
-            InputManager input = (Game as Game1).input;
+            _game = game;
+
+            _cm = new CounterManager();
+            _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
+
+            _cm.AddCounter(_hitCounter, Constants.HitDuration);
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            InputManager input = (_game as Game1)._input;
             
             _position = CollisionDetector.GetPosition(_position,
                                                       input.Move * _speed * gameTime.ElapsedGameTime.Milliseconds,
                                                       _radius);
 
             // Attack! Attack!
-            _hitTimer = Math.Min(0, _hitTimer - (gameTime.ElapsedGameTime.Milliseconds/1000.0f));
             if (input.Hit)
             {
-                Hit(gameTime);
+                _cm.StartCounter(_hitCounter, false);
             }
 
-            base.Update(gameTime);
+            if(_cm.GetPercentage(_hitCounter) > 0)
+            {
+                float baseAngle = Constants.WeaponStartAngle;
+                float maxAddition = Constants.WeaponGoalAngle - Constants.WeaponStartAngle;
+                float finalAngle = _cm.GetPercentage(_hitCounter) * maxAddition + baseAngle;
+                _weaponPos = new Vector2(_weaponRange * (float)Math.Cos(finalAngle),
+                                                _weaponRange * (float)Math.Sin(finalAngle));
+            }
+
+            _cm.Update(gameTime);
         }
 
         private void Hit(GameTime gameTime)
         {
-            if (_hitTimer <= 0)
-            {
-                _hitTimer = _maxHitTime;
-                // TODO hit
-            }
+
         }
 
         public void LoadContent(ContentManager cm)
         {
             _texture = cm.Load<Texture2D>("player");
+            _weaponTex = cm.Load<Texture2D>("weapontest");
         }
 
         public Vector2 GetPosition()
@@ -59,12 +77,39 @@ namespace WarTornLands.PlayerClasses
 
         public void Draw(GameTime gameTime)
         {
-            (Game as Game1).spriteBatch.Begin();
-            (Game as Game1).spriteBatch.Draw(_texture,
-                new Rectangle((int)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0 -_texture.Width * 0.5f),
-                    (int)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0 - _texture.Height * 0.5f),
-                    _texture.Height, _texture.Width) , Color.White);
-            (Game as Game1).spriteBatch.End();
+            SpriteBatch sb = (_game as Game1)._spriteBatch;
+
+            sb.Begin();
+
+            Vector2 drawPos = new Vector2((float)Math.Round((_game as Game1).Window.ClientBounds.Width / 2.0 -_texture.Width * 0.5f),
+                                          (float)Math.Round((_game as Game1).Window.ClientBounds.Height / 2.0 - _texture.Height * 0.5f));
+
+            sb.Draw(_texture,
+                new Rectangle((int)drawPos.X, (int)drawPos.Y,
+                              _texture.Height, _texture.Width), Color.White);
+
+
+            if (_cm.GetPercentage(_hitCounter) != 0)
+            {
+                float baseAngle = Constants.WeaponStartAngle;
+                float maxAddition = Constants.WeaponGoalAngle - Constants.WeaponStartAngle;
+                float finalAngle = _cm.GetPercentage(_hitCounter) * maxAddition + baseAngle;
+                _weaponPos = new Vector2(_weaponRange * (float)Math.Cos(finalAngle),
+                                                _weaponRange * (float)Math.Sin(finalAngle));
+                _weaponPos += drawPos;
+                sb.Draw(_weaponTex, _weaponPos, null, Color.White, 0, Vector2.Zero, .1f, SpriteEffects.None, 0);
+            }
+
+            sb.End();
         }
+
+        #region Subscribed events
+
+        private void OnBang(object sender, BangEventArgs e)
+        {
+
+        }
+
+        #endregion
     }
 }

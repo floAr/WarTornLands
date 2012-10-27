@@ -7,6 +7,14 @@ namespace WarTornLands
 {
     static class Constants
     {
-        public static int TileSize = 32;
+        public const int TileSize = 32;
+        
+        // Player
+        public const int Radius = 16;
+        public const float Speed = .125f;
+        public const int HitDuration = 400;
+        public const float WeaponRange = 14;
+        public const float WeaponStartAngle = 1.3f;
+        public const float WeaponGoalAngle = (float)(Math.PI * 2 - WeaponStartAngle);
     }
 }
