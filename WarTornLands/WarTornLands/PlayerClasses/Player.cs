@@ -11,7 +11,7 @@ namespace WarTornLands.PlayerClasses
     class Player : DrawableGameComponent
     {
         Vector2 _position = Vector2.Zero;
-        float _radius = 16;
+        float _radius = 0;
         Texture2D _texture;
 
         public Player(Game game) : base(game) { }
