@@ -10,7 +10,7 @@ namespace WarTornLands
     public class Level : GameComponent
     {
         private int[][,] grid;
-        private List<Entity> dynamics;
+        private List<Entity> dynamics = new List<Entity>();
 
         public Level(Game game) : base(game)
         {
@@ -25,6 +25,11 @@ namespace WarTornLands
             }
 
             grid[layerNumber] = layer;
+        }
+
+        public bool IsPixelAccessible(Vector2 position)
+        {
+            return true;
         }
 
         public void AddDynamics(List<Entity> obj)

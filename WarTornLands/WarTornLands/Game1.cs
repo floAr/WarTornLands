@@ -21,9 +21,9 @@ namespace WarTornLands
         public SpriteBatch spriteBatch;
         public Texture2D TileSetTexture;
         //GameServiceContainer services;
-        public Inputmanager input;
+        public InputManager input;
         Player player;
-
+        XML_Parser _parser;
         public Level testLevel; // TODO remove
 
         public Game1()
@@ -31,12 +31,21 @@ namespace WarTornLands
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            input = new Inputmanager(this);
+            input = new InputManager(this);
 
             player = new Player(this);
-
-            testLevel = new Level(this);
-            int[,] layer0 = new int[,] {
+            _parser = new XML_Parser(this);
+            _parser.SetFilename("0");
+            _parser.SetLevel();
+            _parser.SaveLevel();
+            try
+            {
+                _parser.LoadLevel();
+                testLevel = _parser.GetLevel();
+            }catch(Exception e)
+            {
+                testLevel = new Level(this);
+                int[,] layer0 = new int[,] {
                             {1,1,1,1,1,1,1,1},
                             {1,9,9,9,9,9,9,1},
                             {1,9,9,9,9,9,9,1},
@@ -46,12 +55,14 @@ namespace WarTornLands
                             {1,9,9,9,9,9,9,1},
                             {1,1,1,1,1,1,1,1}};
             int[,] layer1 = {{0,0,0,0},{0,0,0,0},{0,0,0,87}};
-            layer0[1, 5] = 65;
-            testLevel.AddLayer(0, layer0);
+                layer0[1, 5] = 65;
+                testLevel.AddLayer(0, layer0);
+            }
             testLevel.AddLayer(1, layer1);
             testLevel.AddLayer(2, new int[0, 0]);
 
-            this.Components.Add(player);
+            PlayerClasses.CollisionDetector.Setup(testLevel);
+
             this.Components.Add(testLevel);
             this.Components.Add(input);
         }

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WarTornLands.PlayerClasses
 {
-    class Player : GameComponent
+    class Player : DrawableGameComponent
     {
         Vector2 _position = Vector2.Zero;
         Texture2D _texture;
@@ -17,12 +17,11 @@ namespace WarTornLands.PlayerClasses
 
         public override void Update(GameTime gameTime)
         {
-            Inputmanager input = (Game as Game1).input;
+            InputManager input = (Game as Game1).input;
 
-            if ((Game as Game1).testLevel.IsPixelAccessible(_position + input.Move))
-            {
-                _position += input.Move;
-            }
+            Vector2 goal = _position + input.Move;
+
+            _position = CollisionDetector.GetPosition(_position, goal);
 
             base.Update(gameTime);
         }
@@ -32,11 +31,13 @@ namespace WarTornLands.PlayerClasses
             _texture = cm.Load<Texture2D>("player");
         }
 
-        public void Draw(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
             (Game as Game1).spriteBatch.Begin();
             (Game as Game1).spriteBatch.Draw(_texture, _position - new Vector2(_texture.Height) * .5f, Color.White);
             (Game as Game1).spriteBatch.End();
+
+ 	        base.Draw(gameTime);
         }
     }
 }

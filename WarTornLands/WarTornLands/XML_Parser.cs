@@ -96,6 +96,62 @@ namespace WarTornLands
             return true;
         }
 
+        public void SetLevel()
+        {
+            string level = "0,0,0,0,1,1,0,0;0,0,0,0,0,0,0,0;0,0,0,0,0,0,0,0;0,0,0,0,0,0,0,0;0,0,0,0,0,0,0,0;0,0,0,0,0,0,0,0;0,0,0,0,0,0,0,0;0,0,0,0,0,0,0,0";
+            _level._ebene_0_Grundtextur = level;
+            _level._ebene_1_untereObjekts = level;
+            _level._ebene_2_obereObjekts = level;
+            _level._ebenengroeße = "8,8;8,8;8,8";
+            _level._unitsposition = "0,0;6,6";
+        }
+
+        public void SaveLevel()
+        {
+            Initialise();
+            
+            String typ = "Level";
+            
+            //Open a storage container
+            
+            _result = _storagedevice.BeginOpenContainer(typ, null, null); // hier lässt sich der Pfad setzen
+
+
+            typ = typ + "_";
+
+            //Wait for the WaitHandle to become signaled
+            _result.AsyncWaitHandle.WaitOne();
+
+            StorageContainer container = _storagedevice.EndOpenContainer(_result);
+
+            //Close the wait handle.
+            _result.AsyncWaitHandle.Close();
+
+            //Check to see whether the save exists
+
+            if (container.FileExists(typ + _filename + ".sav"))
+            {
+                //Delete it so that we can create one fresh.
+                container.DeleteFile(typ + _filename + ".sav");
+            }
+
+            // Create the file
+            
+            Stream stream = container.CreateFile(typ + _filename + ".sav");
+
+            // Convert the object to XML data and put it in the stream.
+            XmlSerializer serializer;
+            
+            serializer = new XmlSerializer(typeof(GameLevelData));
+            serializer.Serialize(stream, _level);
+            
+
+            // Close the file.
+            stream.Close();
+
+            // Dispose the container, to commit changes.
+            container.Dispose();
+        }
         public Level GetLevel()
         {
             // Variablen
