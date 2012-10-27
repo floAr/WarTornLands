@@ -24,7 +24,7 @@ namespace WarTornLands
         public Inputmanager input;
         Player player;
 
-        Level testLevel; // TODO remove
+        public Level testLevel; // TODO remove
 
         public Game1()
         {
@@ -37,19 +37,22 @@ namespace WarTornLands
 
             testLevel = new Level(this);
             int[,] layer0 = new int[,] {
-                            {0,0,0,0,0,0,0,0},
-                            {0,9,9,9,9,9,9,0},
-                            {0,9,9,9,9,9,9,0},
-                            {0,9,9,54,111,111,9,0},
-                            {0,9,9,9,111,111,9,0},
-                            {0,9,9,9,9,54,9,0},
-                            {0,9,9,9,9,9,9,0},
-                            {0,0,0,0,0,0,0,0}};
+                            {1,1,1,1,1,1,1,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,9,9,54,111,111,9,1},
+                            {1,9,9,9,111,111,9,1},
+                            {1,9,9,9,9,54,9,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,1,1,1,1,1,1,1}};
+            int[,] layer1 = {{0,0,0,0},{0,0,0,0},{0,0,0,87}};
             layer0[1, 5] = 65;
             testLevel.AddLayer(0, layer0);
+            testLevel.AddLayer(1, layer1);
+            testLevel.AddLayer(2, new int[0, 0]);
 
-            this.Components.Add(testLevel);
             this.Components.Add(player);
+            this.Components.Add(testLevel);
             this.Components.Add(input);
         }
 
@@ -115,6 +118,12 @@ namespace WarTornLands
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Fügen Sie Ihren Zeichnungscode hier hinzu
+
+            // Kapseln in eigene Klasse, für Menüs etc.
+            testLevel.Draw(gameTime, 0);
+            player.Draw(gameTime);
+            testLevel.Draw(gameTime, 1);
+            testLevel.Draw(gameTime, 2);
 
             base.Draw(gameTime);
         }
