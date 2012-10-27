@@ -14,25 +14,35 @@
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WarTornLands.World">
-    <Position X="3" Y="6" Width="1.5" />
+  <Class Name="Microsoft.Xna.Framework.GameComponent" Collapsed="true">
+    <Position X="7.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Xna.Framework.DrawableGameComponent" Collapsed="true">
+    <Position X="5" Y="2" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WarTornLands.Level">
+    <Position X="4.25" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>World.cs</FileName>
+      <HashCode>AAAAAAAAAAIAAwAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Level.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WarTornLands.Dungeon">
-    <Position X="5.5" Y="6" Width="1.5" />
+  <Class Name="WarTornLands.Entity">
+    <Position X="7.75" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Dungeon.cs</FileName>
+      <HashCode>AAQAAAAAAQAAAwAAIAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Entity.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WarTornLands.TileEngine" Collapsed="true">
-    <Position X="10" Y="4.75" Width="1.5" />
+  <Class Name="WarTornLands.Inputmanager">
+    <Position X="0.5" Y="2.75" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TileEngine.cs</FileName>
+      <HashCode>AAQAQACAAoAAAAQAAgIIAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Input\Inputmanager.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WarTornLands.Camera">
@@ -49,28 +59,11 @@
       <FileName>DialogManager.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Microsoft.Xna.Framework.GameComponent" Collapsed="true">
-    <Position X="7.5" Y="0.75" Width="1.5" />
-    <TypeIdentifier />
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Microsoft.Xna.Framework.DrawableGameComponent" Collapsed="true">
-    <Position X="5" Y="2" Width="1.5" />
-    <TypeIdentifier />
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="WarTornLands.Level">
-    <Position X="4.25" Y="3.75" Width="1.5" />
+  <Class Name="WarTornLands.Dungeon">
+    <Position X="5.5" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
-      <FileName>Level.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="WarTornLands.Entity">
-    <Position X="7.75" Y="4" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAQAAAwAAIAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
-      <FileName>Entity.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dungeon.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WarTornLands.InputKey">
@@ -80,11 +73,18 @@
       <FileName>InputKey.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WarTornLands.Inputmanager">
-    <Position X="0.5" Y="2.75" Width="2.75" />
+  <Class Name="WarTornLands.TileEngine" Collapsed="true">
+    <Position X="10" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAQACAAoAAAAQAAgIIAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
-      <FileName>Input\Inputmanager.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TileEngine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WarTornLands.World">
+    <Position X="3" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>World.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
