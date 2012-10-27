@@ -15,6 +15,9 @@ namespace WarTornLands.PlayerClasses
         float _speed = .125f;
         Texture2D _texture;
 
+        float _hitTimer;
+        const float _maxHitTime = 1.0f;
+
         public Player(Game game) : base(game) { }
 
         public override void Update(GameTime gameTime)
@@ -25,7 +28,23 @@ namespace WarTornLands.PlayerClasses
                                                       input.Move * _speed * gameTime.ElapsedGameTime.Milliseconds,
                                                       _radius);
 
+            // Attack! Attack!
+            _hitTimer = Math.Min(0, _hitTimer - (gameTime.ElapsedGameTime.Milliseconds/1000.0f));
+            if (input.Hit)
+            {
+                Hit(gameTime);
+            }
+
             base.Update(gameTime);
+        }
+
+        private void Hit(GameTime gameTime)
+        {
+            if (_hitTimer <= 0)
+            {
+                _hitTimer = _maxHitTime;
+                // TODO hit
+            }
         }
 
         public void LoadContent(ContentManager cm)
