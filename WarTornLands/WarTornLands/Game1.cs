@@ -57,8 +57,8 @@ namespace WarTornLands
             int[,] layer1 = {{0,0,0,0},{0,0,0,0},{0,0,0,87}};
                 layer0[1, 5] = 65;
                 testLevel.AddLayer(0, layer0);
+                testLevel.AddLayer(1, layer1);
             }
-            testLevel.AddLayer(1, layer1);
             testLevel.AddLayer(2, new int[0, 0]);
 
             PlayerClasses.CollisionDetector.Setup(testLevel);
