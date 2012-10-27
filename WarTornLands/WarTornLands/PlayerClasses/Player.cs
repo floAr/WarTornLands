@@ -19,7 +19,9 @@ namespace WarTornLands.PlayerClasses
         {
             InputManager input = (Game as Game1).input;
 
-            _position += input.Move;
+            Vector2 goal = _position + input.Move;
+
+            _position = CollisionDetector.GetPosition(_position, goal);
 
             base.Update(gameTime);
         }

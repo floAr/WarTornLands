@@ -81,6 +81,7 @@
     <Compile Include="Input\Key.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="PlayerClasses\CollisionDetector.cs" />
     <Compile Include="PlayerClasses\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

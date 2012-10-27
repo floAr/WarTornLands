@@ -48,6 +48,8 @@ namespace WarTornLands
             layer0[1, 5] = 65;
             testLevel.AddLayer(0, layer0);
 
+            PlayerClasses.CollisionDetector.Setup(testLevel);
+
             this.Components.Add(testLevel);
             this.Components.Add(player);
             this.Components.Add(input);

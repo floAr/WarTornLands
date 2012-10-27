@@ -27,6 +27,11 @@ namespace WarTornLands
             grid[layerNumber] = layer;
         }
 
+        public bool IsPixelAccessible(Vector2 position)
+        {
+            return true;
+        }
+
         public void AddDynamics(List<Entity> obj)
         {
             dynamics.Concat(obj);
