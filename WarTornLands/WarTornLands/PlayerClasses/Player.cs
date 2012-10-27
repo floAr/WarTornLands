@@ -11,7 +11,8 @@ namespace WarTornLands.PlayerClasses
     class Player : GameComponent
     {
         Vector2 _position = Vector2.Zero;
-        float _radius = 1;
+        float _radius = 16;
+        float _speed = .125f;
         Texture2D _texture;
 
         public Player(Game game) : base(game) { }
@@ -19,8 +20,10 @@ namespace WarTornLands.PlayerClasses
         public override void Update(GameTime gameTime)
         {
             InputManager input = (Game as Game1).input;
-
-            _position = CollisionDetector.GetPosition(_position, input.Move * _radius);
+            
+            _position = CollisionDetector.GetPosition(_position,
+                                                      input.Move * _speed * gameTime.ElapsedGameTime.Milliseconds,
+                                                      _radius);
 
             base.Update(gameTime);
         }

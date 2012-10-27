@@ -15,7 +15,7 @@ namespace WarTornLands.PlayerClasses
             _level = level;
         }
 
-        public static Vector2 GetPosition(Vector2 start, Vector2 toGoal)
+        public static Vector2 GetPosition(Vector2 start, Vector2 toGoal, float radius)
         {
             float range = toGoal.Length();
             toGoal.Normalize();
@@ -25,23 +25,69 @@ namespace WarTornLands.PlayerClasses
                 return start;
             }
 
-            Vector2 curGoal = start + toGoal * range;
+            #region Standard method
 
-            while(!_level.IsPixelAccessible((curGoal)))
+            Vector2 curGoal = start + toGoal * (range + radius);
+
+            float standardRange = range;
+
+            if (_level.IsPixelAccessible((curGoal)))
             {
-                if (range > 1)
+                return curGoal - toGoal * radius;
+            }
+
+            while (!_level.IsPixelAccessible((curGoal)))
+            {
+                if (standardRange > 1)
                 {
-                    range -= 1;
+                    standardRange -= 1;
+                }
+                else
+                {
+                    break;
+                }
+
+                curGoal = start + toGoal * (standardRange + radius);
+
+                if (_level.IsPixelAccessible((curGoal)))
+                {
+                    return curGoal - toGoal * radius;
+                }
+            }
+
+            #endregion
+
+
+            #region "Slide" method
+
+            if (Math.Abs(toGoal.X) > Math.Abs(toGoal.Y))
+            {
+                toGoal = new Vector2(toGoal.X, 0);
+            }
+            else
+            {
+                toGoal = new Vector2(0, toGoal.Y);
+            }
+
+            curGoal = start + toGoal * (range + radius);
+
+            while (!_level.IsPixelAccessible((curGoal)))
+            {
+                if (standardRange > 1)
+                {
+                    standardRange -= 1;
                 }
                 else
                 {
                     return start;
                 }
 
-                curGoal = start + toGoal * range;
+                curGoal = start + toGoal * (standardRange + radius);
             }
 
-            return curGoal;
+            #endregion
+
+            return curGoal - toGoal * radius;
         }
 
     }
