@@ -19,6 +19,7 @@ namespace WarTornLands
         {
             _key = key;
         }
+
         public void SetActivator(Buttons button)
         {
             _button = button;

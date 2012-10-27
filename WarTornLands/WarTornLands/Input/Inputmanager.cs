@@ -17,6 +17,7 @@ namespace WarTornLands
 
         private Key _hit;
         private Key _jump;
+        private Key _speak;
         private Direction _move;
         private int _mode = 0;       // 0 = Keyboard, 1 = GamePad
         private List<InputKey> _inputList;
@@ -34,9 +35,13 @@ namespace WarTornLands
 
             _move = new Direction();
 
+            _speak = new Key();
+            _speak.SetActivator(Keys.T);
+
             _inputList.Add(_hit);
             _inputList.Add(_jump);
             _inputList.Add(_move);
+            _inputList.Add(_speak);
 
             foreach(InputKey ik in _inputList)
             {
@@ -64,6 +69,11 @@ namespace WarTornLands
         internal Vector2 Move
         {
             get { return _move.Value; }
+        }
+
+        internal bool Speak
+        {
+            get { return _speak.Value;}
         }
 
         public Type GetService()

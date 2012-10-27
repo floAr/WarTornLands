@@ -18,10 +18,15 @@ namespace WarTornLands
     public struct GameLevelData
     {
         public string _ebene_0_Grundtextur;
-        public string _ebene_1_untereObjekts;
         public string _ebene_2_obereObjekts;
         public string _unitsposition;   
         public string _ebenengroeße;
+    }
+
+    public struct GameDialogData
+    {
+        public string _einmaligegespraeche;
+        public string _standardtext;
     }
 
     class XML_Parser
@@ -30,7 +35,7 @@ namespace WarTornLands
 
         StorageDevice _storagedevice;
         string _filename;
-        
+        GameDialogData _dialog;
         Game _game;
 
         IAsyncResult _result;
@@ -53,6 +58,49 @@ namespace WarTornLands
             _filename = name;
         }
 
+        public bool LoadText()
+        {
+            Initialise();
+
+            _filename = "Dialog_" + _filename;
+
+            //Open a storage container
+            _result = _storagedevice.BeginOpenContainer("Dialog", null, null);
+
+            //Wait for the WaitHandle to become signaled
+            _result.AsyncWaitHandle.WaitOne();
+
+            StorageContainer container = _storagedevice.EndOpenContainer(_result);
+
+            //Close the wait handle.
+            _result.AsyncWaitHandle.Close();
+
+            _filename = _filename + ".sav";
+
+            //Check to see whether the save exists.
+            if (!container.FileExists(_filename))
+            {
+                //If not, dispose of the container an return.
+                container.Dispose();
+                return false;
+            }
+
+            //Open the file.
+            Stream stream = container.OpenFile(_filename, FileMode.Open);
+
+            XmlSerializer serializer = new XmlSerializer(typeof(GameDialogData));
+
+            _dialog = (GameDialogData)serializer.Deserialize(stream);
+
+            //Close the file.
+            stream.Close();
+
+            //Dispose the Container.
+            container.Dispose();
+
+            return true;
+        }
+
         public bool LoadLevel()
         {
             Initialise();
@@ -60,15 +108,15 @@ namespace WarTornLands
             _filename = "Level_" + _filename;
 
             //Open a storage container
-            IAsyncResult result = _storagedevice.BeginOpenContainer("Level", null, null);
+            _result = _storagedevice.BeginOpenContainer("Level", null, null);
 
             //Wait for the WaitHandle to become signaled
-            result.AsyncWaitHandle.WaitOne();
+            _result.AsyncWaitHandle.WaitOne();
 
-            StorageContainer container = _storagedevice.EndOpenContainer(result);
+            StorageContainer container = _storagedevice.EndOpenContainer(_result);
 
             //Close the wait handle.
-            result.AsyncWaitHandle.Close();
+            _result.AsyncWaitHandle.Close();
 
             _filename = _filename + ".sav";
 
@@ -100,7 +148,6 @@ namespace WarTornLands
         {
             string level = "0,0,0,0,1,1,0,0;0,0,0,0,0,0,0,0;0,0,0,0,0,0,0,0;0,0,0,0,0,0,0,0;0,0,0,0,0,0,0,0;0,0,0,0,0,0,0,0;0,0,0,0,0,0,0,0;0,0,0,0,0,0,0,0";
             _level._ebene_0_Grundtextur = level;
-            _level._ebene_1_untereObjekts = level;
             _level._ebene_2_obereObjekts = level;
             _level._ebenengroeße = "8,8;8,8;8,8";
             _level._unitsposition = "0,0;6,6";
@@ -152,6 +199,7 @@ namespace WarTornLands
             // Dispose the container, to commit changes.
             container.Dispose();
         }
+
         public Level GetLevel()
         {
             // Variablen
@@ -183,19 +231,6 @@ namespace WarTornLands
                 }
             }
 
-            // Ermittlung Ebene1
-            split = _level._ebene_1_untereObjekts.Split(';');
-            int[,] ebene1 = new int[levelgroeße[1, 0], levelgroeße[1, 1]];
-
-            for (int i = 0; i < levelgroeße[1, 0]; i++)
-            {
-                splitvektor = split[i].Split(',');
-                for (int j = 0; j < levelgroeße[1, 1]; j++)
-                {
-                    ebene1[i, j] = int.Parse(splitvektor[j]);
-                }
-            }
-
             // Ermittlung Ebene2
             split = _level._ebene_2_obereObjekts.Split(';');
             int[,] ebene2 = new int[levelgroeße[2, 0], levelgroeße[2, 1]];
@@ -214,21 +249,41 @@ namespace WarTornLands
             List<Entity> units = new List<Entity>();
             Entity unit;
 
+            Level level = new Level(_game);
+
             for (int i = 0; i < split.Length; i++)
             {
                 splitvektor = split[i].Split(',');
                 Vector2 vektor = new Vector2(int.Parse(splitvektor[0]), int.Parse(splitvektor[1]));
-                unit = new Entity(_game, vektor);
-                units.Add(unit);
+                unit = new Entity(_game, vektor, "tree");
+                level.AddDynamics(unit);
             }
 
-            Level level = new Level(_game);
-            level.AddLayer(0, ebene0);
-            level.AddLayer(1, ebene1);
-            level.AddLayer(2, ebene2);
-            level.AddDynamics(units);
+            /*level.AddLayer(0, ebene0);
+            level.AddLayer(2, ebene2);*/
+            level.AddFloor(ebene0);
+            level.AddCeiling(ebene2);
 
             return level;
+        }
+
+        public List<String> GetDialouge(bool modus)
+        {
+            List<String> dialogue = new List<string>();
+            if (modus)
+            {
+                String[] split = _dialog._einmaligegespraeche.Split(';');
+                for (int i = 0; i < split.Length; i++)
+                {
+                    dialogue.Add(split[i]);
+                }
+            }
+            else
+            {
+                dialogue.Add(_dialog._standardtext);
+            }
+
+            return dialogue;
         }
 
         public void Initialise()

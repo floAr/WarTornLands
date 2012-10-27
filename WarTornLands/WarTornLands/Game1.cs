@@ -20,6 +20,7 @@ namespace WarTornLands
         GraphicsDeviceManager _graphics;
         public SpriteBatch _spriteBatch;
         public Texture2D _tileSetTexture;
+        public Texture2D TreeTexture;
         //GameServiceContainer services;
         public InputManager _input;
         public Player _player;
@@ -30,40 +31,6 @@ namespace WarTornLands
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-            _input = new InputManager(this);
-
-            _player = new Player(this);
-            _parser = new XML_Parser(this);
-            _parser.SetFilename("0");
-            //_parser.SetLevel();
-            //_parser.SaveLevel();
-            try
-            {
-                _parser.LoadLevel();
-                _testLevel = _parser.GetLevel();
-            }catch(Exception e)
-            {
-                _testLevel = new Level(this);
-                int[,] layer0 = new int[,] {
-                            {1,1,1,1,1,1,1,1},
-                            {1,9,9,9,9,9,9,1},
-                            {1,9,9,9,9,9,9,1},
-                            {1,9,9,54,111,111,9,1},
-                            {1,9,9,9,111,111,9,1},
-                            {1,9,9,9,9,54,9,1},
-                            {1,9,9,9,9,9,9,1},
-                            {1,1,1,1,1,1,1,1}};
-            int[,] layer1 = {{0,0,0,0},{0,0,0,0},{0,0,0,87}};
-                layer0[1, 5] = 65;
-                _testLevel.AddLayer(0, layer0);
-                _testLevel.AddLayer(1, layer1);
-                _testLevel.AddLayer(2, new int[0, 0]);
-            }
-
-            PlayerClasses.CollisionDetector.Setup(_testLevel);
-
-            this.Components.Add(_input);
         }
 
         /// <summary>
@@ -86,10 +53,46 @@ namespace WarTornLands
         protected override void LoadContent()
         {
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _tileSetTexture = Content.Load<Texture2D>("dg_grounds32");
-            _player.LoadContent(Content);
+            TileSetTexture = Content.Load<Texture2D>("grass");
+            TreeTexture = Content.Load<Texture2D>("tree");
+
+            input = new InputManager(this);
+
+            _player = new Player(this);
+            _parser = new XML_Parser(this);
+            _parser.SetFilename("0");
+            //_parser.SetLevel();
+            //_parser.SaveLevel();
+            try
+            {
+                _parser.LoadLevel();
+                _testLevel = _parser.GetLevel();
+            }
+            catch (Exception e)
+            {
+                _testLevel = new Level(this);
+                int[,] layer0 = new int[,] {
+                            {1,1,1,1,1,1,1,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,9,9,54,111,111,9,1},
+                            {1,9,9,9,111,111,9,1},
+                            {1,9,9,9,9,54,9,1},
+                            {1,9,9,9,9,9,9,1},
+                            {1,1,1,1,1,1,1,1}};
+                int[,] layer1 = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 87 } };
+                layer0[1, 5] = 65;
+                testLevel.AddFloor(layer0);
+                testLevel.AddCeiling(new int[0, 0]);
+            }
+
+            PlayerClasses.CollisionDetector.Setup(_testLevel);
+
+            this.Components.Add(_input);
+
+            player.LoadContent(Content);
             
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
@@ -130,10 +133,10 @@ namespace WarTornLands
             // TODO: Fügen Sie Ihren Zeichnungscode hier hinzu
 
             // Kapseln in eigene Klasse, für Menüs etc.
-            _testLevel.Draw(gameTime, 0);
-            _player.Draw(gameTime);
-            _testLevel.Draw(gameTime, 1);
-            _testLevel.Draw(gameTime, 2);
+            testLevel.Draw(gameTime, 0);
+            player.Draw(gameTime);
+            testLevel.DrawEntities(gameTime);
+            testLevel.Draw(gameTime, 1);
 
             base.Draw(gameTime);
         }

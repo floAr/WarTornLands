@@ -7,7 +7,7 @@ namespace WarTornLands
 {
     static class Constants
     {
-        public const int TileSize = 32;
+        public static int TileSize = 64;
         
         // Player
         public const int Radius = 16;

@@ -8,7 +8,7 @@ using WarTornLands.Counter;
 
 namespace WarTornLands
 {
-    public class Entity
+    public class Entity : GameComponent
     {
         private Game _game;
         private Texture2D _texture;
@@ -20,6 +20,8 @@ namespace WarTornLands
         private bool _canspeak;
         private bool _canbeused;
         private bool _canbepickedup;
+
+        private int _health;
 
         /// <summary>
         /// Gibt den Objekttyp als Zahl zurück.
@@ -34,11 +36,13 @@ namespace WarTornLands
             return 0;
         }
 
-        public Entity(Game game, Vector2 position)
+        public Entity(Game game, Vector2 position, String texture) : base(game)
         {
             _game = game;
             this._position = position;
             this._offset = Vector2.Zero;
+            this._texture = (Game as Game1).TreeTexture;
+            this._health = 10;
         }
 
         public void Initialize()
@@ -48,7 +52,16 @@ namespace WarTornLands
 
         public void Draw(GameTime gameTime)
         {
-            ((SpriteBatch)_game.Services.GetService(typeof(SpriteBatch))).Draw(_texture, _position * Constants.TileSize + _offset, Color.White);
+            Vector2 center = (Game as Game1).player.GetPosition();
+            int width = (int)Math.Floor((double)(Game as Game1).TileSetTexture.Width / Constants.TileSize);
+            Vector2 size = GetSize();
+            (Game as Game1).spriteBatch.Begin();
+            (Game as Game1).spriteBatch.Draw(
+                        _texture,
+                        new Rectangle((int)(_position.X - center.X + (int)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f)),
+                            (int)(_position.Y - (int)center.Y + (int)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f)),
+                            (int)size.X, (int)size.Y), Color.White);
+            (Game as Game1).spriteBatch.End();
         }
 
         public void Update(GameTime gameTime)
@@ -76,11 +89,47 @@ namespace WarTornLands
             }
         }
 
+        public Vector2 GetPosition()
+        {
+            return _position;
+        }
 
-        #region Subscribed events
+        public Vector2 GetSize()
+        {
+            if (_texture == null)
+            {
+                return new Vector2(0, 0);
+            } else {
+                return new Vector2(_texture.Width, _texture.Height);
+            }
+        }
 
+        public void LoadTexture(String filename)
+        {
+            // TODO
+        }
 
+        public int OnDamage(int damage)
+        {
+            if (this._canbeattacked)
+            {
+                this._health -= Math.Min(damage, _health);
+                return Math.Min(damage, _health);
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
-        #endregion
+        public int GetHealth()
+        {
+            return _health;
+        }
+
+        public void OnDie()
+        {
+            // Fucking explode!!!!
+        }
     }
 }
