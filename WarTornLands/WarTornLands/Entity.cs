@@ -19,6 +19,8 @@ namespace WarTornLands
         private bool _canbeused;
         private bool _canbepickedup;
 
+        private int _health;
+
         /// <summary>
         /// Gibt den Objekttyp als Zahl zurück.
         /// </summary>
@@ -37,6 +39,7 @@ namespace WarTornLands
             this._position = position;
             this._offset = Vector2.Zero;
             this._texture = (Game as Game1).TreeTexture;
+            this._health = 10;
         }
 
         public override void Initialize()
@@ -102,6 +105,29 @@ namespace WarTornLands
         public void LoadTexture(String filename)
         {
             // TODO
+        }
+
+        public int OnDamage(int damage)
+        {
+            if (this._canbeattacked)
+            {
+                this._health -= Math.Min(damage, _health);
+                return Math.Min(damage, _health);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public int GetHealth()
+        {
+            return _health;
+        }
+
+        public void OnDie()
+        {
+            // Fucking explode!!!!
         }
     }
 }

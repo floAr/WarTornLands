@@ -62,6 +62,19 @@ namespace WarTornLands
             (Game as Game1).spriteBatch.End();
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            foreach (Entity ent in dynamics)
+            {
+                if (ent.GetHealth() == 0)
+                {
+                    ent.OnDie();
+                    dynamics.Remove(ent);
+                    GC.Collect();
+                }
+            }
+        }
+
         public void DrawEntities(GameTime gameTime)
         {
             // Draw entities
