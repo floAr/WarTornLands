@@ -166,14 +166,13 @@ namespace WarTornLands
                 units.Add(unit);
             }
 
-            //Level level = new Level();
-            //level.AddLayer(0, ebene0);
-            //level.AddLayer(1, ebene1);
-            //level.AddLayer(2, ebene2);
-            //level.AddDynamics(units);
+            Level level = new Level(_game);
+            level.AddLayer(0, ebene0);
+            level.AddLayer(1, ebene1);
+            level.AddLayer(2, ebene2);
+            level.AddDynamics(units);
 
-            //return level;
-            return null;
+            return level;
         }
 
         public void Initialise()
