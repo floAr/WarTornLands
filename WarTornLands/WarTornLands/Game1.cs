@@ -63,6 +63,7 @@ namespace WarTornLands
 
             PlayerClasses.CollisionDetector.Setup(testLevel);
 
+            this.Components.Add(player);
             this.Components.Add(testLevel);
             this.Components.Add(input);
         }

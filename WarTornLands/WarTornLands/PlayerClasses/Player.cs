@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WarTornLands.PlayerClasses
 {
-    class Player : DrawableGameComponent
+    class Player : GameComponent
     {
         Vector2 _position = Vector2.Zero;
         float _radius = 1;
@@ -30,13 +30,11 @@ namespace WarTornLands.PlayerClasses
             _texture = cm.Load<Texture2D>("player");
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             (Game as Game1).spriteBatch.Begin();
             (Game as Game1).spriteBatch.Draw(_texture, _position - new Vector2(_texture.Height) * .5f, Color.White);
             (Game as Game1).spriteBatch.End();
-
- 	        base.Draw(gameTime);
         }
     }
 }
