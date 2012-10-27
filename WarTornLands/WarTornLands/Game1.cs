@@ -27,6 +27,7 @@ namespace WarTornLands
         public Player _player;
         XML_Parser _parser;
         public Level _testLevel; // TODO remove
+        DialogSystem _dialogSystem;
 
         public Game1()
         {
@@ -89,7 +90,7 @@ namespace WarTornLands
                 _testLevel.AddFloor(layer0);
                 _testLevel.AddCeiling(new int[0, 0]);
             }
-
+            _dialogSystem = new DialogSystem(this);
             PlayerClasses.CollisionDetector.Setup(_testLevel);
 
             this.Components.Add(_input);
@@ -121,6 +122,7 @@ namespace WarTornLands
 
             _player.Update(gameTime);
             _testLevel.Update(gameTime);
+           
 
             base.Update(gameTime);
         }
@@ -141,6 +143,11 @@ namespace WarTornLands
             _player.Draw(gameTime);
             _testLevel.Draw(gameTime, 1);
 
+            // Test für Textmenue
+            if (_dialogSystem.isdialogstarted())
+            {
+                _dialogSystem.DrawText();
+            }
             base.Draw(gameTime);
         }
     }

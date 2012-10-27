@@ -267,15 +267,16 @@ namespace WarTornLands
             return level;
         }
 
-        public List<String> GetDialouge(bool modus)
+        public List<String> GetDialouge(bool modus, int textstelle)
         {
             List<String> dialogue = new List<string>();
             if (modus)
             {
                 String[] split = _dialog._einmaligegespraeche.Split(';');
-                for (int i = 0; i < split.Length; i++)
+                String[] splittext = split[textstelle].Split(',');
+                for (int i = 0; i < splittext.Length; i++)
                 {
-                    dialogue.Add(split[i]);
+                    dialogue.Add(splittext[i]);
                 }
             }
             else
