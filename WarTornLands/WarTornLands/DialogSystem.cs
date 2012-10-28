@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using WarTornLands.EntityClasses;
 
 namespace WarTornLands
 {
@@ -43,29 +44,30 @@ namespace WarTornLands
                     _position = player.GetPosition();
                     if (player.GetRoundedAngle() == 0)
                     {
-                        _position.X -= 30;
+                        _position.X -= Constants.TalkDistance;
                     }
                     else
                     {
                         if (player.GetRoundedAngle() == 0.5 * Math.PI)
                         {
-                            _position.Y -= 30;
+                            _position.Y -= Constants.TalkDistance;
                         }
                         else
                         {
                             if (player.GetRoundedAngle() == Math.PI)
                             {
-                                _position.X += 30;
+                                _position.X += Constants.TalkDistance;
                             }
                             else
                             {
-                                if (player.GetRoundedAngle() == 0.5 * Math.PI)
+                                if (player.GetRoundedAngle() == 1.5 * Math.PI)
                                 {
-                                    _position.Y += 30;
+                                    _position.Y += Constants.TalkDistance;
                                 }
                             }
                         }
                     }
+
                     EntityClasses.Entity ent = level.GetEntityAt(_position);
                     if (ent == null)
                     {

@@ -16,5 +16,6 @@ namespace WarTornLands
         public const float WeaponRange = 50;
         public const float WeaponStartAngle = 1.3f;
         public const float WeaponGoalAngle = (float)(Math.PI * 2 - WeaponStartAngle);
+        public const float TalkDistance = 48.0f;
     }
 }
