@@ -77,7 +77,10 @@ namespace WarTornLands
                     {
                         try
                         {
-                            SpeakwithPerson(ent.GetName(), ent.GetPosition(), true, 0);
+                            if (ent.CanSpeak())
+                            {
+                                SpeakwithPerson(ent.GetName(), ent.GetPosition(), true, 0);
+                            }
                         }catch(Exception e)
                         {
 
