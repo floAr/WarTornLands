@@ -10,27 +10,35 @@ namespace WarTornLands
 {
     public class Level : GameComponent
     {
-        private int[][,] grid;
-        private List<Entity> dynamics = new List<Entity>();
+        private int[][,] _grid;
+        private List<Entity> _dynamics = new List<Entity>();
 
         public Level(Game game) : base(game)
         {
-            grid = new int[2][,];
+            _grid = new int[2][,];
         }
 
         public void AddFloor(int[,] layer)
         {
-            grid[0] = layer;
+            _grid[0] = layer;
         }
 
         public void AddCeiling(int[,] layer)
         {
-            grid[1] = layer;
+            _grid[1] = layer;
         }
 
         public void AddDynamics(Entity obj)
         {
-            dynamics.Add(obj);
+            _dynamics.Add(obj);
+        }
+
+        public void LoadContent()
+        {
+            foreach (Entity e in _dynamics)
+            {
+                e.LoadContent((Game as Game1).Content);
+            }
         }
 
         public override void Initialize()
@@ -41,38 +49,44 @@ namespace WarTornLands
         public void Draw(GameTime gameTime, int layer)
         {
             Vector2 center = (Game as Game1)._player.GetPosition();
-
+            Game1 game = (this.Game as Game1);
             // Layer evtl. in Klasse (DrawableGameComponent) kapseln
 
-            (Game as Game1)._spriteBatch.Begin();
-            for (int y=0; y<grid[layer].GetLength(1); ++y)
+   
+
+            for (int y=0; y<_grid[layer].GetLength(1); ++y)
             {
-                for (int x = 0; x < grid[layer].GetLength(0); ++x)
+                for (int x = 0; x < _grid[layer].GetLength(0); ++x)
                 {
-                    int width = (int)Math.Floor((double)(Game as Game1)._tileSetTexture.Width / Constants.TileSize);
-                    (Game as Game1)._spriteBatch.Draw(
-                        (Game as Game1)._tileSetTexture,
-                        new Rectangle(x * Constants.TileSize - (int)center.X + (int)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f),
-                            y * Constants.TileSize - (int)center.Y + (int)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f),
+                    int width = (int)Math.Floor((double)game._tileSetTexture.Width / Constants.TileSize);
+
+                    game._spriteBatch.Draw(
+                        game._tileSetTexture,
+                        new Rectangle(x * Constants.TileSize - (int)center.X + (int)Math.Round(game.Window.ClientBounds.Width / 2.0f),
+                            y * Constants.TileSize - (int)center.Y + (int)Math.Round(game.Window.ClientBounds.Height / 2.0f),
                             Constants.TileSize, Constants.TileSize),
-                        new Rectangle((grid[layer][x, y] % width) * Constants.TileSize, (grid[layer][x, y] / width) * Constants.TileSize, Constants.TileSize, Constants.TileSize),
+                        new Rectangle((_grid[layer][x, y] % width) * Constants.TileSize, 
+                        (_grid[layer][x, y] / width) * Constants.TileSize, 
+                        Constants.TileSize, 
+                        Constants.TileSize),
                         Color.White);
                 }
             }
 
-            (Game as Game1)._spriteBatch.End();
+
         }
 
         public override void Update(GameTime gameTime)
         {
             try
             {
-                foreach (Entity ent in dynamics)
+                foreach (Entity ent in _dynamics)
                 {
+                    ent.Update(gameTime);
                     if (ent.GetHealth() == 0)
                     {
                         ent.OnDie();
-                        dynamics.Remove(ent);
+                        _dynamics.Remove(ent);
                         GC.Collect();
                     }
                 }
@@ -83,7 +97,7 @@ namespace WarTornLands
         public void DrawEntities(GameTime gameTime)
         {
             // Draw entities
-            foreach (Entity ent in dynamics)
+            foreach (Entity ent in _dynamics)
             {
                 ent.Draw(gameTime);
             }
@@ -100,7 +114,7 @@ namespace WarTornLands
 
         public Entity GetEntityAt(Vector2 pixel)
         {
-            foreach (Entity ent in dynamics)
+            foreach (Entity ent in _dynamics)
             {
                 Vector2 pos = ent.GetPosition();
                 Vector2 size = ent.GetSize();

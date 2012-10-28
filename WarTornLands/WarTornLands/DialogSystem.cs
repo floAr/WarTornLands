@@ -12,7 +12,7 @@ namespace WarTornLands
     {
         #region Variable
         XML_Parser _parser;
-        Game1 _game;
+        Game1 Game;
         List<String> _dialog;
         bool _dialogstarted;
         SpriteFont _font;
@@ -28,10 +28,10 @@ namespace WarTornLands
 
         public DialogSystem(Game1 game) : base(game)
         {
-            this._game = game;
+            this.Game = game;
             this._parser = new XML_Parser(game);
             this._dialogstarted = false;
-            this._font = _game.Content.Load<SpriteFont>("Test");
+            this._font = Game.Content.Load<SpriteFont>("Test");
             this._dialogbox = _game.Content.Load<Texture2D>("dialogbox");
         }
 
@@ -44,25 +44,25 @@ namespace WarTornLands
                     _position = player.GetPosition();
                     if (player.GetRoundedAngle() == 0)
                     {
-                        _position.X -= Constants.TalkDistance;
+                        _position.X -= Constants.Player_TalkDistance;
                     }
                     else
                     {
                         if (player.GetRoundedAngle() == 0.5 * Math.PI)
                         {
-                            _position.Y -= Constants.TalkDistance;
+                            _position.Y -= Constants.Player_TalkDistance;
                         }
                         else
                         {
                             if (player.GetRoundedAngle() == Math.PI)
                             {
-                                _position.X += Constants.TalkDistance;
+                                _position.X += Constants.Player_TalkDistance;
                             }
                             else
                             {
                                 if (player.GetRoundedAngle() == 1.5 * Math.PI)
                                 {
-                                    _position.Y += Constants.TalkDistance;
+                                    _position.Y += Constants.Player_TalkDistance;
                                 }
                             }
                         }

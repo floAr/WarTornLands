@@ -15,7 +15,7 @@ namespace WarTornLands.EntityClasses
         public EntityJumpPoint(Game game, Vector2 position, Texture2D texture, Level destinationLevel, Vector2 destinationPos)
             : base(game, position, texture)
         {
-            _canbepickedup = true;
+            _canbepickedup = false;
 
             _destinationLevel = destinationLevel;
             _destinationPos = destinationPos;

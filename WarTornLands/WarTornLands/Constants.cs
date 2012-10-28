@@ -10,12 +10,20 @@ namespace WarTornLands
         public static int TileSize = 64;
         
         // Player
-        public const int Radius = 32;
-        public const float Speed = .125f;
-        public const int HitDuration = 400;
-        public const float WeaponRange = 50;
-        public const float WeaponStartAngle = 1.3f;
-        public const float WeaponGoalAngle = (float)(Math.PI * 2 - WeaponStartAngle);
-        public const float TalkDistance = 48.0f;
+        public const int Player_Radius = 32;
+        public const float Player_Speed = .125f;
+        public const int Player_HitDuration = 400;
+        public const float Player_WeaponRange = 50;
+        public const float Player_WeaponStartAngle = 1.3f;
+        public const float Player_WeaponGoalAngle = (float)(Math.PI * 2 - Player_WeaponStartAngle);
+        public const float Player_TalkDistance = 48.0f;
+
+
+        // GruselUte
+        public const float GruselUte_SightRange = 300;
+        public const float GruselUte_HitRange = 30;
+        public const float GruselUte_Speed = .05f;
+        public const int GruselUte_Health = 100;
+        public const int GruselUte_Radius = 16;
     }
 }

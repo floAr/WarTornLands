@@ -41,7 +41,18 @@ namespace WarTornLands.PlayerClasses
                 if (source != null)
                 {
                     Entity ent = _level.GetEntityAt(curGoal);
+                    if (ent.Equals(source))
+                    {
+                        return curGoal;
+                    }
+
                     ent.OnCollide(source);
+
+                    if (!start.Equals(source.GetPosition()))
+                    {
+                        return source.GetPosition();
+                    }
+
                     if (ent.CanBePickedUp())
                     {
                         return curGoal - toGoal * radius;
@@ -71,7 +82,14 @@ namespace WarTornLands.PlayerClasses
                     if (source != null)
                     {
                         Entity ent = _level.GetEntityAt(curGoal);
+                        
                         ent.OnCollide(source);
+
+                        if (!start.Equals(source.GetPosition()))
+                        {
+                            return source.GetPosition();
+                        }
+                        
                         if (ent.CanBePickedUp())
                         {
                             return curGoal - toGoal * radius;

@@ -106,6 +106,8 @@ namespace WarTornLands
 
             this.Components.Add(_input);
 
+            _currentLevel.LoadContent();
+
             _player.LoadContent(Content);
             
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
@@ -149,11 +151,15 @@ namespace WarTornLands
             // TODO: Fügen Sie Ihren Zeichnungscode hier hinzu
 
             // Kapseln in eigene Klasse, für Menüs etc.
+            _spriteBatch.Begin();
+
             _currentLevel.Draw(gameTime, 0);
             _currentLevel.DrawEntities(gameTime);
             _player.Draw(gameTime);
             _currentLevel.Draw(gameTime, 1);
             _interface.Draw(gameTime);
+
+            _spriteBatch.End();
 
             // Test für Textmenue
             _dialogSystem.DrawText();
