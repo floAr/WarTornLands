@@ -146,7 +146,7 @@ namespace WarTornLands.EntityClasses
             return new Vector2(9001);   // Over 9k defines that the entity is not hitting atm
         }
 
-        protected double GetRoundedAngle()
+        public double GetRoundedAngle()
         {
             switch (_animFacing)
             {

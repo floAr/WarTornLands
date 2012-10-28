@@ -159,10 +159,9 @@ namespace WarTornLands
             _currentLevel.Draw(gameTime, 1);
             _interface.Draw(gameTime);
 
-            _spriteBatch.End();
-
             // Test für Textmenue
             _dialogSystem.DrawText();
+            _spriteBatch.End();
             
             base.Draw(gameTime);
         }
