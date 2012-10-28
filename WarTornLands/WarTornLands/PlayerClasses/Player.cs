@@ -212,9 +212,8 @@ namespace WarTornLands.PlayerClasses
             Vector2 drawPos = new Vector2((float)Math.Round((_game as Game1).Window.ClientBounds.Width / 2.0 - _texture.Width * 0.5f),
                                           (float)Math.Round((_game as Game1).Window.ClientBounds.Height / 2.0 - _texture.Height * 0.5f));
 
-            // TODO verdammt weird... drawPos.X - 16 passt am besten, aber waaaarum? :D
-            sb.Draw(_animTexture,
-                new Rectangle((int)drawPos.X - 16, (int)drawPos.Y - 64, 64, 128),
+            // TODO Kollision passt nicht so richtig
+            sb.Draw(_animTexture, new Rectangle((int)drawPos.X - 32, (int)drawPos.Y - 64, 64, 128),
                 new Rectangle((int)(_animSource.X + _frame) * 64, (int)_animSource.Y * 128, 64, 128), Color.White);
 
 

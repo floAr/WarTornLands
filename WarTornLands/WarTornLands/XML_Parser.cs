@@ -255,7 +255,15 @@ namespace WarTornLands
             {
                 splitvektor = split[i].Split(',');
                 Vector2 vektor = new Vector2(int.Parse(splitvektor[0]), int.Parse(splitvektor[1]));
-                unit = new Entity(_game, vektor, (_game as Game1)._gruselUteTexture);
+                if (i == 0)
+                {
+                    unit = new EntityGruselUte(_game, vektor, (_game as Game1)._gruselUteTexture);
+                }
+                else
+                {
+                    // TODO anderes entity ;)
+                    unit = new EntityTree(_game, vektor, (_game as Game1)._treeTexture);
+                }
                 level.AddDynamics(unit);
             }
 

@@ -10,18 +10,18 @@ namespace WarTornLands
 {
     public class Entity : GameComponent
     {
-        private Game _game;
-        private Texture2D _texture;
-        private Vector2 _position;
-        private Vector2 _offset;
+        protected Game _game;
+        protected Texture2D _texture;
+        protected Vector2 _position;
+        protected Vector2 _offset;
 
         // Bool Werte für Entity Eigenschaften
-        private bool _canbeattacked;
-        private bool _canspeak;
-        private bool _canbeused;
-        private bool _canbepickedup;
+        protected bool _canbeattacked;
+        protected bool _canspeak;
+        protected bool _canbeused;
+        protected bool _canbepickedup;
 
-        private int _health;
+        protected int _health;
 
         /// <summary>
         /// Gibt den Objekttyp als Zahl zurück.
@@ -43,10 +43,7 @@ namespace WarTornLands
             this._position = position;
             this._offset = Vector2.Zero;
             this._texture = texture;
-            this._health = 100;
-
-            //_canbepickedup = true;
-            _canbeattacked = true;
+            this._health = 1;
         }
 
         public bool CanBePickedUp()
@@ -109,15 +106,11 @@ namespace WarTornLands
             }
         }
 
-        public void LoadTexture(String filename)
-        {
-            // TODO
-        }
-
         public int Damage(int damage)
         {
             if (this._canbeattacked)
             {
+                // TODO evtl Rüstungen abziehen
                 this._health -= Math.Min(damage, _health);
                 return Math.Min(damage, _health);
             }
@@ -132,7 +125,7 @@ namespace WarTornLands
             return _health;
         }
 
-        public void OnDie()
+        public virtual void OnDie()
         {
             // Fucking explode!!!!
         }
