@@ -32,7 +32,7 @@ namespace WarTornLands
             this._parser = new XML_Parser(game);
             this._dialogstarted = false;
             this._font = Game.Content.Load<SpriteFont>("Test");
-            this._dialogbox = _game.Content.Load<Texture2D>("dialogbox");
+            this._dialogbox = Game.Content.Load<Texture2D>("dialogbox");
         }
 
         public void TestDialog(bool ButtonStatus, PlayerClasses.Player player, Level level)
@@ -119,8 +119,8 @@ namespace WarTornLands
             {
                 //show dialog at 0.
                 (Game as Game1)._spriteBatch.Begin();
-                _game._spriteBatch.Draw(_dialogbox, new Rectangle((int)_position.X, (int)_position.Y, _textbreite * 12, 100), Color.White);
-                _game._spriteBatch.DrawString(_font, _dialog.First(), _position + new Vector2(5, 5), Color.White);
+                Game._spriteBatch.Draw(_dialogbox, new Rectangle((int)_position.X, (int)_position.Y, _textbreite * 12, 100), Color.White);
+                Game._spriteBatch.DrawString(_font, _dialog.First(), _position + new Vector2(5, 5), Color.White);
                 (Game as Game1)._spriteBatch.End();
             }
         }

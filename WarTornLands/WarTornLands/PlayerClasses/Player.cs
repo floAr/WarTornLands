@@ -14,6 +14,7 @@ namespace WarTornLands.PlayerClasses
     {
         //64*128
         float _speed = Constants.Player_Speed;
+        Vector2 _size;
         Vector2 _direction;
 
         string _animCounter = "anim_counter";
@@ -148,15 +149,15 @@ namespace WarTornLands.PlayerClasses
 
         public override void LoadContent(ContentManager cm)
         {
-            _texture = cm.Load<Texture2D>("player");
+            _size = new Vector2(64, 128);
             _weaponTex = cm.Load<Texture2D>("weapontest");
             _animTexture = cm.Load<Texture2D>("character_64x128");
         }
 
         public override Vector2 GetDrawPosition()
         {
-            return new Vector2((float)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0 - _texture.Width * 0.5f),
-                                          (float)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0 - _texture.Height * 0.5f));
+            return new Vector2((float)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0 - _size.X * 0.5f),
+                                          (float)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0 - _size.Y * 0.5f));
         }
 
         public override void Draw(GameTime gameTime)
