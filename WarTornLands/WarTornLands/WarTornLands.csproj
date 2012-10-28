@@ -80,6 +80,7 @@
     <Compile Include="EntityClasses\Entity.cs" />
     <Compile Include="EntityClasses\EntityGruselUte.cs" />
     <Compile Include="EntityClasses\EntityJumpPoint.cs" />
+    <Compile Include="EntityClasses\EntityPotion.cs" />
     <Compile Include="EntityClasses\EntityTree.cs" />
     <Compile Include="Input\Direction.cs" />
     <Compile Include="Input\InputKey.cs" />

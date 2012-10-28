@@ -17,6 +17,8 @@ namespace WarTornLands.PlayerClasses
         Vector2 _size;
         Vector2 _direction;
 
+        int _potionCount = 0;
+
         string _animCounter = "anim_counter";
 
         public Player(Game game)
@@ -194,5 +196,26 @@ namespace WarTornLands.PlayerClasses
         }
 
         #endregion
+
+        public int GetItemCount()
+        {
+            // TODO durch vernünftiges inventar ersetzen XD
+            return _potionCount;
+        }
+
+        public void GivePotion()
+        {
+            // TODO durch vernünftiges inventar ersetzen XD
+            _potionCount++;
+        }
+
+        public void UsePotion()
+        {
+            // TODO durch vernünftiges inventar ersetzen XD
+            if (_potionCount > 0)
+            {
+                _health += 3 + new System.Random().Next(8);
+            }
+        }
     }
 }

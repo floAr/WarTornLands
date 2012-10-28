@@ -24,6 +24,7 @@ namespace WarTornLands
         public Texture2D _deadTreeTexture;
         public Texture2D _gruselUteTexture;
         public Texture2D _blackHoleTexture;
+        public Texture2D _potionTexture;
         //GameServiceContainer services;
         public InputManager _input;
         public Player _player;
@@ -67,6 +68,7 @@ namespace WarTornLands
             _deadTreeTexture = Content.Load<Texture2D>("deadtree");
             _gruselUteTexture = Content.Load<Texture2D>("gruselute");
             _blackHoleTexture = Content.Load<Texture2D>("blackhole");
+            _potionTexture = Content.Load<Texture2D>("potion");
 
             _input = new InputManager(this);
             _interface = new Interface(this);
