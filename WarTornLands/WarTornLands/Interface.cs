@@ -37,6 +37,20 @@ namespace WarTornLands
             // Display game over
             if ((Game as Game1)._player.GetHealth() == 0)
             {
+                // Viel schwarzer Text für Rand
+                (Game as Game1)._spriteBatch.DrawString(_font, "GAME OVER", new Vector2(Game.Window.ClientBounds.Width / 2 -
+                _font.MeasureString("GAME OVER").X / 2 + -1, Game.Window.ClientBounds.Height / 2 -
+                _font.MeasureString("GAME OVER").Y / 2 + -1), Color.Black);
+                (Game as Game1)._spriteBatch.DrawString(_font, "GAME OVER", new Vector2(Game.Window.ClientBounds.Width / 2 -
+                _font.MeasureString("GAME OVER").X / 2 + -1, Game.Window.ClientBounds.Height / 2 -
+                _font.MeasureString("GAME OVER").Y / 2 + 1), Color.Black);
+                (Game as Game1)._spriteBatch.DrawString(_font, "GAME OVER", new Vector2(Game.Window.ClientBounds.Width / 2 -
+                _font.MeasureString("GAME OVER").X / 2 + 1, Game.Window.ClientBounds.Height / 2 -
+                _font.MeasureString("GAME OVER").Y / 2 + -1), Color.Black);
+                (Game as Game1)._spriteBatch.DrawString(_font, "GAME OVER", new Vector2(Game.Window.ClientBounds.Width / 2 -
+                _font.MeasureString("GAME OVER").X / 2 + 1, Game.Window.ClientBounds.Height / 2 -
+                _font.MeasureString("GAME OVER").Y / 2 + 1), Color.Black);
+                // Weißer Text oben drauf
                 (Game as Game1)._spriteBatch.DrawString(_font, "GAME OVER", new Vector2(Game.Window.ClientBounds.Width/2 -
                 _font.MeasureString("GAME OVER").X / 2, Game.Window.ClientBounds.Height / 2 -
                 _font.MeasureString("GAME OVER").Y / 2), Color.White);

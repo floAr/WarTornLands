@@ -38,7 +38,7 @@ namespace WarTornLands.PlayerClasses
             _cm.StartCounter(_animCounter,false);
 
             _health = 500;
-            _canbeattacked = true;
+            _canBeAttacked = true;
         }
 
         public new Vector2 GetSize()

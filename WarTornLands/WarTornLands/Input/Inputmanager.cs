@@ -82,6 +82,7 @@ namespace WarTornLands
         {
             get { return _potion; }
         }
+
         internal Key Interact
         {
             get { return _interact; }
@@ -92,10 +93,6 @@ namespace WarTornLands
             get { return _move; }
         }
 
-        internal bool Interact
-        {
-            get { return _interact.Value;}
-        }
 
         public Type GetService()
         {

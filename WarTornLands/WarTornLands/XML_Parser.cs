@@ -323,7 +323,7 @@ namespace WarTornLands
                         break;                        
                     case 4:
                         // Truhe http://mariowiki.net/w/images/8/89/WL4_Sprite_Schatztruhe.png
-                        unit = new EntityCest(_game, vektor, (_game as Game1)._cestTexture);
+                        unit = new EntityChest(_game, vektor, (_game as Game1)._cestTexture);
                         break;
                     default:
                         unit = new EntityPotion(_game, vektor, (_game as Game1)._potionTexture);
