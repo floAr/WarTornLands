@@ -167,8 +167,7 @@ namespace WarTornLands.PlayerClasses
 
             Vector2 drawPos = GetDrawPosition();
 
-            // TODO Kollision passt nicht so richtig
-            sb.Draw(_animTexture, new Rectangle((int)drawPos.X - 32, (int)drawPos.Y - 64, 64, 128),
+            sb.Draw(_animTexture, new Rectangle((int)drawPos.X, (int)drawPos.Y, 64, 128),
                 new Rectangle((int)(_animSource.X + _frame) * 64, (int)_animSource.Y * 128, 64, 128), Color.White);
 
 

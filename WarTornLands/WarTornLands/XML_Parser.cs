@@ -61,7 +61,7 @@ namespace WarTornLands
 
         public void SaveText()
         {
-            _dialog._einmaligegespraeche = "Ich bin ein Zwerg.,Du nicht!;Tötet die Zwerge,Wir sind Zwerge";
+            _dialog._einmaligegespraeche = "Ich bin ein Zwerg.,Du nicht!;Toetet die Zwerge,Wir sind Zwerge";
             _dialog._standardtext = "Eine Axt im Haus erspart den Zimmerman!";
 
             Initialize();
@@ -313,6 +313,9 @@ namespace WarTornLands
                         break;
                     case 1:
                         unit = new EntityTree(_game, vektor, (_game as Game1)._treeTexture);
+                        break;
+                    case 2:
+                        unit = new Entity(_game, vektor, (_game as Game1)._treeTexture, "Horst");
                         break;
                     default:
                         unit = new EntityJumpPoint(_game, vektor, (_game as Game1)._blackHoleTexture,

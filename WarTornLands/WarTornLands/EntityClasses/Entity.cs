@@ -47,6 +47,8 @@ namespace WarTornLands.EntityClasses
 
         protected int _health;
 
+        string _name;
+
         protected Texture2D _weaponTex;
         protected CounterManager _cm;
         protected float _weaponRange;
@@ -65,12 +67,17 @@ namespace WarTornLands.EntityClasses
             return 0;
         }
 
-        public Entity(Game game, Vector2 position, Texture2D texture)
+        public Entity(Game game, Vector2 position, Texture2D texture, String name="Entity")
             : base(game)
         {
             this._position = position;
             this._texture = texture;
             this._health = 1;
+            this._name = name;
+        }
+        public String GetName()
+        {
+            return _name;
         }
 
         public bool CanBePickedUp()
