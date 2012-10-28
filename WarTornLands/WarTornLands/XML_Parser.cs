@@ -58,6 +58,56 @@ namespace WarTornLands
             _filename = name;
         }
 
+        public void SaveText()
+        {
+            _dialog._einmaligegespraeche = "Ich bin ein Zwerg.,Du nicht!;Tötet die Zwerge,Wir sind Zwerge";
+            _dialog._standardtext = "Eine Axt im Haus erspart den Zimmerman!";
+
+            Initialise();
+
+            String typ = "Dialog";
+
+            //Open a storage container
+
+            _result = _storagedevice.BeginOpenContainer(typ, null, null); // hier lässt sich der Pfad setzen
+
+
+            typ = typ + "_";
+
+            //Wait for the WaitHandle to become signaled
+            _result.AsyncWaitHandle.WaitOne();
+
+            StorageContainer container = _storagedevice.EndOpenContainer(_result);
+
+            //Close the wait handle.
+            _result.AsyncWaitHandle.Close();
+
+            //Check to see whether the save exists
+
+            if (container.FileExists(typ + _filename + ".sav"))
+            {
+                //Delete it so that we can create one fresh.
+                container.DeleteFile(typ + _filename + ".sav");
+            }
+
+            // Create the file
+
+            Stream stream = container.CreateFile(typ + _filename + ".sav");
+
+            // Convert the object to XML data and put it in the stream.
+            XmlSerializer serializer;
+
+            serializer = new XmlSerializer(typeof(GameDialogData));
+            serializer.Serialize(stream, _dialog);
+
+
+            // Close the file.
+            stream.Close();
+
+            // Dispose the container, to commit changes.
+            container.Dispose();
+        }
+
         public bool LoadText()
         {
             Initialise();
