@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using WarTornLands.EntityClasses;
 
 namespace WarTornLands
 {
@@ -29,8 +30,8 @@ namespace WarTornLands
         {
             this._parser = new XML_Parser(game);
             this._dialogstarted = false;
-            this._font = game.Content.Load<SpriteFont>("Test");
-            this._dialogbox = game.Content.Load<Texture2D>("dialogbox");
+            this._font = Game.Content.Load<SpriteFont>("Test");
+            this._dialogbox = Game.Content.Load<Texture2D>("dialogbox");
         }
 
         public void TestDialog(bool ButtonStatus, PlayerClasses.Player player, Level level)
@@ -42,29 +43,30 @@ namespace WarTornLands
                     _position = player.GetPosition();
                     if (player.GetRoundedAngle() == 0)
                     {
-                        _position.X -= 30;
+                        _position.X -= Constants.Player_TalkDistance;
                     }
                     else
                     {
                         if (player.GetRoundedAngle() == 0.5 * Math.PI)
                         {
-                            _position.Y -= 30;
+                            _position.Y -= Constants.Player_TalkDistance;
                         }
                         else
                         {
                             if (player.GetRoundedAngle() == Math.PI)
                             {
-                                _position.X += 30;
+                                _position.X += Constants.Player_TalkDistance;
                             }
                             else
                             {
-                                if (player.GetRoundedAngle() == 0.5 * Math.PI)
+                                if (player.GetRoundedAngle() == 1.5 * Math.PI)
                                 {
-                                    _position.Y += 30;
+                                    _position.Y += Constants.Player_TalkDistance;
                                 }
                             }
                         }
                     }
+
                     EntityClasses.Entity ent = level.GetEntityAt(_position);
                     if (ent == null)
                     {

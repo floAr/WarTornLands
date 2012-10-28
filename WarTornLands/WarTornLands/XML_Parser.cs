@@ -317,9 +317,12 @@ namespace WarTornLands
                     case 2:
                         unit = new Entity(_game, vektor, (_game as Game1)._treeTexture, "Horst");
                         break;
-                    default:
+                    case 3:
                         unit = new EntityJumpPoint(_game, vektor, (_game as Game1)._blackHoleTexture,
                             level, new Vector2(500,500));
+                        break;
+                    default:
+                        unit = new EntityPotion(_game, vektor, (_game as Game1)._potionTexture);
                         break;
                 }
                 level.AddDynamics(unit);

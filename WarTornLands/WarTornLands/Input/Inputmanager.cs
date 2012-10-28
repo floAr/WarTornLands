@@ -18,6 +18,7 @@ namespace WarTornLands
         private Key _hit;
         private Key _jump;
         private Key _interact;
+        private Key _potion;
         private Direction _move;
         private int _mode = 0;       // 0 = Keyboard, 1 = GamePad
         private List<InputKey> _inputList;
@@ -38,10 +39,14 @@ namespace WarTornLands
             _interact = new Key();
             _interact.SetActivator(Keys.T);
 
+            _potion = new Key();
+            _potion.SetActivator(Keys.P);
+
             _inputList.Add(_hit);
             _inputList.Add(_jump);
             _inputList.Add(_move);
             _inputList.Add(_interact);
+            _inputList.Add(_potion);
 
             foreach(InputKey ik in _inputList)
             {

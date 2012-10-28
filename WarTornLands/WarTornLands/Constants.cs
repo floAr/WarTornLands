@@ -16,6 +16,7 @@ namespace WarTornLands
         public const float Player_WeaponRange = 50;
         public const float Player_WeaponStartAngle = 1.3f;
         public const float Player_WeaponGoalAngle = (float)(Math.PI * 2 - Player_WeaponStartAngle);
+        public const float Player_TalkDistance = 48.0f;
 
 
         // GruselUte
