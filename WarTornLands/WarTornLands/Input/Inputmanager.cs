@@ -23,6 +23,8 @@ namespace WarTornLands
         private int _mode = 0;       // 0 = Keyboard, 1 = GamePad
         private List<InputKey> _inputList;
 
+        KeyboardState _oldKeys = Keyboard.GetState();
+
         public InputManager(Game game)
             : base(game)
         {
@@ -59,21 +61,28 @@ namespace WarTornLands
         {
             foreach (InputKey ik in _inputList)
             {
-                ik.Update(gt);
+                ik.Update(gt, _oldKeys);
             }
+
+            _oldKeys = Keyboard.GetState();
         }
 
-        internal bool Hit
+        internal Key Hit
         {
-            get { return _hit.Value; }
+            get { return _hit; }
         }
-        internal bool Jump
+        internal Key Jump
         {
-            get { return _jump.Value; }
+            get { return _jump; }
         }
-        internal Vector2 Move
+        internal Key Potion
         {
-            get { return _move.Value; }
+            get { return _potion; }
+        }
+
+        internal Direction Move
+        {
+            get { return _move; }
         }
 
         internal bool Speak
