@@ -215,6 +215,7 @@ namespace WarTornLands.PlayerClasses
             if (_potionCount > 0)
             {
                 _health += 3 + new System.Random().Next(8);
+                _potionCount--;
             }
         }
     }
