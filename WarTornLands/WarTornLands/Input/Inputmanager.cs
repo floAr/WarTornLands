@@ -20,7 +20,9 @@ namespace WarTornLands
         private Key _interact;
         private Key _potion; 
 
+
         private Direction _move;
+
         private int _mode = 0;       // 0 = Keyboard, 1 = GamePad
         private List<InputKey> _inputList;
 
@@ -79,6 +81,10 @@ namespace WarTornLands
         internal Key Potion
         {
             get { return _potion; }
+        }
+        internal Key Interact
+        {
+            get { return _interact; }
         }
 
         internal Direction Move

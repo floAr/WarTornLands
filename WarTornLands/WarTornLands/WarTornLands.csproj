@@ -78,7 +78,7 @@
     <Compile Include="DialogSystem.cs" />
     <Compile Include="Dungeon.cs" />
     <Compile Include="EntityClasses\Entity.cs" />
-    <Compile Include="EntityClasses\EntityCest.cs" />
+    <Compile Include="EntityClasses\EntityChest.cs" />
     <Compile Include="EntityClasses\EntityGruselUte.cs" />
     <Compile Include="EntityClasses\EntityHorst.cs" />
     <Compile Include="EntityClasses\EntityJumpPoint.cs" />

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using WarTornLands.Counter;
 using Microsoft.Xna.Framework.Content;
+using WarTornLands.PlayerClasses;
 
 namespace WarTornLands.EntityClasses
 {
@@ -40,10 +41,10 @@ namespace WarTornLands.EntityClasses
         /////////////////////////////////////
 
         // Bool Werte für Entity Eigenschaften
-        protected bool _canbeattacked;
-        protected bool _canspeak;
-        protected bool _canbeused;
-        protected bool _canbepickedup;
+        protected bool _canBeAttacked;
+        protected bool _canSpeak;
+        protected bool _canBeUsed;
+        protected bool _canBePickedUp;
 
         protected int _health;
 
@@ -60,10 +61,10 @@ namespace WarTornLands.EntityClasses
         /// <returns>0 = keine Aktionmöglich, 1 = Angreifbar, 2 = Ansprechbar, 3 = Benutzbar(öffnen), 4 = Aufhebbar</returns>
         public int IdentifyObjektTyp()
         {
-            if (_canbeattacked) return 1;
-            if (_canspeak) return 2;
-            if (_canbeused) return 3;
-            if (_canbepickedup) return 4;
+            if (_canBeAttacked) return 1;
+            if (_canSpeak) return 2;
+            if (_canBeUsed) return 3;
+            if (_canBePickedUp) return 4;
             return 0;
         }
 
@@ -82,12 +83,17 @@ namespace WarTornLands.EntityClasses
 
         public bool CanBePickedUp()
         {
-            return _canbepickedup;
+            return _canBePickedUp;
         }
 
         public bool CanSpeak()
         {
-            return _canspeak;
+            return _canSpeak;
+        }
+
+        public bool CanBeUsed()
+        {
+            return _canBeUsed;
         }
 
         public virtual void LoadContent(ContentManager cm)
@@ -181,7 +187,7 @@ namespace WarTornLands.EntityClasses
 
         public int Damage(int damage)
         {
-            if (this._canbeattacked)
+            if (this._canBeAttacked)
             {
                 // TODO evtl Rüstungen abziehen
                 this._health -= Math.Min(damage, _health);
@@ -203,10 +209,13 @@ namespace WarTornLands.EntityClasses
             // Fucking explode!!!!
         }
 
+        public virtual void UseThis(Player player)
+        { }
+
         public virtual void OnCollide(Entity source)
         {
             // "einsammeln"
-            if (_canbepickedup)
+            if (_canBePickedUp)
             {
                 if (source == (Game as Game1)._player)
                 {
