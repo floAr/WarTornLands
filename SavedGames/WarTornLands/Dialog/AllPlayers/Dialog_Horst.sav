@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<GameDialogData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <_einmaligegespraeche>Ich bin ein Zwerg.,Du nicht!;Tötet die Zwerge,Wir sind Zwerge</_einmaligegespraeche>
+  <_standardtext>Eine Axt im Haus erspart den Zimmerman!</_standardtext>
+</GameDialogData>

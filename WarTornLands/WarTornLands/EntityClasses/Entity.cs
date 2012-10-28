@@ -77,6 +77,11 @@ namespace WarTornLands.EntityClasses
             return _position;
         }
 
+        public void SetPosition(Vector2 position)
+        {
+            _position = position;
+        }
+
         public Vector2 GetSize()
         {
             if (_texture == null)

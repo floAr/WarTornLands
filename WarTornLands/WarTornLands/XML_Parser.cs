@@ -37,7 +37,7 @@ namespace WarTornLands
         StorageDevice _storagedevice;
         string _filename;
         GameDialogData _dialog;
-        Game Game;
+        Game _game;
 
         IAsyncResult _result;
 
@@ -48,7 +48,7 @@ namespace WarTornLands
 
         public XML_Parser(Game game)
         {
-            this.Game = game;
+            this._game = game;
         }
         #endregion
 
@@ -57,6 +57,56 @@ namespace WarTornLands
         public void SetFilename(String name)
         {
             _filename = name;
+        }
+
+        public void SaveText()
+        {
+            _dialog._einmaligegespraeche = "Ich bin ein Zwerg.,Du nicht!;Tötet die Zwerge,Wir sind Zwerge";
+            _dialog._standardtext = "Eine Axt im Haus erspart den Zimmerman!";
+
+            Initialise();
+
+            String typ = "Dialog";
+
+            //Open a storage container
+
+            _result = _storagedevice.BeginOpenContainer(typ, null, null); // hier lässt sich der Pfad setzen
+
+
+            typ = typ + "_";
+
+            //Wait for the WaitHandle to become signaled
+            _result.AsyncWaitHandle.WaitOne();
+
+            StorageContainer container = _storagedevice.EndOpenContainer(_result);
+
+            //Close the wait handle.
+            _result.AsyncWaitHandle.Close();
+
+            //Check to see whether the save exists
+
+            if (container.FileExists(typ + _filename + ".sav"))
+            {
+                //Delete it so that we can create one fresh.
+                container.DeleteFile(typ + _filename + ".sav");
+            }
+
+            // Create the file
+
+            Stream stream = container.CreateFile(typ + _filename + ".sav");
+
+            // Convert the object to XML data and put it in the stream.
+            XmlSerializer serializer;
+
+            serializer = new XmlSerializer(typeof(GameDialogData));
+            serializer.Serialize(stream, _dialog);
+
+
+            // Close the file.
+            stream.Close();
+
+            // Dispose the container, to commit changes.
+            container.Dispose();
         }
 
         public bool LoadText()
@@ -250,7 +300,7 @@ namespace WarTornLands
             List<Entity> units = new List<Entity>();
             Entity unit;
 
-            Level level = new Level(Game);
+            Level level = new Level(_game);
 
             for (int i = 0; i < split.Length; i++)
             {
@@ -259,13 +309,14 @@ namespace WarTornLands
                 switch (i)
                 {
                     case 0:
-                        unit = new EntityGruselUte(Game, vektor, (Game as Game1)._gruselUteTexture);
+                        unit = new EntityGruselUte(_game, vektor, (_game as Game1)._gruselUteTexture);
                         break;
                     case 1:
-                        unit = new EntityTree(Game, vektor, (Game as Game1)._treeTexture);
+                        unit = new EntityTree(_game, vektor, (_game as Game1)._treeTexture);
                         break;
                     default:
-                        unit = new EntityJumpPoint(Game, vektor, (Game as Game1)._blackHoleTexture);
+                        unit = new EntityJumpPoint(_game, vektor, (_game as Game1)._blackHoleTexture,
+                            level, new Vector2(500,500));
                         break;
                 }
                 level.AddDynamics(unit);
