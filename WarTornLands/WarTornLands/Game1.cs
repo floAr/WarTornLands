@@ -65,7 +65,6 @@ namespace WarTornLands
             _gruselUteTexture = Content.Load<Texture2D>("gruselute");
             _blackHoleTexture = Content.Load<Texture2D>("blackhole");
 
-
             _input = new InputManager(this);
 
             _player = new Player(this);
@@ -102,6 +101,8 @@ namespace WarTornLands
             PlayerClasses.CollisionDetector.Setup(_currentLevel);
 
             this.Components.Add(_input);
+
+            _currentLevel.LoadContent();
 
             _player.LoadContent(Content);
             

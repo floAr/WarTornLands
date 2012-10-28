@@ -64,7 +64,7 @@ namespace WarTornLands
             _dialog._einmaligegespraeche = "Ich bin ein Zwerg.,Du nicht!;Tötet die Zwerge,Wir sind Zwerge";
             _dialog._standardtext = "Eine Axt im Haus erspart den Zimmerman!";
 
-            Initialise();
+            Initialize();
 
             String typ = "Dialog";
 
@@ -111,7 +111,7 @@ namespace WarTornLands
 
         public bool LoadText()
         {
-            Initialise();
+            Initialize();
 
             _filename = "Dialog_" + _filename;
 
@@ -154,7 +154,7 @@ namespace WarTornLands
 
         public bool LoadLevel()
         {
-            Initialise();
+            Initialize();
 
             _filename = "Level_" + _filename;
 
@@ -206,7 +206,7 @@ namespace WarTornLands
 
         public void SaveLevel()
         {
-            Initialise();
+            Initialize();
             
             String typ = "Level";
             
@@ -350,7 +350,7 @@ namespace WarTornLands
             return dialogue;
         }
 
-        public void Initialise()
+        public void Initialize()
         {            
             _result = StorageDevice.BeginShowSelector(null, null);
             _storagedevice = StorageDevice.EndShowSelector(_result);

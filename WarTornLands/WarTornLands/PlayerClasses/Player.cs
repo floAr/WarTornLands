@@ -10,52 +10,23 @@ using WarTornLands.EntityClasses;
 
 namespace WarTornLands.PlayerClasses
 {
-    enum Facing
-    {
-        LEFT,
-        UP,
-        RIGHT,
-        DOWN
-    }
-    enum AnimationType
-    {
-        MOVING,
-        STANDING
-    }
     public class Player : Entity
     {
         //64*128
-        Vector2 _weaponPos;
-        float _radius = Constants.Radius;
-        float _speed = Constants.Speed;
+        float _speed = Constants.Player_Speed;
         Vector2 _direction;
 
-        Texture2D _texture;
-        Texture2D _weaponTex;
-
-        //Animation////////////////////////7
-        Facing _animFacing;
-        AnimationType _animationType;
-        Texture2D _animTexture;
-        // Rectangle _animSource;
-        Vector2 _animSource;
-        Rectangle _animTarget;
-        int _frame;
-        /////////////////////////////////////
-        CounterManager _cm;
-        float _weaponRange = Constants.WeaponRange;
-
-
-        string _hitCounter = "hit_counter";
         string _animCounter = "anim_counter";
 
         public Player(Game game)
             : base(game, Vector2.Zero, null)
         {
+            _weaponRange = Constants.Player_WeaponRange;
             _cm = new CounterManager();
             _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
 
-            _cm.AddCounter(_hitCounter, Constants.HitDuration);
+            _cm.AddCounter(_hitCounter, Constants.Player_HitDuration);
+            _radius = Constants.Player_Radius;
 
             //FrameCounter
             _cm.AddCounter(_animCounter, 250);
@@ -65,19 +36,9 @@ namespace WarTornLands.PlayerClasses
         /// <summary>
         /// Gibt den aktuellen Blickwinkel des Spielers im Bogenmaß zurück, wobei Oben = 0.
         /// </summary>
-        private double GetRoundedAngle()
-        {
-            switch (_animFacing)
-            {
-                case Facing.LEFT:   return 0;
-                case Facing.UP:     return 0.5*Math.PI;
-                case Facing.RIGHT:  return Math.PI;
-                case Facing.DOWN:   return 1.5 * Math.PI;
-            }
-            return 0;
-        }
 
-        public void Update(GameTime gameTime)
+
+        public override void Update(GameTime gameTime)
         {
             _cm.StartCounter(_animCounter, false);
             InputManager input = (Game as Game1)._input;
@@ -86,7 +47,10 @@ namespace WarTornLands.PlayerClasses
             _position = CollisionDetector.GetPosition(_position,
                                                       input.Move * _speed * gameTime.ElapsedGameTime.Milliseconds,
                                                       _radius, this);
-            _direction =  _position-oldPos;
+
+            #region Animation
+
+            _direction =  _position - oldPos;
              
             if (_direction.Length() == 0)
             {
@@ -169,34 +133,30 @@ namespace WarTornLands.PlayerClasses
                 default:
                     break;
             }
+            
+            #endregion
+            
             // Attack! Attack!
             if (input.Hit)
             {
                 _cm.StartCounter(_hitCounter, false);
             }
 
-            if (_cm.GetPercentage(_hitCounter) > 0)
-            {
-                float baseAngle = Constants.WeaponStartAngle + (float)GetRoundedAngle();
-                float maxAddition = Constants.WeaponGoalAngle - Constants.WeaponStartAngle;
-                float finalAngle = _cm.GetPercentage(_hitCounter) * maxAddition + baseAngle;
-                _weaponPos = new Vector2(_weaponRange * (float)Math.Cos(finalAngle),
-                                                _weaponRange * (float)Math.Sin(finalAngle));
-            }
-
             _cm.Update(gameTime);
+            base.Update(gameTime);
         }
 
-        public void LoadContent(ContentManager cm)
+        public override void LoadContent(ContentManager cm)
         {
             _texture = cm.Load<Texture2D>("player");
             _weaponTex = cm.Load<Texture2D>("weapontest");
             _animTexture = cm.Load<Texture2D>("character_64x128");
         }
 
-        public Vector2 GetPosition()
+        public override Vector2 GetDrawPosition()
         {
-            return _position;
+            return new Vector2((float)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0 - _texture.Width * 0.5f),
+                                          (float)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0 - _texture.Height * 0.5f));
         }
 
         public override void Draw(GameTime gameTime)
@@ -205,32 +165,19 @@ namespace WarTornLands.PlayerClasses
 
             _tilepos = _tilepos;
 
-            Vector2 drawPos = new Vector2((float)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0 - _texture.Width * 0.5f),
-                                          (float)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0 - _texture.Height * 0.5f));
+            Vector2 drawPos = GetDrawPosition();
 
             // TODO Kollision passt nicht so richtig
             sb.Draw(_animTexture, new Rectangle((int)drawPos.X - 32, (int)drawPos.Y - 64, 64, 128),
                 new Rectangle((int)(_animSource.X + _frame) * 64, (int)_animSource.Y * 128, 64, 128), Color.White);
 
 
-            if (_cm.GetPercentage(_hitCounter) != 0)
+            Vector2 weaponPos = base.GetRelWeaponDrawPos();
+
+            if(weaponPos.LengthSquared() < 9001)
             {
-                float baseAngle = Constants.WeaponStartAngle + (float)GetRoundedAngle();
-                
-                float maxAddition = Constants.WeaponGoalAngle - Constants.WeaponStartAngle;
-                float finalAngle = _cm.GetPercentage(_hitCounter) * maxAddition + baseAngle;
-                _weaponPos = new Vector2(_weaponRange * (float)Math.Cos(finalAngle),
-                                                _weaponRange * (float)Math.Sin(finalAngle));
-
-                Entity victim = (Game as Game1)._currentLevel.GetEntityAt(_position + _weaponPos);
-                if (victim != null)
-                {
-                    victim.Damage(8);
-                }
-
-                _weaponPos += drawPos;
-
-                sb.Draw(_weaponTex, _weaponPos, null, Color.White, 0, Vector2.Zero, .1f, SpriteEffects.None, 0);
+                weaponPos += drawPos;
+                sb.Draw(_weaponTex, weaponPos, null, Color.White, 0, Vector2.Zero, .1f, SpriteEffects.None, 0);
             }
 
         }
