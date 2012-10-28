@@ -67,7 +67,7 @@ namespace WarTornLands
             _tileSetTexture = Content.Load<Texture2D>("grass");
             _treeTexture = Content.Load<Texture2D>("tree");
             _deadTreeTexture = Content.Load<Texture2D>("deadtree");
-            _gruselUteTexture = Content.Load<Texture2D>("gruselute");
+            _gruselUteTexture = Content.Load<Texture2D>("wildboar");
             _blackHoleTexture = Content.Load<Texture2D>("blackhole");
             _potionTexture = Content.Load<Texture2D>("potion");
             _cestTexture = Content.Load<Texture2D>("Schatztruhe");

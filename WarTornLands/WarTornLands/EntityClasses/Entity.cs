@@ -30,13 +30,16 @@ namespace WarTornLands.EntityClasses
         protected float _radius;
 
         //Animation////////////////////////7
+        protected bool _animated = false;
         protected Facing _animFacing;
         protected AnimationType _animationType;
+        protected Vector2 _frameSize;
         protected Texture2D _animTexture;
         // Rectangle _animSource;
         protected Vector2 _animSource;
         protected Rectangle _animTarget;
         protected int _frame;
+        protected String animCounter="anim_counter";
         /////////////////////////////////////
 
         // Bool Werte für Entity Eigenschaften
@@ -75,6 +78,7 @@ namespace WarTornLands.EntityClasses
             this._health = 1;
             this._name = name;
         }
+
         public String GetName()
         {
             return _name;
@@ -217,5 +221,7 @@ namespace WarTornLands.EntityClasses
                 }
             }
         }
+
+      
     }
 }
