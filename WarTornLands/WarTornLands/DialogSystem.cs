@@ -12,7 +12,6 @@ namespace WarTornLands
     {
         #region Variable
         XML_Parser _parser;
-        Game1 Game;
         List<String> _dialog;
         bool _dialogstarted;
         SpriteFont _font;
@@ -26,7 +25,7 @@ namespace WarTornLands
             return _dialogstarted;
         }
 
-        public DialogSystem(Game1 game) : base(game)
+        public DialogSystem(Game game) : base(game)
         {
             this._parser = new XML_Parser(game);
             this._dialogstarted = false;
