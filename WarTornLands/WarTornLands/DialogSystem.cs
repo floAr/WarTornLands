@@ -46,7 +46,9 @@ namespace WarTornLands
         public void DrawText()
         {
             //show dialog at 0.
+            (Game as Game1)._spriteBatch.Begin();
             (Game as Game1)._spriteBatch.DrawString(_font, _dialog.First(), new Vector2(5, 5), Color.Black);
+            (Game as Game1)._spriteBatch.End();
         }
 
         public void NextText()
