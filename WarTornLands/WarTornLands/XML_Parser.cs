@@ -265,7 +265,8 @@ namespace WarTornLands
                         unit = new EntityTree(_game, vektor, (_game as Game1)._treeTexture);
                         break;
                     default:
-                        unit = new EntityJumpPoint(_game, vektor, (_game as Game1)._blackHoleTexture);
+                        unit = new EntityJumpPoint(_game, vektor, (_game as Game1)._blackHoleTexture,
+                            level, new Vector2(500,500));
                         break;
                 }
                 level.AddDynamics(unit);
