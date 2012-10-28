@@ -30,6 +30,8 @@ namespace WarTornLands
         XML_Parser _parser;
         public Level _currentLevel;
         DialogSystem _dialogSystem;
+        Interface _interface;
+
         KeyboardState prevkey;
         KeyboardState key;
         public Game1()
@@ -66,8 +68,8 @@ namespace WarTornLands
             _gruselUteTexture = Content.Load<Texture2D>("gruselute");
             _blackHoleTexture = Content.Load<Texture2D>("blackhole");
 
-
             _input = new InputManager(this);
+            _interface = new Interface(this);
 
             _player = new Player(this);
             _parser = new XML_Parser(this);
@@ -151,6 +153,7 @@ namespace WarTornLands
             _currentLevel.DrawEntities(gameTime);
             _player.Draw(gameTime);
             _currentLevel.Draw(gameTime, 1);
+            _interface.Draw(gameTime);
 
             // Test für Textmenue
             _dialogSystem.DrawText();
