@@ -65,6 +65,21 @@ namespace WarTornLands.PlayerClasses
             _cm.StartCounter(_animCounter,false);
         }
 
+        /// <summary>
+        /// Gibt den aktuellen Blickwinkel des Spielers im Bogenmaß zurück, wobei Oben = 0.
+        /// </summary>
+        private double GetRoundedAngle()
+        {
+            switch (_animFacing)
+            {
+                case Facing.LEFT:   return 0;
+                case Facing.UP:     return 0.5*Math.PI;
+                case Facing.RIGHT:  return Math.PI;
+                case Facing.DOWN:   return 1.5 * Math.PI;
+            }
+            return 0;
+        }
+
         public void Update(GameTime gameTime)
         {
             _cm.StartCounter(_animCounter, false);
@@ -165,7 +180,7 @@ namespace WarTornLands.PlayerClasses
 
             if (_cm.GetPercentage(_hitCounter) > 0)
             {
-                float baseAngle = Constants.WeaponStartAngle;
+                float baseAngle = Constants.WeaponStartAngle + (float)GetRoundedAngle();
                 float maxAddition = Constants.WeaponGoalAngle - Constants.WeaponStartAngle;
                 float finalAngle = _cm.GetPercentage(_hitCounter) * maxAddition + baseAngle;
                 _weaponPos = new Vector2(_weaponRange * (float)Math.Cos(finalAngle),
@@ -197,15 +212,16 @@ namespace WarTornLands.PlayerClasses
             Vector2 drawPos = new Vector2((float)Math.Round((_game as Game1).Window.ClientBounds.Width / 2.0 - _texture.Width * 0.5f),
                                           (float)Math.Round((_game as Game1).Window.ClientBounds.Height / 2.0 - _texture.Height * 0.5f));
 
-            /*  sb.Draw(_texture,
-                  new Rectangle((int)drawPos.X, (int)drawPos.Y,
-                                _texture.Height, _texture.Width), Color.White);*/
-            sb.Draw(_animTexture, new Rectangle((int)drawPos.X, (int)drawPos.Y, 64, 128), new Rectangle((int)(_animSource.X + _frame) * 64, (int)_animSource.Y * 128, 64, 128), Color.White);
+            // TODO verdammt weird... drawPos.X - 16 passt am besten, aber waaaarum? :D
+            sb.Draw(_animTexture,
+                new Rectangle((int)drawPos.X - 16, (int)drawPos.Y - 64, 64, 128),
+                new Rectangle((int)(_animSource.X + _frame) * 64, (int)_animSource.Y * 128, 64, 128), Color.White);
 
 
             if (_cm.GetPercentage(_hitCounter) != 0)
             {
-                float baseAngle = Constants.WeaponStartAngle;
+                float baseAngle = Constants.WeaponStartAngle + (float)GetRoundedAngle();
+                
                 float maxAddition = Constants.WeaponGoalAngle - Constants.WeaponStartAngle;
                 float finalAngle = _cm.GetPercentage(_hitCounter) * maxAddition + baseAngle;
                 _weaponPos = new Vector2(_weaponRange * (float)Math.Cos(finalAngle),
