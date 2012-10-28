@@ -70,7 +70,10 @@ namespace WarTornLands
 
             _player = new Player(this);
             _parser = new XML_Parser(this);
+            _parser.SetFilename("Horst");
+            _parser.SaveText();
             _parser.SetFilename("0");
+
             //_parser.SetLevel();
             //_parser.SaveLevel();
             try
