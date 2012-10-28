@@ -69,7 +69,7 @@ namespace WarTornLands.PlayerClasses
         /// <summary>
         /// Gibt den aktuellen Blickwinkel des Spielers im Bogenmaß zurück, wobei Oben = 0.
         /// </summary>
-        private double GetRoundedAngle()
+        public double GetRoundedAngle()
         {
             switch (_animFacing)
             {
