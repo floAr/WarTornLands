@@ -157,5 +157,10 @@ namespace WarTornLands
             
             base.Draw(gameTime);
         }
+
+        public void SetLevel(Level level)
+        {
+            _currentLevel = level;
+        }
     }
 }
