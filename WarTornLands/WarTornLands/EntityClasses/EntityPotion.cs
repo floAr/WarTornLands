@@ -15,13 +15,13 @@ namespace WarTornLands.EntityClasses
 
         public EntityPotion(Game game, Vector2 position, Texture2D texture) : base(game, position, texture)
         {
-            _canbepickedup = true;
+            _canBePickedUp = true;
         }
 
         public override void OnCollide(Entity source)
         {
             // "einsammeln"
-            if (_canbepickedup)
+            if (_canBePickedUp)
             {
                 if (source == (Game as Game1)._player)
                 {

@@ -5,12 +5,13 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using WarTornLands.EntityClasses;
+using WarTornLands.PlayerClasses;
 
 namespace WarTornLands
 {
     public class DialogSystem : DrawableGameComponent
     {
-        #region Variable
+        #region Variables
         XML_Parser _parser;
         List<String> _dialog;
         bool _dialogstarted;
@@ -20,7 +21,7 @@ namespace WarTornLands
         int _textbreite;
         #endregion
 
-        public bool isdialogstarted()
+        public bool Isdialogstarted()
         {
             return _dialogstarted;
         }
@@ -32,68 +33,75 @@ namespace WarTornLands
             this._dialogstarted = false;
             this._font = game.Content.Load<SpriteFont>("Test");
             this._dialogbox = game.Content.Load<Texture2D>("dialogbox");
+
+            (Game as Game1)._input.Interact.Pressed += new EventHandler(TestDialog);
         }
 
-        public void TestDialog(bool ButtonStatus, PlayerClasses.Player player, Level level)
+        public void TestDialog(object sender, EventArgs e)
         {
-            if (ButtonStatus)
+            Player player = (Game as Game1)._player;
+            Level level = (Game as Game1)._currentLevel;
+
+            if (!_dialogstarted)
             {
-                if (!_dialogstarted)
+                _position = player.GetPosition();
+                if (player.GetRoundedAngle() == 0)
                 {
-                    _position = player.GetPosition();
-                    if (player.GetRoundedAngle() == 0)
-                    {
-                        _position.X -= Constants.Player_TalkDistance;
-                    }
-                    else
-                    {
-                        if (player.GetRoundedAngle() == 0.5 * Math.PI)
-                        {
-                            _position.Y -= Constants.Player_TalkDistance;
-                        }
-                        else
-                        {
-                            if (player.GetRoundedAngle() == Math.PI)
-                            {
-                                _position.X += Constants.Player_TalkDistance;
-                            }
-                            else
-                            {
-                                if (player.GetRoundedAngle() == 1.5 * Math.PI)
-                                {
-                                    _position.Y += Constants.Player_TalkDistance;
-                                }
-                            }
-                        }
-                    }
-
-                    EntityClasses.Entity ent = level.GetEntityAt(_position);
-                    if (ent == null)
-                    {
-
-                    }
-                    else
-                    {
-                        try
-                        {
-                            if (ent.CanSpeak())
-                            {
-                                SpeakwithPerson(ent.GetName(), ent.GetPosition(), true, 0);
-                            }
-                        }catch(Exception e)
-                        {
-
-                        }
-                    }
+                    _position.X -= Constants.Player_TalkDistance;
                 }
                 else
                 {
-                    NextText();
+                    if (player.GetRoundedAngle() == 0.5 * Math.PI)
+                    {
+                        _position.Y -= Constants.Player_TalkDistance;
+                    }
+                    else
+                    {
+                        if (player.GetRoundedAngle() == Math.PI)
+                        {
+                            _position.X += Constants.Player_TalkDistance;
+                        }
+                        else
+                        {
+                            if (player.GetRoundedAngle() == 1.5 * Math.PI)
+                            {
+                                _position.Y += Constants.Player_TalkDistance;
+                            }
+                        }
+                    }
+                }
+
+                EntityClasses.Entity ent = level.GetEntityAt(_position);
+                if (ent == null)
+                {
+
+                }
+                else
+                {
+                    try
+                    {
+                        if (ent.CanSpeak())
+                        {
+                            SpeakWithPerson(ent.GetName(), ent.GetPosition(), true, 0);
+                        }
+                        if (ent.CanBeUsed())
+                        {
+                            ent.UseThis(player);
+                        }
+                    }   catch
+                    {
+
+                    }
                 }
             }
+            else
+            {
+                NextText();
+            }
+            
         }
 
-        public void SpeakwithPerson(String entityname,Vector2 position, bool speakmodus, int textstelle)
+        public void SpeakWithPerson(String entityname,Vector2 position, bool speakmodus, int textstelle)
         {
             _parser.SetFilename(entityname);
             _parser.LoadText();

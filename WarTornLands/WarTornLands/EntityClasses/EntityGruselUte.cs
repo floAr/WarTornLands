@@ -20,7 +20,7 @@ namespace WarTornLands.EntityClasses
         public EntityGruselUte(Game game, Vector2 position, Texture2D texture) : base(game, position, texture)
         {
             _health = Constants.GruselUte_Health;
-            _canbeattacked = true;
+            _canBeAttacked = true;
             _radius = Constants.GruselUte_Radius;
 
             _weaponRange = Constants.GruselUte_HitRange;

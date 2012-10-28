@@ -35,6 +35,7 @@ namespace WarTornLands
 
         KeyboardState prevkey;
         KeyboardState key;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -137,7 +138,6 @@ namespace WarTornLands
 
             _player.Update(gameTime);
             _currentLevel.Update(gameTime);
-            _dialogSystem.TestDialog(_input.Speak, _player, _currentLevel);
 
             base.Update(gameTime);
         }

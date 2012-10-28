@@ -15,7 +15,7 @@ namespace WarTornLands.EntityClasses
 
         public EntityHorst(Game game, Vector2 position, Texture2D texture, String name = "Horst") : base(game, position, texture)
         {
-            _canspeak = true;
+            _canSpeak = true;
             _name = name;
         }
 

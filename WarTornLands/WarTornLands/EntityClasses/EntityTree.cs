@@ -13,7 +13,7 @@ namespace WarTornLands.EntityClasses
             : base(game, position, texture)
         {
             _health = 300;
-            _canbeattacked = true;
+            _canBeAttacked = true;
         }
 
         public override void OnDie()
