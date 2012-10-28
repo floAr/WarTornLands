@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using WarTornLands.Counter;
+using WarTornLands.EntityClasses;
 
 namespace WarTornLands.PlayerClasses
 {
@@ -195,7 +196,6 @@ namespace WarTornLands.PlayerClasses
             _texture = cm.Load<Texture2D>("player");
             _weaponTex = cm.Load<Texture2D>("weapontest");
             _animTexture = cm.Load<Texture2D>("character_64x128");
-
         }
 
         public Vector2 GetPosition()
@@ -226,7 +226,7 @@ namespace WarTornLands.PlayerClasses
                 _weaponPos = new Vector2(_weaponRange * (float)Math.Cos(finalAngle),
                                                 _weaponRange * (float)Math.Sin(finalAngle));
 
-                Entity victim = (_game as Game1)._testLevel.GetEntityAt(_position + _weaponPos);
+                Entity victim = (_game as Game1)._currentLevel.GetEntityAt(_position + _weaponPos);
                 if (victim != null)
                 {
                     victim.Damage(8);
