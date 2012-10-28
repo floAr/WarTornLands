@@ -16,14 +16,18 @@ namespace WarTornLands.EntityClasses
         AIstate _state = AIstate.IDLE;
         Entity _victim;
         float _speed = Constants.GruselUte_Speed;
-
+        String _animCounter3 = "anim_counter3";
+        String _animCounter2 = "anim_counter2";
         public EntityGruselUte(Game game, Vector2 position, Texture2D texture) : base(game, position, texture)
         {
             _health = Constants.GruselUte_Health;
             _canBeAttacked = true;
             _radius = Constants.GruselUte_Radius;
-
+            _animTexture = texture;
             _weaponRange = Constants.GruselUte_HitRange;
+            _animTexture = texture;
+            _animSource = new Vector2(0, 0);
+            _animated = true;
 
             _cm = new CounterManager();
             _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
@@ -64,7 +68,7 @@ namespace WarTornLands.EntityClasses
                     break;
             }
             #endregion
-
+ 
             _cm.Update(gameTime);
 
             base.Update(gameTime);
@@ -105,10 +109,26 @@ namespace WarTornLands.EntityClasses
 
         public override void Draw(GameTime gameTime)
         {
-            base.Draw(gameTime);
+           // base.Draw(gameTime);
 
+
+         /*   int width = (int)Math.Floor((double)(Game as Game1)._tileSetTexture.Width / Constants.TileSize);
+            Vector2 size = GetSize();
+
+            Rectangle drawRec = new Rectangle(
+                            drawPos.X,
+                            drawPos.Y,
+                            (int)size.X, (int)size.Y);
+
+            (Game as Game1)._spriteBatch.Draw(_texture, drawRec, Color.White);
+*/
             SpriteBatch sb = (Game as Game1)._spriteBatch;
             Vector2 drawPos = GetDrawPosition();
+
+            sb.Draw(_animTexture, new Rectangle((int)drawPos.X, (int)drawPos.Y, 94, 72),
+                new Rectangle((int)(_animSource.X + _frame) * 94, (int)_animSource.Y * 72, 94, 72), Color.White);
+
+
             Vector2 weaponPos = base.GetRelWeaponDrawPos();
 
             if (weaponPos.LengthSquared() < 9001)
@@ -129,7 +149,14 @@ namespace WarTornLands.EntityClasses
 
         protected virtual void OnBang(object sender, BangEventArgs e)
         {
-
+            if (e.ID.Equals(_animCounter2))
+            {
+                _frame = (_frame + 1) % 2;
+            }
+            if (e.ID.Equals(_animCounter3))
+            {
+                _frame = (_frame + 1) % 3;
+            }
         }
 
         #endregion
