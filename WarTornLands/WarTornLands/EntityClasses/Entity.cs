@@ -23,6 +23,8 @@ namespace WarTornLands.EntityClasses
 
         protected int _health;
 
+        string _name;
+
         /// <summary>
         /// Gibt den Objekttyp als Zahl zurück.
         /// </summary>
@@ -36,7 +38,7 @@ namespace WarTornLands.EntityClasses
             return 0;
         }
 
-        public Entity(Game game, Vector2 position, Texture2D texture)
+        public Entity(Game game, Vector2 position, Texture2D texture, String name="Entity")
             : base(game)
         {
             _game = game;
@@ -44,6 +46,11 @@ namespace WarTornLands.EntityClasses
             this._offset = Vector2.Zero;
             this._texture = texture;
             this._health = 1;
+            this._name = name;
+        }
+        public String GetName()
+        {
+            return _name;
         }
 
         public bool CanBePickedUp()

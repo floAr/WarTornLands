@@ -72,7 +72,6 @@ namespace WarTornLands
             _player = new Player(this);
             _parser = new XML_Parser(this);
             _dialogSystem = new DialogSystem(this);
-            _dialogSystem.SpeakwithPerson("Horst", true, 0);
             //_parser.SetFilename("Horst");
             //_parser.SaveText();
             _parser.SetFilename("0");
@@ -131,13 +130,8 @@ namespace WarTornLands
                 this.Exit();
 
             _player.Update(gameTime);
-            _currentLevel.Update(gameTime); 
-            key = Keyboard.GetState();
-            if (key.IsKeyDown(Keys.T) && !prevkey.IsKeyDown(Keys.T))
-            {
-                _dialogSystem.NextText();
-            }
-            prevkey = key;
+            _currentLevel.Update(gameTime);
+            _dialogSystem.TestDialog(_input.Speak, _player, _currentLevel);
 
             base.Update(gameTime);
         }
@@ -159,10 +153,8 @@ namespace WarTornLands
             _currentLevel.Draw(gameTime, 1);
 
             // Test für Textmenue
-            if (_dialogSystem.isdialogstarted())
-            {
-                _dialogSystem.DrawText();
-            }
+            _dialogSystem.DrawText();
+            
             base.Draw(gameTime);
         }
     }
