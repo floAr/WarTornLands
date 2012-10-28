@@ -181,7 +181,7 @@ namespace WarTornLands.PlayerClasses
             if(weaponPos.LengthSquared() < 9001)
             {
                 weaponPos += drawPos;
-                sb.Draw(_weaponTex, weaponPos, null, Color.White, 0, Vector2.Zero, .1f, SpriteEffects.None, 0);
+                sb.Draw(_weaponTex,new Vector2(32,64)+weaponPos, null, Color.White, 0, Vector2.Zero, .1f, SpriteEffects.None, 0);
             }
 
         }

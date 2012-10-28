@@ -26,11 +26,10 @@ namespace WarTornLands
             return _dialogstarted;
         }
 
-        public DialogSystem(Game game) 
-            : base(game)
+        public DialogSystem(Game game) : base(game)
         {
             this._parser = new XML_Parser(game);
-            this._dialogstarted = false;
+            this._dialogstarted = false; 
             this._font = game.Content.Load<SpriteFont>("Test");
             this._dialogbox = game.Content.Load<Texture2D>("dialogbox");
 

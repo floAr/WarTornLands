@@ -18,7 +18,8 @@ namespace WarTornLands
         private Key _hit;
         private Key _jump;
         private Key _interact;
-        private Key _potion;
+        private Key _potion; 
+
 
         private Direction _move;
 
@@ -91,7 +92,7 @@ namespace WarTornLands
             get { return _move; }
         }
 
-        internal bool Speak
+        internal bool Interact
         {
             get { return _interact.Value;}
         }
