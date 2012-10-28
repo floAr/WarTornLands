@@ -14,6 +14,7 @@ namespace WarTornLands
         private Keys _key;
         private Buttons _button;
         private int _mode;
+        public event EventHandler Pressed;
 
         public void SetActivator(Keys key)
         {
@@ -29,12 +30,16 @@ namespace WarTornLands
         {
             get { return _value; }
         }
-        public int Held()
+        public override int Held()
         {
             return _held;
         }
 
-        public void Update(GameTime gt)
+        public Key()
+            : base()
+        { }
+
+        public override void Update(GameTime gt, KeyboardState oldKeys)
         {
             if (_mode == 0)
             {
@@ -44,6 +49,12 @@ namespace WarTornLands
                 {
                     _value = true;
                     _held += gt.ElapsedGameTime.Milliseconds;
+
+                    if (oldKeys.IsKeyUp(_key))
+                    {
+                        if (Pressed != null)
+                            Pressed(null, EventArgs.Empty);
+                    }
                 }
                 else 
                 {
@@ -67,9 +78,11 @@ namespace WarTornLands
             }
         }
 
-        public void SetMode(int mode)
+        public override void SetMode(int mode)
         {
             _mode = mode;
         }
+
+
     }
 }

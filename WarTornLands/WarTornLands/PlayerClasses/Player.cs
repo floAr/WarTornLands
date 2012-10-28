@@ -28,6 +28,8 @@ namespace WarTornLands.PlayerClasses
             _cm = new CounterManager();
             _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
 
+            (Game as Game1)._input.Potion.Pressed += new EventHandler(UsePotion);
+
             _cm.AddCounter(_hitCounter, Constants.Player_HitDuration);
             _radius = Constants.Player_Radius;
 
@@ -48,7 +50,7 @@ namespace WarTornLands.PlayerClasses
 
             Vector2 oldPos = _position;
             _position = CollisionDetector.GetPosition(_position,
-                                                      input.Move * _speed * gameTime.ElapsedGameTime.Milliseconds,
+                                                      input.Move.Value * _speed * gameTime.ElapsedGameTime.Milliseconds,
                                                       _radius, this);
 
             #region Animation
@@ -140,7 +142,7 @@ namespace WarTornLands.PlayerClasses
             #endregion
             
             // Attack! Attack!
-            if (input.Hit)
+            if (input.Hit.Value)
             {
                 _cm.StartCounter(_hitCounter, false);
             }
@@ -209,7 +211,7 @@ namespace WarTornLands.PlayerClasses
             _potionCount++;
         }
 
-        public void UsePotion()
+        public void UsePotion(object sender, EventArgs e)
         {
             // TODO durch vernünftiges inventar ersetzen XD
             if (_potionCount > 0)
