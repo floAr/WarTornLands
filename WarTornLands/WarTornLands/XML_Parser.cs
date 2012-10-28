@@ -5,7 +5,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Storage;
 using System.Xml.Serialization;
-using System.IO; 
+using System.IO;
+using WarTornLands.EntityClasses; 
 
 namespace WarTornLands
 {
@@ -255,14 +256,17 @@ namespace WarTornLands
             {
                 splitvektor = split[i].Split(',');
                 Vector2 vektor = new Vector2(int.Parse(splitvektor[0]), int.Parse(splitvektor[1]));
-                if (i == 0)
+                switch (i)
                 {
-                    unit = new EntityGruselUte(_game, vektor, (_game as Game1)._gruselUteTexture);
-                }
-                else
-                {
-                    // TODO anderes entity ;)
-                    unit = new EntityTree(_game, vektor, (_game as Game1)._treeTexture);
+                    case 0:
+                        unit = new EntityGruselUte(_game, vektor, (_game as Game1)._gruselUteTexture);
+                        break;
+                    case 1:
+                        unit = new EntityTree(_game, vektor, (_game as Game1)._treeTexture);
+                        break;
+                    default:
+                        unit = new EntityJumpPoint(_game, vektor, (_game as Game1)._blackHoleTexture);
+                        break;
                 }
                 level.AddDynamics(unit);
             }

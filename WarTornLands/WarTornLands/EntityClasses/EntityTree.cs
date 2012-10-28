@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace WarTornLands
+namespace WarTornLands.EntityClasses
 {
     class EntityTree : Entity
     {
@@ -19,7 +19,7 @@ namespace WarTornLands
         public override void OnDie()
         {
             // TODO drop wood
-            (Game as Game1)._testLevel.AddDynamics(new Entity(Game, _position, (Game as Game1)._deadTreeTexture));
+            (Game as Game1)._currentLevel.AddDynamics(new Entity(Game, _position, (Game as Game1)._deadTreeTexture));
 
             base.OnDie();
         }

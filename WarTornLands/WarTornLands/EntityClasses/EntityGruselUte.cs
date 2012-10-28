@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace WarTornLands
+namespace WarTornLands.EntityClasses
 {
     class EntityGruselUte : Entity
     {

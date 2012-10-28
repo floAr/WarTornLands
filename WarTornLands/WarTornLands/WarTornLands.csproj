@@ -77,9 +77,10 @@
     <Compile Include="Counter.cs" />
     <Compile Include="DialogSystem.cs" />
     <Compile Include="Dungeon.cs" />
-    <Compile Include="Entity.cs" />
-    <Compile Include="EntityGruselUte.cs" />
-    <Compile Include="EntityTree.cs" />
+    <Compile Include="EntityClasses\Entity.cs" />
+    <Compile Include="EntityClasses\EntityGruselUte.cs" />
+    <Compile Include="EntityClasses\EntityJumpPoint.cs" />
+    <Compile Include="EntityClasses\EntityTree.cs" />
     <Compile Include="Input\Direction.cs" />
     <Compile Include="Input\InputKey.cs" />
     <Compile Include="Input\Key.cs" />

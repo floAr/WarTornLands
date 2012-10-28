@@ -23,11 +23,12 @@ namespace WarTornLands
         public Texture2D _treeTexture;
         public Texture2D _deadTreeTexture;
         public Texture2D _gruselUteTexture;
+        public Texture2D _blackHoleTexture;
         //GameServiceContainer services;
         public InputManager _input;
         public Player _player;
         XML_Parser _parser;
-        public Level _testLevel; // TODO remove
+        public Level _currentLevel;
         DialogSystem _dialogSystem;
 
         public Game1()
@@ -62,6 +63,8 @@ namespace WarTornLands
             _treeTexture = Content.Load<Texture2D>("tree");
             _deadTreeTexture = Content.Load<Texture2D>("deadtree");
             _gruselUteTexture = Content.Load<Texture2D>("gruselute");
+            _blackHoleTexture = Content.Load<Texture2D>("blackhole");
+
 
             _input = new InputManager(this);
 
@@ -73,11 +76,11 @@ namespace WarTornLands
             try
             {
                 _parser.LoadLevel();
-                _testLevel = _parser.GetLevel();
+                _currentLevel = _parser.GetLevel();
             }
             catch (Exception e)
             {
-                _testLevel = new Level(this);
+                _currentLevel = new Level(this);
                 int[,] layer0 = new int[,] {
                             {1,1,1,1,1,1,1,1},
                             {1,9,9,9,9,9,9,1},
@@ -89,11 +92,11 @@ namespace WarTornLands
                             {1,1,1,1,1,1,1,1}};
                 int[,] layer1 = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 87 } };
                 layer0[1, 5] = 65;
-                _testLevel.AddFloor(layer0);
-                _testLevel.AddCeiling(new int[0, 0]);
+                _currentLevel.AddFloor(layer0);
+                _currentLevel.AddCeiling(new int[0, 0]);
             }
             _dialogSystem = new DialogSystem(this);
-            PlayerClasses.CollisionDetector.Setup(_testLevel);
+            PlayerClasses.CollisionDetector.Setup(_currentLevel);
 
             this.Components.Add(_input);
 
@@ -123,7 +126,7 @@ namespace WarTornLands
                 this.Exit();
 
             _player.Update(gameTime);
-            _testLevel.Update(gameTime);
+            _currentLevel.Update(gameTime);
            
 
             base.Update(gameTime);
@@ -140,10 +143,10 @@ namespace WarTornLands
             // TODO: Fügen Sie Ihren Zeichnungscode hier hinzu
 
             // Kapseln in eigene Klasse, für Menüs etc.
-            _testLevel.Draw(gameTime, 0);
-            _testLevel.DrawEntities(gameTime);
+            _currentLevel.Draw(gameTime, 0);
+            _currentLevel.DrawEntities(gameTime);
             _player.Draw(gameTime);
-            _testLevel.Draw(gameTime, 1);
+            _currentLevel.Draw(gameTime, 1);
 
             // Test für Textmenue
             if (_dialogSystem.isdialogstarted())
