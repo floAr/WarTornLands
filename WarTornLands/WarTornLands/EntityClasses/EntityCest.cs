@@ -21,7 +21,7 @@ namespace WarTornLands.EntityClasses
         public override void OnCollide(Entity source)
         {
             // "einsammeln"
-            if (_canbeused)
+            if (_canbeused && (Game as Game1)._input.Interact)
             {
                 if (source == (Game as Game1)._player)
                 {

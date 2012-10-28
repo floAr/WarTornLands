@@ -139,7 +139,7 @@ namespace WarTornLands
 
             _player.Update(gameTime);
             _currentLevel.Update(gameTime);
-            _dialogSystem.TestDialog(_input.Speak, _player, _currentLevel);
+            _dialogSystem.TestDialog(_input.Interact, _player, _currentLevel);
 
             base.Update(gameTime);
         }
