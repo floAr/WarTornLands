@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace WarTornLands
 {
-    public interface InputKey
+    public abstract class InputKey
     {
-        void Update(GameTime gt);
-        void SetMode(int mode);
+        public InputKey()
+        {
+        }
 
-        int Held();
+        public abstract void Update(GameTime gt, KeyboardState oldKeys);
+        public abstract void SetMode(int mode);
+        public abstract int Held();
     }
 }

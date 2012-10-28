@@ -29,6 +29,13 @@ namespace WarTornLands
 
         private TStick _stick = 0;
 
+
+        public Direction()
+            : base()
+        { 
+        }
+
+
         public Vector2 Value
         {
             get { return _value; }
@@ -37,12 +44,12 @@ namespace WarTornLands
         {
             get { return _speed; }
         }
-        public int Held()
+        public override int Held()
         {
             return _held;
         }
 
-        public void Update(GameTime gt)
+        public override void Update(GameTime gt, KeyboardState oldKeys)
         {
             if (_mode == 0)
             {
@@ -121,7 +128,7 @@ namespace WarTornLands
             return output;
         }
 
-        public void SetMode(int mode)
+        public override void SetMode(int mode)
         {
             _mode = mode;
         }
