@@ -18,6 +18,9 @@ namespace WarTornLands.EntityClasses
         float _speed = Constants.GruselUte_Speed;
         String _animCounter3 = "anim_counter3";
         String _animCounter2 = "anim_counter2";
+        int _frame2 = 0;
+        int _frame3 = 0;
+
         public EntityGruselUte(Game game, Vector2 position, Texture2D texture) : base(game, position, texture)
         {
             _health = Constants.GruselUte_Health;
@@ -122,6 +125,19 @@ namespace WarTornLands.EntityClasses
 
             (Game as Game1)._spriteBatch.Draw(_texture, drawRec, Color.White);
 */
+            switch (_state)
+            {
+                case AIstate.IDLE:
+                    _frame = _frame3;
+                    _animSource.Y = 0;
+                    break;
+                case AIstate.AGGRO:
+                    _frame = _frame2;
+                    _animSource.Y = 1;
+                    break;
+                default:
+                    break;
+            }
             SpriteBatch sb = (Game as Game1)._spriteBatch;
             Vector2 drawPos = GetDrawPosition();
 
@@ -151,11 +167,11 @@ namespace WarTornLands.EntityClasses
         {
             if (e.ID.Equals(_animCounter2))
             {
-                _frame = (_frame + 1) % 2;
+                _frame2 = (_frame2 + 1) % 2;
             }
             if (e.ID.Equals(_animCounter3))
             {
-                _frame = (_frame + 1) % 3;
+                _frame3 = (_frame3 + 1) % 3;
             }
         }
 
