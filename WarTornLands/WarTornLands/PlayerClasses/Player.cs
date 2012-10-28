@@ -36,13 +36,19 @@ namespace WarTornLands.PlayerClasses
             //FrameCounter
             _cm.AddCounter(_animCounter, 250);
             _cm.StartCounter(_animCounter,false);
+
+            _health = 500;
+            _canbeattacked = true;
+        }
+
+        public new Vector2 GetSize()
+        {
+            return _size;
         }
 
         /// <summary>
         /// Gibt den aktuellen Blickwinkel des Spielers im Bogenmaß zurück, wobei Oben = 0.
         /// </summary>
-
-
         public override void Update(GameTime gameTime)
         {
             _cm.StartCounter(_animCounter, false);

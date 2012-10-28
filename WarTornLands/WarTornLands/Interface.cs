@@ -34,6 +34,14 @@ namespace WarTornLands
                 _font.MeasureString(text).X - 47, 10), Color.White);
             (Game as Game1)._spriteBatch.Draw(_heartTexture, new Rectangle(Game.Window.ClientBounds.Width-42, 10, 32, 32), Color.White);
 
+            // Display game over
+            if ((Game as Game1)._player.GetHealth() == 0)
+            {
+                (Game as Game1)._spriteBatch.DrawString(_font, "GAME OVER", new Vector2(Game.Window.ClientBounds.Width/2 -
+                _font.MeasureString("GAME OVER").X / 2, Game.Window.ClientBounds.Height / 2 -
+                _font.MeasureString("GAME OVER").Y / 2), Color.White);
+            }
+
             base.Draw(gameTime);
         }
     }

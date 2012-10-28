@@ -112,6 +112,23 @@ namespace WarTornLands
             return true;
         }
 
+        public bool IsPlayerAt(Vector2 pixel)
+        {
+            // TODO evtl als Game-Methode
+
+            Vector2 pos = (Game as Game1)._player.GetPosition();
+            Vector2 size = (Game as Game1)._player.GetSize();
+
+            if (pixel.X >= pos.X - size.X * 0.5f && pixel.X < pos.X + size.X * 0.5f &&
+                pixel.Y >= pos.Y - size.Y * 0.5f && pixel.Y < pos.Y + size.Y * 0.5f)
+            {
+                // Spieler gefunden
+                return true;
+            }
+
+            return false;
+        }
+
         public Entity GetEntityAt(Vector2 pixel)
         {
             foreach (Entity ent in _dynamics)

@@ -139,10 +139,9 @@ namespace WarTornLands.EntityClasses
                 Vector2 weaponPos = new Vector2(_weaponRange * (float)Math.Cos(finalAngle),
                                                 _weaponRange * (float)Math.Sin(finalAngle));
 
-                Entity victim = (Game as Game1)._currentLevel.GetEntityAt(_position + weaponPos);
-                if (victim != null)
+                if ((Game as Game1)._currentLevel.IsPlayerAt(_position + weaponPos))
                 {
-                    victim.Damage(8);
+                    (Game as Game1)._player.Damage(5);
                 }
 
                 return weaponPos;

@@ -136,8 +136,10 @@ namespace WarTornLands
             // Ermöglicht ein Beenden des Spiels
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
-            _player.Update(gameTime);
+            if (_player.GetHealth() > 0)
+            {
+                _player.Update(gameTime);
+            }
             _currentLevel.Update(gameTime);
             _dialogSystem.TestDialog(_input.Interact, _player, _currentLevel);
 
