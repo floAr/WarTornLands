@@ -315,7 +315,7 @@ namespace WarTornLands
                         unit = new EntityTree(_game, vektor, (_game as Game1)._treeTexture);
                         break;
                     case 2:
-                        unit = new Entity(_game, vektor, (_game as Game1)._treeTexture, "Horst");
+                        unit = new EntityHorst(_game, vektor, (_game as Game1)._treeTexture, "Horst");
                         break;
                     case 3:
                         unit = new EntityJumpPoint(_game, vektor, (_game as Game1)._blackHoleTexture,

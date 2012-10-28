@@ -47,7 +47,7 @@ namespace WarTornLands.EntityClasses
 
         protected int _health;
 
-        string _name;
+        protected string _name;
 
         protected Texture2D _weaponTex;
         protected CounterManager _cm;
@@ -83,6 +83,11 @@ namespace WarTornLands.EntityClasses
         public bool CanBePickedUp()
         {
             return _canbepickedup;
+        }
+
+        public bool CanSpeak()
+        {
+            return _canspeak;
         }
 
         public virtual void LoadContent(ContentManager cm)
