@@ -143,10 +143,14 @@ namespace WarTornLands
             // TODO: Fügen Sie Ihren Zeichnungscode hier hinzu
 
             // Kapseln in eigene Klasse, für Menüs etc.
+            _spriteBatch.Begin();
+
             _currentLevel.Draw(gameTime, 0);
             _currentLevel.DrawEntities(gameTime);
             _player.Draw(gameTime);
             _currentLevel.Draw(gameTime, 1);
+
+            _spriteBatch.End();
 
             // Test für Textmenue
             if (_dialogSystem.isdialogstarted())

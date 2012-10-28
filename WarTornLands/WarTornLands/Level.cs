@@ -41,26 +41,31 @@ namespace WarTornLands
         public void Draw(GameTime gameTime, int layer)
         {
             Vector2 center = (Game as Game1)._player.GetPosition();
-
+            Game1 game = (this.Game as Game1);
             // Layer evtl. in Klasse (DrawableGameComponent) kapseln
 
-            (Game as Game1)._spriteBatch.Begin();
+   
+
             for (int y=0; y<grid[layer].GetLength(1); ++y)
             {
                 for (int x = 0; x < grid[layer].GetLength(0); ++x)
                 {
-                    int width = (int)Math.Floor((double)(Game as Game1)._tileSetTexture.Width / Constants.TileSize);
-                    (Game as Game1)._spriteBatch.Draw(
-                        (Game as Game1)._tileSetTexture,
-                        new Rectangle(x * Constants.TileSize - (int)center.X + (int)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f),
-                            y * Constants.TileSize - (int)center.Y + (int)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f),
+                    int width = (int)Math.Floor((double)game._tileSetTexture.Width / Constants.TileSize);
+
+                    game._spriteBatch.Draw(
+                        game._tileSetTexture,
+                        new Rectangle(x * Constants.TileSize - (int)center.X + (int)Math.Round(game.Window.ClientBounds.Width / 2.0f),
+                            y * Constants.TileSize - (int)center.Y + (int)Math.Round(game.Window.ClientBounds.Height / 2.0f),
                             Constants.TileSize, Constants.TileSize),
-                        new Rectangle((grid[layer][x, y] % width) * Constants.TileSize, (grid[layer][x, y] / width) * Constants.TileSize, Constants.TileSize, Constants.TileSize),
+                        new Rectangle((grid[layer][x, y] % width) * Constants.TileSize, 
+                        (grid[layer][x, y] / width) * Constants.TileSize, 
+                        Constants.TileSize, 
+                        Constants.TileSize),
                         Color.White);
                 }
             }
 
-            (Game as Game1)._spriteBatch.End();
+
         }
 
         public override void Update(GameTime gameTime)
@@ -69,6 +74,7 @@ namespace WarTornLands
             {
                 foreach (Entity ent in dynamics)
                 {
+                    ent.Update(gameTime);
                     if (ent.GetHealth() == 0)
                     {
                         ent.OnDie();

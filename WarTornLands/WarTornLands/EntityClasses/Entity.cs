@@ -8,12 +8,11 @@ using WarTornLands.Counter;
 
 namespace WarTornLands.EntityClasses
 {
-    public class Entity : GameComponent
+    public class Entity : DrawableGameComponent
     {
-        protected Game _game;
         protected Texture2D _texture;
         protected Vector2 _position;
-        protected Vector2 _offset;
+        protected Point _tilepos;
 
         // Bool Werte für Entity Eigenschaften
         protected bool _canbeattacked;
@@ -39,9 +38,7 @@ namespace WarTornLands.EntityClasses
         public Entity(Game game, Vector2 position, Texture2D texture)
             : base(game)
         {
-            _game = game;
             this._position = position;
-            this._offset = Vector2.Zero;
             this._texture = texture;
             this._health = 1;
         }
@@ -51,42 +48,28 @@ namespace WarTornLands.EntityClasses
             return _canbepickedup;
         }
 
-        public void Draw(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
             Vector2 center = (Game as Game1)._player.GetPosition();
             int width = (int)Math.Floor((double)(Game as Game1)._tileSetTexture.Width / Constants.TileSize);
             Vector2 size = GetSize();
-            (Game as Game1)._spriteBatch.Begin();
-            (Game as Game1)._spriteBatch.Draw(
-                        _texture,
-                        new Rectangle((int)(_position.X - center.X - _texture.Width * 0.5f + (int)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f)),
+
+            Rectangle drawRec = new Rectangle((int)(_position.X - center.X - _texture.Width * 0.5f + (int)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f)),
                             (int)(_position.Y - (int)center.Y - _texture.Height * 0.5f + (int)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f)),
-                            (int)size.X, (int)size.Y), Color.White);
-            (Game as Game1)._spriteBatch.End();
+                            (int)size.X, (int)size.Y);
+
+            (Game as Game1)._spriteBatch.Draw(_texture, drawRec, Color.White);
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (_offset.X >= Constants.TileSize / 2)
-            {
-                _offset.X -= Constants.TileSize;
-                _position.X++;
-            }
-            if (_offset.Y >= Constants.TileSize / 2)
-            {
-                _offset.Y -= Constants.TileSize;
-                _position.Y++;
-            }
-            if (_offset.X <= -Constants.TileSize / 2)
-            {
-                _offset.X += Constants.TileSize;
-                _position.X--;
-            }
-            if (_offset.Y <= -Constants.TileSize / 2)
-            {
-                _offset.Y += Constants.TileSize;
-                _position.Y--;
-            }
+            #region Calc tilepos
+
+            _tilepos = new Point((int)(_position.X % Constants.TileSize), (int)(_position.Y % Constants.TileSize));
+
+            #endregion
+
+
         }
 
         public Vector2 GetPosition()

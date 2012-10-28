@@ -11,7 +11,7 @@ namespace WarTornLands
     {
         #region Variable
         XML_Parser _parser;
-        Game1 _game;
+        Game1 Game;
         List<String> _dialog;
         bool _dialogstarted;
         SpriteFont _font;
@@ -24,10 +24,10 @@ namespace WarTornLands
 
         public DialogSystem(Game1 game) : base(game)
         {
-            this._game = game;
+            this.Game = game;
             this._parser = new XML_Parser(game);
             this._dialogstarted = false;
-            this._font = _game.Content.Load<SpriteFont>("Test");
+            this._font = Game.Content.Load<SpriteFont>("Test");
         }
 
         public void SpeakwithPerson(String entityname, bool speakmodus, int textstelle)

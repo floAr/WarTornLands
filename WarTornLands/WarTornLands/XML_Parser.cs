@@ -37,7 +37,7 @@ namespace WarTornLands
         StorageDevice _storagedevice;
         string _filename;
         GameDialogData _dialog;
-        Game _game;
+        Game Game;
 
         IAsyncResult _result;
 
@@ -48,7 +48,7 @@ namespace WarTornLands
 
         public XML_Parser(Game game)
         {
-            this._game = game;
+            this.Game = game;
         }
         #endregion
 
@@ -250,7 +250,7 @@ namespace WarTornLands
             List<Entity> units = new List<Entity>();
             Entity unit;
 
-            Level level = new Level(_game);
+            Level level = new Level(Game);
 
             for (int i = 0; i < split.Length; i++)
             {
@@ -259,13 +259,13 @@ namespace WarTornLands
                 switch (i)
                 {
                     case 0:
-                        unit = new EntityGruselUte(_game, vektor, (_game as Game1)._gruselUteTexture);
+                        unit = new EntityGruselUte(Game, vektor, (Game as Game1)._gruselUteTexture);
                         break;
                     case 1:
-                        unit = new EntityTree(_game, vektor, (_game as Game1)._treeTexture);
+                        unit = new EntityTree(Game, vektor, (Game as Game1)._treeTexture);
                         break;
                     default:
-                        unit = new EntityJumpPoint(_game, vektor, (_game as Game1)._blackHoleTexture);
+                        unit = new EntityJumpPoint(Game, vektor, (Game as Game1)._blackHoleTexture);
                         break;
                 }
                 level.AddDynamics(unit);

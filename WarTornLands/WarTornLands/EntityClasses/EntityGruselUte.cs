@@ -17,7 +17,11 @@ namespace WarTornLands.EntityClasses
 
         public override void Update(GameTime gameTime)
         {
-            // TODO shoot from the hip!
+            
+
+
+
+
 
             base.Update(gameTime);
         }

@@ -25,8 +25,6 @@ namespace WarTornLands.PlayerClasses
     public class Player : Entity
     {
         //64*128
-        Game _game;
-        Vector2 _position = Vector2.Zero;
         Vector2 _weaponPos;
         float _radius = Constants.Radius;
         float _speed = Constants.Speed;
@@ -54,8 +52,6 @@ namespace WarTornLands.PlayerClasses
         public Player(Game game)
             : base(game, Vector2.Zero, null)
         {
-            _game = game;
-
             _cm = new CounterManager();
             _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
 
@@ -84,7 +80,7 @@ namespace WarTornLands.PlayerClasses
         public void Update(GameTime gameTime)
         {
             _cm.StartCounter(_animCounter, false);
-            InputManager input = (_game as Game1)._input;
+            InputManager input = (Game as Game1)._input;
 
             Vector2 oldPos = _position;
             _position = CollisionDetector.GetPosition(_position,
@@ -203,14 +199,14 @@ namespace WarTornLands.PlayerClasses
             return _position;
         }
 
-        public void Draw(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
-            SpriteBatch sb = (_game as Game1)._spriteBatch;
+            SpriteBatch sb = (Game as Game1)._spriteBatch;
 
-            sb.Begin();
+            _tilepos = _tilepos;
 
-            Vector2 drawPos = new Vector2((float)Math.Round((_game as Game1).Window.ClientBounds.Width / 2.0 - _texture.Width * 0.5f),
-                                          (float)Math.Round((_game as Game1).Window.ClientBounds.Height / 2.0 - _texture.Height * 0.5f));
+            Vector2 drawPos = new Vector2((float)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0 - _texture.Width * 0.5f),
+                                          (float)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0 - _texture.Height * 0.5f));
 
             // TODO Kollision passt nicht so richtig
             sb.Draw(_animTexture, new Rectangle((int)drawPos.X - 32, (int)drawPos.Y - 64, 64, 128),
@@ -226,7 +222,7 @@ namespace WarTornLands.PlayerClasses
                 _weaponPos = new Vector2(_weaponRange * (float)Math.Cos(finalAngle),
                                                 _weaponRange * (float)Math.Sin(finalAngle));
 
-                Entity victim = (_game as Game1)._currentLevel.GetEntityAt(_position + _weaponPos);
+                Entity victim = (Game as Game1)._currentLevel.GetEntityAt(_position + _weaponPos);
                 if (victim != null)
                 {
                     victim.Damage(8);
@@ -237,7 +233,6 @@ namespace WarTornLands.PlayerClasses
                 sb.Draw(_weaponTex, _weaponPos, null, Color.White, 0, Vector2.Zero, .1f, SpriteEffects.None, 0);
             }
 
-            sb.End();
         }
 
         #region Subscribed events
