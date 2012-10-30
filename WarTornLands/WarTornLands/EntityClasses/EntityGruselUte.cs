@@ -88,7 +88,7 @@ namespace WarTornLands.EntityClasses
 
             if (toPlayer.LengthSquared() < Constants.GruselUte_HitRange * Constants.GruselUte_HitRange)
             {
-                _cm.StartCounter(_hitCounter, false);
+             //   _cm.StartCounter(_hitCounter, false);
             }
             else
             {

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarTornLands", "WarTornLands\WarTornLands\WarTornLands.csproj", "{19F62EDA-2A13-41AE-87B5-AD31D430889B}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "WarTornLandsContent", "WarTornLands\WarTornLandsContent\WarTornLandsContent.contentproj", "{26B4BEA3-E8E1-4BDC-B321-FD2EDC833D3F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarTornLandsContent", "WarTornLands\WarTornLandsContent\WarTornLandsContent.contentproj", "{26B4BEA3-E8E1-4BDC-B321-FD2EDC833D3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarTornLandsRefurbished", "WarTornLandsRefurbished\WarTornLandsRefurbished\WarTornLandsRefurbished.csproj", "{9B9CF57A-7730-4848-AD11-B8FE5C984C90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +19,10 @@ Global
 		{19F62EDA-2A13-41AE-87B5-AD31D430889B}.Release|x86.Build.0 = Release|x86
 		{26B4BEA3-E8E1-4BDC-B321-FD2EDC833D3F}.Debug|x86.ActiveCfg = Debug|x86
 		{26B4BEA3-E8E1-4BDC-B321-FD2EDC833D3F}.Release|x86.ActiveCfg = Release|x86
+		{9B9CF57A-7730-4848-AD11-B8FE5C984C90}.Debug|x86.ActiveCfg = Debug|x86
+		{9B9CF57A-7730-4848-AD11-B8FE5C984C90}.Debug|x86.Build.0 = Debug|x86
+		{9B9CF57A-7730-4848-AD11-B8FE5C984C90}.Release|x86.ActiveCfg = Release|x86
+		{9B9CF57A-7730-4848-AD11-B8FE5C984C90}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
