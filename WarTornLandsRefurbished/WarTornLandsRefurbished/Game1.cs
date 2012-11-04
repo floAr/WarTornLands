@@ -8,6 +8,9 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using WarTornLandsRefurbished.Entities;
+using WarTornLandsRefurbished.Infrastructure.Interfaces;
+using WarTornLandsRefurbished.Infrastructure.Systeme.AnimationsSystem;
 
 namespace WarTornLandsRefurbished
 {
@@ -18,6 +21,9 @@ namespace WarTornLandsRefurbished
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        Entity staticTest;
+        Entity animatedTest;
 
         public Game1()
         {
@@ -46,7 +52,17 @@ namespace WarTornLandsRefurbished
         {
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            StaticDrawer sd=new StaticDrawer();
+            sd.Texture=Content.Load<Texture2D>("blackhole");
+            staticTest = new Entity(sd);
+            AnimationSystem animS=new AnimationSystem(Content.Load<Texture2D>("character_64x128"));
 
+            Animation anim = new Animation(animS, "walkDown");
+            for (int i = 0; i < 4; i++)
+                anim.AddFrame(new Rectangle(64 * i, 0, 64, 128));
+            animS.AddAnimation(anim);
+            animS.SetCurrentAnimation("walkDown");
+            animatedTest = new Entity(animS);
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
 
@@ -69,7 +85,8 @@ namespace WarTornLandsRefurbished
             // Ermöglicht ein Beenden des Spiels
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
+            staticTest.Update(gameTime);
+            animatedTest.Update(gameTime);
             // TODO: Fügen Sie Ihre Aktualisierungslogik hier hinzu
 
             base.Update(gameTime);
@@ -84,7 +101,10 @@ namespace WarTornLandsRefurbished
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Fügen Sie Ihren Zeichnungscode hier hinzu
-
+            spriteBatch.Begin();
+            staticTest.Draw(spriteBatch, gameTime);
+            animatedTest.Draw(spriteBatch, gameTime);
+            spriteBatch.End();
             base.Draw(gameTime);
         }
 

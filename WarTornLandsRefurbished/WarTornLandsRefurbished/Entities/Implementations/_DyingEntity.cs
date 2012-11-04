@@ -5,7 +5,9 @@ using System.Text;
 
 namespace WarTornLandsRefurbished.Entities.Implementations
 {
-    class _DyingEntity : WarTornLandsRefurbished.Entities.Entity
+   /* class _DyingEntity : WarTornLandsRefurbished.Entities.Entity
     {
-    }
+      
+
+    }*/
 }

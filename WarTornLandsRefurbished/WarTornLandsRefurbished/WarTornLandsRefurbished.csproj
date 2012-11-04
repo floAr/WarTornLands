@@ -77,7 +77,11 @@
     <Compile Include="Infrastructure\CollisionManager.cs" />
     <Compile Include="Infrastructure\DialogManager.cs" />
     <Compile Include="Infrastructure\InputManager.cs" />
+    <Compile Include="Infrastructure\Interfaces\IDrawExecuter.cs" />
+    <Compile Include="Infrastructure\Interfaces\StaticDrawer.cs" />
     <Compile Include="Infrastructure\SoundManager.cs" />
+    <Compile Include="Infrastructure\Systeme\AnimationsSystem\Animation.cs" />
+    <Compile Include="Infrastructure\Systeme\AnimationsSystem\AnimationSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
@@ -124,7 +128,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Infrastructure\Systeme\AnimationsSystem\" />
     <Folder Include="Infrastructure\Systeme\InputSystem\" />
   </ItemGroup>
   <ItemGroup>
