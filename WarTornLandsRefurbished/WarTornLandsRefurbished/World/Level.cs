@@ -36,7 +36,6 @@ namespace WarTornLandsRefurbished.World
         private Layer _layer4_HighEntities;
         private Layer _layer5_HighFoliage;
         private Layer _layer6_HighAnimation;
-        private Layer _layer7_Ceiling;
 
         private Layer _layerX_Collision;
 
@@ -52,10 +51,11 @@ namespace WarTornLandsRefurbished.World
 
             _layer5_HighFoliage = new TileLayer(game);
             _layer6_HighAnimation = new TileLayer(game);
-            _layer7_Ceiling = new TileLayer(game);
 
             //_layerX_Collision = ?
         }
+
+        #region Add parts
 
         public void AddGround(int[,] data)
         {
@@ -101,6 +101,8 @@ namespace WarTornLandsRefurbished.World
         {
             (_layer6_HighAnimation as TileLayer).LoadGrid(data, true, "");
         }
+
+        #endregion
 
         public void Draw(GameTime gameTime)
         {
