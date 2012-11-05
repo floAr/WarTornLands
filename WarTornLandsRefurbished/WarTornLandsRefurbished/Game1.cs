@@ -8,26 +8,43 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using WarTornLandsRefurbished.Entities;
-using WarTornLandsRefurbished.Infrastructure.Interfaces;
-using WarTornLandsRefurbished.Infrastructure.Systeme.AnimationsSystem;
+using WarTornLands.PlayerClasses;
+using WarTornLands.Infrastructure;
+using WarTornLands.Entities.Implementations;
+using WarTornLands.Infrastructure.Systems;
+using WarTornLandsRefurbished.World;
+using WarTornLandsRefurbished.Infrastructure;
 
-namespace WarTornLandsRefurbished
+namespace WarTornLands
 {
     /// <summary>
     /// Dies ist der Haupttyp für Ihr Spiel
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        GraphicsDeviceManager _graphics;
 
-        Entity staticTest;
-        Entity animatedTest;
+        public SpriteBatch SpriteBatch { get; private set; }
+        public InputManager Input { get; private set; }
+        public Player Player { get; private set; }
+        public XML_Parser XMLParser { get; private set; }
+        public DialogManager DialogManager { get; private set; }
+        public Interface Interface { get; private set; }
+        public Level Level { get; private set; }        
+        
+        
+        //public Texture2D _tileSetTexture;
+        //public Texture2D _treeTexture;
+        //public Texture2D _deadTreeTexture;
+        //public Texture2D _gruselUteTexture;
+        //public Texture2D _blackHoleTexture;
+        //public Texture2D _potionTexture;
+        //public Texture2D _cestTexture;
+        //GameServiceContainer services;
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
@@ -51,18 +68,40 @@ namespace WarTornLandsRefurbished
         protected override void LoadContent()
         {
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            StaticDrawer sd=new StaticDrawer();
-            sd.Texture=Content.Load<Texture2D>("blackhole");
-            staticTest = new Entity(sd);
-            AnimationSystem animS=new AnimationSystem(Content.Load<Texture2D>("character_64x128"));
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Animation anim = new Animation( "walkDown");
-            for (int i = 0; i < 4; i++)
-                anim.AddFrame(new Rectangle(64 * i, 0, 64, 128));
-            animS.AddAnimation(anim);
-            animS.SetCurrentAnimation("walkDown");
-            animatedTest = new Entity(animS);
+            TextureCatalog.LoadContent(Content);
+
+            Input = InputManager.GetInstance(this);
+            //Interface = new Interface(this);
+
+            Player = Player.GetInstance(this);
+            XMLParser = XML_Parser.GetInstance(this);
+            DialogManager = DialogManager.GetInstance(this);
+            //_parser.SetFilename("Horst");
+            //_parser.SaveText();
+            XMLParser.SetFilename("0");
+
+            //_parser.SetLevel();
+            //_parser.SaveLevel();
+            try
+            {
+                XMLParser.Load();
+                Level = XMLParser.GetLevel();
+            }
+            catch (Exception e)
+            {
+
+            } 
+
+            PlayerClasses.CollisionManager.Setup(Level);
+
+            this.Components.Add(Input);
+
+            Level.LoadContent();
+
+            Player.LoadContent(Content);
+            
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
 
@@ -85,9 +124,11 @@ namespace WarTornLandsRefurbished
             // Ermöglicht ein Beenden des Spiels
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            staticTest.Update(gameTime);
-            animatedTest.Update(gameTime);
-            // TODO: Fügen Sie Ihre Aktualisierungslogik hier hinzu
+            if (Player.Health > 0)
+            {
+                Player.Update(gameTime);
+            }
+            Level.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -101,35 +142,24 @@ namespace WarTornLandsRefurbished
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Fügen Sie Ihren Zeichnungscode hier hinzu
-            spriteBatch.Begin();
-            staticTest.Draw(spriteBatch, gameTime);
-            animatedTest.Draw(spriteBatch, gameTime);
-            spriteBatch.End();
+
+            // Kapseln in eigene Klasse, für Menüs etc.
+            SpriteBatch.Begin();
+
+            Level.Draw(gameTime);
+
+            Interface.Draw(gameTime);
+
+            // Test für Textmenue
+            DialogManager.DrawText();
+            SpriteBatch.End();
+            
             base.Draw(gameTime);
         }
 
-        /// <summary>
-        /// Liefert true, falls an position der Spieler befindet
-        /// </summary>
-        public bool IsPlayerAt(Vector2 position)
+        public void SetLevel(Level level)
         {
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
-        /// Liefert das Entity an der Position zur Interaktion, null wenn keine Entity vorhanden ist
-        /// </summary>
-        public Entities.Entity TryInteractionAt(Vector2 position)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
-        /// Liefert das Entity an der Position zum Angriff, null wenn keine Entity vorhanden ist
-        /// </summary>
-        public Entities.Entity TryHitAt(Vector2 position)
-        {
-            throw new System.NotImplementedException();
+            Level = level;
         }
     }
 }
