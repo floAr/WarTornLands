@@ -44,7 +44,7 @@ namespace WarTornLandsRefurbished.Infrastructure.Systeme.AnimationsSystem
         private int _currentFrame;
 
         private AnimationSystem _parent;
-
+        public AnimationSystem Parent { get { return _parent; } set { _parent = value; } }
 
 
 
@@ -72,13 +72,12 @@ namespace WarTornLandsRefurbished.Infrastructure.Systeme.AnimationsSystem
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <param name="name">The name.</param>
-        public Animation(AnimationSystem parent,string name)
+        public Animation(string name)
         {
             _frames = new List<Frame>();
             this.Name = name;
             IsLooping = false;
             IsRepeating = true;
-            _parent = parent;
 
         }
 
@@ -88,13 +87,13 @@ namespace WarTornLandsRefurbished.Infrastructure.Systeme.AnimationsSystem
         /// <param name="parent">The parent.</param>
         /// <param name="name">The name.</param>
         /// <param name="followUp">The follow up animation.</param>
-        public Animation(AnimationSystem parent,string name,Animation followUp)
+        public Animation(string name,Animation followUp)
         {
             _frames = new List<Frame>();
             this.Name = name;
             _foolowUp = followUp;
             IsRepeating = false;
-            _parent = parent;
+
         }
 
         /// <summary>

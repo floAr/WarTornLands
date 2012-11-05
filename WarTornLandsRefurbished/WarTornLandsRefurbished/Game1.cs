@@ -57,7 +57,7 @@ namespace WarTornLandsRefurbished
             staticTest = new Entity(sd);
             AnimationSystem animS=new AnimationSystem(Content.Load<Texture2D>("character_64x128"));
 
-            Animation anim = new Animation(animS, "walkDown");
+            Animation anim = new Animation( "walkDown");
             for (int i = 0; i < 4; i++)
                 anim.AddFrame(new Rectangle(64 * i, 0, 64, 128));
             animS.AddAnimation(anim);

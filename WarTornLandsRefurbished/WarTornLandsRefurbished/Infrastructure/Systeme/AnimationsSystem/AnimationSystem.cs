@@ -53,6 +53,7 @@ namespace WarTornLandsRefurbished.Infrastructure.Systeme.AnimationsSystem
 
         internal void AddAnimation(Animation anim)
         {
+            anim.Parent = this;
             _animations.Add(anim.Name, anim);
         }
     }
