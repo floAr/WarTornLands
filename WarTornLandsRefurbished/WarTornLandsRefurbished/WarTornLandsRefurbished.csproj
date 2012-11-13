@@ -73,18 +73,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\Modules\DialogModule\_DialogModule.cs" />
-    <Compile Include="Entities\Modules\DieModule\_DyingModule.cs" />
+    <Compile Include="Entities\Modules\Dialog\_IDialogModule.cs" />
+    <Compile Include="Entities\Modules\Die\_IDieModule.cs" />
+    <Compile Include="Entities\Modules\Think\_IThinkModule.cs" />
     <Compile Include="Infrastructure\CollisionManager.cs" />
     <Compile Include="Infrastructure\Constants.cs" />
     <Compile Include="Infrastructure\DialogManager.cs" />
     <Compile Include="Infrastructure\InputManager.cs" />
-    <Compile Include="Entities\Modules\DrawModule\_IDrawModule.cs" />
-    <Compile Include="Entities\Modules\DrawModule\StaticDrawer.cs" />
+    <Compile Include="Entities\Modules\Draw\_IDrawModule.cs" />
+    <Compile Include="Entities\Modules\Draw\StaticDrawer.cs" />
     <Compile Include="Infrastructure\Interface.cs" />
     <Compile Include="Infrastructure\SoundManager.cs" />
-    <Compile Include="Entities\Modules\DrawModule\Animation.cs" />
-    <Compile Include="Entities\Modules\DrawModule\AnimationSystem.cs" />
+    <Compile Include="Entities\Modules\Draw\Animation.cs" />
+    <Compile Include="Entities\Modules\Draw\AnimationSystem.cs" />
     <Compile Include="Infrastructure\Systems\Counter.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\DirectionInput.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\InputKey.cs" />

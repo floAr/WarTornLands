@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WarTornLandsRefurbished.Entities.Modules.Think
 {
-    class _ThinkModule
+    class _IThinkModule
     {
     }
 }
