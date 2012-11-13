@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WarTornLandsRefurbished.Infrastructure.Interfaces;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace WarTornLandsRefurbished.Infrastructure.Systeme.AnimationsSystem
+namespace WarTornLands.Entities.Modules.Draw
 {
 
     public class AnimationSystem : IDrawExecuter

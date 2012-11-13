@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace WarTornLandsRefurbished.Infrastructure.Systeme.AnimationsSystem
+namespace WarTornLands.Entities.Modules.Draw
 {
     /// <summary>
     /// Class for a frame

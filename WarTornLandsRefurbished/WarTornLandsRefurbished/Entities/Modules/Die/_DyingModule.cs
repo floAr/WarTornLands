@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace WarTornLands.Entities.Implementations
+namespace WarTornLands.Entities.Modules.Die
 {
     class DyingEntity : WarTornLands.Entities.Entity
     {

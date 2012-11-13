@@ -73,12 +73,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\Modules\_DyingModule.cs" />
+    <Compile Include="Entities\Modules\DialogModule\_DialogModule.cs" />
+    <Compile Include="Entities\Modules\DieModule\_DyingModule.cs" />
     <Compile Include="Infrastructure\CollisionManager.cs" />
     <Compile Include="Infrastructure\Constants.cs" />
     <Compile Include="Infrastructure\DialogManager.cs" />
     <Compile Include="Infrastructure\InputManager.cs" />
-    <Compile Include="Entities\Modules\DrawModule\IDrawModule.cs" />
+    <Compile Include="Entities\Modules\DrawModule\_IDrawModule.cs" />
     <Compile Include="Entities\Modules\DrawModule\StaticDrawer.cs" />
     <Compile Include="Infrastructure\Interface.cs" />
     <Compile Include="Infrastructure\SoundManager.cs" />
