@@ -10,7 +10,7 @@ namespace WarTornLands.PlayerClasses
         Potion = 0
     }
 
-    class Inventory
+   public class Inventory
     {
         private static Inventory _inventory;
 

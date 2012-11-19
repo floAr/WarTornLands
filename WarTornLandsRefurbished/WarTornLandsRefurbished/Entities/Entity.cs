@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using WarTornLands.Counter;
 using Microsoft.Xna.Framework.Content;
 using WarTornLands;
-using WarTornLands.Entities.Implementations;
 using WarTornLands.PlayerClasses;
 using WarTornLands.Entities.Modules.Draw;
 
@@ -23,7 +22,7 @@ namespace WarTornLands.Entities
 
 
 
-    public abstract class Entity : GameComponent
+    public  class Entity : DrawableGameComponent
     {
         /* TODO
          * Interface als Events oder Methoden?
@@ -49,17 +48,15 @@ namespace WarTornLands.Entities
         /////////////////
 
         // Counters ///
-        protected readonly string _animCounter = "anim_counter";
         protected readonly string _hitCounter = "hit_counter";
         ///////////////
 
         public Vector2 Position { get; protected set; }
         public Vector2 InitialPosition { get; protected set; }
-        protected Point TilePosition { get; protected set; }
+        protected Point TilePosition { get; set; }
         public int Health { get; protected set; }
         public string Name { get; protected set; }
 
-        protected Texture2D _texture;
         protected float _radius;
         protected CounterManager _cm;
         protected float _weaponRange;
@@ -72,16 +69,13 @@ namespace WarTornLands.Entities
         #endregion
 
 
-        public abstract event EventHandler<DieEventArgs> Die;
-
-
-        public Entity(Game game, Vector2 position, Texture2D texture, String name = "Entity")
+        public Entity(Game1 game, Vector2 position, IDrawExecuter drawExecuter, String name = "Entity")
             : base(game)
         {
             this.Position = position;
-            this._texture = texture;
             this.Health = 1;
             this.Name = name;
+            this._drawModule = drawExecuter;
         }
 
         public int Damage(int damage)
@@ -126,13 +120,13 @@ namespace WarTornLands.Entities
         {
             get
             {
-                if (_texture == null)
+                if (_drawModule == null)
                 {
                     return new Vector2(0, 0);
                 }
                 else
                 {
-                    return new Vector2(_texture.Width, _texture.Height);
+                    return _drawModule.Size;
                 }
             }
         }
@@ -152,30 +146,23 @@ namespace WarTornLands.Entities
 
         public override void Draw(GameTime gameTime)
         {
-            Point drawPos = new Point((int)this.GetDrawPosition().X, (int)this.GetDrawPosition().Y);
-            int width = (int)Math.Floor((double)(Game as Game1)._tileSetTexture.Width / Constants.TileSize);
-            Vector2 size = Size();
-
-            Rectangle drawRec = new Rectangle(
-                            drawPos.X,
-                            drawPos.Y,
-                            (int)size.X, (int)size.Y);
+           // Point drawPos = new Point((int)this.GetDrawPosition().X, (int)this.GetDrawPosition().Y);
 
             DrawInformation information=new DrawInformation(){
-                Position=GetDrawPosition(),
+                Position=this.Position,
                 Rotation=_rotation,
-                Scale=_scale
-            }
+                Scale=this.Size
+            };
 
-            _drawModule.Draw(((Game1)Game).SpriteBatch,information)
+            _drawModule.Draw(((Game1)Game).SpriteBatch, information);
         }
 
-        protected virtual Vector2 GetDrawPosition()
+      /*  protected virtual Vector2 GetDrawPosition()
         {
-            Vector2 center = (Game as Game1).Player.GetPosition();
+            Vector2 center = (Game as Game1).Player.Position;
             return new Vector2((this.Position.X - center.X - _texture.Width * 0.5f + (float)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f)),
                                 (this.Position.Y - center.Y - _texture.Height * 0.5f + (float)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f)));
-        }
+        }*/
 
         public virtual void OnDie()
         {
@@ -187,16 +174,7 @@ namespace WarTornLands.Entities
 
         public virtual void OnCollide(Entity source)
         {
-            // "einsammeln"
-            if (_canBePickedUp)
-            {
-                if (source == (Game as Game1).Player)
-                {
-                    this._health = 0;
-
-                    // TODO give player some item
-                }
-            }
+           
         }
     }
 }

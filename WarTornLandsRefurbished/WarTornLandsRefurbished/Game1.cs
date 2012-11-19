@@ -10,10 +10,12 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using WarTornLands.PlayerClasses;
 using WarTornLands.Infrastructure;
-using WarTornLands.Entities.Implementations;
+
 using WarTornLands.Infrastructure.Systems;
 using WarTornLandsRefurbished.World;
 using WarTornLandsRefurbished.Infrastructure;
+using WarTornLands.Entities.Modules.Draw;
+using WarTornLands.Entities;
 
 namespace WarTornLands
 {
@@ -26,11 +28,13 @@ namespace WarTornLands
 
         public SpriteBatch SpriteBatch { get; private set; }
         public InputManager Input { get; private set; }
-        public Player Player { get; private set; }
-        public XML_Parser XMLParser { get; private set; }
-        public DialogManager DialogManager { get; private set; }
-        public Interface Interface { get; private set; }
-        public Level Level { get; private set; }        
+        Entity staticTest;
+        Entity dynamicTest;
+    //    public Player Player { get; private set; }
+   //     public XML_Parser XMLParser { get; private set; }
+    //    public DialogManager DialogManager { get; private set; }
+    //    public Interface Interface { get; private set; }
+    //    public Level Level { get; private set; }        
         
         
         //public Texture2D _tileSetTexture;
@@ -70,17 +74,17 @@ namespace WarTornLands
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            TextureCatalog.LoadContent(Content);
+          /*  TextureCatalog.LoadContent(Content);
 
             Input = InputManager.GetInstance(this);
             //Interface = new Interface(this);
 
             Player = Player.GetInstance(this);
-            XMLParser = XML_Parser.GetInstance(this);
+        //    XMLParser = XML_Parser.GetInstance(this);
             DialogManager = DialogManager.GetInstance(this);
             //_parser.SetFilename("Horst");
             //_parser.SaveText();
-            XMLParser.SetFilename("0");
+         //   XMLParser.SetFilename("0");
 
             //_parser.SetLevel();
             //_parser.SaveLevel();
@@ -101,6 +105,25 @@ namespace WarTornLands
             Level.LoadContent();
 
             Player.LoadContent(Content);
+           * */
+                StaticDrawer sd=new StaticDrawer();
+
+          sd.Texture=Content.Load<Texture2D>("blackhole");
+
+          staticTest = new Entity(this, new Vector2(10, 10), sd, "loch");
+
+        AnimatedDrawer animS = new AnimatedDrawer(Content.Load<Texture2D>("character_64x128"));
+
+ 
+   Animation anim = new Animation("walkDown");
+
+       for (int i = 0; i < 4; i++)
+            anim.AddFrame(new Rectangle(64 * i, 0, 64, 128));
+      animS.AddAnimation(anim);
+
+     animS.SetCurrentAnimation("walkDown");
+
+     dynamicTest = new Entity(this, new Vector2(250,250), animS, "Ute");
             
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
@@ -124,11 +147,8 @@ namespace WarTornLands
             // Ermöglicht ein Beenden des Spiels
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            if (Player.Health > 0)
-            {
-                Player.Update(gameTime);
-            }
-            Level.Update(gameTime);
+            staticTest.Update(gameTime);
+            dynamicTest.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -145,21 +165,14 @@ namespace WarTornLands
 
             // Kapseln in eigene Klasse, für Menüs etc.
             SpriteBatch.Begin();
-
-            Level.Draw(gameTime);
-
-            Interface.Draw(gameTime);
-
-            // Test für Textmenue
-            DialogManager.DrawText();
+            staticTest.Draw(gameTime);
+            dynamicTest.Draw(gameTime);
+         
             SpriteBatch.End();
             
             base.Draw(gameTime);
         }
 
-        public void SetLevel(Level level)
-        {
-            Level = level;
-        }
+       
     }
 }
