@@ -6,12 +6,11 @@ using WarTornLands.Entities;
 
 namespace WarTornLandsRefurbished.Entities.Modules.Interact
 {
-    interface IInteractModule
+   public class PickUp:IInteractModule
     {
-        public struct InteractInformation
+        public void Interact(Entity invoker, Entity target, IInteractModule.InteractInformation information)
         {
+            
         }
-
-        public void Interact(Entity invoker, Entity target, InteractInformation information);
     }
 }
