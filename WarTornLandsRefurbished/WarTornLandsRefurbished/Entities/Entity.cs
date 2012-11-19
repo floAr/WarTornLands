@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Content;
 using WarTornLands;
 using WarTornLands.Entities.Implementations;
 using WarTornLands.PlayerClasses;
+using WarTornLands.Entities.Modules.Draw;
 
 namespace WarTornLands.Entities
 {
@@ -62,6 +63,14 @@ namespace WarTornLands.Entities
         protected float _radius;
         protected CounterManager _cm;
         protected float _weaponRange;
+
+        #region DrawModule
+        IDrawExecuter _drawModule;
+
+        private float _rotation;
+        private float _scale;
+        #endregion
+
 
         public abstract event EventHandler<DieEventArgs> Die;
 
@@ -134,6 +143,10 @@ namespace WarTornLands.Entities
 
             TilePosition = new Point((int)(Position.X / Constants.TileSize), (int)(Position.Y / Constants.TileSize));
 
+            if (_drawModule is AnimatedDrawer)
+                ((AnimatedDrawer)_drawModule).Update(gameTime);
+
+
             #endregion
         }
 
@@ -148,7 +161,13 @@ namespace WarTornLands.Entities
                             drawPos.Y,
                             (int)size.X, (int)size.Y);
 
-            (Game as Game1).SpriteBatch.Draw(_texture, drawRec, Color.White);
+            DrawInformation information=new DrawInformation(){
+                Position=GetDrawPosition(),
+                Rotation=_rotation,
+                Scale=_scale
+            }
+
+            _drawModule.Draw(((Game1)Game).SpriteBatch,information)
         }
 
         protected virtual Vector2 GetDrawPosition()

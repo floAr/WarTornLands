@@ -43,8 +43,8 @@ namespace WarTornLands.Entities.Modules.Draw
         private float _counter;
         private int _currentFrame;
 
-        private AnimationSystem _parent;
-        public AnimationSystem Parent { get { return _parent; } set { _parent = value; } }
+        private AnimatedDrawer _parent;
+        public AnimatedDrawer Parent { get { return _parent; } set { _parent = value; } }
 
 
 
