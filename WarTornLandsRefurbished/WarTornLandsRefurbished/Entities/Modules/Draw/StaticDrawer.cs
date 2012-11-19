@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace WarTornLandsRefurbished.Infrastructure.Interfaces
+namespace WarTornLands.Entities.Modules.Draw
 {
     /// <summary>
     /// Static drawer class, to draw entities consisting of a single static texture

@@ -120,7 +120,6 @@ namespace WarTornLandsRefurbished.World
 
             _layer5_HighFoliage.Draw(gameTime);
             _layer6_HighAnimation.Draw(gameTime);
-            _layer7_Ceiling.Draw(gameTime);
         }
 
         public bool IsPositionAccessible(Vector2 position, Entity source)

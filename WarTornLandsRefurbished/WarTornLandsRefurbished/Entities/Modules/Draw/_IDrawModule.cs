@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using WarTornLandsRefurbished.Infrastructure.Interfaces;
 
-namespace WarTornLandsRefurbished.Infrastructure.Interfaces
+namespace WarTornLands.Entities.Modules.Draw
 {
     /// <summary>
     /// Structure which holds all the information to locate a sprite on the screen

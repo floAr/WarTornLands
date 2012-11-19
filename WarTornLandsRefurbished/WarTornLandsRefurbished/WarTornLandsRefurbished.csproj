@@ -73,15 +73,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\Implementations\_DyingEntity.cs" />
+    <Compile Include="Entities\Modules\Dialog\_IDialogModule.cs" />
+    <Compile Include="Entities\Modules\Die\_IDieModule.cs" />
+    <Compile Include="Entities\Modules\Think\_IThinkModule.cs" />
     <Compile Include="Infrastructure\CollisionManager.cs" />
+    <Compile Include="Infrastructure\Constants.cs" />
     <Compile Include="Infrastructure\DialogManager.cs" />
     <Compile Include="Infrastructure\InputManager.cs" />
-    <Compile Include="Infrastructure\Interfaces\IDrawExecuter.cs" />
-    <Compile Include="Infrastructure\Interfaces\StaticDrawer.cs" />
+    <Compile Include="Entities\Modules\Draw\_IDrawModule.cs" />
+    <Compile Include="Entities\Modules\Draw\StaticDrawer.cs" />
+    <Compile Include="Infrastructure\Interface.cs" />
     <Compile Include="Infrastructure\SoundManager.cs" />
-    <Compile Include="Infrastructure\Systeme\AnimationsSystem\Animation.cs" />
-    <Compile Include="Infrastructure\Systeme\AnimationsSystem\AnimationSystem.cs" />
+    <Compile Include="Entities\Modules\Draw\Animation.cs" />
+    <Compile Include="Entities\Modules\Draw\AnimationSystem.cs" />
+    <Compile Include="Infrastructure\Systems\Counter.cs" />
+    <Compile Include="Infrastructure\Systems\InputSystem\DirectionInput.cs" />
+    <Compile Include="Infrastructure\Systems\InputSystem\InputKey.cs" />
+    <Compile Include="Infrastructure\Systems\InputSystem\Key.cs" />
+    <Compile Include="Infrastructure\Systems\XML_Parser.cs" />
+    <Compile Include="Infrastructure\TextureCatalog.cs" />
     <Compile Include="PlayerClasses\Inventory.cs" />
     <Compile Include="PlayerClasses\_Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,9 +142,7 @@
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Infrastructure\Systeme\InputSystem\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="WarTornLandsClasses.cd" />
   </ItemGroup>
