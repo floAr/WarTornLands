@@ -7,20 +7,23 @@ using Microsoft.Xna.Framework;
 
 namespace WarTornLands.Infrastructure.Systems.InputSystem
 {
-    public class Key : InputKey
+    public class Key 
     {
-        public int Held { get; private set; }
+       /* public override int Held()
+        {
+            throw new NotImplementedException();
+        }
         public bool Value { get; private set; }
         
         private Keys _key;
         private Buttons _button;
-        private int _mode;
+        private InputMode _mode;
         
         public event EventHandler Pressed;
 
 
-        public override void SetMode(int mode)
-        {
+        public override void  SetMode(InputMode mode)
+{
             _mode = mode;
         }
         public void SetActivator(Keys key)
@@ -82,5 +85,9 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
             }
             catch { throw new Exception("Input keys not set."); }
         }
+
+       */
+
+       
     }
 }

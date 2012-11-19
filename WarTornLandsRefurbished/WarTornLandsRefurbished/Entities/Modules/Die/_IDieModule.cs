@@ -7,10 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WarTornLands.Entities.Modules.Die
 {
-    class _IDyingModule
+    interface IDyingModule
     {
-        public _IDyingModule(Game game, Vector2 position, Texture2D texture, string name)
-        {
-        }
+        
     }
 }

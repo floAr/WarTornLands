@@ -48,5 +48,7 @@ namespace WarTornLands.Entities.Modules.Draw
   public  interface IDrawExecuter
     {
          void Draw(SpriteBatch batch, DrawInformation information);
+
+         Vector2 Size { get; }
     }
 }

@@ -9,30 +9,44 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WarTornLands.World.Layers
 {
-    class TileLayer : Layer
+    public struct Tile
     {
-        private Game _game;
+        /// <summary>
+        /// Reference to tile in TileSet Texture, where 0 is transparent
+        /// and other tiles are numbered consecutively.
+        /// </summary>
+        int TileNum;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        char MoveSpeed;
+    };
+
+    public class TileLayer : Layer
+    {
         private bool _isAnimated;
         private CounterManager _cm;
-        private int[,] _grid;
+        private Tile[,] _grid;
         private Texture2D _tileSetTexture;
 
-        public TileLayer(Game game)
+        public TileLayer(Game game, int depth)
+            : base(game, depth)
         {
-            _game = game;
         }
 
-        public void LoadGrid(int[,] grid, bool isAnimated, string tileSet)
+        public void LoadGrid(Tile[,] grid, bool isAnimated, string tileSet)
         {
             _grid = grid;
             _isAnimated = isAnimated;
             _game.Content.Load<Texture2D>(tileSet);
         }
 
-        public void Draw(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
-            Game1 game = (_game as Game1);
-            Vector2 center = game.Player.Position;
+           /* Game1 game = (_game as Game1);
+            //Vector2 center = game.Player.Position;
+            Vector2 center = new Vector2(0, 0);
             int width = (int)Math.Floor((double)_tileSetTexture.Width / Constants.TileSize);
 
 
@@ -57,10 +71,10 @@ namespace WarTornLands.World.Layers
                 }
             }
 
-            game.SpriteBatch.End();
+            game.SpriteBatch.End();*/
         }
 
-        public void Update(GameTime gameTime, Vector2 center)
+        public override void Update(GameTime gameTime)
         {
             if (_isAnimated)
             {

@@ -6,9 +6,15 @@ using Microsoft.Xna.Framework;
 
 namespace WarTornLands.World.Layers
 {
-    interface Layer
+    public abstract class Layer : DrawableGameComponent
     {
-        void Update(GameTime gameTime);
-        void Draw(GameTime gameTime);
+        protected Game _game;
+
+        public Layer(Game game, int depth)
+            : base(game)
+        {
+            _game = game;
+            DrawOrder = depth;
+        }
     }
 }

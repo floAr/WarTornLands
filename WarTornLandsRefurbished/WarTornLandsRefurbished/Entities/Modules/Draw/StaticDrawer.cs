@@ -41,5 +41,11 @@ namespace WarTornLands.Entities.Modules.Draw
                 _loc = information.Position + (_size / 2);
             batch.Draw(Texture, new Rectangle((int)_loc.X, (int)_loc.Y, (int)_size.X, (int)_size.Y), new Rectangle(0, 0, (int)_size.X, (int)_size.Y), Color.White, information.Rotation, _size / 2, SpriteEffects.None, 0.5f);
         }
+
+
+        public Vector2 Size
+        {
+            get { return new Vector2(_tex.Width, _tex.Height); }
+        }
     }
 }

@@ -55,5 +55,14 @@ namespace WarTornLands.Entities.Modules.Draw
             anim.Parent = this;
             _animations.Add(anim.Name, anim);
         }
+
+
+
+
+
+        public Vector2 Size
+        {
+            get { return new Vector2(_animations[_currentAnimation].CurrentFrame.Width, _animations[_currentAnimation].CurrentFrame.Height); }
+        }
     }
 }
