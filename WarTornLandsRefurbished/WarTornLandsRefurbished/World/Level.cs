@@ -10,26 +10,39 @@ using WarTornLands.Entities;
 
 namespace WarTornLandsRefurbished.World
 {
-
-    /*
-     *Level enthält 9 Layer:
-     *UNTEN
-     * Layer0: Bodentextur   | wird im Editor erstellt
-     *  TileBlendLayer       | wird aus Layer0 im Programm erzeugt
-     * Layer1: Animation     | wird im Editor erstellt (optional)
-     * Layer2: LowFoliage    | wird im Editor erstellt (optional)
-     * LowEntities           | werden im Editor oder per Script plaziert
-     * Spieler               | 
-     * HighEntities          | werden im Editor oder per Script 
-     * Layer3: HighFoliage   | wird im Editor erstellt (optional)
-     * Layer4: HighAnimation | wird im Editor erstellt (optional)
-     *OBEN
-     *
-     * LayerX: Collision     
-     */
-    public class Level //: GameComponent
+    public class Level
     {
-        
-            
+        private Game _game;
+        private LinkedList<Area> _areas;
+ 
+        public Level(Game game)
+        {
+            _game = game;
+            _areas = new LinkedList<Area>();
+        }
+
+        public void AddArea(Area area)
+        {
+            _areas.AddLast(area);
+            area.Add();
+        }
+
+        public void RemoveArea(Area area)
+        {
+            area.Remove();
+            _areas.Remove(area);
+        }
+
+        public bool IsPositionAccessible(Vector2 position, Entity source)
+        {
+            // TODO return position accessible
+            return true;
+        }
+
+        public List<Entity> GetEntitiesAt(Vector2 worldPosition)
+        {
+            // TODO entity at
+            return null;
+        }
     }
 }
