@@ -30,13 +30,13 @@ namespace WarTornLands
         public InputManager Input { get; private set; }
         Entity staticTest;
         Entity dynamicTest;
-    //    public Player Player { get; private set; }
-   //     public XML_Parser XMLParser { get; private set; }
-    //    public DialogManager DialogManager { get; private set; }
-    //    public Interface Interface { get; private set; }
-    //    public Level Level { get; private set; }        
-        
-        
+        //    public Player Player { get; private set; }
+        //     public XML_Parser XMLParser { get; private set; }
+        //    public DialogManager DialogManager { get; private set; }
+        //    public Interface Interface { get; private set; }
+        //    public Level Level { get; private set; }        
+
+
         //public Texture2D _tileSetTexture;
         //public Texture2D _treeTexture;
         //public Texture2D _deadTreeTexture;
@@ -74,57 +74,57 @@ namespace WarTornLands
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-          /*  TextureCatalog.LoadContent(Content);
+            /*  TextureCatalog.LoadContent(Content);
 
-            Input = InputManager.GetInstance(this);
-            //Interface = new Interface(this);
+              Input = InputManager.GetInstance(this);
+              //Interface = new Interface(this);
 
-            Player = Player.GetInstance(this);
-        //    XMLParser = XML_Parser.GetInstance(this);
-            DialogManager = DialogManager.GetInstance(this);
-            //_parser.SetFilename("Horst");
-            //_parser.SaveText();
-         //   XMLParser.SetFilename("0");
+              Player = Player.GetInstance(this);
+          //    XMLParser = XML_Parser.GetInstance(this);
+              DialogManager = DialogManager.GetInstance(this);
+              //_parser.SetFilename("Horst");
+              //_parser.SaveText();
+           //   XMLParser.SetFilename("0");
 
-            //_parser.SetLevel();
-            //_parser.SaveLevel();
-            try
-            {
-                XMLParser.Load();
-                Level = XMLParser.GetLevel();
-            }
-            catch (Exception e)
-            {
+              //_parser.SetLevel();
+              //_parser.SaveLevel();
+              try
+              {
+                  XMLParser.Load();
+                  Level = XMLParser.GetLevel();
+              }
+              catch (Exception e)
+              {
 
-            } 
+              } 
 
-            PlayerClasses.CollisionManager.Setup(Level);
+              PlayerClasses.CollisionManager.Setup(Level);
 
-            this.Components.Add(Input);
+              this.Components.Add(Input);
 
-            Level.LoadContent();
+              Level.LoadContent();
 
-            Player.LoadContent(Content);
-           * */
-                StaticDrawer sd=new StaticDrawer();
+              Player.LoadContent(Content);
+             * */
+            StaticDrawer sd = new StaticDrawer();
 
-          sd.Texture=Content.Load<Texture2D>("blackhole");
+            sd.Texture = Content.Load<Texture2D>("blackhole");
 
-          staticTest = new Entity(this, new Vector2(10, 10), sd, "loch");
+            staticTest = new Entity(this, new Vector2(10, 10), sd, "loch");
 
-        AnimatedDrawer animS = new AnimatedDrawer(Content.Load<Texture2D>("character_64x128"));
+            AnimatedDrawer animS = new AnimatedDrawer(Content.Load<Texture2D>("character_64x128"));
 
- 
-   Animation anim = new Animation("walkDown");
 
-       for (int i = 0; i < 4; i++)
-            anim.AddFrame(new Rectangle(64 * i, 0, 64, 128));
-      animS.AddAnimation(anim);
+            Animation anim = new Animation("walkDown");
 
-     animS.SetCurrentAnimation("walkDown");
+            for (int i = 0; i < 4; i++)
+                anim.AddFrame(new Rectangle(64 * i, 0, 64, 128));
+            animS.AddAnimation(anim);
 
-     dynamicTest = new Entity(this, new Vector2(250,250), animS, "Ute");
-            
+            animS.SetCurrentAnimation("walkDown");
+
+            dynamicTest = new Entity(this, new Vector2(250, 250), animS, "Ute");
+
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
 
@@ -167,12 +167,12 @@ namespace WarTornLands
             SpriteBatch.Begin();
             staticTest.Draw(gameTime);
             dynamicTest.Draw(gameTime);
-         
+
             SpriteBatch.End();
-            
+
             base.Draw(gameTime);
         }
 
-       
+
     }
 }

@@ -9,6 +9,10 @@ using Microsoft.Xna.Framework.Content;
 using WarTornLands;
 using WarTornLands.PlayerClasses;
 using WarTornLands.Entities.Modules.Draw;
+using WarTornLandsRefurbished.Entities.Modules.Interact;
+using WarTornLandsRefurbished.Entities;
+using WarTornLandsRefurbished.Entities.Modules.Think;
+using WarTornLands.Entities.Modules.Die;
 
 namespace WarTornLands.Entities
 {
@@ -66,6 +70,18 @@ namespace WarTornLands.Entities
 
         private float _rotation;
         private float _scale;
+        #endregion
+
+        #region InteractModule
+        IInteractModule _interactModule;
+        #endregion
+
+        #region ThinkModule
+        IThinkModule _thinkModule;
+        #endregion
+
+        #region DieModule
+        IDyingModule _dieModule;
         #endregion
 
 

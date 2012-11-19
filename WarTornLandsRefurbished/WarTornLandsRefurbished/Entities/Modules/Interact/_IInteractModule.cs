@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WarTornLandsRefurbished.Entities.Modules.Interact
 {
-    class _IInteractModule
+    interface IInteractModule
     {
     }
 }
