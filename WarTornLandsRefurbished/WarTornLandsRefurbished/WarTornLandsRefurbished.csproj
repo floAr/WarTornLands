@@ -97,7 +97,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="World\Layers\DynamicsLayer.cs" />
+    <Compile Include="World\Area.cs" />
+    <Compile Include="World\Layers\EntityLayer.cs" />
     <Compile Include="World\Layers\TileLayer.cs" />
     <Compile Include="World\Layers\_Layer.cs" />
     <Compile Include="World\Level.cs" />

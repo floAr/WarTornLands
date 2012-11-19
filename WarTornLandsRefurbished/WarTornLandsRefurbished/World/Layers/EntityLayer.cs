@@ -1,0 +1,84 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using WarTornLandsRefurbished.Entities;
+using Microsoft.Xna.Framework;
+using WarTornLands.Entities;
+
+namespace WarTornLands.World.Layers
+{
+    public class EntityLayer : Layer
+    {
+        private readonly List<Entity> _entities = new List<Entity>();
+
+        public EntityLayer(Game game, int depth)
+            : base(game, depth)
+        {
+        }
+
+        public void AddEntity(Entity entity)
+        {
+            _entities.Add(entity);
+        }
+
+        public void AddRange(List<Entity> entities)
+        {
+            _entities.AddRange(entities);
+        }
+
+        public Entity GetEntityAt(Vector2 worldPosition)
+        {
+            foreach (Entity ent in _entities)
+            {
+                Vector2 pos = ent.Position;
+                Vector2 size = ent.Size;
+
+                if (worldPosition.X >= pos.X - size.X * 0.5f && worldPosition.X < pos.X + size.X * 0.5f &&
+                    worldPosition.Y >= pos.Y - size.Y * 0.5f && worldPosition.Y < pos.Y + size.Y * 0.5f)
+                {
+                    return ent;
+                }
+            }
+
+            return null;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            // TODO:
+            // Check whether Entities are in the proximity of the Player and just update them if they are
+            // Could also be done in the Entities class itself
+            try
+            {
+                foreach (Entity ent in _entities)
+                {
+                    ent.Update(gameTime);
+                    if (ent.Health == 0)
+                    {
+                        ent.OnDie();
+                        _entities.Remove(ent);
+                        GC.Collect();
+                    }
+                }
+            }
+            catch { }
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            Game1 game = (_game as Game1);
+
+            game.SpriteBatch.Begin();
+
+            // TODO:
+            // Check whether Entities are visible and just draw them if they are
+            foreach (Entity ent in _entities)
+            {
+                ent.Draw(gameTime);
+            }
+
+            game.SpriteBatch.End();
+        }
+    }
+}
