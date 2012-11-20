@@ -7,8 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WarTornLands.Entities.Modules.Die
 {
-    interface IDyingModule
+    public interface IDyingModule
     {
-        
+        void Update(GameTime gameTime);
     }
 }

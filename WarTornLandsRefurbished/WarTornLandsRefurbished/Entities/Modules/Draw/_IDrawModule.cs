@@ -45,9 +45,10 @@ namespace WarTornLands.Entities.Modules.Draw
     /// Interface for the class which executes the draw.
     /// Implemented in AnimationSystem and StaticDrawer
     /// </summary>
-  public  interface IDrawExecuter
+    public interface IDrawExecuter
     {
          void Draw(SpriteBatch batch, DrawInformation information);
+         void Update(GameTime gameTime);
 
          Vector2 Size { get; }
     }

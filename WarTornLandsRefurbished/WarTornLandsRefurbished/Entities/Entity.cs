@@ -52,36 +52,36 @@ namespace WarTornLands.Entities
         /////////////////
 
         // Counters ///
-        protected readonly string _hitCounter = "hit_counter";
+        protected readonly string _cHit = "HitCounter";
         ///////////////
 
-        public Vector2 Position { get; protected set; }
-        public Vector2 InitialPosition { get; protected set; }
+        public Vector2 Position { get; set; }
+        public Vector2 InitialPosition { get; internal set; }
         protected Point TilePosition { get; set; }
-        public int Health { get; protected set; }
-        public string Name { get; protected set; }
+        public float Height { get; internal set; }
+        public float BaseHeight { get; internal set; }
+        public int Health { get; internal set; }
+        public string Name { get; internal set; }
 
-        protected float _radius;
-        protected CounterManager _cm;
-        protected float _weaponRange;
+        internal CounterManager CM;
 
         #region DrawModule
-        IDrawExecuter _drawModule;
+        protected IDrawExecuter _mDrawModule;
 
         private float _rotation;
         private float _scale;
         #endregion
 
         #region InteractModule
-        IInteractModule _interactModule;
+        protected IInteractModule _mInteractModule;
         #endregion
 
         #region ThinkModule
-        IThinkModule _thinkModule;
+        protected IThinkModule _mThinkModule;
         #endregion
 
         #region DieModule
-        IDyingModule _dieModule;
+        protected IDyingModule _mDieModule;
         #endregion
 
 
@@ -91,7 +91,7 @@ namespace WarTornLands.Entities
             this.Position = position;
             this.Health = 1;
             this.Name = name;
-            this._drawModule = drawExecuter;
+            this._mDrawModule = drawExecuter;
         }
 
         public int Damage(int damage)
@@ -136,13 +136,13 @@ namespace WarTornLands.Entities
         {
             get
             {
-                if (_drawModule == null)
+                if (_mDrawModule == null)
                 {
                     return new Vector2(0, 0);
                 }
                 else
                 {
-                    return _drawModule.Size;
+                    return _mDrawModule.Size;
                 }
             }
         }
@@ -153,8 +153,8 @@ namespace WarTornLands.Entities
 
             TilePosition = new Point((int)(Position.X / Constants.TileSize), (int)(Position.Y / Constants.TileSize));
 
-            if (_drawModule is AnimatedDrawer)
-                ((AnimatedDrawer)_drawModule).Update(gameTime);
+            if (_mDrawModule is AnimatedDrawer)
+                ((AnimatedDrawer)_mDrawModule).Update(gameTime);
 
 
             #endregion
@@ -170,7 +170,7 @@ namespace WarTornLands.Entities
                 Scale=this.Size
             };
 
-            _drawModule.Draw(((Game1)Game).SpriteBatch, information);
+            _mDrawModule.Draw(((Game1)Game).SpriteBatch, information);
         }
 
       /*  protected virtual Vector2 GetDrawPosition()
