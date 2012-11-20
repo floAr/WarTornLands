@@ -18,7 +18,7 @@ namespace WarTornLands.Entities.Modules.Draw
         private Vector2 _loc;
         private Vector2 _size;
 
-        public AnimatedDrawer(Texture2D spriteSheet,Entity owner):base(owner)
+        public AnimatedDrawer(Texture2D spriteSheet)
         {
             
             _spriteSheet = spriteSheet;

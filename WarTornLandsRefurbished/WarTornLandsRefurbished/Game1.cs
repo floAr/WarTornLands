@@ -104,9 +104,9 @@ namespace WarTornLands
 
               Player.LoadContent(Content);
              * */
-            StaticDrawer sd = new StaticDrawer();
+            StaticDrawer sd = new StaticDrawer(Content.Load<Texture2D>("blackhole"));
 
-            sd.Texture = Content.Load<Texture2D>("blackhole");
+     
 
             staticTest = new Entity(this, new Vector2(10, 10), sd, "loch");
 

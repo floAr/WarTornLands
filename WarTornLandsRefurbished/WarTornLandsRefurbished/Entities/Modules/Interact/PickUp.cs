@@ -7,16 +7,17 @@ using WarTornLandsRefurbished.Entities.Modules;
 
 namespace WarTornLands.Entities.Modules.Interact
 {
-   public class PickUp:BaseModule, IInteractModule
+    public class PickUp : BaseModule, IInteractModule
     {
-       public PickUp(Entity owner)
-           : base(owner)
-       {
 
-       }
-        public void Interact(Entity invoker, Entity target,InteractInformation information)
+        public PickUp()
         {
-            
+
         }
+        public void Interact(InteractInformation information)
+        {
+
+        }
+
     }
 }

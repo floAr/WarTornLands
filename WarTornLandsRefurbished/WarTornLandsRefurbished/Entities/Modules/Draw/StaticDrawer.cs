@@ -24,7 +24,7 @@ namespace WarTornLands.Entities.Modules.Draw
         /// The texture.
         /// </value>
         public Texture2D Texture { get { return _tex; } set { _tex = value; _size = new Vector2(_tex.Width, _tex.Height); } }
-        public StaticDrawer(Entity owner, Texture2D texture):base(owner)
+        public StaticDrawer( Texture2D texture)
         {
             _tex = texture;
             _size = new Vector2(_tex.Width, _tex.Height);
