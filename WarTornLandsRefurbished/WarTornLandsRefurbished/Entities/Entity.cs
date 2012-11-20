@@ -26,7 +26,7 @@ namespace WarTornLands.Entities
 
 
 
-    public  class Entity : DrawableGameComponent
+    public class Entity : DrawableGameComponent
     {
         /* TODO
          * Interface als Events oder Methoden?
@@ -158,6 +158,15 @@ namespace WarTornLands.Entities
 
 
             #endregion
+
+            if (_mInteractModule != null)
+                _mInteractModule.Update(gameTime);
+            if(_mThinkModule != null)
+                _mThinkModule.Update(gameTime);
+            if(_mDieModule != null)
+                _mDieModule.Update(gameTime);
+            if(_mDrawModule != null)
+                _mDrawModule.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
@@ -170,7 +179,8 @@ namespace WarTornLands.Entities
                 Scale=this.Size
             };
 
-            _mDrawModule.Draw(((Game1)Game).SpriteBatch, information);
+            if (_mDrawModule != null)
+                _mDrawModule.Draw(((Game1)Game).SpriteBatch, information);
         }
 
       /*  protected virtual Vector2 GetDrawPosition()

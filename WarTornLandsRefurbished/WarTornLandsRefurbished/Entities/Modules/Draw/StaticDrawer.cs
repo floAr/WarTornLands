@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using WarTornLandsRefurbished.Entities.Modules;
 
 namespace WarTornLands.Entities.Modules.Draw
 {
     /// <summary>
     /// Static drawer class, to draw entities consisting of a single static texture
     /// </summary>
-    public class StaticDrawer :BaseModule, IDrawExecuter
+    public class StaticDrawer : IDrawExecuter
     {
         private Vector2 _loc;
         private Vector2 _size;
@@ -24,11 +23,7 @@ namespace WarTornLands.Entities.Modules.Draw
         /// The texture.
         /// </value>
         public Texture2D Texture { get { return _tex; } set { _tex = value; _size = new Vector2(_tex.Width, _tex.Height); } }
-        public StaticDrawer( Texture2D texture)
-        {
-            _tex = texture;
-            _size = new Vector2(_tex.Width, _tex.Height);
-        }
+
 
         /// <summary>
         /// Draws the specified batch.

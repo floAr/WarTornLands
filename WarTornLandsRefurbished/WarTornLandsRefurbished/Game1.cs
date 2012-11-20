@@ -28,21 +28,10 @@ namespace WarTornLands
         public InputManager Input { get; private set; }
         Entity staticTest;
         Entity dynamicTest;
-        //    public Player Player { get; private set; }
-        //     public XML_Parser XMLParser { get; private set; }
-        //    public DialogManager DialogManager { get; private set; }
-        //    public Interface Interface { get; private set; }
-        //    public Level Level { get; private set; }        
-
-
-        //public Texture2D _tileSetTexture;
-        //public Texture2D _treeTexture;
-        //public Texture2D _deadTreeTexture;
-        //public Texture2D _gruselUteTexture;
-        //public Texture2D _blackHoleTexture;
-        //public Texture2D _potionTexture;
-        //public Texture2D _cestTexture;
-        //GameServiceContainer services;
+        public Player Player { get; private set; }
+        //public DialogManager DialogManager { get; private set; }
+        //public Interface Interface { get; private set; }
+        //public Level Level { get; private set; }        
 
         public Game1()
         {
@@ -60,6 +49,11 @@ namespace WarTornLands
         {
             // TODO: Fügen Sie Ihre Initialisierungslogik hier hinzu
 
+            Input = InputManager.GetInstance(this);
+            this.Components.Add(Input);
+            Player = Player.GetInstance(this);
+            this.Components.Add(Player);
+
             base.Initialize();
         }
 
@@ -72,55 +66,12 @@ namespace WarTornLands
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            /*  TextureCatalog.LoadContent(Content);
 
-              Input = InputManager.GetInstance(this);
-              //Interface = new Interface(this);
+            StaticDrawer sd = new StaticDrawer();
 
-              Player = Player.GetInstance(this);
-          //    XMLParser = XML_Parser.GetInstance(this);
-              DialogManager = DialogManager.GetInstance(this);
-              //_parser.SetFilename("Horst");
-              //_parser.SaveText();
-           //   XMLParser.SetFilename("0");
-
-              //_parser.SetLevel();
-              //_parser.SaveLevel();
-              try
-              {
-                  XMLParser.Load();
-                  Level = XMLParser.GetLevel();
-              }
-              catch (Exception e)
-              {
-
-              } 
-
-              PlayerClasses.CollisionManager.Setup(Level);
-
-              this.Components.Add(Input);
-
-              Level.LoadContent();
-
-              Player.LoadContent(Content);
-             * */
-            StaticDrawer sd = new StaticDrawer(Content.Load<Texture2D>("blackhole"));
-
-     
+            sd.Texture = Content.Load<Texture2D>("blackhole");
 
             staticTest = new Entity(this, new Vector2(10, 10), sd, "loch");
-
-            AnimatedDrawer animS = new AnimatedDrawer(Content.Load<Texture2D>("character_64x128"));
-
-            Animation anim = new Animation("walkDown");
-
-            for (int i = 0; i < 4; i++)
-                anim.AddFrame(new Rectangle(64 * i, 0, 64, 128));
-            animS.AddAnimation(anim);
-
-            animS.SetCurrentAnimation("walkDown");
-
-            dynamicTest = new Entity(this, new Vector2(250, 250), animS, "Ute");
 
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
@@ -145,7 +96,6 @@ namespace WarTornLands
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             staticTest.Update(gameTime);
-            dynamicTest.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -163,11 +113,10 @@ namespace WarTornLands
             // Kapseln in eigene Klasse, für Menüs etc.
             SpriteBatch.Begin();
             staticTest.Draw(gameTime);
-            dynamicTest.Draw(gameTime);
-
-            SpriteBatch.End();
 
             base.Draw(gameTime);
+
+            SpriteBatch.End();
         }
 
 
