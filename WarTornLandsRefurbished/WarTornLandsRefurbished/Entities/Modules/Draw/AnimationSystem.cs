@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using WarTornLandsRefurbished.Entities.Modules;
 
 namespace WarTornLands.Entities.Modules.Draw
 {
 
-    public class AnimatedDrawer : IDrawExecuter
+    public class AnimatedDrawer :BaseModule, IDrawExecuter
     {
         private Dictionary<string, Animation> _animations;
         private Texture2D _spriteSheet;
@@ -17,8 +18,9 @@ namespace WarTornLands.Entities.Modules.Draw
         private Vector2 _loc;
         private Vector2 _size;
 
-        public AnimatedDrawer(Texture2D spriteSheet)
+        public AnimatedDrawer(Texture2D spriteSheet,Entity owner):base(owner)
         {
+            
             _spriteSheet = spriteSheet;
             _animations = new Dictionary<string, Animation>();
 

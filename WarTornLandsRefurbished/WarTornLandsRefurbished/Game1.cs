@@ -12,8 +12,6 @@ using WarTornLands.PlayerClasses;
 using WarTornLands.Infrastructure;
 
 using WarTornLands.Infrastructure.Systems;
-using WarTornLandsRefurbished.World;
-using WarTornLandsRefurbished.Infrastructure;
 using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities;
 
@@ -113,7 +111,6 @@ namespace WarTornLands
             staticTest = new Entity(this, new Vector2(10, 10), sd, "loch");
 
             AnimatedDrawer animS = new AnimatedDrawer(Content.Load<Texture2D>("character_64x128"));
-
 
             Animation anim = new Animation("walkDown");
 

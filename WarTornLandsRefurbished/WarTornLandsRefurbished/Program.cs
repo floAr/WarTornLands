@@ -1,7 +1,7 @@
 using System;
 using WarTornLands;
 
-namespace WarTornLandsRefurbished
+namespace WarTornLands
 {
 #if WINDOWS || XBOX
     static class Program

@@ -7,12 +7,8 @@ using Microsoft.Xna.Framework;
 
 namespace WarTornLands.Infrastructure.Systems.InputSystem
 {
-    public class Key 
+    public class Key : InputKey
     {
-       /* public override int Held()
-        {
-            throw new NotImplementedException();
-        }
         public bool Value { get; private set; }
         
         private Keys _key;
@@ -68,7 +64,7 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
                 /////////////
 
                 // GamePad ///
-                if (_mode == 1)
+                if ((int)_mode == 1)
                 {
                     if (GamePad.GetState(PlayerIndex.One).IsButtonDown(_button))
                     {
@@ -85,8 +81,6 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
             }
             catch { throw new Exception("Input keys not set."); }
         }
-
-       */
 
        
     }
