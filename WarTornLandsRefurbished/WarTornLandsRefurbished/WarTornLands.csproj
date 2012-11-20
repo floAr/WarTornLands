@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Modules\BaseModule.cs" />
     <Compile Include="Entities\Modules\Die\_IDieModule.cs" />
     <Compile Include="Entities\Modules\Interact\PickUp.cs" />
     <Compile Include="Entities\Modules\Interact\_IInteractModule.cs" />
@@ -81,7 +82,6 @@
     <Compile Include="Entities\Modules\Think\Parts\SwingHitAbility.cs" />
     <Compile Include="Entities\Modules\Think\ThinkInputGuided.cs" />
     <Compile Include="Entities\Modules\Think\_IThinkModule.cs" />
-    <Compile Include="Entities\Modules\_Module.cs" />
     <Compile Include="Infrastructure\CollisionManager.cs" />
     <Compile Include="Infrastructure\Constants.cs" />
     <Compile Include="Infrastructure\DialogManager.cs" />
