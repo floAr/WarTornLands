@@ -6,7 +6,7 @@ using WarTornLands.Counter;
 using WarTornLands.Entities;
 using Microsoft.Xna.Framework;
 
-namespace WarTornLandsRefurbished.Entities.Modules.Think.Parts
+namespace WarTornLands.Entities.Modules.Think.Parts
 {
     /// <summary>
     ///     A part for a ThinkModule to give the respective entity a jump ability on TryExecute().

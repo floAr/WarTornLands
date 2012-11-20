@@ -15,6 +15,6 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
 
         public abstract void Update(GameTime gt, KeyboardState oldKeys);
         public abstract void SetMode(InputMode mode);
-        public abstract int Held();
+        public int Held { get; protected set; }
     }
 }

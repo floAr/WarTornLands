@@ -13,8 +13,6 @@ namespace WarTornLands.Entities.Modules.Draw
     /// </summary>
     public class StaticDrawer :BaseModule, IDrawExecuter
     {
-
-
         private Vector2 _loc;
         private Vector2 _size;
         private Texture2D _tex;
@@ -47,6 +45,8 @@ namespace WarTornLands.Entities.Modules.Draw
             batch.Draw(Texture, new Rectangle((int)_loc.X, (int)_loc.Y, (int)_size.X, (int)_size.Y), new Rectangle(0, 0, (int)_size.X, (int)_size.Y), Color.White, information.Rotation, _size / 2, SpriteEffects.None, 0.5f);
         }
 
+        public void Update(GameTime gametime)
+        { }
 
         public Vector2 Size
         {

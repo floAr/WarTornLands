@@ -6,9 +6,9 @@ using WarTornLands.Counter;
 using WarTornLands;
 using Microsoft.Xna.Framework;
 using WarTornLands.Entities;
-using WarTornLandsRefurbished.Entities.Modules.Think.Parts;
+using WarTornLands.Entities.Modules.Think.Parts;
 
-namespace WarTornLandsRefurbished.Entities.Modules.Think
+namespace WarTornLands.Entities.Modules.Think
 {
     class ThinkInputGuided : IThinkModule
     {

@@ -112,7 +112,6 @@ namespace WarTornLands
 
             AnimatedDrawer animS = new AnimatedDrawer(Content.Load<Texture2D>("character_64x128"));
 
-
             Animation anim = new Animation("walkDown");
 
             for (int i = 0; i < 4; i++)

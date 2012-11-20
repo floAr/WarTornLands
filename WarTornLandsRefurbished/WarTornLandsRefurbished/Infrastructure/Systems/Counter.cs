@@ -5,152 +5,179 @@ using Microsoft.Xna.Framework;
 
 namespace WarTornLands.Counter
 {
-    public enum INCREMENT { HOURS, MINUTES, SECONDS, MILLISECONDS }
+    public enum Increment { HOURS, MINUTES, SECONDS, MILLISECONDS }
 
     public class CounterManager
     {
+        internal const int C_hour = 3600000;
+        internal const int C_minute = 60000;
+        internal const int C_seconds = 1000;
+
         public event EventHandler<BangEventArgs> Bang;
         internal event EventHandler<CounterEventArgs> Start;
         internal event EventHandler<CounterEventArgs> Cancel;
-        private List<Counter> COUNTER;
-        private int mCounterAutoname;
+        private List<Counter> _counters;
+        private int _counterAutoname;
 
         public CounterManager()
         {
-            if (COUNTER == null)
-                COUNTER = new List<Counter>();
+            if (_counters == null)
+                _counters = new List<Counter>();
 
             AddCounter("counter_0");
         }
 
         public void AddCounter()
         {
-            string T_id = "counter_";
-            T_id += (++mCounterAutoname).ToString();
-            COUNTER.Add(new Counter(T_id));
-            COUNTER[COUNTER.Count - 1].Initialize(this);
-            COUNTER[COUNTER.Count - 1].Bang += new EventHandler<BangEventArgs>(PassOnBang);
+            string Tid = "counter_";
+            Tid += (++_counterAutoname).ToString();
+            _counters.Add(new Counter(Tid));
+            _counters[_counters.Count - 1].Initialize(this);
+            _counters[_counters.Count - 1].Bang += new EventHandler<BangEventArgs>(PassOnBang);
         }
 
-        public void AddCounter(string _id)
+        public void AddCounter(string id)
         {
-            COUNTER.Add(new Counter(_id));
-            COUNTER[COUNTER.Count - 1].Initialize(this);
-            COUNTER[COUNTER.Count - 1].Bang += new EventHandler<BangEventArgs>(PassOnBang);
-        }
-
-        public void AddCounter(string _id, int _default)
-        {
-            COUNTER.Add(new Counter(_default, _id));
-            COUNTER[COUNTER.Count - 1].Initialize(this);
-            COUNTER[COUNTER.Count - 1].Bang += new EventHandler<BangEventArgs>(PassOnBang);
-        }
-
-        public void Update(GameTime _GT)
-        {
-            foreach (Counter c in COUNTER)
-                c.Update(_GT);
-        }
-
-        private void CheckCounterAvailabillity(string _id)
-        {
-            foreach (Counter c in COUNTER)
+            foreach (Counter c in _counters)
             {
-                if (c.GetID().Equals(_id))
+                if (c.ID.Equals(id))
+                    throw new CounterIDAlreadyInUseException(id);
+            }
+
+            _counters.Add(new Counter(id));
+            _counters[_counters.Count - 1].Initialize(this);
+            _counters[_counters.Count - 1].Bang += new EventHandler<BangEventArgs>(PassOnBang);
+        }
+
+        public void AddCounter(string id, int defaultTerm)
+        {
+            _counters.Add(new Counter(defaultTerm, id));
+            _counters[_counters.Count - 1].Initialize(this);
+            _counters[_counters.Count - 1].Bang += new EventHandler<BangEventArgs>(PassOnBang);
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            foreach (Counter c in _counters)
+                c.Update(gameTime);
+        }
+
+        private void CheckCounterAvailabillity(string id)
+        {
+            foreach (Counter c in _counters)
+            {
+                if (c.ID.Equals(id))
                     return;
             }
 
-            throw new CounterIDNotRecognisedException(_id);
+            throw new CounterIDNotRecognisedException(id);
         }
 
-        public void StartCounter(float _amount, INCREMENT _inc)
+        /// <summary>
+        /// Unfinished method, do not use.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="term">The term.</param>
+        /// <param name="refresh">if set to <c>true</c> [refresh].</param>
+        /// <param name="loop">if set to <c>true</c> [loop].</param>
+        /// <returns></returns>
+        public bool StartCounter(String id, int term = -1, bool refresh = true, bool loop = false)
+        {
+            CheckCounterAvailabillity(id);
+
+            if (Start != null)
+                Start(this, new CounterEventArgs(id, refresh));
+
+            return true;
+        }
+        public void StartCounter(float term, Increment increment)
         {
             CheckCounterAvailabillity("counter_0");
 
             if (Start != null)
-                Start(null, new CounterEventArgs(_amount, "counter_0", true, _inc));
+                Start(null, new CounterEventArgs(term, "counter_0", true, increment));
         }
-        public void StartCounter(String _id)
+        public void StartCounter(String id)
         {
-            CheckCounterAvailabillity(_id);
+            CheckCounterAvailabillity(id);
 
             if (Start != null)
-                Start(this, new CounterEventArgs(_id, true));
+                Start(this, new CounterEventArgs(id, true));
         }
-        public void StartCounter(String _id, bool _refresh)
+        public void StartCounter(String id, bool refresh)
         {
-            CheckCounterAvailabillity(_id);
+            CheckCounterAvailabillity(id);
 
             if (Start != null)
-                Start(this, new CounterEventArgs(_id, _refresh));
+                Start(this, new CounterEventArgs(id, refresh));
         }
-        public void StartCounter(int _amount)
+        public void StartCounter(int term)
         {
             CheckCounterAvailabillity("counter_0");
 
             if (Start != null)
-                Start(this, new CounterEventArgs(_amount, "counter_0", true));
+                Start(this, new CounterEventArgs(term, "counter_0", true));
         }
-        public void StartCounter(float _amount, string _id, INCREMENT _inc)
+        public void StartCounter(float term, string id, Increment inc)
         {
-            CheckCounterAvailabillity(_id);
+            CheckCounterAvailabillity(id);
 
             if (Start != null)
-                Start(this, new CounterEventArgs(_amount, _id, true, _inc));
+                Start(this, new CounterEventArgs(term, id, true, inc));
         }
-        public void StartCounter(int _amount, string _id)
+        public void StartCounter(int term, string id)
         {
-            CheckCounterAvailabillity(_id);
+            CheckCounterAvailabillity(id);
 
             if (Start != null)
-                Start(this, new CounterEventArgs(_amount, _id, true));
+                Start(this, new CounterEventArgs(term, id, true));
         }
-        public void StartCounter(float _amount, bool _refresh, INCREMENT _inc)
+        public void StartCounter(float term, bool refresh, Increment inc)
         {
             CheckCounterAvailabillity("counter_0");
 
             if (Start != null)
-                Start(this, new CounterEventArgs(_amount, "counter_0", _refresh, _inc));
+                Start(this, new CounterEventArgs(term, "counter_0", refresh, inc));
         }
-        public void StartCounter(int _amount, bool _refresh)
+        public void StartCounter(int term, bool refresh)
         {
             CheckCounterAvailabillity("counter_0");
 
             if (Start != null)
-                Start(this, new CounterEventArgs(_amount, "counter_0", _refresh));
+                Start(this, new CounterEventArgs(term, "counter_0", refresh));
         }
-        public void StartCounter(float _amount, bool _refresh, string _id, INCREMENT _inc)
+        public void StartCounter(float term, bool refresh, string id, Increment inc)
         {
-            CheckCounterAvailabillity(_id);
+            CheckCounterAvailabillity(id);
 
             if (Start != null)
-                Start(this, new CounterEventArgs(_amount, _id, _refresh, _inc));
+                Start(this, new CounterEventArgs(term, id, refresh, inc));
         }
-        public void StartCounter(int _amount, bool _refresh, string _id)
+        public void StartCounter(int term, bool refresh, string id)
         {
-            CheckCounterAvailabillity(_id);
+            CheckCounterAvailabillity(id);
 
             if (Start != null)
-                Start(this, new CounterEventArgs(_amount, _id, _refresh));
+                Start(this, new CounterEventArgs(term, id, refresh));
         }
 
-        public float GetPercentage(string _id)
+        public float GetPercentage(string id)
         {
-            CheckCounterAvailabillity(_id);
+            CheckCounterAvailabillity(id);
 
-            foreach(Counter c in COUNTER)
+            foreach(Counter c in _counters)
             {
-                if (c.GetID().Equals(_id))
+                if (c.ID.Equals(id))
                     return c.GetPercentage();
             }
 
-            throw new CounterIDNotRecognisedException(_id);
+            throw new CounterIDNotRecognisedException(id);
         }
         public float GetPercentage()
         {
             CheckCounterAvailabillity("counter_0");
 
-            return COUNTER[0].GetPercentage();
+            return _counters[0].GetPercentage();
 
             throw new CounterIDNotRecognisedException("counter_0");
         }
@@ -159,58 +186,57 @@ namespace WarTornLands.Counter
         {
             Cancel(null, new CounterEventArgs("counter:0"));
         }
-        public void CancelCounter(string _id)
+        public void CancelCounter(string id)
         {
-            Cancel(null, new CounterEventArgs(_id));
+            Cancel(null, new CounterEventArgs(id));
         }
 
-        private void PassOnBang(object _sender, BangEventArgs _e)
+        private void PassOnBang(object sender, BangEventArgs e)
         {
             if (Bang != null)
-                Bang(null, _e);
+                Bang(null, e);
         }
     }
 
-    class Counter
+    internal class Counter
     {
-        private int  mDefault;                                                                          // Can be set to a default value the term gets resets to after bang
-        private int  mTerm;                                                                             // The term after which the counter calls the bang
-        private int  mElapsedTime;                                                                      // The ellapsed time since the counter got started
-        private bool mActive;                                                                           // Bool whether the counter is currently counting or not
-        private string mID;
-        private BangEventArgs mBangTag;
+        private int  _default;                                                                          // Can be set to a default value the term gets resets to after bang
+        private int  _term;                                                                             // The term after which the counter calls the bang
+        private int  _elapsedTime;                                                                      // The ellapsed time since the counter got started
+        private bool _active;                                                                           // Bool whether the counter is currently counting or not
+        private string _id;
+        private BangEventArgs _bangTag;
+        private bool _loop;
 
         public event EventHandler<BangEventArgs> Bang;                                                  // Event that gets called when the counter bangs
 
-
-        // Summary:
-        //     Initializes a counter without a default term and a specified ID
-        //     (term is to be set every time a countdown is requested)
-        //
-        public Counter(string _id)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Counter" /> class.
+        /// </summary>
+        /// <param name="id">The counter ID.</param>
+        public Counter(string id)
         {
-            mDefault        = -1;
-            mTerm           = mDefault;
-            mElapsedTime    = 0;
-            mActive         = false;
-            mID             = _id;
-            mBangTag        = new BangEventArgs(mID);
+            _default        = -1;
+            _term           = _default;
+            _elapsedTime    = 0;
+            _active         = false;
+            _id             = id;
+            _bangTag        = new BangEventArgs(_id);
         }
-        // Summary:
-        //     Initializes a counter with a default term
-        //
-        // Parameters:
-        //   _default:
-        //     Default value that the counter gets resets to after bang
-        //
-        public Counter(int _default, string _id)
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Counter" /> class.
+        /// </summary>
+        /// <param name="defaultTerm">The default term.</param>
+        /// <param name="id">The ID.</param>
+        public Counter(int defaultTerm, string id)
         {
-            mDefault        = _default;
-            mTerm           = mDefault;
-            mElapsedTime    = 0;
-            mActive         = false;
-            mID             = _id;
-            mBangTag        = new BangEventArgs(mID);
+            _default        = defaultTerm;
+            _term           = _default;
+            _elapsedTime    = 0;
+            _active         = false;
+            _id             = id;
+            _bangTag        = new BangEventArgs(_id);
         }
 
 
@@ -220,61 +246,62 @@ namespace WarTornLands.Counter
             _proprietor.Cancel += new EventHandler<CounterEventArgs>(OnCancel);
         }
 
-        public string GetID()
+        public string ID
         {
-            return mID;
+            get { return _id; }
         }
 
         public float GetPercentage()
         {
-            return (float)mElapsedTime / (float)mTerm;
+            return (float)_elapsedTime / (float)_term;
         }
 
-        public void Update(GameTime _GT)
+        public void Update(GameTime gameTime)
         {
-            if (mActive)
+            if (_active)
             {
-                mElapsedTime += _GT.ElapsedGameTime.Milliseconds;
+                _elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
 
-                if (mElapsedTime >= mTerm
+                if (_elapsedTime >= _term
                     && Bang != null)
                 {
-                    Bang(this, mBangTag);
-                    mActive = false;
-                    mElapsedTime = 0;
-                    mTerm = mDefault;
+                    Bang(this, _bangTag);
+                    _term = _default;
+
+                    if (!_loop)
+                        _active = false;
                 }
             }
         }
 
-        public void OnCancel(object _sender, CounterEventArgs _e)
+        public void OnCancel(object sender, CounterEventArgs e)
         {
-            if (_e.mID.Equals(this.mID) &&
-               (!this.mActive || _e.mRefresh))
+            if (e.ID.Equals(this._id) &&
+               (!this._active || e.Refresh))
             {
-                mElapsedTime = 0;
-                mTerm = mDefault;
-                mActive = false;
+                _elapsedTime = 0;
+                _term = _default;
+                _active = false;
             }
         }
 
-        private void OnStartCounter(object _sender, CounterEventArgs _e)
+        private void OnStartCounter(object sender, CounterEventArgs e)
         {
-            if (_e.mID.Equals(this.mID) &&
-                (!this.mActive || _e.mRefresh))
+            if (e.ID.Equals(this._id) &&
+                (!this._active || e.Refresh))
             {
-                if (mDefault == -1)
+                if (_default == -1)
                 {
-                    if (_e.mTerm != -1)
-                        this.mTerm = _e.mTerm;
+                    if (e.Term != -1)
+                        this._term = e.Term;
                     else
-                        throw new CounterCalledWithoutTermException(_e.mID);
+                        throw new CounterCalledWithoutTermException(e.ID);
                 }
-                else if (_e.mTerm != -1) throw new CounterHasDefaultException(_e.mID);
+                else if (e.Term != -1) throw new CounterHasDefaultException(e.ID);
                 
 
-                mElapsedTime = 0;
-                mActive = true;
+                _elapsedTime = 0;
+                _active = true;
             }
         }
     }
@@ -283,69 +310,70 @@ namespace WarTornLands.Counter
     {
         public CounterHasDefaultException() : base("A counter that has been initialized with a default term cannot be started with a desired term.") { }
 
-        public CounterHasDefaultException(string _id) : base("The counter with ID " + _id + " has been initialized with a default term and thus cannot be started with a desired term.") { }
+        public CounterHasDefaultException(string id) : base("The counter with ID " + id + " has been initialized with a default term and thus cannot be started with a desired term.") { }
     }
     class CounterIDNotRecognisedException : Exception
     {
-        public CounterIDNotRecognisedException(string _id) : base("There is no counter specified with ID " + _id) {}
+        public CounterIDNotRecognisedException(string id) : base("There is no counter specified with ID " + id) {}
     }
     class CounterCalledWithoutTermException : Exception
     {
-        public CounterCalledWithoutTermException(string _id) : base("The counter " + _id + " has no default and got colled without a term.") { }
+        public CounterCalledWithoutTermException(string id) : base("The counter " + id + " has no default and got colled without a term.") { }
+    }
+    class CounterIDAlreadyInUseException : Exception
+    {
+        public CounterIDAlreadyInUseException(string id) : base("The counter ID " + id + " is already in use.") { }
     }
 
-    class CounterEventArgs : EventArgs
+    internal class CounterEventArgs : EventArgs
     {
-        private const int C_hour = 3600000;
-        private const int C_minute = 60000;
-        private const int C_seconds = 1000;
+        internal string ID;
+        internal int    Term;
+        internal bool   Refresh;
+        internal bool   Loop;
 
-        internal string mID;
-        internal int    mTerm;
-        internal bool   mRefresh;
-
-        public CounterEventArgs(float _amount, string _id, bool _refresh, INCREMENT _inc)
+        public CounterEventArgs(float term, string id, bool refresh, Increment inc)
         {
-            mID = _id;
-            mRefresh = _refresh;
+            ID = id;
+            Refresh = refresh;
 
-            switch (_inc)
+            switch (inc)
             {
-                case INCREMENT.HOURS:
-                    mTerm = (int)(_amount * C_hour);
+                case Increment.HOURS:
+                    Term = (int)(term * CounterManager.C_hour);
                     break;
-                case INCREMENT.MINUTES:
-                    mTerm = (int)(_amount * C_minute);
+                case Increment.MINUTES:
+                    Term = (int)(term * CounterManager.C_minute);
                     break;
-                case INCREMENT.SECONDS:
-                    mTerm = (int)(_amount * C_seconds);
+                case Increment.SECONDS:
+                    Term = (int)(term * CounterManager.C_seconds);
                     break;
-                case INCREMENT.MILLISECONDS:
-                    mTerm = (int)(_amount);
+                case Increment.MILLISECONDS:
+                    Term = (int)(term);
                     break;
                 default:
-                    mTerm = -1;
+                    Term = -1;
                     break;
             }
         }
 
-        public CounterEventArgs(int _amount, string _id, bool _refresh)
+        public CounterEventArgs(int term, string id, bool refresh)
         {
-            mID = _id;
-            mTerm = _amount;
-            mRefresh = _refresh;
+            ID = id;
+            Term = term;
+            Refresh = refresh;
         }
 
-        public CounterEventArgs(string _id, bool _refresh)
+        public CounterEventArgs(string id, bool refresh)
         {
-            mID = _id;
-            mTerm = -1;
-            mRefresh = _refresh;
+            ID = id;
+            Term = -1;
+            Refresh = refresh;
         }
 
-        public CounterEventArgs(string _id)
+        public CounterEventArgs(string id)
         {
-            mID = _id;
+            ID = id;
         }
     }
 
@@ -353,9 +381,9 @@ namespace WarTornLands.Counter
     {
         internal string ID;
 
-        public BangEventArgs(string _id)
+        public BangEventArgs(string id)
         {
-            ID = _id;
+            ID = id;
         }
     }
 }
