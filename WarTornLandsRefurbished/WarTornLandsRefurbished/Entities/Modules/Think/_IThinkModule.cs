@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace WarTornLandsRefurbished.Entities.Modules.Think
+namespace WarTornLands.Entities.Modules.Think
 {
     public interface IThinkModule
     {

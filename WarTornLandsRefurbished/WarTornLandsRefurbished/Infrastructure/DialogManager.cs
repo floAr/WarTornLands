@@ -6,11 +6,9 @@ using WarTornLands.Infrastructure.Systems;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using WarTornLands;
-using WarTornLandsRefurbished.World;
-using WarTornLandsRefurbished.Entities;
 using WarTornLands.PlayerClasses;
 
-namespace WarTornLandsRefurbished.Infrastructure
+namespace WarTornLands.Infrastructure
 {
    public class DialogManager //: GameComponent
     {

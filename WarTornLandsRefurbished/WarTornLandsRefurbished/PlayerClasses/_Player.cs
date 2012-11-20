@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WarTornLandsRefurbished.Entities;
 using Microsoft.Xna.Framework;
 using WarTornLands.Counter;
 using Microsoft.Xna.Framework.Graphics;

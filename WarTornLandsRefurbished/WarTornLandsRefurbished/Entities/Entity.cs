@@ -9,10 +9,10 @@ using Microsoft.Xna.Framework.Content;
 using WarTornLands;
 using WarTornLands.PlayerClasses;
 using WarTornLands.Entities.Modules.Draw;
-using WarTornLandsRefurbished.Entities.Modules.Interact;
-using WarTornLandsRefurbished.Entities;
-using WarTornLandsRefurbished.Entities.Modules.Think;
+
 using WarTornLands.Entities.Modules.Die;
+using WarTornLands.Entities.Modules.Think;
+using WarTornLands.Entities.Modules.Interact;
 
 namespace WarTornLands.Entities
 {

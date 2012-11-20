@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using WarTornLands.Entities;
 
-namespace WarTornLandsRefurbished.Entities.Modules.Interact
+namespace WarTornLands.Entities.Modules.Interact
 {
     /// <summary>
     /// Additional information to pass to interaction
