@@ -74,8 +74,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\Modules\Dialog\_IDialogModule.cs" />
     <Compile Include="Entities\Modules\Die\_IDieModule.cs" />
+    <Compile Include="Entities\Modules\Interact\PickUp.cs" />
+    <Compile Include="Entities\Modules\Interact\_IInteractModule.cs" />
     <Compile Include="Entities\Modules\Think\_IThinkModule.cs" />
     <Compile Include="Infrastructure\CollisionManager.cs" />
     <Compile Include="Infrastructure\Constants.cs" />
@@ -143,7 +144,9 @@
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Entities\Modules\NewFolder1\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="WarTornLandsClasses.cd" />
   </ItemGroup>
