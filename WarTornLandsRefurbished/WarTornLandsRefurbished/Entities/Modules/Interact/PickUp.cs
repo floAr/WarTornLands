@@ -8,7 +8,7 @@ namespace WarTornLandsRefurbished.Entities.Modules.Interact
 {
    public class PickUp:IInteractModule
     {
-        public void Interact(Entity invoker, Entity target, IInteractModule.InteractInformation information)
+        public void Interact(Entity invoker, Entity target,InteractInformation information)
         {
             
         }
