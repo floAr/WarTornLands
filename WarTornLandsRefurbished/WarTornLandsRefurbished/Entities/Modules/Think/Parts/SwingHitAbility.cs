@@ -5,7 +5,7 @@ using System.Text;
 using WarTornLands.Counter;
 using WarTornLands.Entities;
 
-namespace WarTornLandsRefurbished.Entities.Modules.Think.Parts
+namespace WarTornLands.Entities.Modules.Think.Parts
 {
     class SwingHitAbility
     {

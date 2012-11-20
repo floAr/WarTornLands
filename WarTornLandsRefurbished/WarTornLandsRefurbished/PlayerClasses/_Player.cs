@@ -9,7 +9,7 @@ using WarTornLands.Infrastructure;
 using WarTornLands.Entities;
 using WarTornLands.Entities.Modules.Draw;
 using Microsoft.Xna.Framework.Content;
-using WarTornLandsRefurbished.Entities.Modules.Think;
+using WarTornLands.Entities.Modules.Think;
 
 namespace WarTornLands.PlayerClasses
 {
