@@ -12,8 +12,6 @@ using WarTornLands.PlayerClasses;
 using WarTornLands.Infrastructure;
 
 using WarTornLands.Infrastructure.Systems;
-using WarTornLandsRefurbished.World;
-using WarTornLandsRefurbished.Infrastructure;
 using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities;
 

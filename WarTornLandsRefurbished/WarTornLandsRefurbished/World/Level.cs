@@ -5,10 +5,9 @@ using System.Text;
 using WarTornLands.World.Layers;
 using Microsoft.Xna.Framework;
 using WarTornLands;
-using WarTornLandsRefurbished.Entities;
 using WarTornLands.Entities;
 
-namespace WarTornLandsRefurbished.World
+namespace WarTornLands.World
 {
     public class Level
     {
