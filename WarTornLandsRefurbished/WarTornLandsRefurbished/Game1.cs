@@ -71,7 +71,8 @@ namespace WarTornLands
 
             sd.Texture = Content.Load<Texture2D>("blackhole");
 
-            staticTest = new Entity(this, new Vector2(10, 10), sd, "loch");
+            staticTest = new Entity(this, new Vector2(10, 10), "loch");
+            staticTest.AddModule(sd);
 
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }

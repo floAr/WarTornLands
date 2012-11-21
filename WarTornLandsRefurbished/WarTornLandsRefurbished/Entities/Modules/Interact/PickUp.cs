@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace WarTornLands.Entities.Modules.Interact
 {
-   public class PickUp : IInteractModule
+   public class PickUp :BaseModule, IInteractModule
     {
         public void Interact(Entity invoker, Entity target,InteractInformation information)
         {

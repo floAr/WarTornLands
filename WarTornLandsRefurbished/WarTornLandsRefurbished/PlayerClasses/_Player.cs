@@ -18,12 +18,12 @@ namespace WarTornLands.PlayerClasses
         private static Player _player;
 
         private Player(Game1 game)
-            : base(game, new Vector2(250), null, "Player")
+            : base(game, new Vector2(250),  "Player")
         {
             CM = new CounterManager();
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
 
-            base._mThinkModule = new ThinkInputGuided(this);
+           this.AddModule(new ThinkInputGuided(this));
         }
 
         public static Player GetInstance(Game1 game)
@@ -46,7 +46,7 @@ namespace WarTornLands.PlayerClasses
 
             animS.SetCurrentAnimation("walkDown");
 
-            this._mDrawModule = animS;
+            this.AddModule(animS);
         }
 
         #region Subscribed events

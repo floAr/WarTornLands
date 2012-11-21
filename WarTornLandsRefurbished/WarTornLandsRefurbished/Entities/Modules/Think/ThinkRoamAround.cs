@@ -6,6 +6,7 @@ using WarTornLands.Entities.Modules.Think;
 using Microsoft.Xna.Framework;
 using WarTornLands.Entities;
 using WarTornLands.Infrastructure;
+using WarTornLands.Entities.Modules;
 
 namespace WarTornLandsRefurbished.Entities.Modules.Think
 {
@@ -16,7 +17,7 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
         private float _radius;
 
 
-        public ThinkRoamAround(Entity owner, Vector2 anchor, float radius):base(owner)
+        public ThinkRoamAround(Entity owner, Vector2 anchor, float radius):base()
         {
             _anchor = anchor;
             _target = anchor;
