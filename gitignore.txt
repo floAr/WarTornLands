@@ -2,3 +2,4 @@
 /WarTornLands/WarTornLands/obj
 /WarTornLands/WarTornLandsContent/obj
 /WarTornLandsRefurbished/WarTornLandsRefurbished/obj
+*.cache
