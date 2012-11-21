@@ -11,13 +11,12 @@ using WarTornLands.Infrastructure;
 
 namespace WarTornLands.Entities.Modules.Think
 {
-    class ThinkInputGuided : IThinkModule
+    class ThinkInputGuided :BaseModule, IThinkModule
     {
         public float Speed { get; set; }
         public float Radius { get; set; }
 
         private CounterManager _cm;
-        private Entity _owner;
         private InputManager _input;
 
         // Parts
@@ -49,7 +48,7 @@ namespace WarTornLands.Entities.Modules.Think
 
             Vector2 oldPos = _owner.Position;
 
-            _owner.Position = CollisionManager.TryMove(_owner.Position,
+            _owner.Position = CollisionManager.Instance.TryMove(_owner.Position,
                                                       _input.Move.Value * Speed * gameTime.ElapsedGameTime.Milliseconds,
                                                       Radius, _owner);
         }

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 namespace WarTornLands.Entities.Modules.Draw
 {
 
-    public class AnimatedDrawer : IDrawExecuter
+    public class AnimatedDrawer :BaseModule, IDrawExecuter
     {
         private Dictionary<string, Animation> _animations;
         private Texture2D _spriteSheet;

@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WarTornLandsRefurbished</RootNamespace>
-    <AssemblyName>WarTornLandsRefurbished</AssemblyName>
+    <RootNamespace>WarTornLands</RootNamespace>
+    <AssemblyName>WarTornLands</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
@@ -74,12 +74,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Modules\BaseModule.cs" />
     <Compile Include="Entities\Modules\Die\_IDieModule.cs" />
     <Compile Include="Entities\Modules\Interact\PickUp.cs" />
     <Compile Include="Entities\Modules\Interact\_IInteractModule.cs" />
     <Compile Include="Entities\Modules\Think\Parts\JumpAbility.cs" />
     <Compile Include="Entities\Modules\Think\Parts\SwingHitAbility.cs" />
     <Compile Include="Entities\Modules\Think\ThinkInputGuided.cs" />
+    <Compile Include="Entities\Modules\Think\ThinkRoamAround.cs" />
     <Compile Include="Entities\Modules\Think\_IThinkModule.cs" />
     <Compile Include="Infrastructure\CollisionManager.cs" />
     <Compile Include="Infrastructure\Constants.cs" />
@@ -95,7 +97,6 @@
     <Compile Include="Infrastructure\Systems\InputSystem\DirectionInput.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\InputKey.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\Key.cs" />
-    <Compile Include="Infrastructure\TextureCatalog.cs" />
     <Compile Include="PlayerClasses\Inventory.cs" />
     <Compile Include="PlayerClasses\_Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

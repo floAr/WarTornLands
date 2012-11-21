@@ -7,9 +7,28 @@ using WarTornLands.Entities;
 
 namespace WarTornLands.Infrastructure
 {
-    public static class CollisionManager
+    public class CollisionManager
     {
-        public static Vector2 TryMove(Vector2 start, Vector2 toGoal, float radius, Entity source)
+        #region Singleton Stuff
+        private static CollisionManager instance;
+
+        public static CollisionManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new CollisionManager();
+                }
+                return instance;
+            }
+        }
+        #endregion
+
+        private CollisionManager()
+        {
+        }
+        public  Vector2 TryMove(Vector2 start, Vector2 toGoal, float radius, Entity source)
         {
             return start + toGoal;
         }
