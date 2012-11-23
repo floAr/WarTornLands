@@ -18,13 +18,12 @@ namespace WarTornLands.PlayerClasses
         private static Player _player;
 
         private Player(Game1 game)
-            : base(game, Vector2.Zero, null, "Player")
+            : base(game, new Vector2(250),  "Player")
         {
-            this.LoadContent(game.Content);
             CM = new CounterManager();
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
 
-            base._mThinkModule = new ThinkInputGuided(this);
+           this.AddModule(new ThinkInputGuided(this));
         }
 
         public static Player GetInstance(Game1 game)
@@ -35,9 +34,19 @@ namespace WarTornLands.PlayerClasses
             return _player;
         }
 
-        private void LoadContent(ContentManager content)
+        protected override void LoadContent()
         {
- 
+            AnimatedDrawer animS = new AnimatedDrawer(Game.Content.Load<Texture2D>("character_64x128"));
+
+            Animation anim = new Animation("walkDown");
+
+            for (int i = 0; i < 4; i++)
+                anim.AddFrame(new Rectangle(64 * i, 0, 64, 128));
+            animS.AddAnimation(anim);
+
+            animS.SetCurrentAnimation("walkDown");
+
+            this.AddModule(animS);
         }
 
         #region Subscribed events

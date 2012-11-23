@@ -7,38 +7,50 @@ using WarTornLands;
 using Microsoft.Xna.Framework;
 using WarTornLands.Entities;
 using WarTornLands.Entities.Modules.Think.Parts;
+using WarTornLands.Infrastructure;
 
 namespace WarTornLands.Entities.Modules.Think
 {
-    class ThinkInputGuided : IThinkModule
+    class ThinkInputGuided :BaseModule, IThinkModule
     {
+        public float Speed { get; set; }
+        public float Radius { get; set; }
+
         private CounterManager _cm;
-        private Entity _owner;
+        private InputManager _input;
 
         // Parts
         private JumpAbility _jump;
         private SwingHitAbility _swing;
 
-        public ThinkInputGuided(Entity owner)
+        public ThinkInputGuided(Entity owner, float speed = .125f)
         {
-            _cm = owner.CM;
-            _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
-
-            _jump = new JumpAbility(_owner);
-
             _owner = owner;
+            Speed = speed;
             Game1 game = _owner.Game as Game1;
 
+            _cm = owner.CM;
+            _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
+            _input = game.Input;
+
+            _jump = new JumpAbility(owner);
+
             // Subscribe to Input events
-            game.Input.UsePotion.Pressed += new EventHandler(OnUsePotion);
-            game.Input.ExecuteHit.Pressed += new EventHandler(OnExecuteHit);
-            game.Input.Interact.Pressed += new EventHandler(OnInteract);
-            game.Input.Jump.Pressed += new EventHandler(OnJump);
+            _input.UsePotion.Pressed += new EventHandler(OnUsePotion);
+            _input.ExecuteHit.Pressed += new EventHandler(OnExecuteHit);
+            _input.Interact.Pressed += new EventHandler(OnInteract);
+            _input.Jump.Pressed += new EventHandler(OnJump);
         }
 
         public void Update(GameTime gameTime)
         {
             _cm.Update(gameTime);
+
+            Vector2 oldPos = _owner.Position;
+
+            _owner.Position = CollisionManager.Instance.TryMove(_owner.Position,
+                                                      _input.Move.Value * Speed * gameTime.ElapsedGameTime.Milliseconds,
+                                                      Radius, _owner);
         }
 
         #region Subscribed events

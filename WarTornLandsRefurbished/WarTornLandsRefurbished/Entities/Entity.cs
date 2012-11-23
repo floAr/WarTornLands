@@ -13,6 +13,7 @@ using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities.Modules.Die;
 using WarTornLands.Entities.Modules.Think;
 using WarTornLands.Entities.Modules.Interact;
+using WarTornLands.Entities.Modules;
 
 namespace WarTornLands.Entities
 {
@@ -26,7 +27,7 @@ namespace WarTornLands.Entities
 
 
 
-    public  class Entity : DrawableGameComponent
+    public class Entity : DrawableGameComponent
     {
         /* TODO
          * Interface als Events oder Methoden?
@@ -85,13 +86,25 @@ namespace WarTornLands.Entities
         #endregion
 
 
-        public Entity(Game1 game, Vector2 position, IDrawExecuter drawExecuter, String name = "Entity")
+        public Entity(Game1 game, Vector2 position, String name = "Entity")
             : base(game)
         {
             this.Position = position;
             this.Health = 1;
             this.Name = name;
-            this._mDrawModule = drawExecuter;
+        }
+
+        public void AddModule(BaseModule module)
+        {
+            module.Owner = this;
+            if (module is IThinkModule)
+                _mThinkModule = module as IThinkModule;
+            if (module is IDrawExecuter)
+                _mDrawModule = module as IDrawExecuter;
+            if (module is IInteractModule)
+                _mInteractModule = module as IInteractModule;
+            if (module is IDyingModule)
+                _mDieModule = module as IDyingModule;
         }
 
         public int Damage(int damage)
@@ -158,6 +171,15 @@ namespace WarTornLands.Entities
 
 
             #endregion
+
+            if (_mInteractModule != null)
+                _mInteractModule.Update(gameTime);
+            if(_mThinkModule != null)
+                _mThinkModule.Update(gameTime);
+            if(_mDieModule != null)
+                _mDieModule.Update(gameTime);
+            if(_mDrawModule != null)
+                _mDrawModule.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
@@ -170,7 +192,8 @@ namespace WarTornLands.Entities
                 Scale=this.Size
             };
 
-            _mDrawModule.Draw(((Game1)Game).SpriteBatch, information);
+            if (_mDrawModule != null)
+                _mDrawModule.Draw(((Game1)Game).SpriteBatch, information);
         }
 
       /*  protected virtual Vector2 GetDrawPosition()
