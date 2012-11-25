@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WarTornLands.World.Layers;
+using Microsoft.Xna.Framework;
+using WarTornLands.Entities;
 
 namespace WarTornLands.World
 {
@@ -42,6 +44,18 @@ namespace WarTornLands.World
             {
                 layer.Remove();
             }
+        }
+
+        internal bool IsPositionAccessible(Vector2 position)
+        {
+            // TODO only check areas near the player
+            foreach (Layer layer in _layers)
+            {
+                if (layer is TileLayer && (layer as TileLayer).IsPositionAccessible(position) == false)
+                    return false;
+            }
+
+            return true;
         }
     }
 }

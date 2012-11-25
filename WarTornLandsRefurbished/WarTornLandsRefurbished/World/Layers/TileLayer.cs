@@ -6,6 +6,7 @@ using WarTornLands.World.Layers;
 using Microsoft.Xna.Framework;
 using WarTornLands.Counter;
 using Microsoft.Xna.Framework.Graphics;
+using WarTornLands.Entities;
 
 namespace WarTornLands.World.Layers
 {
@@ -40,12 +41,8 @@ namespace WarTornLands.World.Layers
         public override void Draw(GameTime gameTime)
         {
             Game1 game = (_game as Game1);
-            //Vector2 center = game.Player.Position;
-            Vector2 center = new Vector2(256, 256);
+            Vector2 center = game.Player.Position;
             int width = (int)Math.Floor((double)_tileSetTexture.Width / Constants.TileSize);
-
-
-            game.SpriteBatch.Begin();
 
             // TODO:
             // Check whether Tiles are visible and just draw them if they are
@@ -66,7 +63,6 @@ namespace WarTornLands.World.Layers
                 }
             }
 
-            game.SpriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
@@ -76,6 +72,19 @@ namespace WarTornLands.World.Layers
                 if (_cm != null)
                     _cm.Update(gameTime);
             }
+        }
+
+        public bool IsPositionAccessible(Vector2 position)
+        {
+            if (DrawOrder == (_game as Game1).Player.DrawOrder)
+            {
+                int x = (int)position.X / Constants.TileSize;
+                int y = (int)position.Y / Constants.TileSize;
+                if (_grid[x,y].TileNum != 0)
+                    return false;
+            }
+
+            return true;
         }
     }
 }

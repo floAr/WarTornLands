@@ -23,7 +23,8 @@ namespace WarTornLands.PlayerClasses
             CM = new CounterManager();
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
 
-           this.AddModule(new ThinkInputGuided(this));
+            this.AddModule(new ThinkInputGuided(this));
+            this.DrawOrder = 100;
         }
 
         public static Player GetInstance(Game1 game)
