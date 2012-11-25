@@ -83,7 +83,7 @@ namespace WarTornLands.Infrastructure
             // Tile collision
             while (!_level.IsPositionAccessible(start + pointOne + move) ||
                    !_level.IsPositionAccessible(start + pointTwo + move) ||
-                    sensor == 0)
+                    sensor == 1)
             {
                 sensor--;
                 move = direction * sensor;
@@ -93,17 +93,26 @@ namespace WarTornLands.Infrastructure
                     move.X = 0;
             }
 
-            //// Entity collision
-            //List<Entity> lastEntities = new List<Entity>;
-            //List<Entity> curEntities;
+            // Entity collision
+            List<Entity> lastEntities = new List<Entity>();
+            List<Entity> curEntities = _level.GetEntitiesAt(start + pointOne + move);
+            curEntities.AddRange(_level.GetEntitiesAt(start + pointTwo + move));
 
-            //while (!(curEntities = Level.GetEntitiesAt(start + pointOne + move)).Count > 0 ||
-            //       !(curEntities.AddRange(Level.GetEntitiesAt(start + pointOne + move))).Count ||
-            //        sensor == 0)
-            //{
-            //    sensor--;
-            //    move = direction * sensor;
-            //}
+            while (curEntities.Count > 0 ||
+                   sensor == 1)
+            {
+                lastEntities = curEntities;
+                sensor--;
+                move = direction * sensor;
+                curEntities = _level.GetEntitiesAt(start + pointOne + move);
+                curEntities.AddRange(_level.GetEntitiesAt(start + pointTwo + move));
+            }
+
+            foreach (Entity ent in lastEntities)
+            {
+                ent.Collide(source);
+                source.Collide(ent);
+            }
 
             if (xDir)
                 return move.X;

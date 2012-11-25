@@ -65,7 +65,7 @@ namespace WarTornLands
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //_tileSetTexture = Content.Load<Texture2D>(@"grass");
+            _tileSetTexture = Content.Load<Texture2D>(@"grass");
             _treeTexture = Content.Load<Texture2D>("tree");
             _deadTreeTexture = Content.Load<Texture2D>("deadtree");
             _gruselUteTexture = Content.Load<Texture2D>("wildboar");

@@ -227,7 +227,7 @@ namespace WarTornLands.Entities
         public virtual void UseThis(Player player)
         { }
 
-        public virtual void OnCollide(Entity source)
+        public virtual void Collide(Entity source)
         {
             if (_mCollideModule != null)
             {

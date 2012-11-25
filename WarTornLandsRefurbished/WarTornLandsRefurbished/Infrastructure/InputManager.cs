@@ -18,6 +18,21 @@ namespace WarTornLands.Infrastructure
     {
         private static InputManager _input;
 
+        #region Default controls
+
+        // Keyboard
+        private readonly static Keys KeyboardDefault_Hit = Keys.O;
+        private readonly static Keys KeyboardDefault_Jump = Keys.Space;
+        private readonly static Keys KeyboardDefault_Interact = Keys.T;
+        private readonly static Keys KeyboardDefault_UsePotion = Keys.P;
+        private readonly static Keys[] KeyboardDefault_Move = { Keys.W, Keys.A, Keys.S, Keys.D };
+
+        // GamePad
+
+        private readonly static float GamePadTStickThreshold = .1f;
+
+        #endregion
+
         // Keys /////////
         public Key ExecuteHit { get; private set; }
         public Key Jump { get; private set; }
@@ -36,16 +51,16 @@ namespace WarTornLands.Infrastructure
             : base(game)
         {
             ExecuteHit = new Key();
-            ExecuteHit.SetActivator(Constants.KeyboardDefault_Hit);
+            ExecuteHit.SetActivator(KeyboardDefault_Hit);
             Jump = new Key();
-            Jump.SetActivator(Constants.KeyboardDefault_Jump);
+            Jump.SetActivator(KeyboardDefault_Jump);
             Interact = new Key();
-            Interact.SetActivator(Constants.KeyboardDefault_Interact);
+            Interact.SetActivator(KeyboardDefault_Interact);
             UsePotion = new Key();
-            UsePotion.SetActivator(Constants.KeyboardDefault_UsePotion);
+            UsePotion.SetActivator(KeyboardDefault_UsePotion);
 
             Move = new DirectionInput();
-            Move.SetActivator(Constants.KeyboardDefault_Move);
+            Move.SetActivator(KeyboardDefault_Move);
 
 
             _inputList.Add(ExecuteHit);

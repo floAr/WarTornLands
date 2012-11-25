@@ -10,14 +10,15 @@ using WarTornLands.Entities.Modules;
 
 namespace WarTornLandsRefurbished.Entities.Modules.Think
 {
-    public class ThinkRoamAround:BaseModule,IThinkModule
+    public class ThinkRoamAround : BaseModule, IThinkModule
     {
         private Vector2 _anchor;
         private Vector2 _target;
         private float _radius;
 
 
-        public ThinkRoamAround(Entity owner, Vector2 anchor, float radius):base()
+        public ThinkRoamAround(Entity owner, Vector2 anchor, float radius)
+            : base()
         {
             _anchor = anchor;
             _target = anchor;
