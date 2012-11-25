@@ -82,7 +82,7 @@ namespace WarTornLands.Entities
         #endregion
 
         #region DieModule
-        protected IDyingModule _mDieModule;
+        protected IDieModule _mDieModule;
         #endregion
 
 
@@ -103,8 +103,8 @@ namespace WarTornLands.Entities
                 _mDrawModule = module as IDrawExecuter;
             if (module is IInteractModule)
                 _mInteractModule = module as IInteractModule;
-            if (module is IDyingModule)
-                _mDieModule = module as IDyingModule;
+            if (module is IDieModule)
+                _mDieModule = module as IDieModule;
         }
 
         public int Damage(int damage)
@@ -178,7 +178,7 @@ namespace WarTornLands.Entities
                 _mThinkModule.Update(gameTime);
             if(_mDieModule != null)
                 _mDieModule.Update(gameTime);
-            if(_mDrawModule != null)
+            if(_mDrawModule != null&&_mDrawModule is AnimatedDrawer)
                 _mDrawModule.Update(gameTime);
         }
 

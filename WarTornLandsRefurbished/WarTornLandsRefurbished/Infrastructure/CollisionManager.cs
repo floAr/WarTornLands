@@ -28,6 +28,7 @@ namespace WarTornLands.Infrastructure
         private CollisionManager()
         {
         }
+
         public  Vector2 TryMove(Vector2 start, Vector2 toGoal, float radius, Entity source)
         {
             return start + toGoal;
