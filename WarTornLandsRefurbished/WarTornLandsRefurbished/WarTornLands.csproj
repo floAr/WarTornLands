@@ -79,6 +79,8 @@
     <Compile Include="Entities\Modules\Collide\_ICollideModule.cs" />
     <Compile Include="Entities\Modules\Die\ExplodeAndLoot.cs" />
     <Compile Include="Entities\Modules\Die\_IDieModule.cs" />
+    <Compile Include="Entities\Modules\Draw\ParticleSystem\Particle.cs" />
+    <Compile Include="Entities\Modules\Draw\ParticleSystem\ParticleEngine.cs" />
     <Compile Include="Entities\Modules\Interact\PickUp.cs" />
     <Compile Include="Entities\Modules\Interact\_IInteractModule.cs" />
     <Compile Include="Entities\Modules\Think\Parts\JumpAbility.cs" />
@@ -95,8 +97,8 @@
     <Compile Include="Entities\Modules\Draw\StaticDrawer.cs" />
     <Compile Include="Infrastructure\Interface.cs" />
     <Compile Include="Infrastructure\SoundManager.cs" />
-    <Compile Include="Entities\Modules\Draw\Animation.cs" />
-    <Compile Include="Entities\Modules\Draw\AnimationSystem.cs" />
+    <Compile Include="Entities\Modules\Draw\AnimationSystem\Animation.cs" />
+    <Compile Include="Entities\Modules\Draw\AnimationSystem\AnimationSystem.cs" />
     <Compile Include="Infrastructure\Systems\Counter.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\DirectionInput.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\InputKey.cs" />
