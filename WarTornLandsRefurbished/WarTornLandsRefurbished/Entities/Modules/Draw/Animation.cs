@@ -55,7 +55,7 @@ namespace WarTornLands.Entities.Modules.Draw
         /// <value>
         /// <c>true</c> if this instance is looping; otherwise, <c>false</c>.
         /// </value>
-        public bool IsLooping { get; private set; }
+        public bool IsLooping { get;  set; }
         private bool _backwards;
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace WarTornLands.Entities.Modules.Draw
         /// <value>
         /// <c>true</c> if this instance is repeating; otherwise, <c>false</c>.
         /// </value>
-        public bool IsRepeating { get; private set; }
+        public bool IsRepeating { get;  set; }
         private Animation _foolowUp;
 
         /// <summary>
@@ -164,7 +164,10 @@ namespace WarTornLands.Entities.Modules.Draw
                     //.. and if we are not repeating the animation
                     if (!IsRepeating)
                         //..start plaing the follow up
-                        _parent.SetCurrentAnimation(_foolowUp.Name);
+                        if (_foolowUp != null)
+                            _parent.SetCurrentAnimation(_foolowUp.Name);
+                        else
+                            this.HasEnded = true;
                     //if we are looping..
                     if (IsLooping)
                     {
@@ -190,5 +193,7 @@ namespace WarTornLands.Entities.Modules.Draw
             _counter = 0;
             _currentFrame = 0;
         }
+
+        public bool HasEnded { get; set; }
     }
 }

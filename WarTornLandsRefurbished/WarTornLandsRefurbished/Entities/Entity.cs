@@ -50,6 +50,7 @@ namespace WarTornLands.Entities
         public bool CanSpeak { get; protected set; }
         public bool CanBeUsed { get; protected set; }
         public bool CanBePickedUp { get; protected set; }
+        public bool IsDead { get; set; }
         /////////////////
 
         // Counters ///
@@ -178,8 +179,12 @@ namespace WarTornLands.Entities
                 _mThinkModule.Update(gameTime);
             if(_mDieModule != null)
                 _mDieModule.Update(gameTime);
-            if(_mDrawModule != null&&_mDrawModule is AnimatedDrawer)
+            if (_mDrawModule != null && _mDrawModule is AnimatedDrawer)
+            {
                 _mDrawModule.Update(gameTime);
+                if (((AnimatedDrawer)_mDrawModule).HasEnded)
+                    this._mDrawModule = null;
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -203,10 +208,6 @@ namespace WarTornLands.Entities
                                 (this.Position.Y - center.Y - _texture.Height * 0.5f + (float)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f)));
         }*/
 
-        public virtual void OnDie()
-        {
-            // Fucking explode!!!!
-        }
 
         public virtual void UseThis(Player player)
         { }
@@ -215,5 +216,7 @@ namespace WarTornLands.Entities
         {
            
         }
+
+        
     }
 }

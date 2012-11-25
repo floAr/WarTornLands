@@ -14,6 +14,7 @@ using WarTornLands.Infrastructure;
 using WarTornLands.Infrastructure.Systems;
 using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities;
+using WarTornLands.Entities.Modules.Die;
 
 namespace WarTornLands
 {
@@ -31,7 +32,9 @@ namespace WarTornLands
         public Player Player { get; private set; }
         //public DialogManager DialogManager { get; private set; }
         //public Interface Interface { get; private set; }
-        //public Level Level { get; private set; }       
+        //public Level Level { get; private set; }     
+  
+
         public static Game1 _instance = new Game1();
         public static Game1 Instance
         {
@@ -74,13 +77,18 @@ namespace WarTornLands
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //Add Default Explosion Module
+            
 
             StaticDrawer sd = new StaticDrawer();
+            
 
             sd.Texture = Content.Load<Texture2D>("blackhole");
 
-            staticTest = new Entity(this, new Vector2(10, 10), "loch");
+            staticTest = new Entity(this, new Vector2(50, 50), "loch");
             staticTest.AddModule(sd);
+            staticTest.AddModule(new ExplodeAndLoot(Items.Potion));
+            staticTest.Health = 100;
 
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
@@ -94,6 +102,7 @@ namespace WarTornLands
             // TODO: Entladen Sie jeglichen Nicht-ContentManager-Inhalt hier
         }
 
+        int counter = 0;
         /// <summary>
         /// Ermöglicht dem Spiel die Ausführung der Logik, wie zum Beispiel Aktualisierung der Welt,
         /// Überprüfung auf Kollisionen, Erfassung von Eingaben und Abspielen von Ton.
@@ -105,6 +114,12 @@ namespace WarTornLands
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             staticTest.Update(gameTime);
+            counter += gameTime.ElapsedGameTime.Milliseconds;
+            if (counter > 1000)
+            {
+                staticTest.Health -= 10;
+                counter -= 1000;
+            }
 
             base.Update(gameTime);
         }

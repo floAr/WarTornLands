@@ -17,7 +17,7 @@ namespace WarTornLands.Entities.Modules.Interact
        }
         public void Interact(InteractInformation information)
         {
-            
+            Game1.Instance.Player.GiveItem(_loot);
         }
 
         public void Update(GameTime gameTime)
