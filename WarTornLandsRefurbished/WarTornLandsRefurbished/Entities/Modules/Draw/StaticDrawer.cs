@@ -36,7 +36,13 @@ namespace WarTornLands.Entities.Modules.Draw
                 _loc = information.Position - (_size / 2);
             else
                 _loc = information.Position;
-            batch.Draw(Texture, new Rectangle((int)_loc.X, (int)_loc.Y, (int)_size.X, (int)_size.Y), new Rectangle(0, 0, (int)_size.X, (int)_size.Y), Color.White, information.Rotation, _size / 2, SpriteEffects.None, 0.5f);
+
+            Vector2 center = Game1.Instance.Player.Position;
+            Rectangle bounds = Game1.Instance.Window.ClientBounds;
+
+            batch.Draw(Texture, new Rectangle((int)_loc.X - (int)center.X + (int)Math.Round(bounds.Width / 2.0f),
+                (int)_loc.Y - (int)center.Y + (int)Math.Round(bounds.Height / 2.0f), (int)_size.X, (int)_size.Y),
+                new Rectangle(0, 0, (int)_size.X, (int)_size.Y), Color.White, information.Rotation, _size / 2, SpriteEffects.None, 0.5f);
         }
 
         public Vector2 Size

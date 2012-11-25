@@ -68,6 +68,7 @@ namespace WarTornLands
             Input = InputManager.GetInstance(this);
             this.Components.Add(Input);
             Player = Player.Instance();
+            Player.DrawOrder = 100;
             this.Components.Add(Player);
 
             Level = new Level(this);

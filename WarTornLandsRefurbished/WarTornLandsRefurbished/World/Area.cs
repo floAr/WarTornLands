@@ -10,10 +10,12 @@ namespace WarTornLands.World
 {
     public class Area
     {
+        public Rectangle Bounds { get; private set; }
         LinkedList<Layer> _layers;
 
-        public Area()
+        public Area(Rectangle bounds)
         {
+            Bounds = bounds;
             _layers = new LinkedList<Layer>();
         }
 
@@ -46,14 +48,37 @@ namespace WarTornLands.World
             }
         }
 
+        private bool Contains(Vector2 position)
+        {
+            if (Bounds.Left * Constants.TileSize < position.X &&
+                Bounds.Top * Constants.TileSize < position.Y &&
+                Bounds.Right * Constants.TileSize > position.X &&
+                Bounds.Bottom * Constants.TileSize > position.Y)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         internal bool IsPositionAccessible(Vector2 position)
         {
+            // Check whether the area even contains the pixel position
+            if (!Contains(position))
+            {
+                return true;
+            }
+
+            Vector2 localPos = new Vector2(position.X, position.Y);
+
+            // Iterate through layers, check all TileLayers
             foreach (Layer layer in _layers)
             {
                 if (layer is TileLayer && (layer as TileLayer).IsPositionAccessible(position) == false)
                     return false;
             }
 
+            // Accessible if all TileLayers had empty tiles
             return true;
         }
 

@@ -64,9 +64,13 @@ namespace WarTornLands.World
             return result;
         }
 
+        /// <summary>
+        /// Loads a test level for now.
+        /// TODO add XML level loading code
+        /// </summary>
         public void LoadLevel()
         {
-            Area area1 = new Area();
+            Area area1 = new Area(new Rectangle(0, 0, 10, 10));
 
             TileLayer layer1 = new TileLayer(_game, 0);
             Tile[,] grid1 = new Tile[10, 10];
@@ -80,6 +84,7 @@ namespace WarTornLands.World
                         grid1[x, y].TileNum = 2;
                 }
             }
+            grid1[0, 0].TileNum = 0;
             layer1.LoadGrid(grid1, false, "grass");
             area1.AddLayer(layer1);
 
