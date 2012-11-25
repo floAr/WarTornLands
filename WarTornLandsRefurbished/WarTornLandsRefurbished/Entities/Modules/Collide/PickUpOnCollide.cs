@@ -36,15 +36,15 @@ namespace WarTornLands.Entities.Modules.Collide
                 _isOnCD = false;
         }
 
-        public void OnCollide(CollideInformation info)
+        public bool OnCollide(CollideInformation info)
         {
             if (_charges == 0)
             {
                 _owner.IsDead = true;
-                return;
+                return true;
             }
             if (!info.IsPlayer || _isOnCD || _owner.IsDead)
-                return;
+                return true;
 
             ((Player)info.Collider).GiveItem(_loot);
 
@@ -58,6 +58,7 @@ namespace WarTornLands.Entities.Modules.Collide
                 _pushItemCooldown.StartCounter("cdDrop");
                 _isOnCD = true;
             }
+            return true;
 
 
         }

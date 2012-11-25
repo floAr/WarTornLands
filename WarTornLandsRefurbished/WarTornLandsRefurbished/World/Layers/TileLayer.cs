@@ -6,7 +6,6 @@ using WarTornLands.World.Layers;
 using Microsoft.Xna.Framework;
 using WarTornLands.Counter;
 using Microsoft.Xna.Framework.Graphics;
-using WarTornLands.Entities;
 
 namespace WarTornLands.World.Layers
 {
@@ -16,7 +15,12 @@ namespace WarTornLands.World.Layers
         /// Reference to tile in TileSet Texture, where 0 is transparent
         /// and other tiles are numbered consecutively.
         /// </summary>
-        public int TileNum;
+        int TileNum;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        char MoveSpeed;
     };
 
     public class TileLayer : Layer
@@ -35,14 +39,18 @@ namespace WarTornLands.World.Layers
         {
             _grid = grid;
             _isAnimated = isAnimated;
-            _tileSetTexture = _game.Content.Load<Texture2D>(tileSet);
+            _game.Content.Load<Texture2D>(tileSet);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            Game1 game = (_game as Game1);
-            Vector2 center = game.Player.Position;
+           /* Game1 game = (_game as Game1);
+            //Vector2 center = game.Player.Position;
+            Vector2 center = new Vector2(0, 0);
             int width = (int)Math.Floor((double)_tileSetTexture.Width / Constants.TileSize);
+
+
+            game.SpriteBatch.Begin();
 
             // TODO:
             // Check whether Tiles are visible and just draw them if they are
@@ -55,14 +63,15 @@ namespace WarTornLands.World.Layers
                         new Rectangle(x * Constants.TileSize - (int)center.X + (int)Math.Round(game.Window.ClientBounds.Width / 2.0f),
                             y * Constants.TileSize - (int)center.Y + (int)Math.Round(game.Window.ClientBounds.Height / 2.0f),
                             Constants.TileSize, Constants.TileSize),
-                        new Rectangle((_grid[x, y].TileNum % width) * Constants.TileSize,
-                        (_grid[x, y].TileNum / width) * Constants.TileSize,
+                        new Rectangle((_grid[x, y] % width) * Constants.TileSize,
+                        (_grid[x, y] / width) * Constants.TileSize,
                         Constants.TileSize,
                         Constants.TileSize),
                         Color.White);
                 }
             }
 
+            game.SpriteBatch.End();*/
         }
 
         public override void Update(GameTime gameTime)
@@ -72,19 +81,6 @@ namespace WarTornLands.World.Layers
                 if (_cm != null)
                     _cm.Update(gameTime);
             }
-        }
-
-        public bool IsPositionAccessible(Vector2 position)
-        {
-            if (DrawOrder == (_game as Game1).Player.DrawOrder)
-            {
-                int x = (int)position.X / Constants.TileSize;
-                int y = (int)position.Y / Constants.TileSize;
-                if (_grid[x,y].TileNum != 0)
-                    return false;
-            }
-
-            return true;
         }
     }
 }

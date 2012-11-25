@@ -15,6 +15,7 @@ using WarTornLands.Entities.Modules.Think;
 using WarTornLands.Entities.Modules.Interact;
 using WarTornLands.Entities.Modules;
 using WarTornLands.Entities.Modules.Collide;
+using WarTornLands.Entities.Modules.Draw.ParticleSystem;
 
 namespace WarTornLands.Entities
 {
@@ -183,38 +184,40 @@ namespace WarTornLands.Entities
             #endregion
             if (_mInteractModule != null)
                 _mInteractModule.Update(gameTime);
-            if(_mThinkModule != null)
+            if (_mThinkModule != null)
                 _mThinkModule.Update(gameTime);
-            if(_mDieModule != null)
+            if (_mDieModule != null)
                 _mDieModule.Update(gameTime);
-            if (_mDrawModule != null && _mDrawModule is AnimatedDrawer)
+            if (_mDrawModule != null && (_mDrawModule is AnimatedDrawer || _mDrawModule is ParticleSystem))
             {
                 _mDrawModule.Update(gameTime);
-                if (((AnimatedDrawer)_mDrawModule).HasEnded)
-                    this._mDrawModule = null;
+                if (_mDrawModule is AnimatedDrawer)
+                    if (((AnimatedDrawer)_mDrawModule).HasEnded)
+                        this._mDrawModule = null;
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
-           // Point drawPos = new Point((int)this.GetDrawPosition().X, (int)this.GetDrawPosition().Y);
+            // Point drawPos = new Point((int)this.GetDrawPosition().X, (int)this.GetDrawPosition().Y);
 
-            DrawInformation information=new DrawInformation(){
-                Position=this.Position,
-                Rotation=_rotation,
-                Scale=this.Size
+            DrawInformation information = new DrawInformation()
+            {
+                Position = this.Position,
+                Rotation = _rotation,
+                Scale = this.Size
             };
 
             if (_mDrawModule != null)
                 _mDrawModule.Draw(((Game1)Game).SpriteBatch, information);
         }
 
-      /*  protected virtual Vector2 GetDrawPosition()
-        {
-            Vector2 center = (Game as Game1).Player.Position;
-            return new Vector2((this.Position.X - center.X - _texture.Width * 0.5f + (float)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f)),
-                                (this.Position.Y - center.Y - _texture.Height * 0.5f + (float)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f)));
-        }*/
+        /*  protected virtual Vector2 GetDrawPosition()
+          {
+              Vector2 center = (Game as Game1).Player.Position;
+              return new Vector2((this.Position.X - center.X - _texture.Width * 0.5f + (float)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f)),
+                                  (this.Position.Y - center.Y - _texture.Height * 0.5f + (float)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f)));
+          }*/
 
 
         public virtual void UseThis(Player player)
@@ -229,6 +232,6 @@ namespace WarTornLands.Entities
             }
         }
 
-        
+
     }
 }

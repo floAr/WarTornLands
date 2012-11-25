@@ -32,73 +32,16 @@ namespace WarTornLands.World
             _areas.Remove(area);
         }
 
-        /// <summary>
-        /// Queries the Tile Map whether a given pixel position is accessible.
-        /// Entities are not considered in the collision check. This is done
-        /// via GetEntitiesAt in the CollisionManager.
-        /// </summary>
-        /// <param name="position">Pixel position to check.</param>
-        /// <returns></returns>
-        public bool IsPositionAccessible(Vector2 position)
+        public bool IsPositionAccessible(Vector2 position, Entity source)
         {
-            bool accessible = true;
-
-            // TODO only check areas near the player
-            foreach (Area area in _areas)
-            {
-                if (!area.IsPositionAccessible(position))
-                    accessible = false;
-            }
-
-            return accessible;
+            // TODO return position accessible
+            return true;
         }
 
-        public List<Entity> GetEntitiesAt(Vector2 position)
+        public List<Entity> GetEntitiesAt(Vector2 worldPosition)
         {
             // TODO entity at
             return null;
-        }
-
-        public void LoadLevel()
-        {
-            Area area1 = new Area();
-
-            TileLayer layer1 = new TileLayer(_game, 0);
-            Tile[,] grid1 = new Tile[10, 10];
-            for (int x = 0; x < 10; x++)
-            {
-                for (int y = 0; y < 10; y++)
-                {
-                    if (x==3 || y==5)
-                        grid1[x, y].TileNum = 3;
-                    else
-                        grid1[x, y].TileNum = 2;
-                }
-            }
-            layer1.LoadGrid(grid1, false, "grass");
-            area1.AddLayer(layer1);
-
-            TileLayer layer2 = new TileLayer(_game, 100);
-            Tile[,] grid2 = new Tile[10, 10];
-            for (int x = 0; x < 10; x++)
-            {
-                for (int y = 0; y < 10; y++)
-                {
-                        grid2[x, y].TileNum = 0;
-                }
-            }
-            grid2[3, 3].TileNum = 6;
-            grid2[4, 3].TileNum = 6;
-            grid2[5, 3].TileNum = 6;
-            grid2[5, 4].TileNum = 6;
-            grid2[5, 5].TileNum = 6;
-            grid2[4, 5].TileNum = 6;
-            grid2[3, 5].TileNum = 6;
-
-            layer2.LoadGrid(grid2, false, "grass");
-            area1.AddLayer(layer2);
-
-            AddArea(area1);
         }
     }
 }

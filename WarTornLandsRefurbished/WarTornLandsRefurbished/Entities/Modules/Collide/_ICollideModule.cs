@@ -14,6 +14,6 @@ namespace WarTornLands.Entities.Modules.Collide
     public interface ICollideModule
     {
 
-        void OnCollide(CollideInformation info);
+         bool OnCollide(CollideInformation info);
     }
 }
