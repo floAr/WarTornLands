@@ -22,6 +22,7 @@ namespace WarTornLands.World.Layers
     public class TileLayer : Layer
     {
         private bool _isAnimated;
+        private bool _isCollisionLayer;
         private CounterManager _cm;
         private Tile[,] _grid;
         private Texture2D _tileSetTexture;
@@ -31,8 +32,9 @@ namespace WarTornLands.World.Layers
         {
         }
 
-        public void LoadGrid(Tile[,] grid, bool isAnimated, string tileSet)
+        public void LoadGrid(Tile[,] grid, bool isAnimated, string tileSet, bool collide)
         {
+            _isCollisionLayer = collide;
             _grid = grid;
             _isAnimated = isAnimated;
             _tileSetTexture = _game.Content.Load<Texture2D>(tileSet);
@@ -76,7 +78,7 @@ namespace WarTornLands.World.Layers
 
         public bool IsPositionAccessible(Vector2 position)
         {
-            if (DrawOrder == (_game as Game1).Player.DrawOrder)
+            if (_isCollisionLayer)
             {
                 int x = (int)position.X / Constants.TileSize;
                 int y = (int)position.Y / Constants.TileSize;
