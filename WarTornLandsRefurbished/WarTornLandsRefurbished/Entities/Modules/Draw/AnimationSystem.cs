@@ -17,6 +17,8 @@ namespace WarTornLands.Entities.Modules.Draw
         private Vector2 _loc;
         private Vector2 _size;
 
+        public bool HasEnded { get { return _animations[_currentAnimation].HasEnded; } }
+
         public AnimatedDrawer(Texture2D spriteSheet)
         {
             _spriteSheet = spriteSheet;
@@ -63,6 +65,28 @@ namespace WarTornLands.Entities.Modules.Draw
         public Vector2 Size
         {
             get { return new Vector2(_animations[_currentAnimation].CurrentFrame.Width, _animations[_currentAnimation].CurrentFrame.Height); }
+        }
+
+
+        public static AnimatedDrawer Explosion
+        {
+            get
+            {
+                AnimatedDrawer explosion = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("explosion"));
+                Animation explode = new Animation("explode");
+                for (int y = 0; y < 2; ++y)
+                {
+                    for (int x = 0; x < 8; ++x)
+                    {
+                        explode.AddFrame(new Rectangle(x * 64, y * 64, 64, 64));
+                    }
+                }
+                explode.IsLooping = false;
+                explode.IsRepeating = false;
+                explosion.AddAnimation(explode);
+                explosion.SetCurrentAnimation("explode");
+                return explosion;
+            }
         }
     }
 }

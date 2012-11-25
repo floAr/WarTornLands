@@ -51,15 +51,12 @@ namespace WarTornLands.World.Layers
             // Could also be done in the Entities class itself
             try
             {
-                foreach (Entity ent in _entities)
+                List<Entity> buffer = new List<Entity>(_entities);
+                foreach (Entity ent in buffer)
                 {
                     ent.Update(gameTime);
-                    if (ent.Health == 0)
-                    {
-                        ent.OnDie();
+                    if (ent.IsDead)
                         _entities.Remove(ent);
-                        GC.Collect();
-                    }
                 }
             }
             catch { }

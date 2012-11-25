@@ -9,9 +9,15 @@ namespace WarTornLands.Entities.Modules.Interact
 {
    public class PickUp :BaseModule, IInteractModule
     {
-        public void Interact(Entity invoker, Entity target,InteractInformation information)
+       private WarTornLands.PlayerClasses.Items _loot;
+
+       public PickUp(WarTornLands.PlayerClasses.Items loot)
+       {
+           _loot = loot;
+       }
+        public void Interact(InteractInformation information)
         {
-            
+            Game1.Instance.Player.GiveItem(_loot);
         }
 
         public void Update(GameTime gameTime)

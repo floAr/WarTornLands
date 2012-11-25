@@ -14,6 +14,7 @@ using WarTornLands.Entities.Modules.Die;
 using WarTornLands.Entities.Modules.Think;
 using WarTornLands.Entities.Modules.Interact;
 using WarTornLands.Entities.Modules;
+using WarTornLands.Entities.Modules.Collide;
 
 namespace WarTornLands.Entities
 {
@@ -50,6 +51,7 @@ namespace WarTornLands.Entities
         public bool CanSpeak { get; protected set; }
         public bool CanBeUsed { get; protected set; }
         public bool CanBePickedUp { get; protected set; }
+        public bool IsDead { get; set; }
         /////////////////
 
         // Counters ///
@@ -67,6 +69,10 @@ namespace WarTornLands.Entities
 
         internal CounterManager CM;
 
+        #region CollideModule
+        protected ICollideModule _mCollideModule;
+        #endregion
+
         #region DrawModule
         protected IDrawExecuter _mDrawModule;
 
@@ -83,7 +89,7 @@ namespace WarTornLands.Entities
         #endregion
 
         #region DieModule
-        protected IDyingModule _mDieModule;
+        protected IDieModule _mDieModule;
         #endregion
 
 
@@ -105,8 +111,10 @@ namespace WarTornLands.Entities
                 _mDrawModule = module as IDrawExecuter;
             if (module is IInteractModule)
                 _mInteractModule = module as IInteractModule;
-            if (module is IDyingModule)
-                _mDieModule = module as IDyingModule;
+            if (module is IDieModule)
+                _mDieModule = module as IDieModule;
+            if (module is ICollideModule)
+                _mCollideModule = module as ICollideModule;
         }
 
         public int Damage(int damage)
@@ -173,15 +181,18 @@ namespace WarTornLands.Entities
 
 
             #endregion
-
             if (_mInteractModule != null)
                 _mInteractModule.Update(gameTime);
             if(_mThinkModule != null)
                 _mThinkModule.Update(gameTime);
             if(_mDieModule != null)
                 _mDieModule.Update(gameTime);
-            if(_mDrawModule != null)
+            if (_mDrawModule != null && _mDrawModule is AnimatedDrawer)
+            {
                 _mDrawModule.Update(gameTime);
+                if (((AnimatedDrawer)_mDrawModule).HasEnded)
+                    this._mDrawModule = null;
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -205,17 +216,19 @@ namespace WarTornLands.Entities
                                 (this.Position.Y - center.Y - _texture.Height * 0.5f + (float)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f)));
         }*/
 
-        public virtual void OnDie()
-        {
-            // Fucking explode!!!!
-        }
 
         public virtual void UseThis(Player player)
         { }
 
         public virtual void OnCollide(Entity source)
         {
-           
+            if (_mCollideModule != null)
+            {
+                CollideInformation info = new CollideInformation() { Collider = source, IsPlayer = source is Player };
+                _mCollideModule.OnCollide(info);
+            }
         }
+
+        
     }
 }

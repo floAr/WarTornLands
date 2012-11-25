@@ -32,20 +32,22 @@ namespace WarTornLands.Entities.Modules.Draw
         /// <param name="information">The information.</param>
         public void Draw(SpriteBatch batch, DrawInformation information)
         {
-            if (information.Centered)               
-                _loc = information.Position ;
+            if (information.Centered)
+                _loc = information.Position - (_size / 2);
             else
-                //add up because its centered anyway because the origin in the draw
-                _loc = information.Position + (_size / 2);
+                _loc = information.Position;
             batch.Draw(Texture, new Rectangle((int)_loc.X, (int)_loc.Y, (int)_size.X, (int)_size.Y), new Rectangle(0, 0, (int)_size.X, (int)_size.Y), Color.White, information.Rotation, _size / 2, SpriteEffects.None, 0.5f);
         }
-
-        public void Update(GameTime gametime)
-        { }
 
         public Vector2 Size
         {
             get { return new Vector2(_tex.Width, _tex.Height); }
+        }
+
+
+        public void Update(GameTime gameTime)
+        {
+            throw new NotImplementedException();
         }
     }
 }
