@@ -10,11 +10,11 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using WarTornLands.PlayerClasses;
 using WarTornLands.Infrastructure;
-
 using WarTornLands.Infrastructure.Systems;
 using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities;
 using WarTornLands.Entities.Modules.Die;
+using WarTornLands.Entities.Modules.Draw.ParticleSystem;
 using WarTornLands.World;
 using WarTornLands.Entities.Modules.Draw.ParticleSystem;
 
@@ -30,6 +30,7 @@ namespace WarTornLands
         public SpriteBatch SpriteBatch { get; private set; }
         public InputManager Input { get; private set; }
         Entity staticTest;
+        Entity particleTest;
         Entity dynamicTest;
         Entity particleTest;
         public Player Player { get; private set; }
@@ -38,12 +39,13 @@ namespace WarTornLands
         public Level Level { get; private set; }
   
 
-        public static Game1 _instance = new Game1();
+        private  static Game1 _instance = new Game1();
+
         public static Game1 Instance
         {
             get
             {
-                    return _instance;
+                return _instance;
             }
         }
 
@@ -65,7 +67,7 @@ namespace WarTornLands
 
             Input = InputManager.GetInstance(this);
             this.Components.Add(Input);
-            Player = Player.GetInstance(this);
+            Player = Player.Instance();
             this.Components.Add(Player);
 
             Level = new Level(this);
@@ -95,6 +97,27 @@ namespace WarTornLands
             staticTest.AddModule(sd);
             staticTest.AddModule(new ExplodeAndLoot(Items.Potion));
             staticTest.Health = 100;
+            List<Texture2D> pL= new List<Texture2D>();
+            pL.Add(Content.Load<Texture2D>("flame3"));
+            particleTest = new Entity(this, new Vector2(150,300));
+            ParticleSystem pSystem = new ParticleSystem(
+                new EmitterSetting()
+                {
+                    DirectionX = new Range() { Min = -1, Max = 1 },
+                    DirectionY = new Range() { Min = -1, Max = -3 },
+                    AnglePermutation = new Range() { Min = -1, Max = 1 },
+                    Lifetime = new Range() { Min = 1000, Max = 2500 },
+                    MaxParticles = new Range(250),
+                    Size = new Range() { Min = 0.1f, Max = 0.3f },
+                    SpeedX = new Range() { Min = -1, Max = 1 },
+                    SpeedY = new Range() { Min = -1, Max = -3 },
+                    Alpha=new Range(1),
+                    AlphaDecay=new Range(0.01f,0.1f)
+                    
+                },
+        pL, new Vector2(150, 500));
+            particleTest.AddModule(pSystem);
+                
 
 
             List<Texture2D> pL = new List<Texture2D>();
@@ -164,6 +187,7 @@ namespace WarTornLands
 
             // Kapseln in eigene Klasse, für Menüs etc.
             SpriteBatch.Begin();
+           particleTest.Draw(gameTime);
             staticTest.Draw(gameTime);
             particleTest.Draw(gameTime);
             base.Draw(gameTime);
