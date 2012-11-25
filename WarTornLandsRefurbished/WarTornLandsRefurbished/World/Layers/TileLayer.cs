@@ -15,12 +15,7 @@ namespace WarTornLands.World.Layers
         /// Reference to tile in TileSet Texture, where 0 is transparent
         /// and other tiles are numbered consecutively.
         /// </summary>
-        int TileNum;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        char MoveSpeed;
+        public int TileNum;
     };
 
     public class TileLayer : Layer
@@ -39,14 +34,14 @@ namespace WarTornLands.World.Layers
         {
             _grid = grid;
             _isAnimated = isAnimated;
-            _game.Content.Load<Texture2D>(tileSet);
+            _tileSetTexture = _game.Content.Load<Texture2D>(tileSet);
         }
 
         public override void Draw(GameTime gameTime)
         {
-           /* Game1 game = (_game as Game1);
+            Game1 game = (_game as Game1);
             //Vector2 center = game.Player.Position;
-            Vector2 center = new Vector2(0, 0);
+            Vector2 center = new Vector2(256, 256);
             int width = (int)Math.Floor((double)_tileSetTexture.Width / Constants.TileSize);
 
 
@@ -63,15 +58,15 @@ namespace WarTornLands.World.Layers
                         new Rectangle(x * Constants.TileSize - (int)center.X + (int)Math.Round(game.Window.ClientBounds.Width / 2.0f),
                             y * Constants.TileSize - (int)center.Y + (int)Math.Round(game.Window.ClientBounds.Height / 2.0f),
                             Constants.TileSize, Constants.TileSize),
-                        new Rectangle((_grid[x, y] % width) * Constants.TileSize,
-                        (_grid[x, y] / width) * Constants.TileSize,
+                        new Rectangle((_grid[x, y].TileNum % width) * Constants.TileSize,
+                        (_grid[x, y].TileNum / width) * Constants.TileSize,
                         Constants.TileSize,
                         Constants.TileSize),
                         Color.White);
                 }
             }
 
-            game.SpriteBatch.End();*/
+            game.SpriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
