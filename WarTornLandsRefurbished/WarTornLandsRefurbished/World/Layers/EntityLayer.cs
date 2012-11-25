@@ -27,21 +27,23 @@ namespace WarTornLands.World.Layers
             _entities.AddRange(entities);
         }
 
-        public Entity GetEntityAt(Vector2 worldPosition)
+        public List<Entity> GetEntitiesAt(Vector2 position)
         {
+            List<Entity> result = new List<Entity>();
+
             foreach (Entity ent in _entities)
             {
                 Vector2 pos = ent.Position;
                 Vector2 size = ent.Size;
 
-                if (worldPosition.X >= pos.X - size.X * 0.5f && worldPosition.X < pos.X + size.X * 0.5f &&
-                    worldPosition.Y >= pos.Y - size.Y * 0.5f && worldPosition.Y < pos.Y + size.Y * 0.5f)
+                if (position.X >= pos.X - size.X * 0.5f && position.X < pos.X + size.X * 0.5f &&
+                    position.Y >= pos.Y - size.Y * 0.5f && position.Y < pos.Y + size.Y * 0.5f)
                 {
-                    return ent;
+                    result.Add(ent);
                 }
             }
 
-            return null;
+            return result;
         }
 
         public override void Update(GameTime gameTime)

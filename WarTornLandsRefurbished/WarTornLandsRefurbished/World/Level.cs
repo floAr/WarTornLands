@@ -41,22 +41,27 @@ namespace WarTornLands.World
         /// <returns></returns>
         public bool IsPositionAccessible(Vector2 position)
         {
-            bool accessible = true;
-
             // TODO only check areas near the player
             foreach (Area area in _areas)
             {
-                if (!area.IsPositionAccessible(position))
-                    accessible = false;
+                if (area.IsPositionAccessible(position) == false)
+                    return false;
             }
 
-            return accessible;
+            return true;
         }
 
         public List<Entity> GetEntitiesAt(Vector2 position)
         {
-            // TODO entity at
-            return null;
+            List<Entity> result = new List<Entity>();
+
+            // TODO only check areas near the player
+            foreach (Area area in _areas)
+            {
+                result.Concat(area.GetEntitiesAt(position));
+            }
+
+            return result;
         }
 
         public void LoadLevel()

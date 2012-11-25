@@ -48,7 +48,6 @@ namespace WarTornLands.World
 
         internal bool IsPositionAccessible(Vector2 position)
         {
-            // TODO only check areas near the player
             foreach (Layer layer in _layers)
             {
                 if (layer is TileLayer && (layer as TileLayer).IsPositionAccessible(position) == false)
@@ -56,6 +55,21 @@ namespace WarTornLands.World
             }
 
             return true;
+        }
+
+        public List<Entity> GetEntitiesAt(Vector2 position)
+        {
+            List<Entity> result = new List<Entity>();
+
+            foreach (Layer layer in _layers)
+            {
+                if (layer is EntityLayer)
+                {
+                    result.Concat((layer as EntityLayer).GetEntitiesAt(position));
+                }
+            }
+
+            return result;
         }
     }
 }

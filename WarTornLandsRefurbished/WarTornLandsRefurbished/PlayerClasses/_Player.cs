@@ -18,7 +18,7 @@ namespace WarTornLands.PlayerClasses
         private static Player _player;
 
         private Player(Game1 game)
-            : base(game, new Vector2(250),  "Player")
+            : base(game, new Vector2(0, 0),  "Player")
         {
             CM = new CounterManager();
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
