@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using WarTornLands.Entities;
 
 namespace WarTornLands.World.Layers
 {
@@ -15,6 +16,16 @@ namespace WarTornLands.World.Layers
         {
             _game = game;
             DrawOrder = depth;
+        }
+
+        public void Add()
+        {
+            Game.Components.Add(this);
+        }
+
+        internal void Remove()
+        {
+            Game.Components.Remove(this);
         }
     }
 }
