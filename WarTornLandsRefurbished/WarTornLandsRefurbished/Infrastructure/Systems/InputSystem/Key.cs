@@ -37,49 +37,48 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
 
         public override void Update(GameTime gt, KeyboardState oldKeys)
         {
-            try
+            // Keyboard ///
+            if ((int)_mode == 0)
             {
-                // Keyboard ///
-                if (_mode == 0)
+                if(_key == null)
+                    throw new Exception("Input keys not set.");
+                
+                KeyboardState state = Keyboard.GetState();
+
+                if (state.IsKeyDown(_key))
                 {
-                    KeyboardState state = Keyboard.GetState();
+                    Value = true;
+                    Held += gt.ElapsedGameTime.Milliseconds;
 
-                    if (state.IsKeyDown(_key))
+                    if (oldKeys.IsKeyUp(_key))
                     {
-                        Value = true;
-                        Held += gt.ElapsedGameTime.Milliseconds;
-
-                        if (oldKeys.IsKeyUp(_key))
-                        {
-                            if (Pressed != null)
-                                Pressed(null, EventArgs.Empty);
-                        }
-                    }
-                    else
-                    {
-                        Value = false;
-                        Held = 0;
+                        if (Pressed != null)
+                            Pressed(null, EventArgs.Empty);
                     }
                 }
-                /////////////
-
-                // GamePad ///
-                if ((int)_mode == 1)
+                else
                 {
-                    if (GamePad.GetState(PlayerIndex.One).IsButtonDown(_button))
-                    {
-                        Value = true;
-                        Held += gt.ElapsedGameTime.Milliseconds;
-                    }
-                    else
-                    {
-                        Value = false;
-                        Held = 0;
-                    }
+                    Value = false;
+                    Held = 0;
                 }
-                /////////////
             }
-            catch { throw new Exception("Input keys not set."); }
+            /////////////
+
+            // GamePad ///
+            if ((int)_mode == 1)
+            {
+                if (GamePad.GetState(PlayerIndex.One).IsButtonDown(_button))
+                {
+                    Value = true;
+                    Held += gt.ElapsedGameTime.Milliseconds;
+                }
+                else
+                {
+                    Value = false;
+                    Held = 0;
+                }
+            }
+            /////////////
         }
 
        

@@ -14,6 +14,7 @@ namespace WarTornLands.Counter
         internal const int C_seconds = 1000;
 
         public event EventHandler<BangEventArgs> Bang;
+        public event EventHandler<BangEventArgs> Step;
         internal event EventHandler<CounterEventArgs> Start;
         internal event EventHandler<CounterEventArgs> Cancel;
         private List<Counter> _counters;
@@ -29,31 +30,34 @@ namespace WarTornLands.Counter
 
         public void AddCounter()
         {
-            string Tid = "counter_";
-            Tid += (++_counterAutoname).ToString();
-            _counters.Add(new Counter(Tid));
-            _counters[_counters.Count - 1].Initialize(this);
-            _counters[_counters.Count - 1].Bang += new EventHandler<BangEventArgs>(PassOnBang);
+            string id = "counter_";
+            id += (++_counterAutoname).ToString();
+
+            AddCounter(id);
         }
 
         public void AddCounter(string id)
         {
-            foreach (Counter c in _counters)
-            {
-                if (c.ID.Equals(id))
-                    throw new CounterIDAlreadyInUseException(id);
-            }
-
-            _counters.Add(new Counter(id));
-            _counters[_counters.Count - 1].Initialize(this);
-            _counters[_counters.Count - 1].Bang += new EventHandler<BangEventArgs>(PassOnBang);
+            AddCounter(id, Counter.DEFAULT);
         }
 
-        public void AddCounter(string id, int defaultTerm)
+        public void AddCounter(string id, int defaultTerm, bool stepCalled = false)
         {
-            _counters.Add(new Counter(defaultTerm, id));
-            _counters[_counters.Count - 1].Initialize(this);
-            _counters[_counters.Count - 1].Bang += new EventHandler<BangEventArgs>(PassOnBang);
+            CheckCounterUse(id);
+
+            if (!stepCalled)
+            {
+                _counters.Add(new Counter(id, defaultTerm));
+                _counters[_counters.Count - 1].Initialize(this);
+                _counters[_counters.Count - 1].Bang += new EventHandler<BangEventArgs>(PassOnBang);
+            }
+            else 
+            {
+                _counters.Add(new Counter(id, defaultTerm, stepCalled));
+                _counters[_counters.Count - 1].Initialize(this);
+                _counters[_counters.Count - 1].Bang += new EventHandler<BangEventArgs>(PassOnBang);
+                _counters[_counters.Count - 1].Step += new EventHandler<BangEventArgs>(PassOnStep);
+            }
         }
 
         public void Update(GameTime gameTime)
@@ -71,6 +75,14 @@ namespace WarTornLands.Counter
             }
 
             throw new CounterIDNotRecognisedException(id);
+        }
+        private void CheckCounterUse(string id)
+        {
+            foreach (Counter c in _counters)
+            {
+                if (c.ID.Equals(id))
+                    throw new CounterIDAlreadyInUseException(id);
+            }
         }
 
         /// <summary>
@@ -196,10 +208,17 @@ namespace WarTornLands.Counter
             if (Bang != null)
                 Bang(null, e);
         }
+        private void PassOnStep(object sender, BangEventArgs e)
+        {
+            if (Step != null)
+                Step(null, e);
+        }
     }
 
     internal class Counter
     {
+        internal const int DEFAULT = -1;
+
         private int  _default;                                                                          // Can be set to a default value the term gets resets to after bang
         private int  _term;                                                                             // The term after which the counter calls the bang
         private int  _elapsedTime;                                                                      // The ellapsed time since the counter got started
@@ -207,21 +226,19 @@ namespace WarTornLands.Counter
         private string _id;
         private BangEventArgs _bangTag;
         private bool _loop;
+        private bool _stepCalling;
 
         public event EventHandler<BangEventArgs> Bang;                                                  // Event that gets called when the counter bangs
+        public event EventHandler<BangEventArgs> Step;                                                  // Event that fires every time the counter is updated while active (must be enabled)
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Counter" /> class.
-        /// </summary>
-        /// <param name="id">The counter ID.</param>
-        public Counter(string id)
+        public Counter(string id, bool stepCalled = false)
+            : this(id, DEFAULT, stepCalled)
         {
-            _default        = -1;
-            _term           = _default;
-            _elapsedTime    = 0;
-            _active         = false;
-            _id             = id;
-            _bangTag        = new BangEventArgs(_id);
+        }
+
+        public Counter(string id, int defaultTerm)
+            : this(id, defaultTerm, false)
+        {
         }
 
         /// <summary>
@@ -229,7 +246,7 @@ namespace WarTornLands.Counter
         /// </summary>
         /// <param name="defaultTerm">The default term.</param>
         /// <param name="id">The ID.</param>
-        public Counter(int defaultTerm, string id)
+        public Counter(string id, int defaultTerm, bool stepCalled)
         {
             _default        = defaultTerm;
             _term           = _default;
@@ -237,8 +254,8 @@ namespace WarTornLands.Counter
             _active         = false;
             _id             = id;
             _bangTag        = new BangEventArgs(_id);
+            _stepCalling     = stepCalled;
         }
-
 
         public void Initialize(CounterManager _proprietor)
         {
@@ -265,11 +282,19 @@ namespace WarTornLands.Counter
                 if (_elapsedTime >= _term
                     && Bang != null)
                 {
+                    _elapsedTime = 1;
                     Bang(this, _bangTag);
                     _term = _default;
+                    _elapsedTime = 0;
 
                     if (!_loop)
                         _active = false;
+                }
+
+                if (_stepCalling)
+                {
+                    if (Step != null)
+                        Step(null, new BangEventArgs(this.ID));
                 }
             }
         }
@@ -384,6 +409,11 @@ namespace WarTornLands.Counter
         public BangEventArgs(string id)
         {
             ID = id;
+        }
+
+        public bool IsDesiredCounter(string id)
+        {
+            return ID == id;
         }
     }
 }

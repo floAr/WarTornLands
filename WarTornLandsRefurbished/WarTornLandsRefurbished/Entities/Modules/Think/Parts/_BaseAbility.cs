@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WarTornLands.Infrastructure
+namespace WarTornLands.Entities.Modules.Think.Parts
 {
-    class SoundManager
+    interface BaseAbility
     {
+        bool TryExecute();
     }
 }

@@ -11,7 +11,7 @@ using WarTornLands.Infrastructure;
 
 namespace WarTornLands.Entities.Modules.Think
 {
-    class ThinkInputGuided :BaseModule, IThinkModule
+    class ThinkInputGuided : BaseModule, IThinkModule
     {
         public float Speed { get; set; }
         public float Radius { get; set; }
@@ -34,6 +34,7 @@ namespace WarTornLands.Entities.Modules.Think
             _input = game.Input;
 
             _jump = new JumpAbility(owner);
+            _swing = new SwingHitAbility(owner);
 
             // Subscribe to Input events
             _input.UsePotion.Pressed += new EventHandler(OnUsePotion);
@@ -47,11 +48,58 @@ namespace WarTornLands.Entities.Modules.Think
             _cm.Update(gameTime);
 
             Vector2 oldPos = _owner.Position;
+            Vector2 moveDirection = _input.Move.Value;
+            _owner.Position = 
+                CollisionManager.Instance.TryMove(
+                _owner.Position,
+                moveDirection * Speed * gameTime.ElapsedGameTime.Milliseconds,
+                Radius,
+                _owner
+                );
 
-            _owner.Position = CollisionManager.Instance.TryMove(_owner.Position,
-                                                      _input.Move.Value * Speed * gameTime.ElapsedGameTime.Milliseconds,
-                                                      Radius, _owner);
+            CalcFacing(moveDirection);
         }
+
+        private void CalcFacing(Vector2 moveDirection)
+        {
+            // true = Y direction over X
+            // false = X direction over Y
+            if (true)
+            {
+                XFacing(moveDirection);
+                YFacing(moveDirection);
+            }
+            else
+            {
+                YFacing(moveDirection);
+                XFacing(moveDirection);
+            }
+        }
+
+        private void XFacing(Vector2 moveDirection)
+        {
+            if (moveDirection.X > 0)
+            {
+                _owner.Face = Facing.RIGHT;
+            }
+            if (moveDirection.X < 0)
+            {
+                _owner.Face = Facing.LEFT;
+            }
+        }
+
+        private void YFacing(Vector2 moveDirection)
+        {
+            if (moveDirection.Y > 0)
+            {
+                _owner.Face = Facing.DOWN;
+            }
+            if (moveDirection.Y < 0)
+            {
+                _owner.Face = Facing.UP;
+            }
+        }
+
 
         #region Subscribed events
 
@@ -67,7 +115,7 @@ namespace WarTornLands.Entities.Modules.Think
 
         private void OnExecuteHit(object sender, EventArgs e)
         {
-
+            _swing.TryExecute();
         }
 
         private void OnInteract(object sender, EventArgs e)

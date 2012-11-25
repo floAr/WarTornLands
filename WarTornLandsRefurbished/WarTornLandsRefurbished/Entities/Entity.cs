@@ -63,6 +63,7 @@ namespace WarTornLands.Entities
         public float BaseHeight { get; internal set; }
         public int Health { get; internal set; }
         public string Name { get; internal set; }
+        public Facing Face { get; internal set; }
 
         internal CounterManager CM;
 
@@ -92,6 +93,7 @@ namespace WarTornLands.Entities
             this.Position = position;
             this.Health = 1;
             this.Name = name;
+            Face = Facing.DOWN;
         }
 
         public void AddModule(BaseModule module)

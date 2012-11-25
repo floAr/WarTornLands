@@ -15,7 +15,6 @@ namespace WarTornLands.Entities.Modules.Interact
     }
   public  interface IInteractModule
     {
-       
         /// <summary>
         /// Called when an interaction is invoked
         /// </summary>
@@ -23,7 +22,6 @@ namespace WarTornLands.Entities.Modules.Interact
         /// <param name="target">Entity that has been interacted with</param>
         /// <param name="information">additional interaction information</param>
          void Interact(Entity invoker, Entity target, InteractInformation information);
-
          void Update(GameTime gameTime);
     }
 }

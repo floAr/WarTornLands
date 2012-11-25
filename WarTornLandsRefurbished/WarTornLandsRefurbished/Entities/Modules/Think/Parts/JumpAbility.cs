@@ -14,7 +14,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
     ///     Duration (duration of a complete jump)
     ///     Zenit (max jump height in pixels)
     /// </summary>
-    class JumpAbility
+    class JumpAbility : BaseAbility
     {
         /// <summary>
         /// Gets or sets the duration of a jump.
