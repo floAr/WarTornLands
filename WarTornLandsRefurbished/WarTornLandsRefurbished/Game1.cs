@@ -16,6 +16,7 @@ using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities;
 using WarTornLands.Entities.Modules.Die;
 using WarTornLands.Entities.Modules.Draw.ParticleSystem;
+using WarTornLands.World;
 
 namespace WarTornLands
 {
@@ -34,7 +35,7 @@ namespace WarTornLands
         public Player Player { get; private set; }
         //public DialogManager DialogManager { get; private set; }
         //public Interface Interface { get; private set; }
-        //public Level Level { get; private set; }     
+        public Level Level { get; private set; }
   
 
         public static Game1 _instance = new Game1();
@@ -66,6 +67,9 @@ namespace WarTornLands
             this.Components.Add(Input);
             Player = Player.GetInstance(this);
             this.Components.Add(Player);
+
+            Level = new Level(this);
+            Level.LoadLevel();
 
             base.Initialize();
         }

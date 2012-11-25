@@ -97,6 +97,8 @@
     <Compile Include="Entities\Modules\Draw\StaticDrawer.cs" />
     <Compile Include="Infrastructure\Interface.cs" />
     <Compile Include="Infrastructure\SoundManager.cs" />
+    <Compile Include="Entities\Modules\Draw\Animation.cs" />
+    <Compile Include="Entities\Modules\Draw\AnimationSystem.cs" />
     <Compile Include="Entities\Modules\Draw\AnimationSystem\Animation.cs" />
     <Compile Include="Entities\Modules\Draw\AnimationSystem\AnimationSystem.cs" />
     <Compile Include="Infrastructure\Systems\Counter.cs" />
