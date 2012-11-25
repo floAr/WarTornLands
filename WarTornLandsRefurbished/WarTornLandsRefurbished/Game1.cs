@@ -31,7 +31,15 @@ namespace WarTornLands
         public Player Player { get; private set; }
         //public DialogManager DialogManager { get; private set; }
         //public Interface Interface { get; private set; }
-        //public Level Level { get; private set; }        
+        //public Level Level { get; private set; }       
+        public static Game1 _instance = new Game1();
+        public static Game1 Instance
+        {
+            get
+            {
+                    return _instance;
+            }
+        }
 
         public Game1()
         {

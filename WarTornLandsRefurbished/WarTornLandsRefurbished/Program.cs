@@ -11,7 +11,7 @@ namespace WarTornLands
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (Game1 game = Game1.Instance)
             {
                 game.Run();
             }
