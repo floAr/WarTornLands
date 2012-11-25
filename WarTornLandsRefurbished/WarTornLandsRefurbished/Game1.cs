@@ -16,6 +16,7 @@ using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities;
 using WarTornLands.Entities.Modules.Die;
 using WarTornLands.World;
+using WarTornLands.Entities.Modules.Draw.ParticleSystem;
 
 namespace WarTornLands
 {
@@ -30,6 +31,7 @@ namespace WarTornLands
         public InputManager Input { get; private set; }
         Entity staticTest;
         Entity dynamicTest;
+        Entity particleTest;
         public Player Player { get; private set; }
         //public DialogManager DialogManager { get; private set; }
         //public Interface Interface { get; private set; }
@@ -94,6 +96,27 @@ namespace WarTornLands
             staticTest.AddModule(new ExplodeAndLoot(Items.Potion));
             staticTest.Health = 100;
 
+
+            List<Texture2D> pL = new List<Texture2D>();
+            pL.Add(Content.Load<Texture2D>("flame3"));
+            particleTest = new Entity(this, new Vector2(150, 300));
+            ParticleSystem pSystem = new ParticleSystem(
+                new EmitterSetting()
+                {
+                    DirectionX = new Range() { Min = -1, Max = 1 },
+                    DirectionY = new Range() { Min = -1, Max = -3 },
+                    AnglePermutation = new Range() { Min = -1, Max = 1 },
+                    Lifetime = new Range() { Min = 1000, Max = 2500 },
+                    MaxParticles = new Range(250),
+                    Size = new Range() { Min = 0.1f, Max = 0.3f },
+                    SpeedX = new Range() { Min = -1, Max = 1 },
+                    SpeedY = new Range() { Min = -1, Max = -3 },
+                    Alpha = new Range(1),
+                    AlphaDecay = new Range(0.01f, 0.1f)
+
+                },
+        pL, new Vector2(150, 500));
+            particleTest.AddModule(pSystem);
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
 
@@ -118,6 +141,7 @@ namespace WarTornLands
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             staticTest.Update(gameTime);
+            particleTest.Update(gameTime);
             counter += gameTime.ElapsedGameTime.Milliseconds;
             if (counter > 1000)
             {
@@ -141,7 +165,7 @@ namespace WarTornLands
             // Kapseln in eigene Klasse, für Menüs etc.
             SpriteBatch.Begin();
             staticTest.Draw(gameTime);
-
+            particleTest.Draw(gameTime);
             base.Draw(gameTime);
 
             SpriteBatch.End();

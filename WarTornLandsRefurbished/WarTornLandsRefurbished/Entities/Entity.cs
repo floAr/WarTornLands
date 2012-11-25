@@ -15,6 +15,7 @@ using WarTornLands.Entities.Modules.Think;
 using WarTornLands.Entities.Modules.Interact;
 using WarTornLands.Entities.Modules;
 using WarTornLands.Entities.Modules.Collide;
+using WarTornLands.Entities.Modules.Draw.ParticleSystem;
 
 namespace WarTornLands.Entities
 {
@@ -192,6 +193,10 @@ namespace WarTornLands.Entities
                 _mDrawModule.Update(gameTime);
                 if (((AnimatedDrawer)_mDrawModule).HasEnded)
                     this._mDrawModule = null;
+            }
+            if (_mDrawModule != null && _mDrawModule is ParticleSystem)
+            {
+                _mDrawModule.Update(gameTime);
             }
         }
 
