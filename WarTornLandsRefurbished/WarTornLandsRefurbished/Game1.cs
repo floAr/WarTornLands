@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using WarTornLands.PlayerClasses;
 using WarTornLands.Infrastructure;
-
 using WarTornLands.Infrastructure.Systems;
 using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities;
@@ -36,12 +35,13 @@ namespace WarTornLands
         public Level Level { get; private set; }
   
 
-        public static Game1 _instance = new Game1();
+        private  static Game1 _instance = new Game1();
+
         public static Game1 Instance
         {
             get
             {
-                    return _instance;
+                return _instance;
             }
         }
 
@@ -63,7 +63,7 @@ namespace WarTornLands
 
             Input = InputManager.GetInstance(this);
             this.Components.Add(Input);
-            Player = Player.GetInstance(this);
+            Player = Player.Instance();
             this.Components.Add(Player);
 
             Level = new Level(this);

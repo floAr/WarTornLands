@@ -27,10 +27,10 @@ namespace WarTornLands.PlayerClasses
             this.DrawOrder = 100;
         }
 
-        public static Player GetInstance(Game1 game)
+        public static Player Instance()
         {
             if (_player == null)
-                _player = new Player(game);
+                _player = new Player(Game1.Instance);
 
             return _player;
         }

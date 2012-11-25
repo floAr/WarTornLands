@@ -93,7 +93,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             _owner = owner;
 
             #if DEBUG
-            DweaponMarker = owner.Game.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("weapontest");
+            //DweaponMarker = owner.Game.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("weapontest");
             #endif
 
         }
