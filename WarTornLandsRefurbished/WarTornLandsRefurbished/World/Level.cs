@@ -85,10 +85,10 @@ namespace WarTornLands.World
                 }
             }
             grid1[0, 0].TileNum = 0;
-            layer1.LoadGrid(grid1, false, "grass");
+            layer1.LoadGrid(grid1, false, "grass", false);
             area1.AddLayer(layer1);
 
-            TileLayer layer2 = new TileLayer(_game, 100);
+            TileLayer layer2 = new TileLayer(_game, 90);
             Tile[,] grid2 = new Tile[10, 10];
             for (int x = 0; x < 10; x++)
             {
@@ -105,7 +105,7 @@ namespace WarTornLands.World
             grid2[4, 5].TileNum = 6;
             grid2[3, 5].TileNum = 6;
 
-            layer2.LoadGrid(grid2, false, "grass");
+            layer2.LoadGrid(grid2, false, "grass", true);
             area1.AddLayer(layer2);
 
             AddArea(area1);
