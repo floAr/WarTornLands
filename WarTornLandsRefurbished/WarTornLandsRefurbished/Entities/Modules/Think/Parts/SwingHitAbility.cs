@@ -78,7 +78,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         /// <param name="owner">The owner.</param>
         /// <param name="duration">The duration of a swing.</param>
         /// <param name="angle">The angle of the swing cone.</param>
-        public SwingHitAbility(Entity owner, int duration = 7000, float angle = 2, float range = 50, float damage = 5)
+        public SwingHitAbility(Entity owner, int duration = 700, float angle = 2, float range = 50, float damage = 5)
         {
             Duration = duration;
             Angle = angle;

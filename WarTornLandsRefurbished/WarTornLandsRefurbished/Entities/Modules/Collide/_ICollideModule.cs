@@ -9,11 +9,11 @@ namespace WarTornLands.Entities.Modules.Collide
     {
         public Entity Collider { get; set; }
         public bool IsPlayer { get; set; }
-
     }
+
     public interface ICollideModule
     {
 
-        public void OnCollide(CollideInformation info);
+        void OnCollide(CollideInformation info);
     }
 }
