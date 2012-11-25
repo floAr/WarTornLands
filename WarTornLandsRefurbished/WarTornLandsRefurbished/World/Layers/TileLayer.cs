@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using WarTornLands.Counter;
 using Microsoft.Xna.Framework.Graphics;
 using WarTornLands.Entities;
+using WarTornLands.Infrastructure;
 
 namespace WarTornLands.World.Layers
 {

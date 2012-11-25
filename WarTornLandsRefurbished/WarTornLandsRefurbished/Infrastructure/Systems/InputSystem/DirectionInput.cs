@@ -26,7 +26,7 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
 
         private float _speed;
         private InputMode _mode;
-        private float _threshold = Constants.GamePadTStickThreshold;
+        private float _threshold = InputManager.GamePadTStickThreshold;
 
         private Keys _keyUp;
         private Keys _keyDown;

@@ -16,6 +16,7 @@ using WarTornLands.Entities.Modules.Interact;
 using WarTornLands.Entities.Modules;
 using WarTornLands.Entities.Modules.Collide;
 using WarTornLands.Entities.Modules.Draw.ParticleSystem;
+using WarTornLands.Infrastructure;
 
 namespace WarTornLands.Entities
 {

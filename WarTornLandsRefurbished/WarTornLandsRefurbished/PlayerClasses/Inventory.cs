@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WarTornLands.Infrastructure;
 
 namespace WarTornLands.PlayerClasses
 {
@@ -32,7 +33,7 @@ namespace WarTornLands.PlayerClasses
             switch (item)
             {
                 case Items.Potion:
-                    if (Potions < Constants.Inventory_MaxPotions)
+                    if (Potions < 1 /*Maxpotions*/)
                     {
                         Potions++;
                         return true;

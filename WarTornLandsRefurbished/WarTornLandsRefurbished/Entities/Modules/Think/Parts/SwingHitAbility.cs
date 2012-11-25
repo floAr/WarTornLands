@@ -112,7 +112,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         {
             if (_cm.GetPercentage(_cSwingHit) != 0)
             {
-                float baseAngle = Constants.Player_WeaponStartAngle + (float)GetRoundedAngle();
+                double baseAngle = _startAngle + (float)GetRoundedAngle();
 
                 double maxAddition = _goalAngle - _startAngle;
                 double finalAngle = _cm.GetPercentage(_cSwingHit) * maxAddition + baseAngle;

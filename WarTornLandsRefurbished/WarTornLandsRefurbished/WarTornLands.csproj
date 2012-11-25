@@ -90,6 +90,7 @@
     <Compile Include="Entities\Modules\Think\ThinkRoamAround.cs" />
     <Compile Include="Entities\Modules\Think\_IThinkModule.cs" />
     <Compile Include="Infrastructure\CollisionManager.cs" />
+    <Compile Include="Infrastructure\Constants.cs" />
     <Compile Include="Infrastructure\DialogManager.cs" />
     <Compile Include="Infrastructure\InputManager.cs" />
     <Compile Include="Entities\Modules\Draw\_IDrawModule.cs" />

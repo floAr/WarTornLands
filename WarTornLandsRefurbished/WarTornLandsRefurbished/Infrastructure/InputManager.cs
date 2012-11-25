@@ -21,15 +21,15 @@ namespace WarTornLands.Infrastructure
         #region Default controls
 
         // Keyboard
-        private readonly static Keys KeyboardDefault_Hit = Keys.O;
-        private readonly static Keys KeyboardDefault_Jump = Keys.Space;
-        private readonly static Keys KeyboardDefault_Interact = Keys.T;
-        private readonly static Keys KeyboardDefault_UsePotion = Keys.P;
-        private readonly static Keys[] KeyboardDefault_Move = { Keys.W, Keys.A, Keys.S, Keys.D };
+        internal readonly static Keys KeyboardDefault_Hit = Keys.O;
+        internal readonly static Keys KeyboardDefault_Jump = Keys.Space;
+        internal readonly static Keys KeyboardDefault_Interact = Keys.T;
+        internal readonly static Keys KeyboardDefault_UsePotion = Keys.P;
+        internal readonly static Keys[] KeyboardDefault_Move = { Keys.W, Keys.A, Keys.S, Keys.D };
 
         // GamePad
 
-        private readonly static float GamePadTStickThreshold = .1f;
+        internal readonly static float GamePadTStickThreshold = .1f;
 
         #endregion
 
