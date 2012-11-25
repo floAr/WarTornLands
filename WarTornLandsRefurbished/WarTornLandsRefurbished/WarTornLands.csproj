@@ -75,6 +75,8 @@
   <ItemGroup>
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Modules\BaseModule.cs" />
+    <Compile Include="Entities\Modules\Collide\PickUpOnCollide.cs" />
+    <Compile Include="Entities\Modules\Collide\_ICollideModule.cs" />
     <Compile Include="Entities\Modules\Die\ExplodeAndLoot.cs" />
     <Compile Include="Entities\Modules\Die\_IDieModule.cs" />
     <Compile Include="Entities\Modules\Interact\PickUp.cs" />

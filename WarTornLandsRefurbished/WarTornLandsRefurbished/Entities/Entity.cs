@@ -14,6 +14,7 @@ using WarTornLands.Entities.Modules.Die;
 using WarTornLands.Entities.Modules.Think;
 using WarTornLands.Entities.Modules.Interact;
 using WarTornLands.Entities.Modules;
+using WarTornLands.Entities.Modules.Collide;
 
 namespace WarTornLands.Entities
 {
@@ -67,6 +68,10 @@ namespace WarTornLands.Entities
 
         internal CounterManager CM;
 
+        #region CollideModule
+        protected ICollideModule _mCollideModule;
+        #endregion
+
         #region DrawModule
         protected IDrawExecuter _mDrawModule;
 
@@ -106,6 +111,8 @@ namespace WarTornLands.Entities
                 _mInteractModule = module as IInteractModule;
             if (module is IDieModule)
                 _mDieModule = module as IDieModule;
+            if (module is ICollideModule)
+                _mCollideModule = module as ICollideModule;
         }
 
         public int Damage(int damage)
@@ -172,7 +179,6 @@ namespace WarTornLands.Entities
 
 
             #endregion
-
             if (_mInteractModule != null)
                 _mInteractModule.Update(gameTime);
             if(_mThinkModule != null)
@@ -214,7 +220,11 @@ namespace WarTornLands.Entities
 
         public virtual void OnCollide(Entity source)
         {
-           
+            if (_mCollideModule != null)
+            {
+                CollideInformation info = new CollideInformation() { Collider = source, IsPlayer = source is Player };
+                _mCollideModule.OnCollide(info);
+            }
         }
 
         

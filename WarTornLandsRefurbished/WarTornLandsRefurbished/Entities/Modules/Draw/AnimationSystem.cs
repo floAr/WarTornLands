@@ -67,6 +67,7 @@ namespace WarTornLands.Entities.Modules.Draw
             get { return new Vector2(_animations[_currentAnimation].CurrentFrame.Width, _animations[_currentAnimation].CurrentFrame.Height); }
         }
 
+
         public static AnimatedDrawer Explosion
         {
             get
