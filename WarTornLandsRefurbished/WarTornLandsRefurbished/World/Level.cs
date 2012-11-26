@@ -6,6 +6,11 @@ using WarTornLands.World.Layers;
 using Microsoft.Xna.Framework;
 using WarTornLands;
 using WarTornLands.Entities;
+using System.Xml;
+using WarTornLands.Entities.Modules.Draw;
+using Microsoft.Xna.Framework.Graphics;
+using WarTornLands.Entities.Modules.Die;
+using WarTornLands.PlayerClasses;
 
 namespace WarTornLands.World
 {
@@ -13,7 +18,7 @@ namespace WarTornLands.World
     {
         private Game _game;
         private LinkedList<Area> _areas;
- 
+
         public Level(Game game)
         {
             _game = game;
@@ -64,11 +69,24 @@ namespace WarTornLands.World
             return result;
         }
 
+        public List<Entity> GetEntitiesAt(Vector2 position, float radius)
+        {
+            List<Entity> result = new List<Entity>();
+
+            // TODO only check areas near the player
+            foreach (Area area in _areas)
+            {
+                result.Concat(area.GetEntitiesAt(position, radius));
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Loads a test level for now.
         /// TODO add XML level loading code
         /// </summary>
-        public void LoadLevel()
+        public void LoadTestLevel()
         {
             Area area1 = new Area(new Rectangle(0, 0, 10, 10));
 
@@ -78,7 +96,7 @@ namespace WarTornLands.World
             {
                 for (int y = 0; y < 10; y++)
                 {
-                    if (x==3 || y==5)
+                    if (x == 3 || y == 5)
                         grid1[x, y].TileNum = 3;
                     else
                         grid1[x, y].TileNum = 2;
@@ -94,7 +112,7 @@ namespace WarTornLands.World
             {
                 for (int y = 0; y < 10; y++)
                 {
-                        grid2[x, y].TileNum = 0;
+                    grid2[x, y].TileNum = 0;
                 }
             }
             grid2[3, 3].TileNum = 6;
@@ -108,7 +126,40 @@ namespace WarTornLands.World
             layer2.LoadGrid(grid2, false, "grass", true);
             area1.AddLayer(layer2);
 
+            EntityLayer layer3 = new EntityLayer(_game, 99);
+            StaticDrawer sd = new StaticDrawer();
+            sd.Texture = _game.Content.Load<Texture2D>("Schatztruhe");
+            Entity staticTest = new Entity((_game as Game1), new Vector2(50, 50), "loch");
+            staticTest.AddModule(sd);
+            staticTest.AddModule(new ExplodeAndLoot(Items.Potion));
+            staticTest.Health = 100;
+            layer3.AddEntity(staticTest);
+            area1.AddLayer(layer3);
+
+
             AddArea(area1);
         }
+
+        public void LoadLevel(string fileName)
+        {
+            // TODO TODO TODO TODO TODO TODO TODO TODO
+
+            XmlTextReader reader = new XmlTextReader(fileName);
+            reader.ReadToFollowing("world");
+            reader = (XmlTextReader)reader.ReadSubtree();
+
+            while (reader.Read())
+            {
+                if (reader.NodeType == XmlNodeType.Element &&
+                    reader.Name == "area")
+                {
+                    // TODO create area
+                    XmlTextReader areaReader = (XmlTextReader)reader.ReadSubtree();
+                    // TODO read layers
+                }
+            }
+        }
+
+
     }
 }
