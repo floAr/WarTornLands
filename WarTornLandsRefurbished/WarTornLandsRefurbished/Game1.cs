@@ -72,7 +72,7 @@ namespace WarTornLands
             this.Components.Add(Player);
 
             Level = new Level(this);
-            Level.LoadLevel();
+            Level.LoadTestLevel();
 
             base.Initialize();
         }
@@ -169,7 +169,7 @@ namespace WarTornLands
             // Kapseln in eigene Klasse, für Menüs etc.
             SpriteBatch.Begin();
        
-           particleTest.Draw(gameTime);
+            particleTest.Draw(gameTime);
             staticTest.Draw(gameTime);
             particleTest.Draw(gameTime);
             base.Draw(gameTime);

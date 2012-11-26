@@ -97,5 +97,20 @@ namespace WarTornLands.World
 
             return result;
         }
+
+        public List<Entity> GetEntitiesAt(Vector2 position, float radius)
+        {
+            List<Entity> result = new List<Entity>();
+
+            foreach (Layer layer in _layers)
+            {
+                if (layer is EntityLayer)
+                {
+                    result.Concat((layer as EntityLayer).GetEntitiesAt(position, radius));
+                }
+            }
+
+            return result;
+        }
     }
 }
