@@ -7,15 +7,15 @@ using Microsoft.Xna.Framework;
 
 namespace WarTornLands.Entities.Modules.Interact
 {
-   public class PickUp :BaseModule, IInteractModule
+   public class PickUp : BaseModule, IInteractModule
     {
-       private WarTornLands.PlayerClasses.Items _loot;
+       private WarTornLands.PlayerClasses.ItemTypes _loot;
 
-       public PickUp(WarTornLands.PlayerClasses.Items loot)
+       public PickUp(WarTornLands.PlayerClasses.ItemTypes loot)
        {
            _loot = loot;
        }
-        public void Interact(InteractInformation information)
+        public void Interact(Entity information)
         {
             Game1.Instance.Player.GiveItem(_loot);
         }

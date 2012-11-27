@@ -6,7 +6,7 @@ using WarTornLands.Infrastructure;
 
 namespace WarTornLands.PlayerClasses
 {
-    public enum Items 
+    public enum ItemTypes 
     { 
         Potion = 0
     }
@@ -28,11 +28,11 @@ namespace WarTornLands.PlayerClasses
             return _inventory;
         }
 
-        public bool Insert(Items item)
+        public bool Insert(ItemTypes item)
         {
             switch (item)
             {
-                case Items.Potion:
+                case ItemTypes.Potion:
                     if (Potions < 1 /*Maxpotions*/)
                     {
                         Potions++;

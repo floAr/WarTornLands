@@ -10,12 +10,23 @@ using WarTornLands.Entities;
 using WarTornLands.Entities.Modules.Draw;
 using Microsoft.Xna.Framework.Content;
 using WarTornLands.Entities.Modules.Think;
+using WarTornLands.Infrastructure.Systems.DialogSystem;
 
 namespace WarTornLands.PlayerClasses
 {
     public class Player : Entity
     {
-        private static Player _player;
+        private static Player _instance;
+
+        public static Player Instance()
+        {
+            if (_instance == null)
+                _instance = new Player(Game1.Instance);
+
+            return _instance;
+        }
+
+        public event EventHandler<DialogEventArgs> CallDialog;
 
         private Player(Game1 game)
             : base(game, new Vector2(0, 0),  "Player")
@@ -24,14 +35,6 @@ namespace WarTornLands.PlayerClasses
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
 
            this.AddModule(new ThinkInputGuided(this));
-        }
-
-        public static Player Instance()
-        {
-            if (_player == null)
-                _player = new Player(Game1.Instance);
-
-            return _player;
         }
 
         protected override void LoadContent()
@@ -47,6 +50,11 @@ namespace WarTornLands.PlayerClasses
             animS.SetCurrentAnimation("walkDown");
 
             this.AddModule(animS);
+        }
+
+        public void CommunicateConversation(string speaker, ConversationItem statement)
+        {
+            CallDialog(null, new DialogEventArgs(speaker, statement));
         }
 
         /*
@@ -72,7 +80,7 @@ namespace WarTornLands.PlayerClasses
 
         #endregion
 
-        internal void GiveItem(Items _loot)
+        internal void GiveItem(ItemTypes _loot)
         {
             throw new NotImplementedException();
         }

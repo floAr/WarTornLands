@@ -22,6 +22,7 @@ namespace WarTornLands.Entities.Modules.Think
         // Parts
         private JumpAbility _jump;
         private SwingHitAbility _swing;
+        private InteractAbility _interact;
 
         public ThinkInputGuided(Entity owner, float speed = .125f)
         {
@@ -31,7 +32,7 @@ namespace WarTornLands.Entities.Modules.Think
 
             _cm = owner.CM;
             _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
-            _input = game.Input;
+            _input = InputManager.Instance;
 
             _jump = new JumpAbility(owner);
             _swing = new SwingHitAbility(owner);
@@ -120,6 +121,8 @@ namespace WarTornLands.Entities.Modules.Think
 
         private void OnInteract(object sender, EventArgs e)
         {
+            if(_interact != null)
+                _interact.TryExecute();   
         }
 
         private void OnJump(object sender, EventArgs e)

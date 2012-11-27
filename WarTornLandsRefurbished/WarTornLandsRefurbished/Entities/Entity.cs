@@ -29,7 +29,6 @@ namespace WarTornLands.Entities
     }
 
 
-
     public class Entity : DrawableGameComponent
     {
         /* TODO
@@ -57,12 +56,12 @@ namespace WarTornLands.Entities
         /////////////////
 
         // Counters ///
-        protected readonly string _cHit = "HitCounter";
+        public readonly string _cHit = "HitCounter";
         ///////////////
 
         public Vector2 Position { get; set; }
         public Vector2 InitialPosition { get; internal set; }
-        protected Point TilePosition { get; set; }
+        public Point TilePosition { get; set; }
         public float Height { get; internal set; }
         public float BaseHeight { get; internal set; }
         public int Health { get; internal set; }
@@ -138,7 +137,7 @@ namespace WarTornLands.Entities
             Position = position;
         }
 
-        public virtual void Reset(int health)
+        public void Reset(int health)
         {
             Position = InitialPosition;
             Health = health;
@@ -225,10 +224,12 @@ namespace WarTornLands.Entities
           }*/
 
 
-        public virtual void UseThis(Player player)
-        { }
+        public void Interact(Entity user)
+        {
+            _mInteractModule.Interact(user);
+        }
 
-        public virtual void Collide(Entity source)
+        public void Collide(Entity source)
         {
             if (_mCollideModule != null)
             {

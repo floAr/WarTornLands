@@ -90,12 +90,13 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
             _cm.Step += new EventHandler<BangEventArgs>(OnStep);
 
+            _level = Game1.Instance.Level;
+
             _owner = owner;
 
             #if DEBUG
             //DweaponMarker = owner.Game.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("weapontest");
             #endif
-
         }
 
         public bool TryExecute()

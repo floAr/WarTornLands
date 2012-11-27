@@ -13,17 +13,17 @@ namespace WarTornLands.Infrastructure
         private Level _level;
 
         #region Singleton Stuff
-        private static CollisionManager instance;
+        private static CollisionManager _instance;
 
         public static CollisionManager Instance
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    instance = new CollisionManager();
+                    _instance = new CollisionManager();
                 }
-                return instance;
+                return _instance;
             }
         }
         #endregion

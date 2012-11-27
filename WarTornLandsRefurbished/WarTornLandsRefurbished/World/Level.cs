@@ -11,6 +11,8 @@ using WarTornLands.Entities.Modules.Draw;
 using Microsoft.Xna.Framework.Graphics;
 using WarTornLands.Entities.Modules.Die;
 using WarTornLands.PlayerClasses;
+using WarTornLands.Entities.Modules.Interact;
+using WarTornLands.Infrastructure.Systems.DialogSystem;
 
 namespace WarTornLands.World
 {
@@ -131,11 +133,22 @@ namespace WarTornLands.World
             sd.Texture = _game.Content.Load<Texture2D>("Schatztruhe");
             Entity staticTest = new Entity((_game as Game1), new Vector2(50, 50), "loch");
             staticTest.AddModule(sd);
-            staticTest.AddModule(new ExplodeAndLoot(Items.Potion));
+            staticTest.AddModule(new ExplodeAndLoot(ItemTypes.Potion));
             staticTest.Health = 100;
             layer3.AddEntity(staticTest);
             area1.AddLayer(layer3);
 
+            StaticDrawer dialogTestDrawer = new StaticDrawer();
+            dialogTestDrawer.Texture = _game.Content.Load<Texture2D>("Schatztruhe");
+            Entity dialogTest = new Entity((_game as Game1), new Vector2(-20, 150), "chest");
+            dialogTest.AddModule(dialogTestDrawer);
+            List<Conversation> cons = new List<Conversation>();
+            List<ConversationItem> items = new List<ConversationItem>();
+            items.Add(new TextLine("Imma chargin ma L4Z0r..."));
+            items.Add(new TextLine("SHOOPDAWHOOOP"));
+            cons.Add(new Conversation("1", items));
+            dialogTest.AddModule(new Dialog(cons, dialogTest));
+            layer3.AddEntity(dialogTest);
 
             AddArea(area1);
         }

@@ -75,12 +75,15 @@ namespace WarTornLands.Infrastructure
             }
         }
 
-        public static InputManager GetInstance(Game game)
+        public static InputManager Instance
         {
-            if (_input == null)
-                _input = new InputManager(game);
+            get
+            {
+                if (_input == null)
+                    _input = new InputManager(Game1.Instance);
 
-            return _input;
+                return _input;
+            }
         }
 
         public override void Update(GameTime gt)

@@ -8,7 +8,7 @@ namespace WarTornLands.Entities.Modules.Collide
 {
     public class PickUpOnCollide : BaseModule, ICollideModule
     {
-        private WarTornLands.PlayerClasses.Items _loot;
+        private WarTornLands.PlayerClasses.ItemTypes _loot;
 
         private bool _oneTime = true;
 
@@ -17,11 +17,11 @@ namespace WarTornLands.Entities.Modules.Collide
         private bool _isOnCD;
 
 
-        public PickUpOnCollide(WarTornLands.PlayerClasses.Items item)
+        public PickUpOnCollide(WarTornLands.PlayerClasses.ItemTypes item)
         {
             _loot = item;
         }
-        public PickUpOnCollide(WarTornLands.PlayerClasses.Items item, int charges, int waitingTimeBetweenDrop)
+        public PickUpOnCollide(WarTornLands.PlayerClasses.ItemTypes item, int charges, int waitingTimeBetweenDrop)
         {
             _oneTime = false;
             _pushItemCooldown = new Counter.CounterManager();
