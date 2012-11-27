@@ -65,7 +65,7 @@ namespace WarTornLands.World
             // TODO only check areas near the player
             foreach (Area area in _areas)
             {
-                result = (List<Entity>)result.Concat(area.GetEntitiesAt(position));
+                result.AddRange(area.GetEntitiesAt(position));
             }
 
             return result;
@@ -78,7 +78,7 @@ namespace WarTornLands.World
             // TODO only check areas near the player
             foreach (Area area in _areas)
             {
-                result = (List<Entity>)result.Concat(area.GetEntitiesAt(position, radius));
+                result.AddRange(area.GetEntitiesAt(position, radius));
             }
 
             return result;
