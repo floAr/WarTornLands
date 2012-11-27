@@ -13,30 +13,43 @@ using WarTornLands.Entities.Modules.Die;
 using WarTornLands.PlayerClasses;
 using WarTornLands.Entities.Modules.Interact;
 using WarTornLands.Infrastructure.Systems.DialogSystem;
+using System.Xml.Linq;
 
 namespace WarTornLands.World
 {
     public class Level
     {
         private Game _game;
-        private LinkedList<Area> _areas;
+        private Dictionary<string, Area> _areas;
 
         public Level(Game game)
         {
             _game = game;
-            _areas = new LinkedList<Area>();
+            _areas = new Dictionary<string, Area>();
         }
 
-        public void AddArea(Area area)
+        public bool AddArea(string name, Area area)
         {
-            _areas.AddLast(area);
-            area.Add();
+            if (!_areas.ContainsKey(name))
+            {
+                _areas.Add(name, area);
+                area.Add();
+                return true;
+            }
+
+            return false;
         }
 
-        public void RemoveArea(Area area)
+        public bool RemoveArea(string name)
         {
-            area.Remove();
-            _areas.Remove(area);
+            if (_areas.ContainsKey(name))
+            {
+                _areas[name].Remove();
+                _areas.Remove(name);
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -49,9 +62,9 @@ namespace WarTornLands.World
         public bool IsPositionAccessible(Vector2 position)
         {
             // TODO only check areas near the player
-            foreach (Area area in _areas)
+            foreach (KeyValuePair<string, Area> pair in _areas)
             {
-                if (area.IsPositionAccessible(position) == false)
+                if (pair.Value.IsPositionAccessible(position) == false)
                     return false;
             }
 
@@ -63,9 +76,9 @@ namespace WarTornLands.World
             List<Entity> result = new List<Entity>();
 
             // TODO only check areas near the player
-            foreach (Area area in _areas)
+            foreach (KeyValuePair<string, Area> pair in _areas)
             {
-                result.AddRange(area.GetEntitiesAt(position));
+                result.AddRange(pair.Value.GetEntitiesAt(position));
             }
 
             return result;
@@ -76,9 +89,9 @@ namespace WarTornLands.World
             List<Entity> result = new List<Entity>();
 
             // TODO only check areas near the player
-            foreach (Area area in _areas)
+            foreach (KeyValuePair<string, Area> pair in _areas)
             {
-                result.AddRange(area.GetEntitiesAt(position, radius));
+                result.AddRange(pair.Value.GetEntitiesAt(position, radius));
             }
 
             return result;
@@ -149,12 +162,13 @@ namespace WarTornLands.World
             dialogTest.AddModule(new Dialog(cons, dialogTest));
             layer3.AddEntity(dialogTest);
 
-            AddArea(area1);
+            AddArea("Entenhausen", area1);
         }
 
         public void LoadLevel(string fileName)
         {
             // TODO TODO TODO TODO TODO TODO TODO TODO
+            // TODO use XDocument because XmlTextReader sucks balls
 
             XmlTextReader reader = new XmlTextReader(fileName);
             reader.ReadToFollowing("world");
@@ -165,9 +179,7 @@ namespace WarTornLands.World
                 if (reader.NodeType == XmlNodeType.Element &&
                     reader.Name == "area")
                 {
-                    // TODO create area
-                    XmlTextReader areaReader = (XmlTextReader)reader.ReadSubtree();
-                    // TODO read layers
+                    string isbn = reader.GetAttribute("ISBN");
                 }
             }
         }
