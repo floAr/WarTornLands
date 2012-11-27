@@ -226,7 +226,8 @@ namespace WarTornLands.Entities
 
         public void Interact(Entity user)
         {
-            _mInteractModule.Interact(user);
+            if(_mInteractModule != null)
+                _mInteractModule.Interact(user);
         }
 
         public void Collide(Entity source)
