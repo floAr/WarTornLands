@@ -54,28 +54,30 @@ namespace WarTornLands.World.Layers
 
             foreach (Entity ent in _entities)
             {
-                Vector2 pos = ent.Position;
-                Vector2 size = ent.Size;
+                Vector2 entPos = ent.Position;
+                Vector2 entSize = ent.Size;
+
+                // TODO this alogrithm currently only works if either the circle's center
+                // lies inside the entity or the entity's center / one of the cornes lies
+                //  inside the circle. some cases are not caught by this!
 
                 // Check whether circles center lies inside entity rectangle
-                if (position.X >= pos.X - size.X * 0.5f && position.X < pos.X + size.X * 0.5f &&
-                    position.Y >= pos.Y - size.Y * 0.5f && position.Y < pos.Y + size.Y * 0.5f)
+                if (position.X >= entPos.X - entSize.X * 0.5f && position.X < entPos.X + entSize.X * 0.5f &&
+                    position.Y >= entPos.Y - entSize.Y * 0.5f && position.Y < entPos.Y + entSize.Y * 0.5f)
                 {
                     result.Add(ent);
                 }
                 else
                 {
-                    Vector2 A = ent.Position;
-                    Vector2 B = ent.Position; B.X += size.X;
-                    Vector2 C = ent.Position + ent.Size;
-                    Vector2 D = ent.Position; D.Y += size.Y;
-
-                    Vector2 AB = B - A;
-                    Vector2 BC = C - B;
-                    Vector2 CD = D - C;
-                    Vector2 DA = A - D;
-                    
-                    // TODO get circle line intersections
+                    // Check whether entity center or one of the corners lies inside circle
+                    if ((position - entPos).Length() <= radius ||
+                        (position - (entPos + new Vector2(-entSize.X / 2, -entSize.Y / 2))).Length() <= radius ||
+                        (position - (entPos + new Vector2(-entSize.X / 2, entSize.Y / 2))).Length() <= radius ||
+                        (position - (entPos + new Vector2(entSize.X / 2, -entSize.Y / 2))).Length() <= radius ||
+                        (position - (entPos + new Vector2(entSize.X / 2, entSize.Y / 2))).Length() <= radius)
+                    {
+                        result.Add(ent);
+                    } 
                 }
             }
 
