@@ -145,6 +145,7 @@ namespace WarTornLands.World
             List<ConversationItem> items = new List<ConversationItem>();
             items.Add(new TextLine("Imma chargin ma L4Z0r..."));
             items.Add(new TextLine("SHOOPDAWHOOOP"));
+            items.Add(new ComboBreaker());
             cons.Add(new Conversation("1", items));
             dialogTest.AddModule(new Dialog(cons, dialogTest));
             layer3.AddEntity(dialogTest);

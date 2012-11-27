@@ -17,8 +17,11 @@ namespace WarTornLands.Infrastructure
         private Texture2D _textBox;
         private SpriteFont _font;
         private ConversationItem _currentDisplay;
+        private string _currentSpeaker;
         private readonly static Vector2 _boxPosition = new Vector2(0, 180);
         private readonly static Vector2 _textPosition = new Vector2(20, 200);
+
+        public event EventHandler ConversationEnded;
 
         #region Singleton Stuff
         private static DialogManager _instance;
@@ -39,7 +42,6 @@ namespace WarTornLands.Infrastructure
         private DialogManager(Player player)
             : base(Game1.Instance)
         {
-            player.CallDialog += new EventHandler<DialogEventArgs>(OnCallDialog);
             this.DrawOrder = 500;
             _spriteBatch = Game1.Instance.SpriteBatch;
         }
@@ -64,15 +66,31 @@ namespace WarTornLands.Infrastructure
 
         private void ShowConversation()
         {
+            _spriteBatch.Begin();
+
             _spriteBatch.Draw(_textBox, _boxPosition, Color.White);
             _spriteBatch.DrawString(_font, _currentDisplay.Text, _textPosition, Color.White);
+
+            _spriteBatch.End();
         }
 
         #region Subscribed events
 
-        private void OnCallDialog(object sender, DialogEventArgs e)
+        public void CallDialog(string speaker, ConversationItem statement)
         {
-            
+            if (statement is ComboBreaker)
+            {
+                _currentDisplay = null;
+                _currentSpeaker = "";
+
+                if(ConversationEnded != null)
+                    ConversationEnded(null, EventArgs.Empty);
+            }
+            else
+            {
+                _currentDisplay = statement;
+                _currentSpeaker = speaker;
+            }
         }
 
         #endregion

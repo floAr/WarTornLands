@@ -64,7 +64,7 @@ namespace WarTornLands
         {
             // TODO: Fügen Sie Ihre Initialisierungslogik hier hinzu
 
-
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
             Level = new Level(this);
             Level.LoadTestLevel();
 

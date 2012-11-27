@@ -26,8 +26,6 @@ namespace WarTornLands.PlayerClasses
             return _instance;
         }
 
-        public event EventHandler<DialogEventArgs> CallDialog;
-
         private Player(Game1 game)
             : base(game, new Vector2(0, 0),  "Player")
         {
@@ -50,11 +48,6 @@ namespace WarTornLands.PlayerClasses
             animS.SetCurrentAnimation("walkDown");
 
             this.AddModule(animS);
-        }
-
-        public void CommunicateConversation(string speaker, ConversationItem statement)
-        {
-            CallDialog(null, new DialogEventArgs(speaker, statement));
         }
 
         /*

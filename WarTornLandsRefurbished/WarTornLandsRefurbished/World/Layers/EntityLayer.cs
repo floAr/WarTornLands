@@ -36,13 +36,11 @@ namespace WarTornLands.World.Layers
                 Vector2 pos = ent.Position;
                 Vector2 size = ent.Size;
 
-                result.Add(ent);
-
-                //if (position.X >= pos.X - size.X * 0.5f && position.X < pos.X + size.X * 0.5f &&
-                //    position.Y >= pos.Y - size.Y * 0.5f && position.Y < pos.Y + size.Y * 0.5f)
-                //{
-                //    result.Add(ent);
-                //}
+                if (position.X >= pos.X - size.X * 0.5f && position.X < pos.X + size.X * 0.5f &&
+                    position.Y >= pos.Y - size.Y * 0.5f && position.Y < pos.Y + size.Y * 0.5f)
+                {
+                    result.Add(ent);
+                }
             }
 
             return result;
