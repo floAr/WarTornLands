@@ -47,8 +47,6 @@ namespace WarTornLands.Entities.Modules.Think
 
         public void Update(GameTime gameTime)
         {
-            _cm.Update(gameTime);
-
             Vector2 oldPos = _owner.Position;
             Vector2 moveDirection = _input.Move.Value;
             _owner.Position = 

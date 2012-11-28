@@ -101,6 +101,7 @@ namespace WarTornLands.Entities
             this.Health = 1;
             this.Name = name;
             Face = Facing.DOWN;
+            CM = new CounterManager();
         }
 
         public void AddModule(BaseModule module)
@@ -116,6 +117,11 @@ namespace WarTornLands.Entities
                 _mDieModule = module as IDieModule;
             if (module is ICollideModule)
                 _mCollideModule = module as ICollideModule;
+        }
+
+        public IInteractModule GetInteractModule()
+        {
+            return _mInteractModule;
         }
 
         public int Damage(int damage)
@@ -173,6 +179,8 @@ namespace WarTornLands.Entities
 
         public override void Update(GameTime gameTime)
         {
+            CM.Update(gameTime);
+
             #region Calc tilepos
 
             TilePosition = new Point((int)(Position.X / Constants.TileSize), (int)(Position.Y / Constants.TileSize));

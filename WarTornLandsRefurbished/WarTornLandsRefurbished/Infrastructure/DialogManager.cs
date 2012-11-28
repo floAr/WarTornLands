@@ -17,11 +17,8 @@ namespace WarTornLands.Infrastructure
         private Texture2D _textBox;
         private SpriteFont _font;
         private ConversationItem _currentDisplay;
-        private string _currentSpeaker;
         private readonly static Vector2 _boxPosition = new Vector2(0, 180);
         private readonly static Vector2 _textPosition = new Vector2(20, 200);
-
-        public event EventHandler ConversationEnded;
 
         #region Singleton Stuff
         private static DialogManager _instance;
@@ -76,20 +73,15 @@ namespace WarTornLands.Infrastructure
 
         #region Subscribed events
 
-        public void CallDialog(string speaker, ConversationItem statement)
+        public void CallDialog(ConversationItem statement)
         {
-            if (statement is ComboBreaker)
+            if (statement == null)
             {
                 _currentDisplay = null;
-                _currentSpeaker = "";
-
-                if(ConversationEnded != null)
-                    ConversationEnded(null, EventArgs.Empty);
             }
             else
             {
                 _currentDisplay = statement;
-                _currentSpeaker = speaker;
             }
         }
 
