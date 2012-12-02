@@ -324,6 +324,41 @@ namespace WarTornLands.World
             //entityLayer.AddEntity(boss);
 
 
+            //torch
+            List<Texture2D> pL = new List<Texture2D>();
+            pL.Add(Game1.Instance.Content.Load<Texture2D>("flame3"));
+            Entity torch = new Entity(Game1.Instance, new Vector2(29, 32) * Constants.TileSize, "torch");
+            Entity torch2 = new Entity(Game1.Instance, new Vector2(33, 32) * Constants.TileSize, "torch");
+            ParticleSystem pSystem = new ParticleSystem(
+                new EmitterSetting()
+                {
+                    DirectionX = new Range() { Min = -1, Max = 1 },
+                    DirectionY = new Range() { Min = -1, Max = -3 },
+                    AnglePermutation = new Range() { Min = -1, Max = 1 },
+                    Lifetime = new Range() { Min = 1000, Max = 1500 },
+                    MaxParticles = new Range(150),
+                    Size = new Range() { Min = 0.1f, Max = 0.3f },
+                    SpeedX = new Range() { Min = -1, Max = 1 },
+                    SpeedY = new Range() { Min = -0.5f, Max = -1.5f },
+                    Alpha = new Range(1),
+                    AlphaDecay = new Range(0.01f, 0.1f)
+
+                },
+        pL);
+            StaticDrawer torchlight = new StaticDrawer();
+            torchlight.IsLight = true;
+
+            torchlight.Texture = Game1.Instance.Content.Load<Texture2D>("flame3");
+
+            torch.AddModule(new DualDraw(torchlight, pSystem));
+            torch2.AddModule(new DualDraw(torchlight, pSystem));
+            //       torch.AddModule(pSystem);
+            entityLayer.AddEntity(torch);
+            Lightmanager.AddLight(torch);
+            entityLayer.AddEntity(torch2);
+            Lightmanager.AddLight(torch2);
+            //endtorch
+
             // Add area to level
             AddArea("ChristmasCaverns", cavernsArea);
         }
