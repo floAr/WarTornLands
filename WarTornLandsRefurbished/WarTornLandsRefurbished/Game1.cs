@@ -65,11 +65,13 @@ namespace WarTornLands
 
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             Level = new Level(this);
-            Level.LoadTestLevel();
+            //Level.LoadTestLevel();
+            Level.LoadChristmasCaverns();
 
             this.Components.Add(InputManager.Instance);
             Player = Player.Instance;
             Player.DrawOrder = 100;
+            Player.Position = new Vector2(13 * Constants.TileSize, 20 * Constants.TileSize);
             this.Components.Add(Player);
             this.Components.Add(DialogManager.Instance);
 
