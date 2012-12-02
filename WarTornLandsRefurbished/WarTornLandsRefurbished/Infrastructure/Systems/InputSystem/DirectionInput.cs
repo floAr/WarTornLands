@@ -16,6 +16,10 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
     public class DirectionInput : InputKey
     {
         public Vector2 Value { get; private set; }
+        public event EventHandler Up;
+        public event EventHandler Down;
+        public event EventHandler Left;
+        public event EventHandler Right;
 
         // Directions ///
         private readonly static Vector2 _up = new Vector2(0, -1);
@@ -24,7 +28,6 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
         private readonly static Vector2 _right = new Vector2(1, 0);
         /////////////////
 
-        private float _speed;
         private InputMode _mode;
         private float _threshold = InputManager.GamePadTStickThreshold;
 
@@ -63,10 +66,9 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
         {
             try
             {
-
                 if (_mode == InputMode.KEYBOARD)
                 {
-                    Value = CalcKeyboard(gt);
+                    Value = CalcKeyboard(gt, oldKeys);
                 }
 
                 if (_mode == InputMode.GAMEPAD)
@@ -81,7 +83,7 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
             catch { throw new Exception("Input keys not set."); }
         }
 
-        private Vector2 CalcKeyboard(GameTime gt)
+        private Vector2 CalcKeyboard(GameTime gt, KeyboardState oldKeys)
         {
             KeyboardState state = Keyboard.GetState();
 
@@ -92,10 +94,14 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
                 state.IsKeyDown(_keyLeft) ||
                 state.IsKeyDown(_keyRight))
             {
-                if (state.IsKeyDown(_keyUp)) { output += _up; }
-                if (state.IsKeyDown(_keyDown)) { output += _down; }
-                if (state.IsKeyDown(_keyLeft)) { output += _left; }
-                if (state.IsKeyDown(_keyRight)) { output += _right; }
+                if (state.IsKeyDown(_keyUp)) { output += _up; 
+                    if (oldKeys.IsKeyUp(_keyUp) && Up != null) Up(null, EventArgs.Empty); }
+                if (state.IsKeyDown(_keyDown)) { output += _down; 
+                    if (oldKeys.IsKeyUp(_keyDown) && Down != null) Down(null, EventArgs.Empty); }
+                if (state.IsKeyDown(_keyLeft)) { output += _left; 
+                    if (oldKeys.IsKeyUp(_keyLeft) && Left != null) Left(null, EventArgs.Empty); }
+                if (state.IsKeyDown(_keyRight)) { output += _right; 
+                    if (oldKeys.IsKeyUp(_keyRight) && Right != null) Right(null, EventArgs.Empty); }
 
                 Held += gt.ElapsedGameTime.Milliseconds;
             }

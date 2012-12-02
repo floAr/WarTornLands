@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using WarTornLands;
 using WarTornLands.PlayerClasses;
 using WarTornLands.Infrastructure.Systems.DialogSystem;
+using System.IO;
 
 namespace WarTornLands.Infrastructure
 {
@@ -17,8 +18,19 @@ namespace WarTornLands.Infrastructure
         private Texture2D _textBox;
         private SpriteFont _font;
         private ConversationItem _currentDisplay;
-        private readonly static Vector2 _boxPosition = new Vector2(0, 180);
-        private readonly static Vector2 _textPosition = new Vector2(20, 200);
+        private readonly static Vector2 _topLeftPosition = new Vector2(20, 200);
+        private readonly static Vector2 _relBoxPosition = new Vector2(0, 0);
+        private readonly static Vector2 _relSpeakerNamePosition = new Vector2(10, 10);
+
+        private readonly static Vector2 _relTextPosition = new Vector2(40, 20);
+        private readonly static float _lineSpacing = -3;
+        private readonly static float _lineLength = 600;    // in pixels
+
+        // Text format commands
+        // Example: /n executes a line wrap
+        private readonly static char commandIndicator = '/';
+        private readonly static char lineWrap = 'n';
+
 
         #region Singleton Stuff
         private static DialogManager _instance;
@@ -64,11 +76,100 @@ namespace WarTornLands.Infrastructure
         private void ShowConversation()
         {
             _spriteBatch.Begin();
+            
+            //_spriteBatch.Draw(_textBox, _relBoxPosition, Color.White);
+            //_spriteBatch.DrawString(_font, _currentDisplay.Speaker, _relSpeakerNamePosition, Catalog.SpeakerColor);
 
-            _spriteBatch.Draw(_textBox, _boxPosition, Color.White);
-            _spriteBatch.DrawString(_font, _currentDisplay.Text, _textPosition, Color.White);
+            ShowText();
 
             _spriteBatch.End();
+        }
+
+        private void ShowText()
+        {
+            string text = _currentDisplay.Text;
+            Vector2 pos = Vector2.Zero;
+
+            while(text.Length > 0)
+            {
+                string next = NextPart(ref text, ref pos);
+
+                // If the next word would exeed line length wrap it
+                if (pos.X + _font.MeasureString(next).X > _lineLength)
+                {
+                    Wrap(ref pos);
+                }
+                if (pos.X + _font.MeasureString(next).X > _lineLength)
+                    throw new Exception("Word is too long for a line to contain it: " + next + " Line length is set to " + _lineLength + ".");
+
+                Color drawColor = Catalog.Instance.CheckString(next);
+
+                next = next.Replace('~', ' ');
+                _spriteBatch.DrawString(_font, next, pos + _topLeftPosition, drawColor);
+
+                pos += new Vector2(_font.MeasureString(next).X, 0);
+            }
+        }
+
+        private string NextPart(ref string text, ref Vector2 position)
+        {
+            int i = 0;
+            string res = "";
+
+            while (i <= text.Length)
+            {
+                // Check if the next symbol is a space or terminating a sentence
+                if (i == text.Length || text[i].Equals(' ') || text[i].Equals('.') || text[i].Equals('!') || text[i].Equals('?'))
+                {
+                    // If the read-in just started cut the symbol off
+                    if (i == 0)
+                    {
+                        if (text[i].Equals(' ') && position.X + _font.MeasureString(text[i].ToString()).X > _lineLength)
+                        {
+                            // In the special case that a SPACE would stand at the beginning of a line, dont show it
+                        }
+                        else
+                            res += text[i];
+
+                        text = text.Remove(0, i + 1);                            
+                    }
+                    else
+                    {
+                        text = text.Remove(0, i);
+                    }
+                    break;
+                }
+
+                // Check for command
+                if (text[i].Equals(commandIndicator))
+                {
+                    // If the read in just started execute command, else return the current word
+                    if (i != 0)
+                    {
+                        text = text.Remove(0, i);
+                        break;
+                    }
+
+                    // Check for lineBreak
+                    if (text[i + 1].Equals(lineWrap))
+                    {
+                        text = text.Remove(0, i + 2);
+                        Wrap(ref position);
+                        break;
+                    }
+                }
+
+                res += text[i];
+                ++i;
+            }
+
+            return res;
+        }
+
+        private void Wrap(ref Vector2 position)
+        {
+            position += new Vector2(0, _lineSpacing + _font.MeasureString("Ig").Y);
+            position.X = 0;
         }
 
         #region Subscribed events

@@ -20,7 +20,7 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
         /// <value>
         /// The text as string.
         /// </value>
-        public string Text { get; private set; }
+        public string Text { get; protected set; }
         ///// <summary>
         ///// Gets the successor of the item.
         ///// #next means the conversation will continue with the next item in the list
@@ -105,9 +105,9 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
             (_owner.GetInteractModule() as Dialog).ShutDown();
 
             if(_newDefault.Equals("#this"))
-                (_owner.GetInteractModule() as Dialog).SetNewDefault(this.ConversationID);
+                (_owner.GetInteractModule() as Dialog).SetNewDefault(this.ConversationID, this.ConversationID);
             else
-                (_owner.GetInteractModule() as Dialog).SetNewDefault(_newDefault);
+                (_owner.GetInteractModule() as Dialog).SetNewDefault(_newDefault, this.ConversationID);
         }
     }
 }

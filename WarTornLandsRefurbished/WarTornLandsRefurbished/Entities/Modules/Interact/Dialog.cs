@@ -38,12 +38,15 @@ namespace WarTornLands.Entities.Modules.Interact
         private ConversationIterator _currentCon;
         private DialogManager _dm;
         private CounterManager _cm;
+        private EventHandler _enter;
+
 
         private readonly string _cShutdown = "shutdownCounter";
 
         public Dialog(List<Conversation> conversations, Entity owner, int cooldown = 2000)
             : base() 
         {
+            _enter = new EventHandler(OnEnter);
             _conversations = conversations;
             _dm = DialogManager.Instance;
             _cm = owner.CM;
@@ -55,11 +58,15 @@ namespace WarTornLands.Entities.Modules.Interact
 
             foreach (Conversation con in _conversations)
             {
+                try
+                {
+                    con.Add(new ComboBreaker());
+                }
+                catch (ConversationAlreadyFinalisedException e)
+                { }
+
                 con.SetOwner(owner);
             }
-
-            // Subscribe Enter event to continue conversations
-            InputManager.Instance.Interact.Pressed += new EventHandler(OnEnter);
         }
 
         public void Interact(Entity user)
@@ -70,6 +77,9 @@ namespace WarTornLands.Entities.Modules.Interact
                 {
                     Active = true;
                     OnEnter(null, EventArgs.Empty);
+
+                    // Subscribe Enter event to continue conversations
+                    InputManager.Instance.Subscribe(InputManager.Instance.Interact, ref _enter);
                 }
                 else
                 {
@@ -83,13 +93,18 @@ namespace WarTornLands.Entities.Modules.Interact
         /// This method should only be called by ConversationItems
         /// </summary>
         /// <param name="newDefaultID">The new default ID.</param>
-        public void SetNewDefault(string newDefaultID)
+        public void SetNewDefault(string newDefaultID, string calledByID)
         {
+            Active = false;
             foreach (Conversation con in _conversations)
             {
                 if (con.ID.Equals(newDefaultID))
+                {
                     _currentCon = con.GetIterator();
+                    return;
+                }
             }
+            throw new ConversationNotFoundException(newDefaultID, calledByID);
         }
 
         /// <summary>
@@ -99,6 +114,7 @@ namespace WarTornLands.Entities.Modules.Interact
         public void ShutDown()
         {
             Active = false;
+            InputManager.Instance.Unsubscribe(InputManager.Instance.Interact, ref _enter);
             _cm.StartCounter(_cShutdown, Cooldown);
             OnCooldown = true;
         }
@@ -112,8 +128,15 @@ namespace WarTornLands.Entities.Modules.Interact
 
         private void OnEnter(object sender, EventArgs e)
         {
-            if(Active)
-                _currentCon.Next().Trigger();
+            try
+            {
+                if (Active)
+                    _currentCon.Next().Trigger();
+            }
+            catch (ConversationHasEndedException ex)
+            {
+                _currentCon.Reset();
+            }
         }
 
         private void OnBang(object sender, BangEventArgs e)
@@ -121,6 +144,7 @@ namespace WarTornLands.Entities.Modules.Interact
             if (e.IsDesiredCounter(_cShutdown))
             {
                 OnCooldown = false;
+
             }
         }
 

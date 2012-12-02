@@ -24,29 +24,29 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
 
         private List<ConversationItem> _lines;
 
-        public Conversation(string id, List<ConversationItem> lines)
+        public Conversation(string id)
         {
-            // Gatekeeper method to report faulty conversation builds
-            for (int i = 0; i < lines.Count; ++i)
-            {
-                if ((lines[i] is Options) && i != lines.Count - 1)
-                    throw new Exception("Options can only stand at the end of a conversation.");
-                if ((lines[i] is ComboBreaker) && i != lines.Count - 1)
-                    throw new Exception("ComboBreakers can only stand at the end of a conversation.");
-            }
-
             ID = id;
-            _lines = lines;
-
-            foreach (ConversationItem line in _lines)
-            {
-                line.SetID(ID);
-            }
+            _lines = new List<ConversationItem>();
         }
 
         public ConversationIterator GetIterator()
         {
             return new ConversationIterator(this);
+        }
+
+        public void Add(ConversationItem item)
+        {
+            if (_lines.Count > 0)
+            {
+                if(_lines[_lines.Count - 1] is Options)
+                    throw new ConversationAlreadyFinalisedException(this.ID, true);
+                if(_lines[_lines.Count - 1] is ComboBreaker)
+                    throw new ConversationAlreadyFinalisedException(this.ID, false);
+            }
+
+            item.SetID(ID);
+            _lines.Add(item);
         }
 
         public ConversationItem this[int index]
@@ -63,6 +63,24 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
         }
     }
 
+    public class ConversationAlreadyFinalisedException : Exception
+    {
+        public ConversationAlreadyFinalisedException(string conID, bool options)
+            : base("The conversation " + conID + " already has an endpoint of type " + (options ? "Options." : "ComboBreaker.")) { }
+    }
+
+    public class ConversationNotFoundException : Exception
+    {
+        public ConversationNotFoundException(string calledID, string calledByID)
+            : base("The conversation " + calledID + " was not found. It got called by the conversation " + calledByID) { }
+    }
+
+    public class ConversationHasEndedException : Exception
+    {
+        public ConversationHasEndedException(string calledID)
+            : base("The conversation " + calledID + " has ended but a continuation was attempted.") { }
+    }
+
     /// <summary>
     /// Iterator to access the next item in a conversation aggregate.
     /// Iterator Patter [GoF 19].
@@ -77,6 +95,11 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
             _conversation = conversation;
         }
 
+        public void Reset()
+        {
+            current = -1;
+        }
+
         public ConversationItem First()
         {
             return _conversation[0];
@@ -88,7 +111,7 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
             if (current < _conversation.Count - 1)
                 ret = _conversation[++current];
             else
-                throw new Exception("Conversation should'nt be continued. Something went wrong.");
+                throw new ConversationHasEndedException(_conversation.ID);
 
             return ret;
         }

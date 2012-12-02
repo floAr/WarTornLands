@@ -91,6 +91,7 @@
     <Compile Include="Entities\Modules\Think\ThinkInputGuided.cs" />
     <Compile Include="Entities\Modules\Think\ThinkRoamAround.cs" />
     <Compile Include="Entities\Modules\Think\_IThinkModule.cs" />
+    <Compile Include="Infrastructure\Catalog.cs" />
     <Compile Include="Infrastructure\CollisionManager.cs" />
     <Compile Include="Infrastructure\Constants.cs" />
     <Compile Include="Infrastructure\DialogManager.cs" />

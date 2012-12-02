@@ -18,12 +18,15 @@ namespace WarTornLands.PlayerClasses
     {
         private static Player _instance;
 
-        public static Player Instance()
+        public static Player Instance
         {
-            if (_instance == null)
-                _instance = new Player(Game1.Instance);
+            get
+            {
+                if (_instance == null)
+                    _instance = new Player(Game1.Instance);
 
-            return _instance;
+                return _instance;
+            }
         }
 
         private Player(Game1 game)

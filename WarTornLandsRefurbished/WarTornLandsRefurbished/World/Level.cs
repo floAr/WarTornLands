@@ -154,12 +154,22 @@ namespace WarTornLands.World
             dialogTestDrawer.Texture = _game.Content.Load<Texture2D>("Schatztruhe");
             Entity dialogTest = new Entity((_game as Game1), new Vector2(-20, 150), "chest");
             dialogTest.AddModule(dialogTestDrawer);
+
             List<Conversation> cons = new List<Conversation>();
-            List<ConversationItem> items = new List<ConversationItem>();
-            items.Add(new TextLine("Imma chargin ma L4Z0r..."));
-            items.Add(new TextLine("SHOOPDAWHOOOP"));
-            items.Add(new ComboBreaker());
-            cons.Add(new Conversation("1", items));
+            Conversation con = new Conversation("1");
+            con.Add(new TextLine("Once upon a time there was a man named Jason"));
+            con.Add(new TextLine("He lived in a camp near his place of death, Crystal~Lake"));
+            con.Add(new TextLine("and he wore a Hockey~Mask."));
+            con.Add(new TextLine("From time to time Jason went out to kill random people with his machete"));
+            con.Add(new TextLine("The end."));
+            List<Option> ops = new List<Option>();
+            ops.Add(new Option("option1", "#this"));
+            ops.Add(new Option("option2", "#this"));
+            ops.Add(new Option("option3", "#this"));
+            ops.Add(new Option("option4", "#this"));
+            Options op = new Options(ops);
+            con.Add(op);
+            cons.Add(con);
             dialogTest.AddModule(new Dialog(cons, dialogTest));
             layer3.AddEntity(dialogTest);
 
