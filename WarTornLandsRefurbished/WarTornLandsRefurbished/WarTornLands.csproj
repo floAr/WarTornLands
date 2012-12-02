@@ -158,9 +158,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="WarTornLandsClasses.cd" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\WarTornLands\WarTornLandsContent\WarTornLandsContent.contentproj">
       <Project>{26B4BEA3-E8E1-4BDC-B321-FD2EDC833D3F}</Project>
       <Name>WarTornLandsContent %28Content%29</Name>

@@ -16,6 +16,7 @@ namespace WarTornLands.PlayerClasses
         private static Inventory _inventory;
 
         public int Potions { get; set; }
+        private LinkedList<int> items = new LinkedList<int>();
 
         private Inventory()
         { }
@@ -41,7 +42,8 @@ namespace WarTornLands.PlayerClasses
                     else return false;
 
                 default:
-                    return false;
+                    items.AddLast((int)item);
+                    return true;
             }
         }
     }
