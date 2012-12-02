@@ -17,8 +17,10 @@ namespace WarTornLands.Entities.Modules.Draw
         private Vector2 _loc;
         private Vector2 _size;
 
-        public bool HasEnded { get { return _animations[_currentAnimation].HasEnded; } }
 
+        private bool _isLight = false;
+        public bool HasEnded { get { return _animations[_currentAnimation].HasEnded; } }
+        public bool IsLight { get { return _isLight; } set { _isLight = value; } }
         public AnimatedDrawer(Texture2D spriteSheet)
         {
             _spriteSheet = spriteSheet;
@@ -43,6 +45,8 @@ namespace WarTornLands.Entities.Modules.Draw
 
         public void Draw(SpriteBatch batch, DrawInformation information)
         {
+            if (_isLight != information.DrawLights)
+                return;
             Animation _current = _animations[_currentAnimation];
             _size = new Vector2(_current.CurrentFrame.Width, _current.CurrentFrame.Height);
             if (information.Centered)

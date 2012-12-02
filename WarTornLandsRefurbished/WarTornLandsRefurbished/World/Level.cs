@@ -14,6 +14,8 @@ using WarTornLands.PlayerClasses;
 using WarTornLands.Entities.Modules.Interact;
 using WarTornLands.Infrastructure.Systems.DialogSystem;
 using System.Xml.Linq;
+using WarTornLands.Entities.Modules.Draw.ParticleSystem;
+using WarTornLands.Infrastructure.Systems.SkyLight;
 
 namespace WarTornLands.World
 {
@@ -172,6 +174,37 @@ namespace WarTornLands.World
             cons.Add(con);
             dialogTest.AddModule(new Dialog(cons, dialogTest));
             layer3.AddEntity(dialogTest);
+
+            //torch
+            List<Texture2D> pL = new List<Texture2D>();
+            pL.Add(Game1.Instance.Content.Load<Texture2D>("flame3"));
+            Entity torch = new Entity(Game1.Instance, new Vector2(50, 150), "torch");
+            ParticleSystem pSystem = new ParticleSystem(
+                new EmitterSetting()
+                {
+                    DirectionX = new Range() { Min = -1, Max = 1 },
+                    DirectionY = new Range() { Min = -1, Max = -3 },
+                    AnglePermutation = new Range() { Min = -1, Max = 1 },
+                    Lifetime = new Range() { Min = 1000, Max = 1500 },
+                    MaxParticles = new Range(150),
+                    Size = new Range() { Min = 0.1f, Max = 0.3f },
+                    SpeedX = new Range() { Min = -1, Max = 1 },
+                    SpeedY = new Range() { Min = -0.5f, Max = -1.5f },
+                    Alpha = new Range(1),
+                    AlphaDecay = new Range(0.01f, 0.1f)
+
+                },
+        pL);
+            StaticDrawer torchlight = new StaticDrawer();
+            torchlight.IsLight = true;
+
+            torchlight.Texture = Game1.Instance.Content.Load<Texture2D>("flame3");
+            
+            torch.AddModule(new DualDraw(torchlight,pSystem));
+     //       torch.AddModule(pSystem);
+            layer3.AddEntity(torch);
+            Lightmanager.AddLight(torch);
+            //endtorch
 
             AddArea("Entenhausen", area1);
         }

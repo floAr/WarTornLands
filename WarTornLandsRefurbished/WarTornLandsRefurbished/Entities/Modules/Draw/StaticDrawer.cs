@@ -15,7 +15,7 @@ namespace WarTornLands.Entities.Modules.Draw
         private Vector2 _loc;
         private Vector2 _size;
         private Texture2D _tex;
-
+        private bool _isLight = false;
         /// <summary>
         /// Gets or sets the texture.
         /// </summary>
@@ -23,7 +23,7 @@ namespace WarTornLands.Entities.Modules.Draw
         /// The texture.
         /// </value>
         public Texture2D Texture { get { return _tex; } set { _tex = value; _size = new Vector2(_tex.Width, _tex.Height); } }
-
+        public bool IsLight { get { return _isLight; } set { _isLight = value; } }
 
         /// <summary>
         /// Draws the specified batch.
@@ -32,6 +32,9 @@ namespace WarTornLands.Entities.Modules.Draw
         /// <param name="information">The information.</param>
         public void Draw(SpriteBatch batch, DrawInformation information)
         {
+            if (_isLight != information.DrawLights)
+                return;
+            
             if (information.Centered)
                 _loc = information.Position - (_size / 2);
             else
@@ -53,7 +56,8 @@ namespace WarTornLands.Entities.Modules.Draw
 
         public void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+           
         }
+
     }
 }

@@ -196,7 +196,7 @@ namespace WarTornLands.Entities
                 _mThinkModule.Update(gameTime);
             if (_mDieModule != null)
                 _mDieModule.Update(gameTime);
-            if (_mDrawModule != null && (_mDrawModule is AnimatedDrawer || _mDrawModule is ParticleSystem))
+            if (_mDrawModule != null)
             {
                 _mDrawModule.Update(gameTime);
                 if (_mDrawModule is AnimatedDrawer)
@@ -217,12 +217,15 @@ namespace WarTornLands.Entities
             {
                 Position = this.Position,
                 Rotation = _rotation,
-                Scale = this.Size
+                Scale = this.Size,
+                DrawLights=Game1.Instance.DrawingLights
             };
 
             if (_mDrawModule != null)
                 _mDrawModule.Draw(((Game1)Game).SpriteBatch, information);
         }
+
+      
 
         /*  protected virtual Vector2 GetDrawPosition()
           {
