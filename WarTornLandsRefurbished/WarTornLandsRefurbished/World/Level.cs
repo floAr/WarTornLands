@@ -145,7 +145,7 @@ namespace WarTornLands.World
             sd.Texture = _game.Content.Load<Texture2D>("Schatztruhe");
             Entity staticTest = new Entity((_game as Game1), new Vector2(50, 50), "loch");
             staticTest.AddModule(sd);
-            staticTest.AddModule(new ExplodeAndLoot(ItemTypes.Potion));
+            staticTest.AddModule(new ExplodeAndLoot(new PlayerClasses.Items.Item(PlayerClasses.Items.ItemTypes.Potion)));
             staticTest.Health = 100;
             layer3.AddEntity(staticTest);
             area1.AddLayer(layer3);

@@ -13,7 +13,7 @@ namespace WarTornLands.Entities.Modules.Die
         private PickUpOnCollide _pick;
         private AnimatedDrawer _explosion;
 
-        public ExplodeAndLoot(WarTornLands.PlayerClasses.ItemTypes loot)
+        public ExplodeAndLoot(WarTornLands.PlayerClasses.Items.Item loot)
         {
             _pick = new PickUpOnCollide(loot);
             _explosion = AnimatedDrawer.Explosion;

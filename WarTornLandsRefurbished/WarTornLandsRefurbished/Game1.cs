@@ -15,8 +15,7 @@ using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities;
 using WarTornLands.Entities.Modules.Die;
 using WarTornLands.Entities.Modules.Draw.ParticleSystem;
-using WarTornLands.World;
-using WarTornLands.Entities.Modules.Draw.ParticleSystem;
+using WarTornLands.World; 
 
 namespace WarTornLands
 {
@@ -96,7 +95,7 @@ namespace WarTornLands
 
             staticTest = new Entity(this, new Vector2(50, 50), "loch");
             staticTest.AddModule(sd);
-            staticTest.AddModule(new ExplodeAndLoot(ItemTypes.Potion));
+            staticTest.AddModule(new ExplodeAndLoot(new PlayerClasses.Items.Item(PlayerClasses.Items.ItemTypes.Potion)));
             staticTest.Health = 100;
             List<Texture2D> pL= new List<Texture2D>();
             pL.Add(Content.Load<Texture2D>("flame3"));

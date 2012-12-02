@@ -16,7 +16,7 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
         { 
         }
 
-        public void Trigger()
+        public override void Trigger()
         { }
     }
 }

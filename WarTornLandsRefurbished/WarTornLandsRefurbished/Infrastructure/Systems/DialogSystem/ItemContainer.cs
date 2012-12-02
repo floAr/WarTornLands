@@ -31,7 +31,7 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
             return message;
         }
 
-        public void Trigger()
+        public override void Trigger()
         {
             // Give items to the player
         }
