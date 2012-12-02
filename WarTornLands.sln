@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarTornLandsOld", "WarTornLands\WarTornLands\WarTornLandsOld.csproj", "{19F62EDA-2A13-41AE-87B5-AD31D430889B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarTornLands", "WarTornLandsRefurbished\WarTornLandsRefurbished\WarTornLands.csproj", "{9B9CF57A-7730-4848-AD11-B8FE5C984C90}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarTornLandsContent", "WarTornLands\WarTornLandsContent\WarTornLandsContent.contentproj", "{26B4BEA3-E8E1-4BDC-B321-FD2EDC833D3F}"
@@ -13,10 +11,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{19F62EDA-2A13-41AE-87B5-AD31D430889B}.Debug|x86.ActiveCfg = Debug|x86
-		{19F62EDA-2A13-41AE-87B5-AD31D430889B}.Debug|x86.Build.0 = Debug|x86
-		{19F62EDA-2A13-41AE-87B5-AD31D430889B}.Release|x86.ActiveCfg = Release|x86
-		{19F62EDA-2A13-41AE-87B5-AD31D430889B}.Release|x86.Build.0 = Release|x86
 		{9B9CF57A-7730-4848-AD11-B8FE5C984C90}.Debug|x86.ActiveCfg = Debug|x86
 		{9B9CF57A-7730-4848-AD11-B8FE5C984C90}.Debug|x86.Build.0 = Debug|x86
 		{9B9CF57A-7730-4848-AD11-B8FE5C984C90}.Release|x86.ActiveCfg = Release|x86
