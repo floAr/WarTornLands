@@ -72,7 +72,7 @@ namespace WarTornLands.PlayerClasses
 
         #endregion
 
-        internal void GiveItem(ItemTypes _loot)
+        internal void GiveItem(Items.Item _loot)
         {
             throw new NotImplementedException();
         }

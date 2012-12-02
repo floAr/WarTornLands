@@ -9,9 +9,9 @@ namespace WarTornLands.Entities.Modules.Interact
 {
    public class PickUp : BaseModule, IInteractModule
     {
-       private WarTornLands.PlayerClasses.ItemTypes _loot;
+       private WarTornLands.PlayerClasses.Items.Item _loot;
 
-       public PickUp(WarTornLands.PlayerClasses.ItemTypes loot)
+       public PickUp(WarTornLands.PlayerClasses.Items.Item loot)
        {
            _loot = loot;
        }

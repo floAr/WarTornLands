@@ -19,7 +19,7 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
             _conIDs = conIDs;
         }
 
-        public void Trigger()
+        public override void Trigger()
         {
             
         }
