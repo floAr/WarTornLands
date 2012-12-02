@@ -50,14 +50,15 @@ namespace WarTornLands.World.Layers
         {
             List<Entity> result = new List<Entity>();
 
+            // TODO fails if entity is not centered. We need a convention here!!!
+
             foreach (Entity ent in _entities)
             {
+                // TODO remove debug code
+                int resultLength = result.Count;
+
                 Vector2 entPos = ent.Position;
                 Vector2 entSize = ent.Size;
-
-                // TODO this alogrithm currently only works if either the circle's center
-                // lies inside the entity or the entity's center / one of the cornes lies
-                //  inside the circle. some cases are not caught by this!
 
                 // Check whether circles center lies inside entity rectangle
                 if (position.X >= entPos.X - entSize.X * 0.5f && position.X < entPos.X + entSize.X * 0.5f &&
@@ -67,16 +68,60 @@ namespace WarTornLands.World.Layers
                 }
                 else
                 {
-                    // Check whether entity center or one of the corners lies inside circle
-                    if ((position - entPos).Length() <= radius ||
-                        (position - (entPos + new Vector2(-entSize.X / 2, -entSize.Y / 2))).Length() <= radius ||
-                        (position - (entPos + new Vector2(-entSize.X / 2, entSize.Y / 2))).Length() <= radius ||
-                        (position - (entPos + new Vector2(entSize.X / 2, -entSize.Y / 2))).Length() <= radius ||
-                        (position - (entPos + new Vector2(entSize.X / 2, entSize.Y / 2))).Length() <= radius)
+                    // Check whether circle center lies straight next to one of the sides of the
+                    // entity rectangle, not on one of the corners, and if so, compare distance
+                    // Begin with top / bottom of the rectangle
+                    if (position.X >= (entPos.X - entSize.X / 2.0f) && position.X <= (entPos.X + entSize.X / 2.0f))
+                    {
+                        if (position.Y < (entPos.Y - entSize.Y / 2.0f))
+                        {
+                            // Circle sphere on top
+                            if ((entPos.Y - entSize.Y / 2.0f) - position.Y <= radius)
+                            {
+                                result.Add(ent);
+                            }
+                        }
+                        else
+                        {
+                            // Circle sphere on the bottom
+                            if (position.Y - (entPos.Y + entSize.Y / 2.0f) <= radius)
+                            {
+                                result.Add(ent);
+                            }
+                        }
+                    }
+                    else if (position.Y >= (entPos.Y - entSize.Y / 2.0f) && position.Y <= (entPos.Y + entSize.Y / 2.0f))
+                    {
+                        if (position.X < (entPos.X - entSize.X / 2.0f))
+                        {
+                            // Circle sphere on the left
+                            if ((entPos.X - entSize.X / 2.0f) - position.X <= radius)
+                            {
+                                result.Add(ent);
+                            }
+                        }
+                        else
+                        {
+                            // Circle sphere on the right
+                            if (position.X - (entPos.X + entSize.X / 2.0f) <= radius)
+                            {
+                                result.Add(ent);
+                            }
+                        }
+                    }
+                    // Check whether one of the corners lies inside circle
+                    if ((position - (entPos + new Vector2(-entSize.X / 2.0f, -entSize.Y / 2.0f))).Length() <= radius ||
+                        (position - (entPos + new Vector2(-entSize.X / 2.0f, entSize.Y / 2.0f))).Length() <= radius ||
+                        (position - (entPos + new Vector2(entSize.X / 2.0f, -entSize.Y / 2.0f))).Length() <= radius ||
+                        (position - (entPos + new Vector2(entSize.X / 2.0f, entSize.Y / 2.0f))).Length() <= radius)
                     {
                         result.Add(ent);
-                    } 
+                    }
                 }
+
+                // TODO Remove debug code
+                if (result.Count - resultLength > 1)
+                    throw new Exception("Collision code is sucky!");
             }
 
             return result;
