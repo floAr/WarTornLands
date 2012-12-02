@@ -158,16 +158,15 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="WarTornLandsClasses.cd" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\WarTornLands\WarTornLandsContent\WarTornLandsContent.contentproj">
       <Project>{26B4BEA3-E8E1-4BDC-B321-FD2EDC833D3F}</Project>
       <Name>WarTornLandsContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--
