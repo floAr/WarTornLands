@@ -109,6 +109,11 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             return true;
         }
 
+        public bool TryCancel()
+        {
+            return false;
+        }
+
         private void Hit()
         {
             if (_cm.GetPercentage(_cSwingHit) != 0)

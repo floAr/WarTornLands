@@ -75,22 +75,11 @@ namespace WarTornLands.Infrastructure
 
         private void ShowConversation()
         {
-            _spriteBatch.Begin();
-            
-            //_spriteBatch.Draw(_textBox, _relBoxPosition, Color.White);
-            //_spriteBatch.DrawString(_font, _currentDisplay.Speaker, _relSpeakerNamePosition, Catalog.SpeakerColor);
-
-            ShowText();
-
-            _spriteBatch.End();
-        }
-
-        private void ShowText()
-        {
+            Game1 game = Game1.Instance;
             string text = _currentDisplay.Text;
             Vector2 pos = Vector2.Zero;
 
-            while(text.Length > 0)
+            while (text.Length > 0)
             {
                 string next = NextPart(ref text, ref pos);
 
@@ -105,7 +94,7 @@ namespace WarTornLands.Infrastructure
                 Color drawColor = Catalog.Instance.CheckString(next);
 
                 next = next.Replace('~', ' ');
-                _spriteBatch.DrawString(_font, next, pos + _topLeftPosition, drawColor);
+                game.SpriteBatch.DrawString(_font, next, pos + _topLeftPosition, drawColor);
 
                 pos += new Vector2(_font.MeasureString(next).X, 0);
             }

@@ -14,8 +14,11 @@ using WarTornLands.PlayerClasses;
 using WarTornLands.Entities.Modules.Interact;
 using WarTornLands.Infrastructure.Systems.DialogSystem;
 using System.Xml.Linq;
+using WarTornLands.Infrastructure;
+using WarTornLands.Entities.Modules.Collide;
 using WarTornLands.Entities.Modules.Draw.ParticleSystem;
 using WarTornLands.Infrastructure.Systems.SkyLight;
+using WarTornLandsRefurbished.Entities.Modules.Think;
 
 namespace WarTornLands.World
 {
@@ -106,7 +109,7 @@ namespace WarTornLands.World
         {
             Area area1 = new Area(new Rectangle(0, 0, 10, 10));
 
-            TileLayer layer1 = new TileLayer(_game, 0);
+            TileLayer layer1 = new TileLayer(0);
             Tile[,] grid1 = new Tile[10, 10];
             for (int x = 0; x < 10; x++)
             {
@@ -122,7 +125,7 @@ namespace WarTornLands.World
             layer1.LoadGrid(grid1, false, "grass", false);
             area1.AddLayer(layer1);
 
-            TileLayer layer2 = new TileLayer(_game, 90);
+            TileLayer layer2 = new TileLayer(90);
             Tile[,] grid2 = new Tile[10, 10];
             for (int x = 0; x < 10; x++)
             {
@@ -142,12 +145,12 @@ namespace WarTornLands.World
             layer2.LoadGrid(grid2, false, "grass", true);
             area1.AddLayer(layer2);
 
-            EntityLayer layer3 = new EntityLayer(_game, 99);
+            EntityLayer layer3 = new EntityLayer(99);
             StaticDrawer sd = new StaticDrawer();
             sd.Texture = _game.Content.Load<Texture2D>("Schatztruhe");
             Entity staticTest = new Entity((_game as Game1), new Vector2(50, 50), "loch");
             staticTest.AddModule(sd);
-            staticTest.AddModule(new ExplodeAndLoot(new PlayerClasses.Items.Item(PlayerClasses.Items.ItemTypes.Potion)));
+            //staticTest.AddModule(new ExplodeAndLoot(Item.Potion));
             staticTest.Health = 100;
             layer3.AddEntity(staticTest);
             area1.AddLayer(layer3);
@@ -207,6 +210,122 @@ namespace WarTornLands.World
             //endtorch
 
             AddArea("Entenhausen", area1);
+        }
+
+        /// <summary>
+        /// Loads the test level for the X-Mas Party on December 6th, 2012.
+        /// </summary>
+        public void LoadChristmasCaverns()
+        {
+            // Floor tiles
+            const int STONE_FLOOR = 49;
+            const int BOSS_FLOOR = 43;
+
+            // Wall tiles
+            const int STONE_WALL = 28;
+
+            // Create an empty area in the right size
+            Area cavernsArea= new Area(new Rectangle(0, 0, 56, 46));
+
+            #region Add a floor layer
+            TileLayer floorLayer = new TileLayer(0);
+            Tile[,] floorGrid = new Tile[56, 46];
+            
+            // Set normal floor
+            for (int x = 0; x < 56; ++x)
+                for (int y = 0; y < 46; ++y)
+                    floorGrid[x, y].TileNum = STONE_FLOOR;
+
+            // Set boss floor
+            for (int x = 34; x <= 43; ++x)
+                for (int y = 10; y <= 17; ++y)
+                    floorGrid[x, y].TileNum = BOSS_FLOOR;
+
+            floorLayer.LoadGrid(floorGrid, false, "dg_grounds32", false);
+            cavernsArea.AddLayer(floorLayer);
+            #endregion
+
+            #region Add a wall layer
+            TileLayer wallLayer = new TileLayer(50);
+            Tile[,] wallGrid = new Tile[56, 46];
+
+            // Set walls EVWERYWHERE!
+            for (int x = 0; x < 56; ++x)
+                for (int y = 0; y < 46; ++y)
+                    wallGrid[x, y].TileNum = STONE_WALL;
+
+            // Scoop out rooms and shit
+            for (int x = 12; x <= 21; ++x)
+                for (int y = 14; y <= 21; ++y)
+                    wallGrid[x, y].TileNum = 0;
+            for (int x = 20; x <= 21; ++x)
+                for (int y = 22; y <= 29; ++y)
+                    wallGrid[x, y].TileNum = 0;
+            for (int x = 22; x <= 39; ++x)
+                for (int y = 28; y <= 29; ++y)
+                    wallGrid[x, y].TileNum = 0;
+            for (int x = 30; x <= 31; ++x)
+                for (int y = 30; y <= 31; ++y)
+                    wallGrid[x, y].TileNum = 0;
+            for (int x = 28; x <= 33; ++x)
+                for (int y = 32; y <= 35; ++y)
+                    wallGrid[x, y].TileNum = 0;
+            for (int x = 38; x <= 39; ++x)
+                for (int y = 18; y <= 27; ++y)
+                    wallGrid[x, y].TileNum = 0;
+            for (int x = 38; x <= 39; ++x)
+                for (int y = 18; y <= 27; ++y)
+                    wallGrid[x, y].TileNum = 0;
+            for (int x = 34; x <= 43; ++x)
+                for (int y = 10; y <= 17; ++y)
+                    wallGrid[x, y].TileNum = 0;
+
+            wallLayer.LoadGrid(wallGrid, false, "dg_dungeon32", true);
+            cavernsArea.AddLayer(wallLayer);
+            #endregion
+
+            // Add entities
+            EntityLayer entityLayer = new EntityLayer(90);
+
+            // Herp door
+            Entity door1 = new Entity((_game as Game1), new Vector2(31, 31) * Constants.TileSize);
+            StaticDrawer sd1 = new StaticDrawer();
+            sd1.Texture = _game.Content.Load<Texture2D>("doorClosed");
+            door1.AddModule(sd1);
+            OpenDoorOnCollide d1coll = new OpenDoorOnCollide();
+            door1.AddModule(d1coll);
+            entityLayer.AddEntity(door1);
+
+            // Boss door
+            Entity door2 = new Entity((_game as Game1), new Vector2(39, 27) * Constants.TileSize);
+            StaticDrawer sd2 = new StaticDrawer();
+            sd2.Texture = _game.Content.Load<Texture2D>("doorClosedBoss");
+            door2.AddModule(sd2);
+            OpenDoorOnCollide d2coll = new OpenDoorOnCollide();
+            door2.AddModule(d2coll);
+            entityLayer.AddEntity(door2);
+
+            // Add chest
+            Entity chest = new Entity((_game as Game1), new Vector2(31, 35) * Constants.TileSize);
+            StaticDrawer sd3 = new StaticDrawer();
+            sd3.Texture = _game.Content.Load<Texture2D>("treasureChest");
+            chest.AddModule(sd3);
+            List<Conversation> cons = new List<Conversation>();
+            Conversation con = new Conversation("1");
+            con.Add(new TextLine("It's empty."));
+            cons.Add(con);
+            chest.AddModule(new Dialog(cons, chest));
+            entityLayer.AddEntity(chest);
+
+            cavernsArea.AddLayer(entityLayer);
+
+            Entity boss = new Entity((_game as Game1), new Vector2(39, 15) * Constants.TileSize);
+            boss.AddModule(new ThinkRoamAround(boss, new Vector2(39, 15) * Constants.TileSize, 100));
+            //entityLayer.AddEntity(boss);
+
+
+            // Add area to level
+            AddArea("ChristmasCaverns", cavernsArea);
         }
 
         public void LoadLevel(string fileName)

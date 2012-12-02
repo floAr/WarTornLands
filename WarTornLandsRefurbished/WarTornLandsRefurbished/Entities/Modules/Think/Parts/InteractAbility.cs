@@ -78,5 +78,10 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             else
                 return false;
         }
+
+        public bool TryCancel()
+        {
+            return false;
+        }
     }
 }

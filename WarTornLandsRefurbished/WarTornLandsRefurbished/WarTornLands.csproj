@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Modules\BaseModule.cs" />
+    <Compile Include="Entities\Modules\Collide\OpenDoorOnCollide.cs" />
     <Compile Include="Entities\Modules\Collide\PickUpOnCollide.cs" />
     <Compile Include="Entities\Modules\Collide\_ICollideModule.cs" />
     <Compile Include="Entities\Modules\Die\ExplodeAndLoot.cs" />
@@ -83,8 +84,8 @@
     <Compile Include="Entities\Modules\Draw\ParticleSystem\Particle.cs" />
     <Compile Include="Entities\Modules\Draw\ParticleSystem\ParticleEngine.cs" />
     <Compile Include="Entities\Modules\Interact\Dialog.cs" />
-    <Compile Include="Entities\Modules\Interact\PickUp.cs" />
     <Compile Include="Entities\Modules\Interact\_IInteractModule.cs" />
+    <Compile Include="Entities\Modules\Think\Parts\GoToPosition.cs" />
     <Compile Include="Entities\Modules\Think\Parts\InteractAbility.cs" />
     <Compile Include="Entities\Modules\Think\Parts\JumpAbility.cs" />
     <Compile Include="Entities\Modules\Think\Parts\SwingHitAbility.cs" />
@@ -166,9 +167,6 @@
       <Name>WarTornLandsContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

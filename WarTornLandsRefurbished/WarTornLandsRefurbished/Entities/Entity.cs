@@ -66,9 +66,41 @@ namespace WarTornLands.Entities
         public float BaseHeight { get; internal set; }
         public int Health { get; internal set; }
         public string Name { get; internal set; }
-        public Facing Face { get; internal set; }
+        public Facing Face
+        {
+            get
+            {
+                return _face;
+            }
+
+            internal set
+            {
+                if (_face != value && this.GetDrawModule() is AnimatedDrawer)
+                {
+                    switch (value)
+                    {
+                        case Facing.DOWN:
+                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkDown");
+                            break;
+                        case Facing.LEFT:
+                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkLeft");
+                            break;
+                        case Facing.RIGHT:
+                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkRight");
+                            break;
+                        case Facing.UP:
+                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkUp");
+                            break;
+                    }
+                }
+
+                _face = value;
+            }
+        }
 
         internal CounterManager CM;
+
+        private Facing _face;
 
         #region CollideModule
         protected ICollideModule _mCollideModule;
@@ -122,6 +154,11 @@ namespace WarTornLands.Entities
         public IInteractModule GetInteractModule()
         {
             return _mInteractModule;
+        }
+
+        public IDrawExecuter GetDrawModule()
+        {
+            return _mDrawModule;
         }
 
         public int Damage(int damage)

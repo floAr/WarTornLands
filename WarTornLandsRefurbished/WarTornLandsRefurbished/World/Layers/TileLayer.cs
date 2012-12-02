@@ -28,8 +28,8 @@ namespace WarTornLands.World.Layers
         private Tile[,] _grid;
         private Texture2D _tileSetTexture;
 
-        public TileLayer(Game game, int depth)
-            : base(game, depth)
+        public TileLayer(int depth)
+            : base(depth)
         {
         }
 
@@ -38,12 +38,12 @@ namespace WarTornLands.World.Layers
             _isCollisionLayer = collide;
             _grid = grid;
             _isAnimated = isAnimated;
-            _tileSetTexture = _game.Content.Load<Texture2D>(tileSet);
+            _tileSetTexture = Game1.Instance.Content.Load<Texture2D>(tileSet);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            Game1 game = (_game as Game1);
+            Game1 game = Game1.Instance;
             Vector2 center = game.Player.Position;
             int width = (int)Math.Floor((double)_tileSetTexture.Width / Constants.TileSize);
 
@@ -53,16 +53,19 @@ namespace WarTornLands.World.Layers
             {
                 for (int x = 0; x < _grid.GetLength(0); ++x)
                 {
-                    game.SpriteBatch.Draw(
-                        _tileSetTexture,
-                        new Rectangle(x * Constants.TileSize - (int)center.X + (int)Math.Round(game.Window.ClientBounds.Width / 2.0f),
-                            y * Constants.TileSize - (int)center.Y + (int)Math.Round(game.Window.ClientBounds.Height / 2.0f),
-                            Constants.TileSize, Constants.TileSize),
-                        new Rectangle((_grid[x, y].TileNum % width) * Constants.TileSize,
-                        (_grid[x, y].TileNum / width) * Constants.TileSize,
-                        Constants.TileSize,
-                        Constants.TileSize),
-                        Color.White);
+                    if (_grid[x, y].TileNum != 0)
+                    {
+                        game.SpriteBatch.Draw(
+                            _tileSetTexture,
+                            new Rectangle(x * Constants.TileSize - (int)center.X + (int)Math.Round(game.Window.ClientBounds.Width / 2.0f),
+                                y * Constants.TileSize - (int)center.Y + (int)Math.Round(game.Window.ClientBounds.Height / 2.0f),
+                                Constants.TileSize, Constants.TileSize),
+                            new Rectangle(((_grid[x, y].TileNum - 1) % width) * Constants.TileSize,
+                            ((_grid[x, y].TileNum - 1) / width) * Constants.TileSize,
+                            Constants.TileSize,
+                            Constants.TileSize),
+                            Color.White);
+                    }
                 }
             }
 
