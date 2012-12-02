@@ -40,7 +40,7 @@ namespace WarTornLands.Entities.Modules.Think
 
             // Subscribe to Input events
             _input.UsePotion.Pressed += new EventHandler(OnUsePotion);
-            _input.ExecuteHit.Pressed += new EventHandler(OnExecuteHit);
+            _input.Hit.Pressed += new EventHandler(OnExecuteHit);
             _input.Interact.Pressed += new EventHandler(OnInteract);
             _input.Jump.Pressed += new EventHandler(OnJump);
         }

@@ -16,7 +16,7 @@ namespace WarTornLands.Infrastructure
 
     public class InputManager : GameComponent
     {
-        private static InputManager _input;
+        private static InputManager _instance;
 
         #region Default controls
 
@@ -34,7 +34,7 @@ namespace WarTornLands.Infrastructure
         #endregion
 
         // Keys /////////
-        public Key ExecuteHit { get; private set; }
+        public Key Hit { get; private set; }
         public Key Jump { get; private set; }
         public Key Interact { get; private set; }
         public Key UsePotion { get; private set; }
@@ -50,8 +50,8 @@ namespace WarTornLands.Infrastructure
         private InputManager(Game game)
             : base(game)
         {
-            ExecuteHit = new Key();
-            ExecuteHit.SetActivator(KeyboardDefault_Hit);
+            Hit = new Key();
+            Hit.SetActivator(KeyboardDefault_Hit);
             Jump = new Key();
             Jump.SetActivator(KeyboardDefault_Jump);
             Interact = new Key();
@@ -63,7 +63,7 @@ namespace WarTornLands.Infrastructure
             Move.SetActivator(KeyboardDefault_Move);
 
 
-            _inputList.Add(ExecuteHit);
+            _inputList.Add(Hit);
             _inputList.Add(Jump);
             _inputList.Add(Interact);
             _inputList.Add(UsePotion);
@@ -79,10 +79,10 @@ namespace WarTornLands.Infrastructure
         {
             get
             {
-                if (_input == null)
-                    _input = new InputManager(Game1.Instance);
+                if (_instance == null)
+                    _instance = new InputManager(Game1.Instance);
 
-                return _input;
+                return _instance;
             }
         }
 
@@ -96,9 +96,14 @@ namespace WarTornLands.Infrastructure
             _oldKeys = Keyboard.GetState();
         }
 
-        public Type GetService()
+        public void Subscribe(Key key, ref EventHandler handler)
         {
-            return null;
+            key.Pressed += handler;
+        }
+
+        public void Unsubscribe(Key key, ref EventHandler handler)
+        {
+            key.Pressed -= handler;
         }
 
         public bool SetMapping(Microsoft.Xna.Framework.Input.Keys key, InputKey inputKey)

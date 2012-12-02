@@ -69,7 +69,7 @@ namespace WarTornLands
             Level.LoadTestLevel();
 
             this.Components.Add(InputManager.Instance);
-            Player = Player.Instance();
+            Player = Player.Instance;
             Player.DrawOrder = 100;
             this.Components.Add(Player);
             this.Components.Add(DialogManager.Instance);
@@ -87,7 +87,7 @@ namespace WarTornLands
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             //Add Default Explosion Module
-            
+            Catalog.Instance.SetupTestCatalog();
 
             StaticDrawer sd = new StaticDrawer();
             
