@@ -36,6 +36,7 @@ namespace WarTornLands.Entities.Modules.Think
 
             _jump = new JumpAbility(owner);
             _swing = new SwingHitAbility(owner);
+            _interact = new InteractAbility(owner);
 
             // Subscribe to Input events
             _input.UsePotion.Pressed += new EventHandler(OnUsePotion);
@@ -46,8 +47,6 @@ namespace WarTornLands.Entities.Modules.Think
 
         public void Update(GameTime gameTime)
         {
-            _cm.Update(gameTime);
-
             Vector2 oldPos = _owner.Position;
             Vector2 moveDirection = _input.Move.Value;
             _owner.Position = 
@@ -121,8 +120,7 @@ namespace WarTornLands.Entities.Modules.Think
 
         private void OnInteract(object sender, EventArgs e)
         {
-            if(_interact != null)
-                _interact.TryExecute();   
+            _interact.TryExecute();   
         }
 
         private void OnJump(object sender, EventArgs e)

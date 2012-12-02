@@ -2,11 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WarTornLands.Entities;
 
 namespace WarTornLands.Infrastructure.Systems.DialogSystem
 {
     class Conversation
     {
+        /// <summary>
+        /// The ID of this conversation. Can be interpreted as the topic of the conversation.
+        /// The ID will be shown to the player in the dialog window.
+        /// Must be unique within the list of conversations in the repsective DialogModule.
+        /// </summary>
+        /// <value>
+        /// The ID as string.
+        /// </value>
         public string ID { get; private set; }
         public int Count
         {
@@ -28,6 +37,11 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
 
             ID = id;
             _lines = lines;
+
+            foreach (ConversationItem line in _lines)
+            {
+                line.SetID(ID);
+            }
         }
 
         public ConversationIterator GetIterator()
@@ -39,6 +53,14 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
         {
             get { return _lines[index]; }
         }
+
+        public void SetOwner(Entity owner)
+        {
+            foreach (ConversationItem item in _lines)
+            {
+                item.SetOwner(owner);
+            }
+        }
     }
 
     /// <summary>
@@ -48,7 +70,7 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
     class ConversationIterator
     {
         private Conversation _conversation;
-        private int current = 0;
+        private int current = -1;
 
         public ConversationIterator(Conversation conversation)
         {
@@ -65,6 +87,8 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
             ConversationItem ret = null;
             if (current < _conversation.Count - 1)
                 ret = _conversation[++current];
+            else
+                throw new Exception("Conversation should'nt be continued. Something went wrong.");
 
             return ret;
         }

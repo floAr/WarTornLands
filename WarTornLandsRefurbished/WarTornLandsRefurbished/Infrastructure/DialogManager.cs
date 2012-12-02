@@ -39,7 +39,6 @@ namespace WarTornLands.Infrastructure
         private DialogManager(Player player)
             : base(Game1.Instance)
         {
-            player.CallDialog += new EventHandler<DialogEventArgs>(OnCallDialog);
             this.DrawOrder = 500;
             _spriteBatch = Game1.Instance.SpriteBatch;
         }
@@ -64,15 +63,26 @@ namespace WarTornLands.Infrastructure
 
         private void ShowConversation()
         {
+            _spriteBatch.Begin();
+
             _spriteBatch.Draw(_textBox, _boxPosition, Color.White);
             _spriteBatch.DrawString(_font, _currentDisplay.Text, _textPosition, Color.White);
+
+            _spriteBatch.End();
         }
 
         #region Subscribed events
 
-        private void OnCallDialog(object sender, DialogEventArgs e)
+        public void CallDialog(ConversationItem statement)
         {
-            
+            if (statement == null)
+            {
+                _currentDisplay = null;
+            }
+            else
+            {
+                _currentDisplay = statement;
+            }
         }
 
         #endregion

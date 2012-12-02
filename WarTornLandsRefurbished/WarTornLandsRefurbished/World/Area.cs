@@ -91,7 +91,7 @@ namespace WarTornLands.World
             {
                 if (layer is EntityLayer)
                 {
-                    result.Concat((layer as EntityLayer).GetEntitiesAt(position));
+                    result.AddRange((layer as EntityLayer).GetEntitiesAt(position));
                 }
             }
 
@@ -106,7 +106,7 @@ namespace WarTornLands.World
             {
                 if (layer is EntityLayer)
                 {
-                    result.Concat((layer as EntityLayer).GetEntitiesAt(position, radius));
+                    result.AddRange((layer as EntityLayer).GetEntitiesAt(position, radius));
                 }
             }
 

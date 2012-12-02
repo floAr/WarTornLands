@@ -64,14 +64,15 @@ namespace WarTornLands
         {
             // TODO: Fügen Sie Ihre Initialisierungslogik hier hinzu
 
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
+            Level = new Level(this);
+            Level.LoadTestLevel();
+
             this.Components.Add(InputManager.Instance);
             Player = Player.Instance();
             Player.DrawOrder = 100;
             this.Components.Add(Player);
             this.Components.Add(DialogManager.Instance);
-
-            Level = new Level(this);
-            Level.LoadTestLevel();
 
             base.Initialize();
         }

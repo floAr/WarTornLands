@@ -103,7 +103,6 @@
     <Compile Include="Entities\Modules\Draw\AnimationSystem\AnimationSystem.cs" />
     <Compile Include="Infrastructure\Systems\Counter.cs" />
     <Compile Include="Infrastructure\Systems\DialogSystem\Conversation.cs" />
-    <Compile Include="Infrastructure\Systems\DialogSystem\DialogEventArgs.cs" />
     <Compile Include="Infrastructure\Systems\DialogSystem\ItemContainer.cs" />
     <Compile Include="Infrastructure\Systems\DialogSystem\ConversationItem.cs" />
     <Compile Include="Infrastructure\Systems\DialogSystem\TextLine.cs" />

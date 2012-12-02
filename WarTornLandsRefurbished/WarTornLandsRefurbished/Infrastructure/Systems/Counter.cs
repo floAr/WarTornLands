@@ -85,92 +85,84 @@ namespace WarTornLands.Counter
             }
         }
 
-        /// <summary>
-        /// Unfinished method, do not use.
-        /// </summary>
-        /// <param name="id">The id.</param>
-        /// <param name="term">The term.</param>
-        /// <param name="refresh">if set to <c>true</c> [refresh].</param>
-        /// <param name="loop">if set to <c>true</c> [loop].</param>
-        /// <returns></returns>
-        public bool StartCounter(String id, int term = -1, bool refresh = true, bool loop = false)
+        public bool StartCounter(String id, int term, bool refresh = true, bool loop = false)
         {
             CheckCounterAvailabillity(id);
 
             if (Start != null)
-                Start(this, new CounterEventArgs(id, refresh));
+                Start(this, new CounterEventArgs(term, id, refresh, loop));
 
             return true;
         }
-        public void StartCounter(float term, Increment increment)
+        public void StartCounter(float term, Increment increment, bool loop = false)
         {
             CheckCounterAvailabillity("counter_0");
 
             if (Start != null)
-                Start(null, new CounterEventArgs(term, "counter_0", true, increment));
+                Start(null, new CounterEventArgs(term, "counter_0", true, increment, loop));
         }
-        public void StartCounter(String id)
+        public void StartCounter(String id, bool loop = false)
         {
             CheckCounterAvailabillity(id);
 
             if (Start != null)
-                Start(this, new CounterEventArgs(id, true));
+                Start(this, new CounterEventArgs(id, true, loop));
         }
-        public void StartCounter(String id, bool refresh)
+        public void StartCounter(String id, bool refresh, bool loop = false)
         {
             CheckCounterAvailabillity(id);
 
             if (Start != null)
-                Start(this, new CounterEventArgs(id, refresh));
+                Start(this, new CounterEventArgs(id, refresh, loop));
         }
-        public void StartCounter(int term)
+        public void StartCounter(int term, bool loop = false)
         {
             CheckCounterAvailabillity("counter_0");
 
             if (Start != null)
-                Start(this, new CounterEventArgs(term, "counter_0", true));
+                Start(this, new CounterEventArgs(term, "counter_0", true, loop));
         }
-        public void StartCounter(float term, string id, Increment inc)
+        public void StartCounter(float term, string id, Increment inc, bool loop = false)
         {
             CheckCounterAvailabillity(id);
 
             if (Start != null)
-                Start(this, new CounterEventArgs(term, id, true, inc));
+                Start(this, new CounterEventArgs(term, id, true, inc, loop));
         }
-        public void StartCounter(int term, string id)
+        public void StartCounter(int term, string id, bool loop = false)
         {
             CheckCounterAvailabillity(id);
 
             if (Start != null)
-                Start(this, new CounterEventArgs(term, id, true));
+                Start(this, new CounterEventArgs(term, id, true, loop));
         }
-        public void StartCounter(float term, bool refresh, Increment inc)
+        public void StartCounter(float term, bool refresh, Increment inc, bool loop = false)
         {
             CheckCounterAvailabillity("counter_0");
 
             if (Start != null)
-                Start(this, new CounterEventArgs(term, "counter_0", refresh, inc));
+                Start(this, new CounterEventArgs(term, "counter_0", refresh, inc, loop));
         }
-        public void StartCounter(int term, bool refresh)
+        public void StartCounter(int term, bool refresh, bool loop = false)
         {
             CheckCounterAvailabillity("counter_0");
 
             if (Start != null)
-                Start(this, new CounterEventArgs(term, "counter_0", refresh));
+                Start(this, new CounterEventArgs(term, "counter_0", refresh, loop));
         }
-        public void StartCounter(float term, bool refresh, string id, Increment inc)
+        public void StartCounter(float term, bool refresh, string id, Increment inc, bool loop = false)
         {
             CheckCounterAvailabillity(id);
 
             if (Start != null)
-                Start(this, new CounterEventArgs(term, id, refresh, inc));
+                Start(this, new CounterEventArgs(term, id, refresh, inc, loop));
         }
-        public void StartCounter(int term, bool refresh, string id)
+        public void StartCounter(int term, bool refresh, string id, bool loop = false)
         {
             CheckCounterAvailabillity(id);
 
             if (Start != null)
-                Start(this, new CounterEventArgs(term, id, refresh));
+                Start(this, new CounterEventArgs(term, id, refresh, loop));
         }
 
         public float GetPercentage(string id)
@@ -301,12 +293,12 @@ namespace WarTornLands.Counter
 
         public void OnCancel(object sender, CounterEventArgs e)
         {
-            if (e.ID.Equals(this._id) &&
-               (!this._active || e.Refresh))
+            if (e.ID.Equals(this._id))
             {
                 _elapsedTime = 0;
                 _term = _default;
                 _active = false;
+                _loop = false;
             }
         }
 
@@ -322,10 +314,12 @@ namespace WarTornLands.Counter
                     else
                         throw new CounterCalledWithoutTermException(e.ID);
                 }
-                else if (e.Term != -1) throw new CounterHasDefaultException(e.ID);
+                else 
+                    if (e.Term != -1) throw new CounterHasDefaultException(e.ID);
                 
 
                 _elapsedTime = 0;
+                _loop = e.Loop;
                 _active = true;
             }
         }
@@ -357,10 +351,11 @@ namespace WarTornLands.Counter
         internal bool   Refresh;
         internal bool   Loop;
 
-        public CounterEventArgs(float term, string id, bool refresh, Increment inc)
+        public CounterEventArgs(float term, string id, bool refresh, Increment inc, bool loop = false)
         {
             ID = id;
             Refresh = refresh;
+            Loop = false;
 
             switch (inc)
             {
@@ -382,23 +377,22 @@ namespace WarTornLands.Counter
             }
         }
 
-        public CounterEventArgs(int term, string id, bool refresh)
+        public CounterEventArgs(int term, string id, bool refresh, bool loop = false)
         {
             ID = id;
             Term = term;
             Refresh = refresh;
+            Loop = loop;
         }
 
-        public CounterEventArgs(string id, bool refresh)
+        public CounterEventArgs(string id, bool refresh, bool loop = false)
+            : this(-1, id, refresh, loop)
         {
-            ID = id;
-            Term = -1;
-            Refresh = refresh;
         }
 
-        public CounterEventArgs(string id)
+        public CounterEventArgs(string id, bool loop = false)
+            : this(-1, id, false, loop)
         {
-            ID = id;
         }
     }
 
