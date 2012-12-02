@@ -7,6 +7,6 @@ namespace WarTornLands.Infrastructure
 {
     class Constants
     {
-        public readonly static int TileSize = 64;
+        public readonly static int TileSize = 32;
     }
 }

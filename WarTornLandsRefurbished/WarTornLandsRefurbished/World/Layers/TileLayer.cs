@@ -53,16 +53,19 @@ namespace WarTornLands.World.Layers
             {
                 for (int x = 0; x < _grid.GetLength(0); ++x)
                 {
-                    game.SpriteBatch.Draw(
-                        _tileSetTexture,
-                        new Rectangle(x * Constants.TileSize - (int)center.X + (int)Math.Round(game.Window.ClientBounds.Width / 2.0f),
-                            y * Constants.TileSize - (int)center.Y + (int)Math.Round(game.Window.ClientBounds.Height / 2.0f),
-                            Constants.TileSize, Constants.TileSize),
-                        new Rectangle((_grid[x, y].TileNum % width) * Constants.TileSize,
-                        (_grid[x, y].TileNum / width) * Constants.TileSize,
-                        Constants.TileSize,
-                        Constants.TileSize),
-                        Color.White);
+                    if (_grid[x, y].TileNum != 0)
+                    {
+                        game.SpriteBatch.Draw(
+                            _tileSetTexture,
+                            new Rectangle(x * Constants.TileSize - (int)center.X + (int)Math.Round(game.Window.ClientBounds.Width / 2.0f),
+                                y * Constants.TileSize - (int)center.Y + (int)Math.Round(game.Window.ClientBounds.Height / 2.0f),
+                                Constants.TileSize, Constants.TileSize),
+                            new Rectangle(((_grid[x, y].TileNum - 1) % width) * Constants.TileSize,
+                            ((_grid[x, y].TileNum - 1) / width) * Constants.TileSize,
+                            Constants.TileSize,
+                            Constants.TileSize),
+                            Color.White);
+                    }
                 }
             }
 

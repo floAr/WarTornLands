@@ -40,6 +40,8 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
 
         public void Update(GameTime gameTime)
         {
+            _goTo.Update(gameTime);
+
             switch (_state)
             {
                 case RoamState.Idle:
@@ -83,6 +85,9 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
             Vector2 res = new Vector2((float)_rand.NextDouble(), (float)_rand.NextDouble());
             res.Normalize();
             res *= _radius;
+
+            if ((res - _anchor).LengthSquared() > _radius)
+                res = CreateTargetPosition();
 
             return res;
         }
