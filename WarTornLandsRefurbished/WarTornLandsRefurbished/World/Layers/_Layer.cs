@@ -9,12 +9,9 @@ namespace WarTornLands.World.Layers
 {
     public abstract class Layer : DrawableGameComponent
     {
-        protected Game _game;
-
-        public Layer(Game game, int depth)
-            : base(game)
+        public Layer(int depth)
+            : base(Game1.Instance)
         {
-            _game = game;
             DrawOrder = depth;
         }
 

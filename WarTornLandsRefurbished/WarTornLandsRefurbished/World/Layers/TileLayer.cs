@@ -28,8 +28,8 @@ namespace WarTornLands.World.Layers
         private Tile[,] _grid;
         private Texture2D _tileSetTexture;
 
-        public TileLayer(Game game, int depth)
-            : base(game, depth)
+        public TileLayer(int depth)
+            : base(depth)
         {
         }
 
@@ -38,12 +38,12 @@ namespace WarTornLands.World.Layers
             _isCollisionLayer = collide;
             _grid = grid;
             _isAnimated = isAnimated;
-            _tileSetTexture = _game.Content.Load<Texture2D>(tileSet);
+            _tileSetTexture = Game1.Instance.Content.Load<Texture2D>(tileSet);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            Game1 game = (_game as Game1);
+            Game1 game = Game1.Instance;
             Vector2 center = game.Player.Position;
             int width = (int)Math.Floor((double)_tileSetTexture.Width / Constants.TileSize);
 

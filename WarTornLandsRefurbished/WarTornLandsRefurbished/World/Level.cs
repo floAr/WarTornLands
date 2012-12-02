@@ -107,7 +107,7 @@ namespace WarTornLands.World
         {
             Area area1 = new Area(new Rectangle(0, 0, 10, 10));
 
-            TileLayer layer1 = new TileLayer(_game, 0);
+            TileLayer layer1 = new TileLayer(0);
             Tile[,] grid1 = new Tile[10, 10];
             for (int x = 0; x < 10; x++)
             {
@@ -123,7 +123,7 @@ namespace WarTornLands.World
             layer1.LoadGrid(grid1, false, "grass", false);
             area1.AddLayer(layer1);
 
-            TileLayer layer2 = new TileLayer(_game, 90);
+            TileLayer layer2 = new TileLayer(90);
             Tile[,] grid2 = new Tile[10, 10];
             for (int x = 0; x < 10; x++)
             {
@@ -143,7 +143,7 @@ namespace WarTornLands.World
             layer2.LoadGrid(grid2, false, "grass", true);
             area1.AddLayer(layer2);
 
-            EntityLayer layer3 = new EntityLayer(_game, 99);
+            EntityLayer layer3 = new EntityLayer(99);
             StaticDrawer sd = new StaticDrawer();
             sd.Texture = _game.Content.Load<Texture2D>("Schatztruhe");
             Entity staticTest = new Entity((_game as Game1), new Vector2(50, 50), "loch");
@@ -195,7 +195,7 @@ namespace WarTornLands.World
             Area cavernsArea= new Area(new Rectangle(0, 0, 56, 46));
 
             #region Add a floor layer
-            TileLayer floorLayer = new TileLayer(_game, 0);
+            TileLayer floorLayer = new TileLayer(0);
             Tile[,] floorGrid = new Tile[56, 46];
             
             // Set normal floor
@@ -213,7 +213,7 @@ namespace WarTornLands.World
             #endregion
 
             #region Add a wall layer
-            TileLayer wallLayer = new TileLayer(_game, 50);
+            TileLayer wallLayer = new TileLayer(50);
             Tile[,] wallGrid = new Tile[56, 46];
 
             // Set walls EVWERYWHERE!
@@ -252,7 +252,7 @@ namespace WarTornLands.World
             #endregion
 
             // Add entities
-            EntityLayer entityLayer = new EntityLayer(_game, 90);
+            EntityLayer entityLayer = new EntityLayer(90);
 
             // Herp door
             Entity door1 = new Entity((_game as Game1), new Vector2(31, 31) * Constants.TileSize);
@@ -272,10 +272,16 @@ namespace WarTornLands.World
             door2.AddModule(d2coll);
             entityLayer.AddEntity(door2);
 
+            // Add chest
             Entity chest = new Entity((_game as Game1), new Vector2(31, 35) * Constants.TileSize);
             StaticDrawer sd3 = new StaticDrawer();
             sd3.Texture = _game.Content.Load<Texture2D>("treasureChest");
             chest.AddModule(sd3);
+            List<Conversation> cons = new List<Conversation>();
+            Conversation con = new Conversation("1");
+            con.Add(new TextLine("It's empty."));
+            cons.Add(con);
+            chest.AddModule(new Dialog(cons, chest));
             entityLayer.AddEntity(chest);
 
             cavernsArea.AddLayer(entityLayer);
