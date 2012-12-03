@@ -138,7 +138,7 @@ namespace WarTornLands.World.Layers
                 foreach (Entity ent in buffer)
                 {
                     ent.Update(gameTime);
-                    if (ent.IsDead)
+                    if (ent.ToBeRemoved)
                         _entities.Remove(ent);
                 }
             //}

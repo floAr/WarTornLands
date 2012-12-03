@@ -52,7 +52,7 @@ namespace WarTornLands.Entities
         public bool CanSpeak { get; protected set; }
         public bool CanBeUsed { get; protected set; }
         public bool CanBePickedUp { get; protected set; }
-        public bool IsDead { get; set; }
+        public bool ToBeRemoved { get; set; }
         /////////////////
 
         // Counters ///

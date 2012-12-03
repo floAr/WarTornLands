@@ -129,6 +129,8 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
         public override void Trigger()
         {
             DialogManager.Instance.CallDialog(null);
+            (_owner.GetInteractModule() as Dialog).ShutDown();
+
             _owner.Health = 0;
         }
     }
@@ -144,7 +146,9 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
         public override void Trigger()
         {
             DialogManager.Instance.CallDialog(null);
-            _owner.IsDead = true;
+            (_owner.GetInteractModule() as Dialog).ShutDown();
+
+            _owner.ToBeRemoved = true;
         }
     }
 }

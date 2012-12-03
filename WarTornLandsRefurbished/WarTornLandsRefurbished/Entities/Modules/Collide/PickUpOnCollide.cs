@@ -40,17 +40,17 @@ namespace WarTornLands.Entities.Modules.Collide
         {
             if (_charges == 0)
             {
-                _owner.IsDead = true;
+                _owner.ToBeRemoved = true;
                 return true;
             }
-            if (!info.IsPlayer || _isOnCD || _owner.IsDead)
+            if (!info.IsPlayer || _isOnCD || _owner.ToBeRemoved)
                 return true;
 
             ((Player)info.Collider).GiveItem(_loot);
 
             if (_oneTime)
             {
-                _owner.IsDead = true;
+                _owner.ToBeRemoved = true;
             }
             else
             {
