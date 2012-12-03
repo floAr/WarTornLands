@@ -110,4 +110,32 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
                 (_owner.GetInteractModule() as Dialog).SetNewDefault(_newDefault, this.ConversationID);
         }
     }
+
+
+    class KillSpeaker : ConversationItem
+    {
+        public KillSpeaker() : base("If you can read this something went wrong")
+        {
+            // do nothing
+        }
+
+        public override void Trigger()
+        {
+            _owner.Health = 0;
+        }
+    }
+
+    class RemoveSpeaker : ConversationItem
+    {
+        public RemoveSpeaker()
+            : base("If you can read this something went wrong")
+        {
+            // do nothing
+        }
+
+        public override void Trigger()
+        {
+            _owner.IsDead = true;
+        }
+    }
 }

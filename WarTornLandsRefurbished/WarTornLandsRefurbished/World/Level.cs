@@ -19,6 +19,7 @@ using WarTornLands.Entities.Modules.Collide;
 using WarTornLands.Entities.Modules.Draw.ParticleSystem;
 using WarTornLands.Infrastructure.Systems.SkyLight;
 using WarTornLandsRefurbished.Entities.Modules.Think;
+using WarTornLands.PlayerClasses.Items;
 
 namespace WarTornLands.World
 {
@@ -307,12 +308,17 @@ namespace WarTornLands.World
 
             // Add chest
             Entity chest = new Entity((_game as Game1), new Vector2(31, 35) * Constants.TileSize);
+            chest.AddModule(new ReplaceByStatic("treasureChestLooted"));
             StaticDrawer sd3 = new StaticDrawer();
             sd3.Texture = _game.Content.Load<Texture2D>("treasureChest");
             chest.AddModule(sd3);
             List<Conversation> cons = new List<Conversation>();
             Conversation con = new Conversation("1");
-            con.Add(new TextLine("It's empty."));
+            Item key = new Item(ItemTypes.Schluessel);
+            List<Item> items = new List<Item>();
+            items.Add(key);
+            con.Add(new ItemContainer(items));
+            con.Add(new KillSpeaker());
             cons.Add(con);
             chest.AddModule(new Dialog(cons, chest));
             entityLayer.AddEntity(chest);
@@ -367,7 +373,7 @@ namespace WarTornLands.World
                     AlphaDecay = new Range(0.01f, 0.1f)
 
                 },
-        pL);
+            pL);
             StaticDrawer torchlight = new StaticDrawer();
             torchlight.IsLight = true;
 
