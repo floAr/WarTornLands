@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 using WarTornLands.Infrastructure;
+using Microsoft.Xna.Framework;
 
 namespace WarTornLands.PlayerClasses
 {
@@ -12,15 +14,26 @@ namespace WarTornLands.PlayerClasses
     {
        private static Inventory _inventory;
 
+       #region Drawvariablen
+
+       private double _standardheight = 480;
+       private double _standardwidth = 800;
+       private double _deltaheight;
+       private double _deltawidth;
+
+       private Texture2D _itempicture; 
+
+       #endregion
+
        #region Itemvariablen
 
        private short _anzahlaktuellerItemsimSpiel = 2;
 
        private short _anzahlpotions;
-       private short _maxpotions;
+       private short _maxpotions = 2;
 
        private short _anzahlschluessel;
-       private short _maxschluessel;
+       private short _maxschluessel = 2;
 
        private bool _getnormalhammer;       
        private bool _usenormalhammer;
@@ -86,12 +99,18 @@ namespace WarTornLands.PlayerClasses
        #endregion
        
        private Inventory()
-       { }
+       { 
+           _deltawidth = (Game1.Instance.Window.ClientBounds.Width / _standardwidth);
+           _deltaheight = (Game1.Instance.Window.ClientBounds.Height / _standardheight);
+           _itempicture = Game1.Instance.Content.Load<Texture2D>("Schatztruhe");
+       }
 
        public static Inventory GetInstance()
        {
            if (_inventory == null)
-               _inventory = new Inventory();
+           {
+               _inventory = new Inventory();               
+           }
 
            return _inventory;
        }
@@ -128,5 +147,32 @@ namespace WarTornLands.PlayerClasses
            }
 
         }
+
+
+       public void AktivMenue()
+       {
+
+       }
+
+       public void DrawMenue()
+       {
+           // Norden
+           Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)((400 * _deltawidth) - 30), (int)((240 * _deltaheight) - 30) - 120, 60, 60), Color.White);
+           //Nordosten
+           Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)((400 * _deltawidth) - 30) + 120, (int)((240 * _deltaheight) - 30) - 120, 60, 60), Color.White);
+           // Osten
+           Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)((400 * _deltawidth) - 30) + 120, (int)((240 * _deltaheight) - 30), 60, 60), Color.White);
+           //Südosten
+           Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)((400 * _deltawidth) - 30) + 120, (int)((240 * _deltaheight) - 30) + 120, 60, 60), Color.White);
+           // Süden4
+           Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)((400 * _deltawidth) - 30), (int)((240 * _deltaheight) - 30) + 120, 60, 60), Color.White);
+           //Südwesten
+           Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)((400 * _deltawidth) - 30) - 120, (int)((240 * _deltaheight) - 30) + 120, 60, 60), Color.White);
+           //Westen
+           Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)((400 * _deltawidth) - 30) - 120, (int)((240 * _deltaheight) - 30), 60, 60), Color.White);
+           //Nordwesten
+           Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)((400 * _deltawidth) - 30) - 120, (int)((240 * _deltaheight) - 30) - 120, 60, 60), Color.White);
+       }
+
     }
 }

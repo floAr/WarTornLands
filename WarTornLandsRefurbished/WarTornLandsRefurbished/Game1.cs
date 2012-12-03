@@ -32,6 +32,8 @@ namespace WarTornLands
         Entity dynamicTest;
 
         public Player Player { get; private set; }
+        //test für draw
+        public Inventory Inventory { get; private set; }
 
         //public Interface Interface { get; private set; }
         public Level Level { get; private set; }
@@ -70,6 +72,7 @@ namespace WarTornLands
             this.Components.Add(InputManager.Instance);
             Player = Player.Instance;
             Player.DrawOrder = 100;
+            Inventory = Inventory.GetInstance();
             this.Components.Add(Player);
             this.Components.Add(DialogManager.Instance);
 
@@ -168,11 +171,13 @@ namespace WarTornLands
             // Kapseln in eigene Klasse, für Menüs etc.
             SpriteBatch.Begin();
        
+
             particleTest.Draw(gameTime);
             staticTest.Draw(gameTime);
             particleTest.Draw(gameTime);
             base.Draw(gameTime);
 
+            Inventory.DrawMenue();
             SpriteBatch.End();
         }
 

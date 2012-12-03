@@ -57,5 +57,7 @@ namespace WarTornLands.PlayerClasses.Items
         {
             _itemtyp = itemtyp;
         }
+        
     }
+
 }
