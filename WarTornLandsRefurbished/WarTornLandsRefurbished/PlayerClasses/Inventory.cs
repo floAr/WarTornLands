@@ -5,47 +5,50 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using WarTornLands.Infrastructure;
 using Microsoft.Xna.Framework;
+using WarTornLands.PlayerClasses.Items;
 
 namespace WarTornLands.PlayerClasses
 {
-    
 
-   public class Inventory:DrawableGameComponent
+
+    public class Inventory : DrawableGameComponent
     {
-       #region Drawvariablen
+        #region Drawvariablen
 
-       private double _standardheight = 480;
-       private double _standardwidth = 800;
-       private double _deltaheight;
-       private double _deltawidth;
-       private int _radius;
+        private double _standardheight = 480;
+        private double _standardwidth = 800;
+        private double _deltaheight;
+        private double _deltawidth;
+        private int _radius;
 
-       private Texture2D _itempicture; 
+       private bool _inventoryisopen;
 
-       #endregion
+       private short _anzahlaktuellerItemsimSpiel;
 
-       #region Itemvariablen
+        #endregion
 
-       private short _anzahlaktuellerItemsimSpiel = 2;
+        #region Itemvariablen
 
-       private short _anzahlpotions;
-       private short _maxpotions = 2;
+        private short _anzahlaktuellerItemsimSpiel = 2;
 
-       private short _anzahlschluessel;
-       private short _maxschluessel = 2;
 
-       private bool _getnormalhammer;       
-       private bool _usenormalhammer;
+        private short _anzahlschluessel;
+        private short _maxschluessel = 2;
 
-       private bool _getkettenhammer;
-       private bool _usekettenhammer;
+        private bool _getnormalhammer;
+        private bool _usenormalhammer;
 
-       private bool _getholzschild;
-       private bool _useholzschild;
+        private bool _getkettenhammer;
+        private bool _usekettenhammer;
 
-       #endregion
+        private bool _getholzschild;
+        private bool _useholzschild;
 
-       #region GetterundSetter
+        private List<Item> _items;
+
+        #endregion
+
+        #region GetterundSetter
 
         public short GetPotions
         {
@@ -97,65 +100,101 @@ namespace WarTornLands.PlayerClasses
 
        #endregion
        
-       private Inventory():base(Game1.Instance as Game)
+       private Inventory()
        { 
            _deltawidth = (Game1.Instance.Window.ClientBounds.Width / _standardwidth);
            _deltaheight = (Game1.Instance.Window.ClientBounds.Height / _standardheight);
            _itempicture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
            _radius = 100;
+           _anzahlaktuellerItemsimSpiel = 8;
+           _inventoryisopen = false;
        }
 
+        public Inventory()
+            : base(Game1.Instance as Game)
+        {
+            _deltawidth = (Game1.Instance.Window.ClientBounds.Width / _standardwidth);
+            _deltaheight = (Game1.Instance.Window.ClientBounds.Height / _standardheight);
+            _itempicture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
+            _radius = 100;
 
-       public bool Insert(Items.Item item)
-       {
-           switch (item.Itemtyp)
-           {
-               case Items.ItemTypes.Potion:
-                   if (_anzahlpotions < _maxpotions)
-                   {
-                       _anzahlpotions++;
-                       return true;
-                   }
-                   else return false;
-               case Items.ItemTypes.Hammer:
-                   _getnormalhammer = true;
-                   return true;
-               case Items.ItemTypes.Kettenhammer:
-                   _getkettenhammer = true;
-                   return true;
-               case Items.ItemTypes.Holzschild:
-                   _getholzschild = true;
-                   return true;
-            /*   case Items.ItemTypes.Schluessel:
-                   if (_anzahlschluessel < _maxschluessel)
-                   {
-                       _anzahlschluessel++;
-                       return true;
-                   }
-                   else return false;   */             
-               default: 
-                   return false;
-           }
+            _items = new List<Item>();
+        }
+
+
+        public bool Insert(Items.Item item)
+        {
+            _items.Add(item);
+
+            switch (item.Itemtyp)
+            {
+                case Items.ItemTypes.Potion:
+                    if (_anzahlpotions < _maxpotions)
+                    {
+                        _anzahlpotions++;
+                        return true;
+                    }
+                    else return false;
+                case Items.ItemTypes.Hammer:
+                    _getnormalhammer = true;
+                    return true;
+                case Items.ItemTypes.Kettenhammer:
+                    _getkettenhammer = true;
+                    return true;
+                case Items.ItemTypes.Holzschild:
+                    _getholzschild = true;
+                    return true;
+                /*   case Items.ItemTypes.Schluessel:
+                       if (_anzahlschluessel < _maxschluessel)
+                       {
+                           _anzahlschluessel++;
+                           return true;
+                       }
+                       else return false;   */
+                default:
+                    return false;
+            }
 
         }
 
 
-       public void AktivMenue()
-       {
+        public void AktivMenue()
+        {
 
-       }
+        }
 
-       public override void Draw(GameTime gameTime)
-       {
-           for (double i = 0; i < 360; i += 360 / 8)
+        public override void Draw(GameTime gameTime)
+        {
+           double currentangle = MathHelper.PiOver2;
+           double incrementangle = MathHelper.TwoPi / _anzahlaktuellerItemsimSpiel;
+           for (double i = 0; i < _anzahlaktuellerItemsimSpiel; i++)
            {
-               Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)(((400 + _radius * Math.Cos(i)) * _deltawidth)), (int)(((240 + _radius * Math.Sin(i)) * _deltaheight)), 60, 60), Color.White);
+               Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.GetDrawModule().Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.GetDrawModule().Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltawidth), (int)(60 * _deltaheight)), Color.White);
+               currentangle -= incrementangle;
+
+               if (i == 0 || i == _anzahlaktuellerItemsimSpiel-1)
+               {
+
+               }
+               else
+               {
+                   Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * 0.125), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _anzahlaktuellerItemsimSpiel)), (int)(60 * _deltawidth), (int)(60 * _deltaheight)), Color.White);
+                   Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * (2*0.125)), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _anzahlaktuellerItemsimSpiel)), (int)(60 * _deltawidth), (int)(60 * _deltaheight)), Color.White);
+
+               }
+               
            } 
        }
 
-       internal bool HasKey(string _id)
-       {
-           throw new NotImplementedException();
-       }
+        internal bool HasKey(int _id)
+        {
+            foreach (Item i in _items)
+            {
+                if ((int)i.Itemtyp == _id)
+                    return true;
+            }
+
+            return false;
+        }
     }
 }

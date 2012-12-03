@@ -77,7 +77,7 @@ namespace WarTornLands
             this.Components.Add(InputManager.Instance);
             Player = Player.Instance;
             Player.DrawOrder = 100;
-            Player.Position = new Vector2(39* Constants.TileSize, 15 * Constants.TileSize);
+            Player.Position = new Vector2(15 * Constants.TileSize, 17  * Constants.TileSize);
             Inventory = Player.Inventory;
             this.Components.Add(Player);            this.Components.Add(DialogManager.Instance);
 
@@ -241,6 +241,9 @@ namespace WarTornLands
             SpriteBatch.Draw(_BackBuffer.LightMap, new Vector2(0, 0), new Color(255, 255, 255, 255));
             SpriteBatch.End();
 
+            //SpriteBatch.Begin();
+            //Inventory.DrawMenue();
+            //SpriteBatch.End();
         }
 
 

@@ -302,7 +302,7 @@ namespace WarTornLands.World
             StaticDrawer sd2 = new StaticDrawer();
             sd2.Texture = _game.Content.Load<Texture2D>("doorClosedBoss");
             door2.AddModule(sd2);
-            OpenDoorOnCollide d2coll = new OpenDoorOnCollide();
+            OpenDoorOnCollide d2coll = new OpenDoorOnCollide((int)ItemTypes.MasterKey);
             door2.AddModule(d2coll);
             entityLayer.AddEntity(door2);
 
@@ -314,7 +314,7 @@ namespace WarTornLands.World
             chest.AddModule(sd3);
             List<Conversation> cons = new List<Conversation>();
             Conversation con = new Conversation("1");
-            Item key = new Item(ItemTypes.KleinerSchluessel);
+            Item key = new Item(ItemTypes.MasterKey);
             List<Item> items = new List<Item>();
             items.Add(key);
             con.Add(new ItemContainer(items));

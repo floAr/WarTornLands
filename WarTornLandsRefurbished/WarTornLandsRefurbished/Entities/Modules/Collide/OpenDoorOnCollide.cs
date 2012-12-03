@@ -8,13 +8,13 @@ namespace WarTornLands.Entities.Modules.Collide
     class OpenDoorOnCollide : BaseModule, ICollideModule
     {
         private bool _locked;
-        private string _id;
+        private int _id;
 
         public OpenDoorOnCollide()
         {
             _locked=false;
         }
-        public OpenDoorOnCollide(String id)
+        public OpenDoorOnCollide(int id)
         {
             _id = id;
             _locked = true;

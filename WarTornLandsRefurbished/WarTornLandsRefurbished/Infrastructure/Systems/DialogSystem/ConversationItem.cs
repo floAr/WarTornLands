@@ -81,10 +81,17 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
         }
     }
 
+    interface IEndItem
+    {
+        /** Helper interface to mark conversation items that are accepted
+          * as the end of a conversation.
+          */
+    }
+
     /// <summary>
     /// Place this at the end of a conversation and the respective NPC will shut up until spoken to again.
     /// </summary>
-    class ComboBreaker : ConversationItem
+    class ComboBreaker : ConversationItem, IEndItem
     {
         /// <summary>
         /// The ID of the conversation that will start the next time the owning Entity is spoken to.
@@ -112,7 +119,7 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
     }
 
 
-    class KillSpeaker : ConversationItem
+    class KillSpeaker : ConversationItem, IEndItem
     {
         public KillSpeaker() : base("If you can read this something went wrong")
         {
@@ -121,11 +128,12 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
 
         public override void Trigger()
         {
+            DialogManager.Instance.CallDialog(null);
             _owner.Health = 0;
         }
     }
 
-    class RemoveSpeaker : ConversationItem
+    class RemoveSpeaker : ConversationItem, IEndItem
     {
         public RemoveSpeaker()
             : base("If you can read this something went wrong")
@@ -135,6 +143,7 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
 
         public override void Trigger()
         {
+            DialogManager.Instance.CallDialog(null);
             _owner.IsDead = true;
         }
     }

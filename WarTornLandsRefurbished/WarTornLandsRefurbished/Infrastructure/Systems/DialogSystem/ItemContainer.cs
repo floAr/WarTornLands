@@ -33,7 +33,13 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
 
         public override void Trigger()
         {
-            // Give items to the player
+            foreach (Item i in _items)
+            {
+                Game1.Instance.Player.GiveItem(i);
+            }
+
+            // Show message
+            base.Trigger();
         }
     }
 }
