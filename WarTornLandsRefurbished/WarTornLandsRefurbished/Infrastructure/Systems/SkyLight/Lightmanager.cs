@@ -64,7 +64,6 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
                     _counter = 0;
                 }
                 float a = _counter / _fractal;
-                Console.WriteLine(a);
                 _skyColor = Color.Lerp(_dayGradient[_currentColor], _dayGradient[_currentColor + 1], a);
                // _skyColor = _dayGradient[_currentColor];
             }

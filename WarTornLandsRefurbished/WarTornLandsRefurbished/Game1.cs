@@ -127,15 +127,11 @@ namespace WarTornLands
             _BackBuffer = new BackBuffer(GraphicsDevice, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
 
             List<Color> daylight = new List<Color>();
-            daylight.Add(Color.DarkBlue);
-            daylight.Add(Color.Blue);
-            daylight.Add(Color.PaleVioletRed);
-            daylight.Add(Color.OrangeRed);
-            daylight.Add(Color.LightSkyBlue);
-            daylight.Add(Color.White);
-            daylight.Add(Color.PaleVioletRed);
-            daylight.Add(Color.Blue);
-            daylight.Add(Color.DarkBlue);
+            daylight.Add(new Color(30,30,80));
+            daylight.Add(new Color(30, 30, 70));
+            daylight.Add(new Color(30, 20, 70));
+            daylight.Add(new Color(20, 30, 75));
+            daylight.Add(new Color(25, 25, 80));
 
             Lightmanager.SetDayCycle(daylight, 18000);
 

@@ -322,9 +322,28 @@ namespace WarTornLands.World
             Entity boss = new Entity((_game as Game1), new Vector2(39, 15) * Constants.TileSize);
             boss.AddModule(new ThinkRoamAround(boss, new Vector2(39, 15) * Constants.TileSize, 100));
             //entityLayer.AddEntity(boss);
+            //burp torch
+         
+            for (int i = 0; i < 5; ++i)
+            {
+                AnimatedDrawer body = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("torch_model"));
+                Animation simpleflicker = new Animation("flicker");
+                simpleflicker.AddFrame(new Rectangle(0, 0, 32, 32));
+                simpleflicker.AddFrame(new Rectangle(32, 0, 32, 32));
+                body.AddAnimation(simpleflicker);
+                body.SetCurrentAnimation("flicker");
+                AnimatedDrawer light = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("torch_light"));
+                light.AddAnimation(simpleflicker);
+                light.SetCurrentAnimation("flicker");
+                light.IsLight = true;
+                Entity newTorch = new Entity(Game1.Instance, new Vector2(24, 27) * Constants.TileSize+new Vector2(100*i,0), "torchi");
+                newTorch.AddModule(new DualDraw(body, light));
+                Lightmanager.AddLight(newTorch);
+                entityLayer.AddEntity(newTorch);
+            }
 
 
-            //torch
+            //fire
             List<Texture2D> pL = new List<Texture2D>();
             pL.Add(Game1.Instance.Content.Load<Texture2D>("flame3"));
             Entity torch = new Entity(Game1.Instance, new Vector2(29, 32) * Constants.TileSize, "torch");
