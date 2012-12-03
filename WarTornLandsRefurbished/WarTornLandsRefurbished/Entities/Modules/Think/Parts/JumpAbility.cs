@@ -60,6 +60,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
             _cm = owner.CM;
             _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
+            _cm.AddCounter(_cJump);
 
             _owner = owner;
         }
