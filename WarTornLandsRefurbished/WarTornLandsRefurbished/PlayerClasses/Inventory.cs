@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using WarTornLands.Infrastructure;
 using Microsoft.Xna.Framework;
+using WarTornLands.PlayerClasses.Items;
 
 namespace WarTornLands.PlayerClasses
 {
@@ -42,6 +43,8 @@ namespace WarTornLands.PlayerClasses
 
         private bool _getholzschild;
         private bool _useholzschild;
+
+        private List<Item> _items;
 
         #endregion
 
@@ -104,11 +107,15 @@ namespace WarTornLands.PlayerClasses
             _deltaheight = (Game1.Instance.Window.ClientBounds.Height / _standardheight);
             _itempicture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
             _radius = 100;
+
+            _items = new List<Item>();
         }
 
 
         public bool Insert(Items.Item item)
         {
+            _items.Add(item);
+
             switch (item.Itemtyp)
             {
                 case Items.ItemTypes.Potion:
@@ -154,9 +161,15 @@ namespace WarTornLands.PlayerClasses
             }
         }
 
-        internal bool HasKey(string _id)
+        internal bool HasKey(int _id)
         {
-            throw new NotImplementedException();
+            foreach (Item i in _items)
+            {
+                if ((int)i.Itemtyp == _id)
+                    return true;
+            }
+
+            return false;
         }
     }
 }
