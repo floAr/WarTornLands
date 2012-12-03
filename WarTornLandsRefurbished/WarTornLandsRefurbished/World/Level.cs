@@ -217,11 +217,11 @@ namespace WarTornLands.World
         public void LoadChristmasCaverns()
         {
             // Floor tiles
-            const int STONE_FLOOR = 49;
+            const int STONE_FLOOR = 33; //was 49
             const int BOSS_FLOOR = 43;
 
             // Wall tiles
-            const int STONE_WALL = 28;
+            const int STONE_WALL = 28;//was 28
 
             // Create an empty area in the right size
             Area cavernsArea= new Area(new Rectangle(0, 0, 56, 46));
@@ -409,7 +409,28 @@ namespace WarTornLands.World
             entityLayer.AddEntity(torch2);
             Lightmanager.AddLight(torch2);
             //endtorch
+            //fungus
+            StaticDrawer fungusS = new StaticDrawer();
+            fungusS.Texture = Game1.Instance.Content.Load<Texture2D>("fungus");
+            AnimatedDrawer fungusGlow = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("fungus_light"));
+            Animation glow = new Animation("glow");
+            glow.AddFrame(new Rectangle(64, 0, 64, 64));
+            glow.AddFrame(new Rectangle(64, 0, 64, 64));
+            glow.AddFrame(new Rectangle(64, 0, 64, 64));
+            glow.AddFrame(new Rectangle(64, 0, 64, 64));
+            glow.AddFrame(new Rectangle(64, 0, 64, 64));
+            glow.AddFrame(new Rectangle(0, 0, 64, 64));
+            glow.AddFrame(new Rectangle(0, 0, 64, 64));
+            fungusGlow.AddAnimation(glow);
+            fungusGlow.SetCurrentAnimation("glow");
+            fungusGlow.IsLight = true;
+            Entity fungus = new Entity(Game1.Instance, new Vector2(15, 15) * Constants.TileSize, "fungus");
+            fungus.AddModule(new DualDraw(fungusS, fungusGlow));
+            
+            entityLayer.AddEntity(fungus);
+            Lightmanager.AddLight(fungus);
 
+            //endfungus
             // Add area to level
             AddArea("ChristmasCaverns", cavernsArea);
         }
