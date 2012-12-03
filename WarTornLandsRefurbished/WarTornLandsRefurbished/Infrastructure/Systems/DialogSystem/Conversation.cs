@@ -41,7 +41,7 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
             {
                 if(_lines[_lines.Count - 1] is Options)
                     throw new ConversationAlreadyFinalisedException(this.ID, true);
-                if(_lines[_lines.Count - 1] is ComboBreaker)
+                if(_lines[_lines.Count - 1] is IEndItem)
                     throw new ConversationAlreadyFinalisedException(this.ID, false);
             }
 

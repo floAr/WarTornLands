@@ -246,8 +246,8 @@ namespace WarTornLands.Entities
                 _mInteractModule.Update(gameTime);
             if (_mThinkModule != null)
                 _mThinkModule.Update(gameTime);
-            if (_mDieModule != null)
-                _mDieModule.Update(gameTime);
+            if (_mDieModule != null && Health <= 0)
+                _mDieModule.Die();
             if (_mDrawModule != null)
             {
                 _mDrawModule.Update(gameTime);
@@ -300,6 +300,15 @@ namespace WarTornLands.Entities
                 CollideInformation info = new CollideInformation() { Collider = source, IsPlayer = source is Player };
                 _mCollideModule.OnCollide(info);
             }
+        }
+
+        internal void RemoveAllModules()
+        {
+            _mCollideModule = null;
+            _mInteractModule = null;
+            _mThinkModule = null;
+            _mDieModule = null;
+            _mDrawModule = null;
         }
     }
 }

@@ -2,131 +2,197 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 using WarTornLands.Infrastructure;
+using Microsoft.Xna.Framework;
+using WarTornLands.PlayerClasses.Items;
 
 namespace WarTornLands.PlayerClasses
 {
-    
 
-   public class Inventory
+
+    public class Inventory : DrawableGameComponent
     {
-       private static Inventory _inventory;
+        #region Drawvariablen
 
-       #region Itemvariablen
+        private double _standardHeight = 480;
+        private double _standardWidth = 800;
+        private double _deltaHeight;
+        private double _deltaWidth;
+        private int _radius;
 
-       private short _anzahlaktuellerItemsimSpiel = 2;
+       private bool _inventoryIsOpen;
 
-       private short _anzahlpotions;
-       private short _maxpotions;
+       private Texture2D _itemPicture;
 
-       private short _anzahlschluessel;
-       private short _maxschluessel;
+       private short _totalItemCount;
 
-       private bool _getnormalhammer;       
-       private bool _usenormalhammer;
+        #endregion
 
-       private bool _getkettenhammer;
-       private bool _usekettenhammer;
+        #region Itemvariablen
 
-       private bool _getholzschild;
-       private bool _useholzschild;
+       private short _countPotions;
+       private short _maxPotions;
 
-       #endregion
+        private short _countKeys;
+        private short _maxKeys;
 
-       #region GetterundSetter
+        private bool _hasNormalHammer;
+        private bool _useNormalHammer;
+
+        private bool _hasChainHammer;
+        private bool _useChainHammer;
+
+        private bool _hasWoodenShield;
+        private bool _useWoodenShield;
+
+        private List<Item> _items;
+
+        #endregion
+
+        #region GetterundSetter
 
         public short GetPotions
         {
-            get { return _anzahlpotions; }
-            set { _anzahlpotions = value; }
+            get { return _countPotions; }
+            set { _countPotions = value; }
         }
 
         public short GetSchluessel
         {
-            get { return _anzahlschluessel; }
-            set { _anzahlschluessel = value; }
+            get { return _countKeys; }
+            set { _countKeys = value; }
         }
 
         public bool GetNormalhammer
         {
-            get { return _getnormalhammer; }
-            set { _getnormalhammer = value; }
+            get { return _hasNormalHammer; }
+            set { _hasNormalHammer = value; }
         }
 
         public bool GetHolzschild
         {
-            get { return _getholzschild; }
-            set { _getholzschild = value; }
+            get { return _hasWoodenShield; }
+            set { _hasWoodenShield = value; }
         }
 
         public bool UseHolzschild
         {
-            get { return _useholzschild; }
-            set { _useholzschild = value; }
+            get { return _useWoodenShield; }
+            set { _useWoodenShield = value; }
         }
 
         public bool UseNormalhammer
         {
-            get { return _usenormalhammer; }
-            set { _usenormalhammer = value; }
+            get { return _useNormalHammer; }
+            set { _useNormalHammer = value; }
         }
 
         public bool UseKettenhammer
         {
-            get { return _usekettenhammer; }
-            set { _usekettenhammer = value; }
+            get { return _useChainHammer; }
+            set { _useChainHammer = value; }
         }
 
         public bool GetKettenhammer
         {
-            get { return _getkettenhammer; }
-            set { _getkettenhammer = value; }
+            get { return _hasChainHammer; }
+            set { _hasChainHammer = value; }
         }
 
        #endregion
-       
-       private Inventory()
-       { }
 
-       public static Inventory GetInstance()
-       {
-           if (_inventory == null)
-               _inventory = new Inventory();
+        public Inventory()
+            : base(Game1.Instance as Game)
+        {
+            _deltaWidth = (Game1.Instance.Window.ClientBounds.Width / _standardWidth);
+            _deltaHeight = (Game1.Instance.Window.ClientBounds.Height / _standardHeight);
+            _itemPicture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
+            _radius = 100;
+            _totalItemCount = 8;
+            _inventoryIsOpen = false;
+            _maxPotions = 5;
+            _maxKeys = 2;
 
-           return _inventory;
+            _items = new List<Item>();
+        }
+
+
+        public bool Insert(Items.Item item)
+        {
+            _items.Add(item);
+
+            switch (item.ItemType)
+            {
+                case Items.ItemTypes.Potion:
+                    if (_countPotions < _maxPotions)
+                    {
+                        _countPotions++;
+                        return true;
+                    }
+                    else return false;
+                case Items.ItemTypes.Hammer:
+                    _hasNormalHammer = true;
+                    return true;
+                case Items.ItemTypes.ChainHammer:
+                    _hasChainHammer = true;
+                    return true;
+                case Items.ItemTypes.WoodenShield:
+                    _hasWoodenShield = true;
+                    return true;
+                /*   case Items.ItemTypes.Schluessel:
+                       if (_anzahlschluessel < _maxschluessel)
+                       {
+                           _anzahlschluessel++;
+                           return true;
+                       }
+                       else return false;   */
+                default:
+                    return false;
+            }
+
+        }
+
+
+        public void AktivMenue()
+        {
+
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+           double currentangle = MathHelper.PiOver2;
+           double incrementangle = MathHelper.TwoPi / _totalItemCount;
+           for (double i = 0; i < _totalItemCount; i++)
+           {
+               Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.GetDrawModule().Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.GetDrawModule().Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
+               currentangle -= incrementangle;
+
+               if (i == 0 || i == _totalItemCount-1)
+               {
+
+               }
+               else
+               {
+                   Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * 0.125), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
+                   Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * (2*0.125)), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
+
+               }
+               
+           } 
        }
 
-       public bool Insert(Items.Item item)
-       {
-           switch (item.Itemtyp)
-           {
-               case Items.ItemTypes.Potion:
-                   if (_anzahlpotions < _maxpotions)
-                   {
-                       _anzahlpotions++;
-                       return true;
-                   }
-                   else return false;
-               case Items.ItemTypes.Hammer:
-                   _getnormalhammer = true;
-                   return true;
-               case Items.ItemTypes.Kettenhammer:
-                   _getkettenhammer = true;
-                   return true;
-               case Items.ItemTypes.Holzschild:
-                   _getholzschild = true;
-                   return true;
-               case Items.ItemTypes.Schluessel:
-                   if (_anzahlschluessel < _maxschluessel)
-                   {
-                       _anzahlschluessel++;
-                       return true;
-                   }
-                   else return false;                
-               default: 
-                   return false;
-           }
+        internal bool HasKey(int _id)
+        {
+            // TODO change :-)
 
+            foreach (Item i in _items)
+            {
+                if ((int)i.ItemType == _id)
+                    return true;
+            }
+
+            return false;
         }
     }
 }

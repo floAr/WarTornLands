@@ -26,36 +26,58 @@ namespace WarTornLands.PlayerClasses.Items
          * sonstiges
          * 501 - 600
          */
-        // Stellt eine bestimmte menge an Lebenspunkten wieder her. Noch zu spezifizieren
+
+        // Restore a fixed number of health points. TODO specify number
         Potion = 0,
 
-        // Standard hammer der von begin an verfügbar ist.
+        // Standard hammer the player has from the beginning
         Hammer = 101,
 
-        // Hammer der mit einer Kette verbunden ist, hat Reichweite aber weniger schaden als Hammer. Kann benutzt werden um sich über abgründe zu ziehen.
-        Kettenhammer = 102,
+        // Hammer with a chain. Ranged, but less damage
+        // Can be used to get over chasms
+        ChainHammer = 102,
 
-        // Standardholzschild, kann angriffe ablenken
-        Holzschild = 201,
+        // Standard wooden shield, can block attacks
+        WoodenShield = 201,
 
-        // Schlüssel zum öffnen von Dungeontüren
-        Schluessel = 401
+        // Key to open standard dungeon doors
+        SmallKey = 401,
+
+        // Key to open the dungeon boss door
+        MasterKey = 402
     }
 
     public class Item
     {
         public string Name { get; private set; }
-        private ItemTypes _itemtyp;
+        private ItemTypes _itemType;
 
-        public ItemTypes Itemtyp
+        public ItemTypes ItemType
         {
-            get { return _itemtyp; }
-            set { _itemtyp = value; }
+            get { return _itemType; }
+            set { _itemType = value; }
         }
 
-        public Item(ItemTypes itemtyp)
+        public Item(ItemTypes itemType)
         {
-            _itemtyp = itemtyp;
+            _itemType = itemType;
+
+            if (ItemTypes.SmallKey == itemType)
+            {
+                Name = "Kleiner Schluessel";
+            }
+
+            if (ItemTypes.MasterKey == itemType)
+            {
+                Name = "Riesenschluessel";
+            }
+        }
+
+        public Item(ItemTypes itemtyp, string name)
+        {
+            _itemType = itemtyp;
+            Name = name;
         }
     }
+
 }

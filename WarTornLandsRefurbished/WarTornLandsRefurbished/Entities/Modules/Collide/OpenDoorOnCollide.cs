@@ -7,11 +7,40 @@ namespace WarTornLands.Entities.Modules.Collide
 {
     class OpenDoorOnCollide : BaseModule, ICollideModule
     {
+        private bool _locked;
+        private int _id;
+
+        public OpenDoorOnCollide()
+        {
+            _locked=false;
+        }
+        public OpenDoorOnCollide(int id)
+        {
+            _id = id;
+            _locked = true;
+        }
         public bool OnCollide(CollideInformation info)
         {
             // TODO open only if player has key!
-            _owner.IsDead = true;
-            return true;
+            if (_locked)
+            {
+                if (Game1.Instance.Player.Inventory.HasKey(_id))
+                {
+                    _owner.IsDead = true;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+
+            }
+            else
+            {
+                _owner.IsDead = true;
+                return true;
+            }
         }
     }
 }

@@ -1,22 +1,15 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using WarTornLands.PlayerClasses;
-using WarTornLands.Infrastructure;
-using WarTornLands.Infrastructure.Systems;
-using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities;
 using WarTornLands.Entities.Modules.Die;
+using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities.Modules.Draw.ParticleSystem;
-using WarTornLands.World;
+using WarTornLands.Infrastructure;
 using WarTornLands.Infrastructure.Systems.SkyLight;
+using WarTornLands.PlayerClasses;
+using WarTornLands.World;
 
 namespace WarTornLands
 {
@@ -35,6 +28,8 @@ namespace WarTornLands
         public bool DrawingLights { get { return _drawLights; } set { _drawLights = value; } }
 
         public Player Player { get; private set; }
+        //test für draw
+        public Inventory Inventory { get; private set; }
 
         //public Interface Interface { get; private set; }
         public Level Level { get; private set; }
@@ -75,9 +70,9 @@ namespace WarTornLands
             this.Components.Add(InputManager.Instance);
             Player = Player.Instance;
             Player.DrawOrder = 100;
-            Player.Position = new Vector2(39* Constants.TileSize, 15 * Constants.TileSize);
-            this.Components.Add(Player);
-            this.Components.Add(DialogManager.Instance);
+            Player.Position = new Vector2(14 * Constants.TileSize, 19  * Constants.TileSize);
+            Inventory = Player.Inventory;
+            this.Components.Add(Player);            this.Components.Add(DialogManager.Instance);
 
             base.Initialize();
         }
@@ -187,6 +182,7 @@ namespace WarTornLands
             // Kapseln in eigene Klasse, für Menüs etc.
             SpriteBatch.Begin();
        
+
             particleTest.Draw(gameTime);
             staticTest.Draw(gameTime);
             particleTest.Draw(gameTime);
@@ -227,8 +223,11 @@ namespace WarTornLands
             //set back normal target and draw game
             GraphicsDevice.SetRenderTarget(null);
             SpriteBatch.Begin();
+
             base.Draw(gameTime);
+
             SpriteBatch.End();
+       
 
             //add lights
             SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);

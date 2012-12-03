@@ -38,6 +38,7 @@ namespace WarTornLands.Infrastructure
         public Key Jump { get; private set; }
         public Key Interact { get; private set; }
         public Key UsePotion { get; private set; }
+        public Key Inventory { get; private set; }
 
         public DirectionInput Move { get; private set; }
         /////////////////
@@ -58,6 +59,8 @@ namespace WarTornLands.Infrastructure
             Interact.SetActivator(KeyboardDefault_Interact);
             UsePotion = new Key();
             UsePotion.SetActivator(KeyboardDefault_UsePotion);
+            Inventory = new Key();
+            Inventory.SetActivator(Keys.I);
 
             Move = new DirectionInput();
             Move.SetActivator(KeyboardDefault_Move);
@@ -68,6 +71,7 @@ namespace WarTornLands.Infrastructure
             _inputList.Add(Interact);
             _inputList.Add(UsePotion);
             _inputList.Add(Move);
+            _inputList.Add(Inventory);
 
             foreach (InputKey ik in _inputList)
             {
