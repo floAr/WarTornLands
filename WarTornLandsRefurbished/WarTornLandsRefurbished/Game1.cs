@@ -16,7 +16,7 @@ using WarTornLands.Entities;
 using WarTornLands.Entities.Modules.Die;
 using WarTornLands.Entities.Modules.Draw.ParticleSystem;
 using WarTornLands.World;
-using WarTornLands.Infrastructure.Systems.SkyLight; 
+using WarTornLands.Infrastructure.Systems.SkyLight;
 
 namespace WarTornLands
 {
@@ -41,7 +41,7 @@ namespace WarTornLands
 
         private BackBuffer _BackBuffer;
 
-        private  static Game1 _instance = new Game1();
+        private static Game1 _instance = new Game1();
 
         public static Game1 Instance
         {
@@ -95,7 +95,7 @@ namespace WarTornLands
             Catalog.Instance.SetupTestCatalog();
 
             StaticDrawer sd = new StaticDrawer();
-            
+
 
             sd.Texture = Content.Load<Texture2D>("blackhole");
 
@@ -103,9 +103,9 @@ namespace WarTornLands
             staticTest.AddModule(sd);
             staticTest.AddModule(new ExplodeAndLoot(new PlayerClasses.Items.Item(PlayerClasses.Items.ItemTypes.Potion)));
             staticTest.Health = 100;
-            List<Texture2D> pL= new List<Texture2D>();
+            List<Texture2D> pL = new List<Texture2D>();
             pL.Add(Content.Load<Texture2D>("flame3"));
-            particleTest = new Entity(this, new Vector2(150,300));
+            particleTest = new Entity(this, new Vector2(150, 300));
             ParticleSystem pSystem = new ParticleSystem(
                 new EmitterSetting()
                 {
@@ -117,15 +117,29 @@ namespace WarTornLands
                     Size = new Range() { Min = 0.1f, Max = 0.3f },
                     SpeedX = new Range() { Min = -1, Max = 1 },
                     SpeedY = new Range() { Min = -1, Max = -3 },
-                    Alpha=new Range(1),
-                    AlphaDecay=new Range(0.01f,0.1f)
-                    
+                    Alpha = new Range(1),
+                    AlphaDecay = new Range(0.01f, 0.1f)
+
                 },
         pL);
             particleTest.AddModule(pSystem);
 
             _BackBuffer = new BackBuffer(GraphicsDevice, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
 
+            List<Color> daylight = new List<Color>();
+            daylight.Add(Color.DarkBlue);
+            daylight.Add(Color.Blue);
+            daylight.Add(Color.PaleVioletRed);
+            daylight.Add(Color.OrangeRed);
+            daylight.Add(Color.LightSkyBlue);
+            daylight.Add(Color.White);
+            daylight.Add(Color.PaleVioletRed);
+            daylight.Add(Color.Blue);
+            daylight.Add(Color.DarkBlue);
+
+            Lightmanager.SetDayCycle(daylight, 18000);
+
+            //  Lightmanager.SetStaticColor(new Color(15,15,30));
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
 
@@ -183,8 +197,8 @@ namespace WarTornLands
             base.Draw(gameTime);
 
             SpriteBatch.End();*/
-            if(foreward)
-            drawcounter += gameTime.ElapsedGameTime.Milliseconds;
+            if (foreward)
+                drawcounter += gameTime.ElapsedGameTime.Milliseconds;
             else
                 drawcounter -= gameTime.ElapsedGameTime.Milliseconds;
             if (drawcounter <= 0)
@@ -196,7 +210,7 @@ namespace WarTornLands
             {
                 foreward = false;
             }
-            Color fill = new Color(drawcounter / 100, drawcounter / 100, drawcounter / 100 );
+            Color fill = new Color(drawcounter / 100, drawcounter / 100, drawcounter / 100);
 
             DrawingLights = true;
             // Set the render target
@@ -205,7 +219,6 @@ namespace WarTornLands
             GraphicsDevice.Clear(new Color(150, 150, 150)); //Set the Background of the SourceMap to Black (Important!)
 
             SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.Add);
-            SpriteBatch.Draw(Content.Load<Texture2D>("light"), new Rectangle(-20, -20, _graphics.PreferredBackBufferWidth + 40, _graphics.PreferredBackBufferHeight + 20), fill);
             Lightmanager.Draw(gameTime);
             SpriteBatch.End();
 
@@ -224,11 +237,11 @@ namespace WarTornLands
             //add lights
             SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);
             SpriteBatch.Draw(_BackBuffer.LightMap, new Vector2(0, 0), new Color(255, 255, 255, 255));
-            SpriteBatch.End(); 
+            SpriteBatch.End();
 
         }
 
-                   
+
 
     }
 }
