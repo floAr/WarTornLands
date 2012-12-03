@@ -75,13 +75,15 @@
   <ItemGroup>
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Modules\BaseModule.cs" />
+    <Compile Include="Entities\Modules\Collide\Obstacle.cs" />
     <Compile Include="Entities\Modules\Collide\OpenDoorOnCollide.cs" />
     <Compile Include="Entities\Modules\Collide\PickUpOnCollide.cs" />
     <Compile Include="Entities\Modules\Collide\_ICollideModule.cs" />
     <Compile Include="Entities\Modules\Die\ExplodeAndLoot.cs" />
+    <Compile Include="Entities\Modules\Die\ReplaceByStatic.cs" />
     <Compile Include="Entities\Modules\Die\_IDieModule.cs" />
     <Compile Include="Entities\Modules\Draw\DualDraw.cs" />
-    <Compile Include="Entities\Modules\Draw\ParticleSystem\Particle.cs" />
+    <Compile Include="Entities\Modules\Draw\Particle.cs" />
     <Compile Include="Entities\Modules\Draw\ParticleSystem\ParticleEngine.cs" />
     <Compile Include="Entities\Modules\Interact\Dialog.cs" />
     <Compile Include="Entities\Modules\Interact\_IInteractModule.cs" />

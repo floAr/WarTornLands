@@ -77,8 +77,8 @@ namespace WarTornLands
             this.Components.Add(InputManager.Instance);
             Player = Player.Instance;
             Player.DrawOrder = 100;
-            Player.Position = new Vector2(39* Constants.TileSize, 15 * Constants.TileSize);
-            //Inventory = Inventory.GetInstance();
+            Player.Position = new Vector2(15 * Constants.TileSize, 17  * Constants.TileSize);
+            Inventory = Player.Inventory;
             this.Components.Add(Player);            this.Components.Add(DialogManager.Instance);
 
             base.Initialize();
@@ -230,8 +230,11 @@ namespace WarTornLands
             //set back normal target and draw game
             GraphicsDevice.SetRenderTarget(null);
             SpriteBatch.Begin();
-            base.Draw(gameTime); 
+
+            base.Draw(gameTime);
+
             SpriteBatch.End();
+       
 
             //add lights
             SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);

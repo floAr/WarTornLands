@@ -9,6 +9,6 @@ namespace WarTornLands.Entities.Modules.Die
 {
     public interface IDieModule
     {
-        void Update(GameTime gameTime);
+        void Die();
     }
 }

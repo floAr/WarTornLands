@@ -17,7 +17,7 @@ namespace WarTornLands.PlayerClasses
     public class Player : Entity
     {
         private static Player _instance;
-
+        private Inventory _inventory;
         public static Player Instance
         {
             get
@@ -29,12 +29,17 @@ namespace WarTornLands.PlayerClasses
             }
         }
 
+        public Inventory Inventory
+        {
+            get { return _inventory; }
+        }
+
         private Player(Game1 game)
             : base(game, new Vector2(0, 0),  "Player")
         {
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
-
-           this.AddModule(new ThinkInputGuided(this));
+            _inventory = new Inventory();
+            this.AddModule(new ThinkInputGuided(this));
         }
 
         protected override void LoadContent()
@@ -88,9 +93,9 @@ namespace WarTornLands.PlayerClasses
 
         #endregion
 
-        internal void GiveItem(Items.Item _loot)
+        internal void GiveItem(Items.Item loot)
         {
-            throw new NotImplementedException();
+            _inventory.Insert(loot);
         }
     }
 }

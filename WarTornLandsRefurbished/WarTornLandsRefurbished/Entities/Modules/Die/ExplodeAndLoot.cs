@@ -8,7 +8,7 @@ using WarTornLands.Entities.Modules.Collide;
 
 namespace WarTornLands.Entities.Modules.Die
 {
-    public class ExplodeAndLoot:BaseModule, IDieModule
+    public class ExplodeAndLoot : BaseModule, IDieModule
     {
         private PickUpOnCollide _pick;
         private AnimatedDrawer _explosion;
@@ -18,13 +18,11 @@ namespace WarTornLands.Entities.Modules.Die
             _pick = new PickUpOnCollide(loot);
             _explosion = AnimatedDrawer.Explosion;
         }
-        public void Update(Microsoft.Xna.Framework.GameTime gameTime)
+
+        public void Die()
         {
-            if (_owner.Health <= 0)
-            {
-                _owner.AddModule(_explosion);
-                _owner.AddModule(_pick);
-            }
+            _owner.AddModule(_explosion);
+            _owner.AddModule(_pick);
         }
     }
 }

@@ -5,51 +5,50 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using WarTornLands.Infrastructure;
 using Microsoft.Xna.Framework;
+using WarTornLands.PlayerClasses.Items;
 
 namespace WarTornLands.PlayerClasses
 {
-    
 
-   public class Inventory
+
+    public class Inventory : DrawableGameComponent
     {
-       private static Inventory _inventory;
+        #region Drawvariablen
 
-       #region Drawvariablen
+        private double _standardheight = 480;
+        private double _standardwidth = 800;
+        private double _deltaheight;
+        private double _deltawidth;
+        private int _radius;
 
        private bool _inventoryisopen;
 
-       private double _standardheight = 480;
-       private double _standardwidth = 800;
-       private double _deltaheight;
-       private double _deltawidth;
-       private int _radius;
        private short _anzahlaktuellerItemsimSpiel;
 
-       private Texture2D _itempicture; 
+        #endregion
 
-       #endregion
+        #region Itemvariablen
 
-       #region Itemvariablen
+        private short _anzahlaktuellerItemsimSpiel = 2;
 
 
-       private short _anzahlpotions;
-       private short _maxpotions = 2;
+        private short _anzahlschluessel;
+        private short _maxschluessel = 2;
 
-       private short _anzahlschluessel;
-       private short _maxschluessel = 2;
+        private bool _getnormalhammer;
+        private bool _usenormalhammer;
 
-       private bool _getnormalhammer;       
-       private bool _usenormalhammer;
+        private bool _getkettenhammer;
+        private bool _usekettenhammer;
 
-       private bool _getkettenhammer;
-       private bool _usekettenhammer;
+        private bool _getholzschild;
+        private bool _useholzschild;
 
-       private bool _getholzschild;
-       private bool _useholzschild;
+        private List<Item> _items;
 
-       #endregion
+        #endregion
 
-       #region GetterundSetter
+        #region GetterundSetter
 
         public short GetPotions
         {
@@ -111,57 +110,61 @@ namespace WarTornLands.PlayerClasses
            _inventoryisopen = false;
        }
 
-       public static Inventory GetInstance()
-       {
-           if (_inventory == null)
-           {
-               _inventory = new Inventory();               
-           }
+        public Inventory()
+            : base(Game1.Instance as Game)
+        {
+            _deltawidth = (Game1.Instance.Window.ClientBounds.Width / _standardwidth);
+            _deltaheight = (Game1.Instance.Window.ClientBounds.Height / _standardheight);
+            _itempicture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
+            _radius = 100;
 
-           return _inventory;
-       }
+            _items = new List<Item>();
+        }
 
-       public bool Insert(Items.Item item)
-       {
-           switch (item.Itemtyp)
-           {
-               case Items.ItemTypes.Potion:
-                   if (_anzahlpotions < _maxpotions)
-                   {
-                       _anzahlpotions++;
-                       return true;
-                   }
-                   else return false;
-               case Items.ItemTypes.Hammer:
-                   _getnormalhammer = true;
-                   return true;
-               case Items.ItemTypes.Kettenhammer:
-                   _getkettenhammer = true;
-                   return true;
-               case Items.ItemTypes.Holzschild:
-                   _getholzschild = true;
-                   return true;
-               case Items.ItemTypes.KleinerSchluessel:
-                   if (_anzahlschluessel < _maxschluessel)
-                   {
-                       _anzahlschluessel++;
-                       return true;
-                   }
-                   else return false;                
-               default: 
-                   return false;
-           }
+
+        public bool Insert(Items.Item item)
+        {
+            _items.Add(item);
+
+            switch (item.Itemtyp)
+            {
+                case Items.ItemTypes.Potion:
+                    if (_anzahlpotions < _maxpotions)
+                    {
+                        _anzahlpotions++;
+                        return true;
+                    }
+                    else return false;
+                case Items.ItemTypes.Hammer:
+                    _getnormalhammer = true;
+                    return true;
+                case Items.ItemTypes.Kettenhammer:
+                    _getkettenhammer = true;
+                    return true;
+                case Items.ItemTypes.Holzschild:
+                    _getholzschild = true;
+                    return true;
+                /*   case Items.ItemTypes.Schluessel:
+                       if (_anzahlschluessel < _maxschluessel)
+                       {
+                           _anzahlschluessel++;
+                           return true;
+                       }
+                       else return false;   */
+                default:
+                    return false;
+            }
 
         }
 
 
-       public void AktivMenue()
-       {
+        public void AktivMenue()
+        {
 
-       }
+        }
 
-       public void DrawMenue()
-       {
+        public override void Draw(GameTime gameTime)
+        {
            double currentangle = MathHelper.PiOver2;
            double incrementangle = MathHelper.TwoPi / _anzahlaktuellerItemsimSpiel;
            for (double i = 0; i < _anzahlaktuellerItemsimSpiel; i++)
@@ -183,5 +186,15 @@ namespace WarTornLands.PlayerClasses
            } 
        }
 
+        internal bool HasKey(int _id)
+        {
+            foreach (Item i in _items)
+            {
+                if ((int)i.Itemtyp == _id)
+                    return true;
+            }
+
+            return false;
+        }
     }
 }
