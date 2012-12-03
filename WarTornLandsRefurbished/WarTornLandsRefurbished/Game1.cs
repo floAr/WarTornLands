@@ -71,7 +71,7 @@ namespace WarTornLands
             this.Components.Add(InputManager.Instance);
             Player = Player.Instance;
             Player.DrawOrder = 100;
-            Player.Position = new Vector2(13 * Constants.TileSize, 20 * Constants.TileSize);
+            Player.Position = new Vector2(39* Constants.TileSize, 15 * Constants.TileSize);
             this.Components.Add(Player);
             this.Components.Add(DialogManager.Instance);
 

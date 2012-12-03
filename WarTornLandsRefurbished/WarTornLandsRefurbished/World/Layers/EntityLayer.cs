@@ -132,8 +132,8 @@ namespace WarTornLands.World.Layers
             // TODO:
             // Check whether Entities are in the proximity of the Player and just update them if they are
             // Could also be done in the Entities class itself
-            try
-            {
+            //try
+            //{
                 List<Entity> buffer = new List<Entity>(_entities);
                 foreach (Entity ent in buffer)
                 {
@@ -141,8 +141,8 @@ namespace WarTornLands.World.Layers
                     if (ent.IsDead)
                         _entities.Remove(ent);
                 }
-            }
-            catch { }
+            //}
+            //catch { }
         }
 
         public override void Draw(GameTime gameTime)

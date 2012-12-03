@@ -32,10 +32,17 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
         public ThinkRoamAround(Entity owner, Vector2 anchor, float radius)
             : base()
         {
-            _goTo = new GoToPosition();
+            _goTo = new GoToPosition(.9f);
             _rand = new Random();
             _anchor = anchor;
             _radius = radius;
+            _state = RoamState.Idle;
+        }
+
+        public override void SetOwner(Entity owner)
+        {
+            base.SetOwner(owner);
+            _goTo.SetOwner(owner);
         }
 
         public void Update(GameTime gameTime)
@@ -71,6 +78,7 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
         {
             if (!_goTo.Active)
             {
+                _goTo.TryExecute();
                 _goTo.TargetPosition = CreateTargetPosition();
             }
         }
@@ -84,10 +92,14 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
         {
             Vector2 res = new Vector2((float)_rand.NextDouble(), (float)_rand.NextDouble());
             res.Normalize();
-            res *= _radius;
 
-            if ((res - _anchor).LengthSquared() > _radius)
-                res = CreateTargetPosition();
+            if (_rand.NextDouble() > .5)
+                res.X *= 1;
+            if (_rand.NextDouble() > .5)
+                res.Y *= -1;
+
+            res *= (float)(_radius * _rand.NextDouble());
+            res += _anchor;
 
             return res;
         }
