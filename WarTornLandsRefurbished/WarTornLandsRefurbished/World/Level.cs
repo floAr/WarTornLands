@@ -291,7 +291,7 @@ namespace WarTornLands.World
             StaticDrawer sd1 = new StaticDrawer();
             sd1.Texture = Game1.Instance.Content.Load<Texture2D>("doorClosed");
             door1.AddModule(sd1);
-            OpenDoorOnCollide d1coll = new OpenDoorOnCollide((int)ItemTypes.KleinerSchluessel);
+            OpenDoorOnCollide d1coll = new OpenDoorOnCollide((int)ItemTypes.SmallKey);
             door1.AddModule(d1coll);
             entityLayer.AddEntity(door1);
 
@@ -331,7 +331,7 @@ namespace WarTornLands.World
             con = new Conversation("1");
             con.Add(new TextLine("Nein!! Ich bin nicht die Gruselute!"));
             con.Add(new TextLine("Ich bin's, Frederik! Die boese Gruselute hat mich verhext. Hier, nimm diesen Schluessel und hau ihr eins vor'n Koffer!"));
-            key = new Item(ItemTypes.KleinerSchluessel);
+            key = new Item(ItemTypes.SmallKey);
             items = new List<Item>();
             items.Add(key);
             con.Add(new ItemContainer(items));

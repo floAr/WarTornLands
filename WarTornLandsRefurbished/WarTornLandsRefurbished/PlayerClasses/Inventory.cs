@@ -15,36 +15,36 @@ namespace WarTornLands.PlayerClasses
     {
         #region Drawvariablen
 
-        private double _standardheight = 480;
-        private double _standardwidth = 800;
-        private double _deltaheight;
-        private double _deltawidth;
+        private double _standardHeight = 480;
+        private double _standardWidth = 800;
+        private double _deltaHeight;
+        private double _deltaWidth;
         private int _radius;
 
-       private bool _inventoryisopen;
+       private bool _inventoryIsOpen;
 
-       private Texture2D _itempicture;
+       private Texture2D _itemPicture;
 
-       private short _anzahlaktuellerItemsimSpiel;
+       private short _totalItemCount;
 
         #endregion
 
         #region Itemvariablen
 
-       private short _anzahlpotions;
-       private short _maxpotions;
+       private short _countPotions;
+       private short _maxPotions;
 
-        private short _anzahlschluessel;
-        private short _maxschluessel;
+        private short _countKeys;
+        private short _maxKeys;
 
-        private bool _getnormalhammer;
-        private bool _usenormalhammer;
+        private bool _hasNormalHammer;
+        private bool _useNormalHammer;
 
-        private bool _getkettenhammer;
-        private bool _usekettenhammer;
+        private bool _hasChainHammer;
+        private bool _useChainHammer;
 
-        private bool _getholzschild;
-        private bool _useholzschild;
+        private bool _hasWoodenShield;
+        private bool _useWoodenShield;
 
         private List<Item> _items;
 
@@ -54,50 +54,50 @@ namespace WarTornLands.PlayerClasses
 
         public short GetPotions
         {
-            get { return _anzahlpotions; }
-            set { _anzahlpotions = value; }
+            get { return _countPotions; }
+            set { _countPotions = value; }
         }
 
         public short GetSchluessel
         {
-            get { return _anzahlschluessel; }
-            set { _anzahlschluessel = value; }
+            get { return _countKeys; }
+            set { _countKeys = value; }
         }
 
         public bool GetNormalhammer
         {
-            get { return _getnormalhammer; }
-            set { _getnormalhammer = value; }
+            get { return _hasNormalHammer; }
+            set { _hasNormalHammer = value; }
         }
 
         public bool GetHolzschild
         {
-            get { return _getholzschild; }
-            set { _getholzschild = value; }
+            get { return _hasWoodenShield; }
+            set { _hasWoodenShield = value; }
         }
 
         public bool UseHolzschild
         {
-            get { return _useholzschild; }
-            set { _useholzschild = value; }
+            get { return _useWoodenShield; }
+            set { _useWoodenShield = value; }
         }
 
         public bool UseNormalhammer
         {
-            get { return _usenormalhammer; }
-            set { _usenormalhammer = value; }
+            get { return _useNormalHammer; }
+            set { _useNormalHammer = value; }
         }
 
         public bool UseKettenhammer
         {
-            get { return _usekettenhammer; }
-            set { _usekettenhammer = value; }
+            get { return _useChainHammer; }
+            set { _useChainHammer = value; }
         }
 
         public bool GetKettenhammer
         {
-            get { return _getkettenhammer; }
-            set { _getkettenhammer = value; }
+            get { return _hasChainHammer; }
+            set { _hasChainHammer = value; }
         }
 
        #endregion
@@ -105,14 +105,14 @@ namespace WarTornLands.PlayerClasses
         public Inventory()
             : base(Game1.Instance as Game)
         {
-            _deltawidth = (Game1.Instance.Window.ClientBounds.Width / _standardwidth);
-            _deltaheight = (Game1.Instance.Window.ClientBounds.Height / _standardheight);
-            _itempicture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
+            _deltaWidth = (Game1.Instance.Window.ClientBounds.Width / _standardWidth);
+            _deltaHeight = (Game1.Instance.Window.ClientBounds.Height / _standardHeight);
+            _itemPicture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
             _radius = 100;
-            _anzahlaktuellerItemsimSpiel = 8;
-            _inventoryisopen = false;
-            _maxpotions = 5;
-            _maxschluessel = 2;
+            _totalItemCount = 8;
+            _inventoryIsOpen = false;
+            _maxPotions = 5;
+            _maxKeys = 2;
 
             _items = new List<Item>();
         }
@@ -122,23 +122,23 @@ namespace WarTornLands.PlayerClasses
         {
             _items.Add(item);
 
-            switch (item.Itemtyp)
+            switch (item.ItemType)
             {
                 case Items.ItemTypes.Potion:
-                    if (_anzahlpotions < _maxpotions)
+                    if (_countPotions < _maxPotions)
                     {
-                        _anzahlpotions++;
+                        _countPotions++;
                         return true;
                     }
                     else return false;
                 case Items.ItemTypes.Hammer:
-                    _getnormalhammer = true;
+                    _hasNormalHammer = true;
                     return true;
-                case Items.ItemTypes.Kettenhammer:
-                    _getkettenhammer = true;
+                case Items.ItemTypes.ChainHammer:
+                    _hasChainHammer = true;
                     return true;
-                case Items.ItemTypes.Holzschild:
-                    _getholzschild = true;
+                case Items.ItemTypes.WoodenShield:
+                    _hasWoodenShield = true;
                     return true;
                 /*   case Items.ItemTypes.Schluessel:
                        if (_anzahlschluessel < _maxschluessel)
@@ -162,20 +162,20 @@ namespace WarTornLands.PlayerClasses
         public override void Draw(GameTime gameTime)
         {
            double currentangle = MathHelper.PiOver2;
-           double incrementangle = MathHelper.TwoPi / _anzahlaktuellerItemsimSpiel;
-           for (double i = 0; i < _anzahlaktuellerItemsimSpiel; i++)
+           double incrementangle = MathHelper.TwoPi / _totalItemCount;
+           for (double i = 0; i < _totalItemCount; i++)
            {
-               Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.GetDrawModule().Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.GetDrawModule().Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltawidth), (int)(60 * _deltaheight)), Color.White);
+               Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.GetDrawModule().Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.GetDrawModule().Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
                currentangle -= incrementangle;
 
-               if (i == 0 || i == _anzahlaktuellerItemsimSpiel-1)
+               if (i == 0 || i == _totalItemCount-1)
                {
 
                }
                else
                {
-                   Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * 0.125), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _anzahlaktuellerItemsimSpiel)), (int)(60 * _deltawidth), (int)(60 * _deltaheight)), Color.White);
-                   Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * (2*0.125)), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _anzahlaktuellerItemsimSpiel)), (int)(60 * _deltawidth), (int)(60 * _deltaheight)), Color.White);
+                   Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * 0.125), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
+                   Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * (2*0.125)), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
 
                }
                
@@ -184,9 +184,11 @@ namespace WarTornLands.PlayerClasses
 
         internal bool HasKey(int _id)
         {
+            // TODO change :-)
+
             foreach (Item i in _items)
             {
-                if ((int)i.Itemtyp == _id)
+                if ((int)i.ItemType == _id)
                     return true;
             }
 
