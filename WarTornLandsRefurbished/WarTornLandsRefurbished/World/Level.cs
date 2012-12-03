@@ -201,9 +201,9 @@ namespace WarTornLands.World
             torchlight.IsLight = true;
 
             torchlight.Texture = Game1.Instance.Content.Load<Texture2D>("flame3");
-            
-            torch.AddModule(new DualDraw(torchlight,pSystem));
-     //       torch.AddModule(pSystem);
+
+            torch.AddModule(new DualDraw(torchlight, pSystem));
+            //       torch.AddModule(pSystem);
             layer3.AddEntity(torch);
             Lightmanager.AddLight(torch);
             //endtorch
@@ -224,12 +224,12 @@ namespace WarTornLands.World
             const int STONE_WALL = 28;//was 28
 
             // Create an empty area in the right size
-            Area cavernsArea= new Area(new Rectangle(0, 0, 56, 46));
+            Area cavernsArea = new Area(new Rectangle(0, 0, 56, 46));
 
             #region Add a floor layer
             TileLayer floorLayer = new TileLayer(0);
             Tile[,] floorGrid = new Tile[56, 46];
-            
+
             // Set normal floor
             for (int x = 0; x < 56; ++x)
                 for (int y = 0; y < 46; ++y)
@@ -283,6 +283,110 @@ namespace WarTornLands.World
             cavernsArea.AddLayer(wallLayer);
             #endregion
 
+            #region Beautify level
+            // I want to black out every wall which is not attached to a floor. we will assume a wall height of 2 tiles
+            int wallheight = 2;
+            TileLayer overlayer = new TileLayer(99);
+            Tile[,] mastergrid = new Tile[56, 46];
+            for (int x = 0; x < 56; ++x)
+            {
+                for (int y = 0; y < 46; ++y)
+                {
+                    if (wallGrid[x, y].TileNum != 0)//there shall be a wall
+                    {
+                        if (x == 0 || x == 55 || y == 0 || y == 45)
+                        {
+                            mastergrid[x, y].TileNum = 9;
+                            continue;
+                        }
+                        if (wallGrid[x + 1, y + 1].TileNum != 0 &&
+                            wallGrid[x + 1, y].TileNum != 0 &&
+                            wallGrid[x + 1, y - 1].TileNum != 0 &&
+                            wallGrid[x, y + 1].TileNum != 0 &&
+                            wallGrid[x, y - 1].TileNum != 0 &&
+                            wallGrid[x - 1, y + 1].TileNum != 0 &&
+                            wallGrid[x - 1, y].TileNum != 0 &&
+                            wallGrid[x - 1, y - 1].TileNum != 0)//we are surrounded by walls
+                        {
+                            if (x == 13 && y == 12)
+                                Console.WriteLine("derp");
+                            bool isWallPiece = false;
+                            for (int i = 0; i <= wallheight; ++i)
+                            {
+                                if (y >= 45 - wallheight)
+                                {
+                                    continue;
+                                }
+                                isWallPiece |= wallGrid[x - 1, y + i].TileNum == 0 || wallGrid[x, y + i].TileNum == 0 || wallGrid[x + 1, y + i].TileNum == 0;
+                                if (isWallPiece)
+                                    break;
+                            }
+                            if (!isWallPiece)
+                                mastergrid[x, y].TileNum = 9;
+                        }
+                    }
+                }
+            }
+            for (int x = 0; x < 56; ++x)
+            {
+                for (int y = 0; y < 46; ++y)
+                {
+                    if (mastergrid[x, y].TileNum != 0)//there shall be blackout
+                    {
+                        if (x == 0 || x == 55 || y == 0 || y == 45)
+                        {
+                            continue;
+                        }
+
+                        if (mastergrid[x, y + 1].TileNum == 0)
+                        {
+                            mastergrid[x, y].TileNum = 1;
+                            continue;
+                        }
+                        if (mastergrid[x - 1, y].TileNum == 0)
+                        {
+                            mastergrid[x, y].TileNum = 2;
+                            continue;
+                        }
+                        if (mastergrid[x, y-1].TileNum == 0)
+                        {
+                            mastergrid[x, y ].TileNum = 3;
+                            continue;
+                        }
+                        if (mastergrid[x + 1, y].TileNum == 0)
+                        {
+                            mastergrid[x, y].TileNum = 4;
+                            continue;
+                        }
+                        if (mastergrid[x - 1, y].TileNum == 0 && mastergrid[x, y + 1].TileNum == 0 && mastergrid[x-1, y + 1].TileNum == 0)
+                        {
+                            mastergrid[x, y].TileNum = 5;
+                            continue;
+                        }
+                        if (mastergrid[x - 1, y].TileNum == 0 && mastergrid[x, y - 1].TileNum == 0 && mastergrid[x - 1, y - 1].TileNum == 0)
+                        {
+                            mastergrid[x, y].TileNum = 6;
+                            continue;
+                        }
+                        if (mastergrid[x + 1, y ].TileNum == 0 && mastergrid[x , y - 1].TileNum == 0 && mastergrid[x + 1, y - 1].TileNum == 0)
+                        {
+                            mastergrid[x, y].TileNum = 7;
+                            continue;
+                        }
+                        if (mastergrid[x , y + 1].TileNum == 0 && mastergrid[x + 1, y].TileNum == 0 && mastergrid[x + 1, y + 1].TileNum == 0)
+                        {
+                            mastergrid[x, y].TileNum = 8;
+                            continue;
+                        }
+
+                    }
+                }
+            }
+
+
+            overlayer.LoadGrid(mastergrid, false, "overlay", true);
+            cavernsArea.AddLayer(overlayer);
+            #endregion
             // Add entities
             EntityLayer entityLayer = new EntityLayer(90);
 
@@ -343,7 +447,7 @@ namespace WarTornLands.World
             con = new Conversation("2");
             con.Add(new TextLine("Die alte Gruselute schaffst du mit Links!"));
             cons.Add(con);
-            
+
             crazyDude.AddModule(new Dialog(cons, crazyDude));
             entityLayer.AddEntity(crazyDude);
 
@@ -359,7 +463,7 @@ namespace WarTornLands.World
             entityLayer.AddEntity(boss);
 
             //burp torch
-         
+
             for (int i = 0; i < 5; ++i)
             {
                 AnimatedDrawer body = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("torch_model"));
@@ -372,7 +476,7 @@ namespace WarTornLands.World
                 light.AddAnimation(simpleflicker);
                 light.SetCurrentAnimation("flicker");
                 light.IsLight = true;
-                Entity newTorch = new Entity(Game1.Instance, new Vector2(24, 27) * Constants.TileSize+new Vector2(100*i,0), "torchi");
+                Entity newTorch = new Entity(Game1.Instance, new Vector2(24, 27) * Constants.TileSize + new Vector2(100 * i, 0), "torchi");
                 newTorch.AddModule(new DualDraw(body, light));
                 Lightmanager.AddLight(newTorch);
                 entityLayer.AddEntity(newTorch);
@@ -430,7 +534,7 @@ namespace WarTornLands.World
             fungusGlow.IsLight = true;
             Entity fungus = new Entity(Game1.Instance, new Vector2(15, 15) * Constants.TileSize, "fungus");
             fungus.AddModule(new DualDraw(fungusS, fungusGlow));
-            
+
             entityLayer.AddEntity(fungus);
             Lightmanager.AddLight(fungus);
 
