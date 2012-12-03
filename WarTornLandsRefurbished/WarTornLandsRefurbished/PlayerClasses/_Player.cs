@@ -45,26 +45,50 @@ namespace WarTornLands.PlayerClasses
         protected override void LoadContent()
         {
             AnimatedDrawer animS = new AnimatedDrawer(Game.Content.Load<Texture2D>("character_64x128"));
-
+            
             Animation anim = new Animation("walkDown");
-            for (int i = 0; i < 4; i++)
-                anim.AddFrame(new Rectangle(64 * i, 0, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 1, 0, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 2, 0, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 1, 0, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 3, 0, 64, 128));
             animS.AddAnimation(anim);
             animS.SetCurrentAnimation("walkDown");
 
             anim = new Animation("walkLeft");
-            for (int i = 4; i < 8; i++)
-                anim.AddFrame(new Rectangle(64 * i, 0, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 5, 0, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 6, 0, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 5, 0, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 7, 0, 64, 128));
             animS.AddAnimation(anim);
 
             anim = new Animation("walkRight");
-            for (int i = 0; i < 4; i++)
-                anim.AddFrame(new Rectangle(64 * i, 128, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 1, 128, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 2, 128, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 1, 128, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 3, 128, 64, 128));
             animS.AddAnimation(anim);
 
             anim = new Animation("walkUp");
-            for (int i = 4; i < 8; i++)
-                anim.AddFrame(new Rectangle(64 * i, 128, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 5, 128, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 6, 128, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 5, 128, 64, 128));
+            anim.AddFrame(new Rectangle(64 * 7, 128, 64, 128));
+            animS.AddAnimation(anim);
+
+            anim=new Animation("standDown");
+            anim.AddFrame(new Rectangle(0,0,64,128));
+            animS.AddAnimation(anim);
+
+            anim = new Animation("standLeft");
+            anim.AddFrame(new Rectangle(4*64, 0, 64, 128));
+            animS.AddAnimation(anim);
+
+            anim = new Animation("standRight");
+            anim.AddFrame(new Rectangle(0, 128, 64, 128));
+            animS.AddAnimation(anim);
+
+            anim = new Animation("standUp");
+            anim.AddFrame(new Rectangle(4*64, 128, 64, 128));
             animS.AddAnimation(anim);
 
             this.AddModule(animS);
