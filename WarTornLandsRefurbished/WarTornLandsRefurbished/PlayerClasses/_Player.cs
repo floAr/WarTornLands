@@ -38,8 +38,8 @@ namespace WarTornLands.PlayerClasses
             : base(game, new Vector2(0, 0),  "Player")
         {
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
-
-           this.AddModule(new ThinkInputGuided(this));
+            _inventory = new Inventory();
+            this.AddModule(new ThinkInputGuided(this));
         }
 
         protected override void LoadContent()
@@ -93,9 +93,9 @@ namespace WarTornLands.PlayerClasses
 
         #endregion
 
-        internal void GiveItem(Items.Item _loot)
+        internal void GiveItem(Items.Item loot)
         {
-            throw new NotImplementedException();
+            _inventory.Insert(loot);
         }
     }
 }
