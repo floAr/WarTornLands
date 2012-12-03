@@ -32,7 +32,7 @@ namespace WarTornLands.PlayerClasses
         #region Itemvariablen
 
        private short _anzahlpotions;
-       private short _maxanzahlpotions;
+       private short _maxpotions;
 
         private short _anzahlschluessel;
         private short _maxschluessel;
@@ -111,7 +111,7 @@ namespace WarTornLands.PlayerClasses
             _radius = 100;
             _anzahlaktuellerItemsimSpiel = 8;
             _inventoryisopen = false;
-            _maxanzahlpotions = 5;
+            _maxpotions = 5;
             _maxschluessel = 2;
 
             _items = new List<Item>();

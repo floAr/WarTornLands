@@ -1,22 +1,15 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using WarTornLands.PlayerClasses;
-using WarTornLands.Infrastructure;
-using WarTornLands.Infrastructure.Systems;
-using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities;
 using WarTornLands.Entities.Modules.Die;
+using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities.Modules.Draw.ParticleSystem;
-using WarTornLands.World;
+using WarTornLands.Infrastructure;
 using WarTornLands.Infrastructure.Systems.SkyLight;
+using WarTornLands.PlayerClasses;
+using WarTornLands.World;
 
 namespace WarTornLands
 {
@@ -77,7 +70,7 @@ namespace WarTornLands
             this.Components.Add(InputManager.Instance);
             Player = Player.Instance;
             Player.DrawOrder = 100;
-            Player.Position = new Vector2(15 * Constants.TileSize, 17  * Constants.TileSize);
+            Player.Position = new Vector2(39* Constants.TileSize, 15 * Constants.TileSize);
             Inventory = Player.Inventory;
             this.Components.Add(Player);            this.Components.Add(DialogManager.Instance);
 
@@ -241,9 +234,6 @@ namespace WarTornLands
             SpriteBatch.Draw(_BackBuffer.LightMap, new Vector2(0, 0), new Color(255, 255, 255, 255));
             SpriteBatch.End();
 
-            //SpriteBatch.Begin();
-            //Inventory.DrawMenue();
-            //SpriteBatch.End();
         }
 
 

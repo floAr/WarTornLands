@@ -83,6 +83,7 @@
     <Compile Include="Entities\Modules\Die\ReplaceByStatic.cs" />
     <Compile Include="Entities\Modules\Die\_IDieModule.cs" />
     <Compile Include="Entities\Modules\Draw\DualDraw.cs" />
+    <Compile Include="Entities\Modules\Draw\ParticleSystem\Particle.cs" />
     <Compile Include="Entities\Modules\Draw\ParticleSystem\ParticleEngine.cs" />
     <Compile Include="Entities\Modules\Interact\Dialog.cs" />
     <Compile Include="Entities\Modules\Interact\_IInteractModule.cs" />
