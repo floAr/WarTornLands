@@ -75,7 +75,6 @@
   <ItemGroup>
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Modules\BaseModule.cs" />
-    <Compile Include="Entities\Modules\Collide\Blocker.cs" />
     <Compile Include="Entities\Modules\Collide\OpenDoorOnCollide.cs" />
     <Compile Include="Entities\Modules\Collide\PickUpOnCollide.cs" />
     <Compile Include="Entities\Modules\Collide\_ICollideModule.cs" />
