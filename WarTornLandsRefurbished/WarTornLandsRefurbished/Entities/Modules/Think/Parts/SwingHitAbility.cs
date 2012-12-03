@@ -131,9 +131,11 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
                 if (_owner is PlayerClasses.Player)
                 {
-                    /*
-                    ENTITYAT(hitPos).Damage(Damage);
-                    */
+                    List<Entity> targets = (Game1.Instance.Level.GetEntitiesAt(hitPos));
+                    foreach (Entity ent in targets)
+                    {
+                        ent.Damage(this.Damage);
+                    }
                 }
                 else
                 {
