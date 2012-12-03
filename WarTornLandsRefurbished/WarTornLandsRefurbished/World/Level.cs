@@ -25,12 +25,10 @@ namespace WarTornLands.World
 {
     public class Level
     {
-        private Game _game;
         private Dictionary<string, Area> _areas;
 
         public Level(Game game)
         {
-            _game = game;
             _areas = new Dictionary<string, Area>();
         }
 
@@ -148,8 +146,8 @@ namespace WarTornLands.World
 
             EntityLayer layer3 = new EntityLayer(99);
             StaticDrawer sd = new StaticDrawer();
-            sd.Texture = _game.Content.Load<Texture2D>("Schatztruhe");
-            Entity staticTest = new Entity((_game as Game1), new Vector2(50, 50), "loch");
+            sd.Texture = Game1.Instance.Content.Load<Texture2D>("Schatztruhe");
+            Entity staticTest = new Entity(Game1.Instance, new Vector2(50, 50), "loch");
             staticTest.AddModule(sd);
             //staticTest.AddModule(new ExplodeAndLoot(Item.Potion));
             staticTest.Health = 100;
@@ -157,8 +155,8 @@ namespace WarTornLands.World
             area1.AddLayer(layer3);
 
             StaticDrawer dialogTestDrawer = new StaticDrawer();
-            dialogTestDrawer.Texture = _game.Content.Load<Texture2D>("Schatztruhe");
-            Entity dialogTest = new Entity((_game as Game1), new Vector2(-20, 150), "chest");
+            dialogTestDrawer.Texture = Game1.Instance.Content.Load<Texture2D>("Schatztruhe");
+            Entity dialogTest = new Entity(Game1.Instance, new Vector2(-20, 150), "chest");
             dialogTest.AddModule(dialogTestDrawer);
 
             List<Conversation> cons = new List<Conversation>();
@@ -289,28 +287,28 @@ namespace WarTornLands.World
             EntityLayer entityLayer = new EntityLayer(90);
 
             // Herp door
-            Entity door1 = new Entity((_game as Game1), new Vector2(31, 31) * Constants.TileSize);
+            Entity door1 = new Entity(Game1.Instance, new Vector2(31, 31) * Constants.TileSize);
             StaticDrawer sd1 = new StaticDrawer();
-            sd1.Texture = _game.Content.Load<Texture2D>("doorClosed");
+            sd1.Texture = Game1.Instance.Content.Load<Texture2D>("doorClosed");
             door1.AddModule(sd1);
             OpenDoorOnCollide d1coll = new OpenDoorOnCollide();
             door1.AddModule(d1coll);
             entityLayer.AddEntity(door1);
 
             // Boss door
-            Entity door2 = new Entity((_game as Game1), new Vector2(39, 27) * Constants.TileSize);
+            Entity door2 = new Entity(Game1.Instance, new Vector2(39, 27) * Constants.TileSize);
             StaticDrawer sd2 = new StaticDrawer();
-            sd2.Texture = _game.Content.Load<Texture2D>("doorClosedBoss");
+            sd2.Texture = Game1.Instance.Content.Load<Texture2D>("doorClosedBoss");
             door2.AddModule(sd2);
             OpenDoorOnCollide d2coll = new OpenDoorOnCollide((int)ItemTypes.MasterKey);
             door2.AddModule(d2coll);
             entityLayer.AddEntity(door2);
 
             // Add chest
-            Entity chest = new Entity((_game as Game1), new Vector2(31, 35) * Constants.TileSize);
+            Entity chest = new Entity(Game1.Instance, new Vector2(31, 35) * Constants.TileSize);
             chest.AddModule(new ReplaceByStatic("treasureChestLooted"));
             StaticDrawer sd3 = new StaticDrawer();
-            sd3.Texture = _game.Content.Load<Texture2D>("treasureChest");
+            sd3.Texture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
             chest.AddModule(sd3);
             List<Conversation> cons = new List<Conversation>();
             Conversation con = new Conversation("1");
@@ -323,13 +321,37 @@ namespace WarTornLands.World
             chest.AddModule(new Dialog(cons, chest));
             entityLayer.AddEntity(chest);
 
+            // Add crazy dude
+            Entity crazyDude = new Entity(Game1.Instance, new Vector2(18 * Constants.TileSize, 15 * Constants.TileSize + 10));
+            StaticDrawer sd4 = new StaticDrawer();
+            sd4.Texture = Game1.Instance.Content.Load<Texture2D>("gruselute");
+            crazyDude.AddModule(sd4);
+            cons = new List<Conversation>();
+            // First conversation
+            con = new Conversation("1");
+            con.Add(new TextLine("Nein!! Ich bin nicht die Gruselute!"));
+            con.Add(new TextLine("Ich bin's, Frederik! Die boese Gruselute hat mich verhext. Hier, nimm diesen Schluessel und hau ihr eins vor'n Koffer!"));
+            key = new Item(ItemTypes.KleinerSchluessel);
+            items = new List<Item>();
+            items.Add(key);
+            con.Add(new ItemContainer(items));
+            con.Add(new ComboBreaker("2"));
+            cons.Add(con);
+            // Second conversation
+            con = new Conversation("2");
+            con.Add(new TextLine("Die alte Gruselute schaffst du mit Links!"));
+            cons.Add(con);
+            
+            crazyDude.AddModule(new Dialog(cons, crazyDude));
+            entityLayer.AddEntity(crazyDude);
+
             cavernsArea.AddLayer(entityLayer);
 
             // Boss
-            Entity boss = new Entity((_game as Game1), new Vector2(39, 15) * Constants.TileSize);
+            Entity boss = new Entity(Game1.Instance, new Vector2(39, 15) * Constants.TileSize);
             boss.AddModule(new ThinkRoamAround(boss, new Vector2(39, 15) * Constants.TileSize, 200));
             StaticDrawer bossDrawer = new StaticDrawer();
-            bossDrawer.Texture = _game.Content.Load<Texture2D>("gruselute");
+            bossDrawer.Texture = Game1.Instance.Content.Load<Texture2D>("gruselute");
             boss.AddModule(bossDrawer);
             entityLayer.AddEntity(boss);
             //burp torch
