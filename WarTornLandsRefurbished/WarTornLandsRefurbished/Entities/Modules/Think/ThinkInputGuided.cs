@@ -66,8 +66,10 @@ namespace WarTornLands.Entities.Modules.Think
             // false = X direction over Y
             if (true)
             {
-                XFacing(moveDirection);
-                YFacing(moveDirection);
+                if (Math.Abs(moveDirection.X) >= Math.Abs(moveDirection.Y))
+                    XFacing(moveDirection);
+                else
+                    YFacing(moveDirection);
             }
             else
             {

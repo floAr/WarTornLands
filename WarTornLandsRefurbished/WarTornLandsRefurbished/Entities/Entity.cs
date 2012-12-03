@@ -59,13 +59,25 @@ namespace WarTornLands.Entities
         public readonly string _cHit = "HitCounter";
         ///////////////
 
-        public Vector2 Position { get; set; }
+        public Vector2 Position {
+            get { return _position; }
+            set
+            {
+                _prevPosition = _position;
+                _position = value;
+
+            }
+        }
         public Vector2 InitialPosition { get; internal set; }
         public Point TilePosition { get; set; }
         public float Height { get; internal set; }
         public float BaseHeight { get; internal set; }
         public int Health { get; internal set; }
         public string Name { get; internal set; }
+
+        private Vector2 _prevPosition=Vector2.Zero;
+        private Vector2 _position = Vector2.Zero;
+        private bool _moving = false;
         public Facing Face
         {
             get
@@ -77,21 +89,23 @@ namespace WarTornLands.Entities
             {
                 if (_face != value && this.GetDrawModule() is AnimatedDrawer)
                 {
-                    switch (value)
-                    {
-                        case Facing.DOWN:
-                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkDown");
-                            break;
-                        case Facing.LEFT:
-                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkLeft");
-                            break;
-                        case Facing.RIGHT:
-                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkRight");
-                            break;
-                        case Facing.UP:
-                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkUp");
-                            break;
-                    }
+                    Console.WriteLine(value.ToString());
+                        switch (value)
+                        {
+                            case Facing.DOWN:
+                                (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkDown");
+                                break;
+                            case Facing.LEFT:
+                                (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkLeft");
+                                break;
+                            case Facing.RIGHT:
+                                (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkRight");
+                                break;
+                            case Facing.UP:
+                                (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkUp");
+                                break;
+                        }
+                  
                 }
 
                 _face = value;
@@ -175,10 +189,11 @@ namespace WarTornLands.Entities
             }
         }
 
-        public void SetPosition(Vector2 position)
+     /*   public void SetPosition(Vector2 position)
         {
+            _prevPosition = Position;
             Position = position;
-        }
+        }*/
 
         public void Reset(int health)
         {
@@ -216,6 +231,45 @@ namespace WarTornLands.Entities
 
         public override void Update(GameTime gameTime)
         {
+
+            if ((_prevPosition == _position) != _moving)
+            {
+                if(!_moving)//stop
+                    switch (Face)
+                    {
+                        case Facing.DOWN:
+                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("standDown");
+                            break;
+                        case Facing.LEFT:
+                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("standLeft");
+                            break;
+                        case Facing.RIGHT:
+                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("standRight");
+                            break;
+                        case Facing.UP:
+                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("standUp");
+                            break;
+                    }
+                else//move on
+                    switch (Face)
+                    {
+                        case Facing.DOWN:
+                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkDown");
+                            break;
+                        case Facing.LEFT:
+                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkLeft");
+                            break;
+                        case Facing.RIGHT:
+                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkRight");
+                            break;
+                        case Facing.UP:
+                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkUp");
+                            break;
+                    }
+                _moving = _prevPosition == _position;
+
+            }
+        
             CM.Update(gameTime);
 
             #region Calc tilepos
