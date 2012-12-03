@@ -323,6 +323,7 @@ namespace WarTornLands.World
 
             // Add crazy dude
             Entity crazyDude = new Entity(Game1.Instance, new Vector2(18 * Constants.TileSize, 15 * Constants.TileSize + 10));
+            crazyDude.AddModule(new Obstacle());
             StaticDrawer sd4 = new StaticDrawer();
             sd4.Texture = Game1.Instance.Content.Load<Texture2D>("gruselute");
             crazyDude.AddModule(sd4);
