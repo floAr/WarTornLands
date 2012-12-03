@@ -26,7 +26,7 @@ namespace WarTornLands.Entities.Modules.Collide
             {
                 if (Game1.Instance.Player.Inventory.HasKey(_id))
                 {
-                    _owner.IsDead = true;
+                    _owner.ToBeRemoved = true;
                     return true;
                 }
                 else
@@ -38,7 +38,7 @@ namespace WarTornLands.Entities.Modules.Collide
             }
             else
             {
-                _owner.IsDead = true;
+                _owner.ToBeRemoved = true;
                 return true;
             }
         }
