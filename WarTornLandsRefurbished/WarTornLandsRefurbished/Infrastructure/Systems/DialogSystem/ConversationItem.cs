@@ -109,12 +109,12 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
         public override void Trigger()
         {
             DialogManager.Instance.CallDialog(null);
-            (_owner.GetInteractModule() as Dialog).ShutDown();
+            (_owner.MInteractModule() as Dialog).ShutDown();
 
             if(_newDefault.Equals("#this"))
-                (_owner.GetInteractModule() as Dialog).SetNewDefault(this.ConversationID, this.ConversationID);
+                (_owner.MInteractModule() as Dialog).SetNewDefault(this.ConversationID, this.ConversationID);
             else
-                (_owner.GetInteractModule() as Dialog).SetNewDefault(_newDefault, this.ConversationID);
+                (_owner.MInteractModule() as Dialog).SetNewDefault(_newDefault, this.ConversationID);
         }
     }
 

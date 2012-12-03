@@ -28,15 +28,17 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
         private float _radius;
         private Random _rand;
         private RoamState _state;
+        private RoamState _lastState;
 
-        public ThinkRoamAround(Entity owner, Vector2 anchor, float radius)
+        public ThinkRoamAround(Entity owner, Vector2 anchor, float roamingRadius, float sightRange = 50)
             : base()
         {
             _goTo = new GoToPosition(.9f);
             _rand = new Random();
             _anchor = anchor;
-            _radius = radius;
+            _radius = roamingRadius;
             _state = RoamState.Idle;
+            SightRange = sightRange;
         }
 
         public override void SetOwner(Entity owner)
@@ -48,6 +50,7 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
         public void Update(GameTime gameTime)
         {
             _goTo.Update(gameTime);
+            CheckForTarget();
 
             switch (_state)
             {
@@ -64,6 +67,8 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
 
         private void CheckForTarget()
         {
+            _lastState = _state;
+
             if ((Player.Instance.Position - _owner.Position).LengthSquared() < SightRange * SightRange)
             {
                 _state = RoamState.Aggro;
@@ -76,8 +81,12 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
 
         private void IdleActions(GameTime gameTime)
         {
+            if (_lastState != RoamState.Idle)
+                _goTo.Reset();
+
             if (!_goTo.Active)
             {
+                _goTo.Unfreeze();
                 _goTo.TryExecute();
                 _goTo.TargetPosition = CreateTargetPosition();
             }
@@ -85,7 +94,20 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
 
         private void AggroActions(GameTime gameTime)
         {
+            if (_lastState != RoamState.Aggro)
+                _goTo.Reset();
 
+            if (!_goTo.Active)
+            {
+                _goTo.TryExecute();
+                _goTo.Bait = Player.Instance;
+            }
+
+            Vector2 awayFromHome = _owner.Position - _anchor;
+            if (awayFromHome.LengthSquared() > _radius * _radius)
+                _goTo.Freeze();
+            else
+                _goTo.Unfreeze();
         }
 
         private Vector2 CreateTargetPosition()
@@ -98,7 +120,7 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
             if (_rand.NextDouble() > .5)
                 res.Y *= -1;
 
-            res *= (float)(_radius * _rand.NextDouble());
+            res *= (float)(_radius * (_rand.NextDouble() * .5 + .5));
             res += _anchor;
 
             return res;

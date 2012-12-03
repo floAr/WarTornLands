@@ -64,7 +64,7 @@ namespace WarTornLands.Entities
         public Point TilePosition { get; set; }
         public float Height { get; internal set; }
         public float BaseHeight { get; internal set; }
-        public int Health { get; internal set; }
+        public float Health { get; internal set; }
         public string Name { get; internal set; }
         public Facing Face
         {
@@ -75,21 +75,21 @@ namespace WarTornLands.Entities
 
             internal set
             {
-                if (_face != value && this.GetDrawModule() is AnimatedDrawer)
+                if (_face != value && this.MDrawModule() is AnimatedDrawer)
                 {
                     switch (value)
                     {
                         case Facing.DOWN:
-                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkDown");
+                            (this.MDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkDown");
                             break;
                         case Facing.LEFT:
-                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkLeft");
+                            (this.MDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkLeft");
                             break;
                         case Facing.RIGHT:
-                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkRight");
+                            (this.MDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkRight");
                             break;
                         case Facing.UP:
-                            (this.GetDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkUp");
+                            (this.MDrawModule() as AnimatedDrawer).SetCurrentAnimation("walkUp");
                             break;
                     }
                 }
@@ -151,17 +151,32 @@ namespace WarTornLands.Entities
                 _mCollideModule = module as ICollideModule;
         }
 
-        public IInteractModule GetInteractModule()
+        public IInteractModule MInteractModule()
         {
             return _mInteractModule;
         }
 
-        public IDrawExecuter GetDrawModule()
+        public IDrawExecuter MDrawModule()
         {
             return _mDrawModule;
         }
 
-        public int Damage(int damage)
+        public IDieModule MDieModule()
+        {
+            return _mDieModule;
+        }
+
+        public IThinkModule MThinkModule()
+        {
+            return _mThinkModule;
+        }
+
+        public ICollideModule MColideModule()
+        {
+            return _mCollideModule;
+        }
+
+        public float Damage(float damage)
         {
             if (this.CanBeAttacked)
             {

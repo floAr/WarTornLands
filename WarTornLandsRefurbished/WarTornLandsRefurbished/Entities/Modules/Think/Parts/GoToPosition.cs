@@ -35,13 +35,14 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         /// <value>
         /// The bait.
         /// </value>
-        public Entity Bait { get { return _bait; } set { _targetPosition = _fail; _bait = value; } }
+        public Entity Bait { get { return _bait; } set { _targetPosition = value.Position; _bait = value; } }
         public bool Active { get; private set; }
 
         private Vector2 _fail = new Vector2(9001);
         private Entity _owner;
         private Entity _bait;
         private Vector2 _targetPosition;
+        private bool _frozen;
 
         public GoToPosition(float speed = .1f)
         {
@@ -53,9 +54,24 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             _owner = owner;
         }
 
+        public void Reset()
+        {
+            Active = false;
+        }
+
+        public void Freeze()
+        {
+            _frozen = true;
+        }
+
+        public void Unfreeze()
+        {
+            _frozen = false;
+        }
+
         public void Update(GameTime gameTime)
         {
-            if (Active)
+            if (Active && !_frozen)
             {
                 if (!TargetPosition.Equals(_fail))
                 {
@@ -90,7 +106,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
         private void TowardsEntityRoutine(GameTime gameTime)
         {
-
+            TowardsPositionRoutine(gameTime);
         }
 
         /// <summary>

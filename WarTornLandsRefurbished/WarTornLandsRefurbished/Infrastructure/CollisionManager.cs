@@ -108,10 +108,16 @@ namespace WarTornLands.Infrastructure
             List<Entity> curEntities = _level.GetEntitiesAt(start + pointOne + move);
             curEntities.AddRange(_level.GetEntitiesAt(start + pointTwo + move));
 
+            List<Entity> temp = new List<Entity>(curEntities);
+            foreach (Entity ent in temp)
+            {
+                if (ent.MColideModule() == null)
+                    curEntities.Remove(ent);
+            }
+
             while (curEntities.Count > 0 &&
                    sensor >= 1)
             {
-                //lastEntities = new List<Entity>(curEntities);
                 lastEntities.Clear();
                 lastEntities.AddRange(curEntities);
                 sensor--;
