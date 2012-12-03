@@ -165,7 +165,7 @@ namespace WarTornLands.PlayerClasses
            double incrementangle = MathHelper.TwoPi / _totalItemCount;
            for (double i = 0; i < _totalItemCount; i++)
            {
-               Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.GetDrawModule().Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.GetDrawModule().Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
+               Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.MDrawModule().Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.MDrawModule().Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
                currentangle -= incrementangle;
 
                if (i == 0 || i == _totalItemCount-1)
