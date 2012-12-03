@@ -4,12 +4,13 @@ namespace WarTornLands.Entities.Modules
 {
     public abstract class BaseModule
     {
+        public Entity Owner { get { return _owner; } }
+
         protected Entity _owner = null;
 
-        public Entity Owner
+        public virtual void SetOwner(Entity owner)
         {
-            get { return _owner; }
-            set { _owner = value; }
+            _owner = owner; 
         }
     }
 }

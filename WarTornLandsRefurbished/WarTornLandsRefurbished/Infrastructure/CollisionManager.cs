@@ -33,6 +33,16 @@ namespace WarTornLands.Infrastructure
             _level = Game1.Instance.Level;
         }
 
+        /// <summary>
+        /// Tries to execute a move from 'start' 'toGoal'.
+        /// ToGoal is relative to the start position.
+        /// Returns the actually possible move vector in respect to collisions
+        /// </summary>
+        /// <param name="start">The start.</param>
+        /// <param name="toGoal">To goal.</param>
+        /// <param name="radius">The radius.</param>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
         public Vector2 TryMove(Vector2 start, Vector2 toGoal, float radius, Entity source)
         {
             float range = 20;  //Get Entity radius from whereever
@@ -56,7 +66,7 @@ namespace WarTornLands.Infrastructure
             if (toGoal.X > 0)
                 move.X = ComputeMoveDirection(start, toGoal, topRight, bottomRight, true, source);
 
-            return move + start;
+            return move;
         }
 
         /// <summary>

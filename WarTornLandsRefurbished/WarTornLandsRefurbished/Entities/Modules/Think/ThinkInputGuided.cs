@@ -55,7 +55,7 @@ namespace WarTornLands.Entities.Modules.Think
                 moveDirection * Speed * gameTime.ElapsedGameTime.Milliseconds,
                 Radius,
                 _owner
-                );
+                ) + _owner.Position;
 
             CalcFacing(moveDirection);
         }

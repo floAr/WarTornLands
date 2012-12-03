@@ -319,9 +319,13 @@ namespace WarTornLands.World
 
             cavernsArea.AddLayer(entityLayer);
 
+            // Boss
             Entity boss = new Entity((_game as Game1), new Vector2(39, 15) * Constants.TileSize);
-            boss.AddModule(new ThinkRoamAround(boss, new Vector2(39, 15) * Constants.TileSize, 100));
-            //entityLayer.AddEntity(boss);
+            boss.AddModule(new ThinkRoamAround(boss, new Vector2(39, 15) * Constants.TileSize, 200));
+            StaticDrawer bossDrawer = new StaticDrawer();
+            bossDrawer.Texture = _game.Content.Load<Texture2D>("gruselute");
+            boss.AddModule(bossDrawer);
+            entityLayer.AddEntity(boss);
             //burp torch
          
             for (int i = 0; i < 5; ++i)

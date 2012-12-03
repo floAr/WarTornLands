@@ -138,7 +138,7 @@ namespace WarTornLands.Entities
 
         public void AddModule(BaseModule module)
         {
-            module.Owner = this;
+            module.SetOwner(this);
             if (module is IThinkModule)
                 _mThinkModule = module as IThinkModule;
             if (module is IDrawExecuter)
