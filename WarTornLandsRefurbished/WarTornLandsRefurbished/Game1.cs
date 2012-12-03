@@ -78,7 +78,7 @@ namespace WarTornLands
             Player = Player.Instance;
             Player.DrawOrder = 100;
             Player.Position = new Vector2(39* Constants.TileSize, 15 * Constants.TileSize);
-            Inventory = Inventory.GetInstance();
+            Inventory = Player.Inventory;
             this.Components.Add(Player);            this.Components.Add(DialogManager.Instance);
 
             base.Initialize();
@@ -233,8 +233,8 @@ namespace WarTornLands
 
             base.Draw(gameTime);
 
-            Inventory.DrawMenue();
             SpriteBatch.End();
+       
 
             //add lights
             SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);

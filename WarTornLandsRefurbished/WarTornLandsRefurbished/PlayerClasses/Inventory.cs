@@ -10,10 +10,8 @@ namespace WarTornLands.PlayerClasses
 {
     
 
-   public class Inventory
+   public class Inventory:DrawableGameComponent
     {
-       private static Inventory _inventory;
-
        #region Drawvariablen
 
        private double _standardheight = 480;
@@ -99,7 +97,7 @@ namespace WarTornLands.PlayerClasses
 
        #endregion
        
-       private Inventory()
+       private Inventory():base(Game1.Instance as Game)
        { 
            _deltawidth = (Game1.Instance.Window.ClientBounds.Width / _standardwidth);
            _deltaheight = (Game1.Instance.Window.ClientBounds.Height / _standardheight);
@@ -107,15 +105,6 @@ namespace WarTornLands.PlayerClasses
            _radius = 100;
        }
 
-       public static Inventory GetInstance()
-       {
-           if (_inventory == null)
-           {
-               _inventory = new Inventory();               
-           }
-
-           return _inventory;
-       }
 
        public bool Insert(Items.Item item)
        {
@@ -137,13 +126,13 @@ namespace WarTornLands.PlayerClasses
                case Items.ItemTypes.Holzschild:
                    _getholzschild = true;
                    return true;
-               case Items.ItemTypes.Schluessel:
+            /*   case Items.ItemTypes.Schluessel:
                    if (_anzahlschluessel < _maxschluessel)
                    {
                        _anzahlschluessel++;
                        return true;
                    }
-                   else return false;                
+                   else return false;   */             
                default: 
                    return false;
            }
@@ -156,13 +145,17 @@ namespace WarTornLands.PlayerClasses
 
        }
 
-       public void DrawMenue()
+       public override void Draw(GameTime gameTime)
        {
-           for (double i = 0; i < 360; i += 360/8)
+           for (double i = 0; i < 360; i += 360 / 8)
            {
-               Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)(((400 + _radius * Math.Cos(i)) * _deltawidth)), (int)(((240 +_radius * Math.Sin(i)) * _deltaheight)), 60, 60), Color.White);
+               Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)(((400 + _radius * Math.Cos(i)) * _deltawidth)), (int)(((240 + _radius * Math.Sin(i)) * _deltaheight)), 60, 60), Color.White);
            } 
        }
 
+       internal bool HasKey(string _id)
+       {
+           throw new NotImplementedException();
+       }
     }
 }

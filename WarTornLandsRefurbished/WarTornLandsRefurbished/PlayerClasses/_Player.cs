@@ -17,7 +17,7 @@ namespace WarTornLands.PlayerClasses
     public class Player : Entity
     {
         private static Player _instance;
-
+        private Inventory _inventory;
         public static Player Instance
         {
             get
@@ -27,6 +27,11 @@ namespace WarTornLands.PlayerClasses
 
                 return _instance;
             }
+        }
+
+        public Inventory Inventory
+        {
+            get { return _inventory; }
         }
 
         private Player(Game1 game)
