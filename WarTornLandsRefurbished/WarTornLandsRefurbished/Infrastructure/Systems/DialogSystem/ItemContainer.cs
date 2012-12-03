@@ -21,7 +21,11 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
 
         private static string ComposeDescription(List<Item> items)
         {
-            string message = "You obtain ";
+            string message = "Item";
+            if (items.Count > 1)
+                message += 's';
+            message += " erhalten: ";
+
             for (int i = 0; i < items.Count; ++i)
             {
                 message += items[i].Name;
