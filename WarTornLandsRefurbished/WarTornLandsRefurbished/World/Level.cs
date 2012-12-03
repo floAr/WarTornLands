@@ -314,7 +314,7 @@ namespace WarTornLands.World
             chest.AddModule(sd3);
             List<Conversation> cons = new List<Conversation>();
             Conversation con = new Conversation("1");
-            Item key = new Item(ItemTypes.Schluessel);
+            Item key = new Item(ItemTypes.KleinerSchluessel);
             List<Item> items = new List<Item>();
             items.Add(key);
             con.Add(new ItemContainer(items));
