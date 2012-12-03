@@ -306,6 +306,7 @@ namespace WarTornLands.World
 
             // Add chest
             Entity chest = new Entity(Game1.Instance, new Vector2(31, 35) * Constants.TileSize);
+            chest.AddModule(new Obstacle());
             chest.AddModule(new ReplaceByStatic("treasureChestLooted"));
             StaticDrawer sd3 = new StaticDrawer();
             sd3.Texture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
