@@ -12,8 +12,8 @@ namespace WarTornLands.World.Layers
     {
         private readonly List<Entity> _entities = new List<Entity>();
 
-        public EntityLayer(Game game, int depth)
-            : base(game, depth)
+        public EntityLayer(int depth)
+            : base(depth)
         {
         }
 

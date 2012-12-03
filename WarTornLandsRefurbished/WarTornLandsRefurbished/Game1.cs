@@ -15,7 +15,8 @@ using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities;
 using WarTornLands.Entities.Modules.Die;
 using WarTornLands.Entities.Modules.Draw.ParticleSystem;
-using WarTornLands.World; 
+using WarTornLands.World;
+using WarTornLands.Infrastructure.Systems.SkyLight;
 
 namespace WarTornLands
 {
@@ -29,15 +30,18 @@ namespace WarTornLands
         public SpriteBatch SpriteBatch { get; private set; }
         Entity staticTest;
         Entity particleTest;
-        Entity dynamicTest;
+
+        private bool _drawLights = false;
+        public bool DrawingLights { get { return _drawLights; } set { _drawLights = value; } }
 
         public Player Player { get; private set; }
 
         //public Interface Interface { get; private set; }
         public Level Level { get; private set; }
-  
 
-        private  static Game1 _instance = new Game1();
+        private BackBuffer _BackBuffer;
+
+        private static Game1 _instance = new Game1();
 
         public static Game1 Instance
         {
@@ -91,7 +95,7 @@ namespace WarTornLands
             Catalog.Instance.SetupTestCatalog();
 
             StaticDrawer sd = new StaticDrawer();
-            
+
 
             sd.Texture = Content.Load<Texture2D>("blackhole");
 
@@ -99,9 +103,9 @@ namespace WarTornLands
             staticTest.AddModule(sd);
             staticTest.AddModule(new ExplodeAndLoot(new PlayerClasses.Items.Item(PlayerClasses.Items.ItemTypes.Potion)));
             staticTest.Health = 100;
-            List<Texture2D> pL= new List<Texture2D>();
+            List<Texture2D> pL = new List<Texture2D>();
             pL.Add(Content.Load<Texture2D>("flame3"));
-            particleTest = new Entity(this, new Vector2(150,300));
+            particleTest = new Entity(this, new Vector2(150, 300));
             ParticleSystem pSystem = new ParticleSystem(
                 new EmitterSetting()
                 {
@@ -113,15 +117,25 @@ namespace WarTornLands
                     Size = new Range() { Min = 0.1f, Max = 0.3f },
                     SpeedX = new Range() { Min = -1, Max = 1 },
                     SpeedY = new Range() { Min = -1, Max = -3 },
-                    Alpha=new Range(1),
-                    AlphaDecay=new Range(0.01f,0.1f)
-                    
+                    Alpha = new Range(1),
+                    AlphaDecay = new Range(0.01f, 0.1f)
+
                 },
-        pL, new Vector2(150, 500));
+        pL);
             particleTest.AddModule(pSystem);
-                
 
+            _BackBuffer = new BackBuffer(GraphicsDevice, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
 
+            List<Color> daylight = new List<Color>();
+            daylight.Add(new Color(30,30,80));
+            daylight.Add(new Color(30, 30, 70));
+            daylight.Add(new Color(30, 20, 70));
+            daylight.Add(new Color(20, 30, 75));
+            daylight.Add(new Color(25, 25, 80));
+
+            Lightmanager.SetDayCycle(daylight, 18000);
+
+            //  Lightmanager.SetStaticColor(new Color(15,15,30));
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
 
@@ -134,7 +148,7 @@ namespace WarTornLands
             // TODO: Entladen Sie jeglichen Nicht-ContentManager-Inhalt hier
         }
 
-        int counter = 0;
+        int drawcounter = 0;
         /// <summary>
         /// Ermöglicht dem Spiel die Ausführung der Logik, wie zum Beispiel Aktualisierung der Welt,
         /// Überprüfung auf Kollisionen, Erfassung von Eingaben und Abspielen von Ton.
@@ -157,14 +171,17 @@ namespace WarTornLands
             base.Update(gameTime);
         }
 
+        int counter = 0;
+        bool foreward = true;
         /// <summary>
         /// Dies wird aufgerufen, wenn das Spiel selbst zeichnen soll.
         /// </summary>
         /// <param name="gameTime">Bietet einen Schnappschuss der Timing-Werte.</param>
+        /// 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            /*
             // TODO: Fügen Sie Ihren Zeichnungscode hier hinzu
 
             // Kapseln in eigene Klasse, für Menüs etc.
@@ -175,8 +192,51 @@ namespace WarTornLands
             particleTest.Draw(gameTime);
             base.Draw(gameTime);
 
+            SpriteBatch.End();*/
+            if (foreward)
+                drawcounter += gameTime.ElapsedGameTime.Milliseconds;
+            else
+                drawcounter -= gameTime.ElapsedGameTime.Milliseconds;
+            if (drawcounter <= 0)
+            {
+                foreward = true;
+                drawcounter = 0;
+            }
+            if (drawcounter >= 15000)
+            {
+                foreward = false;
+            }
+            Color fill = new Color(drawcounter / 100, drawcounter / 100, drawcounter / 100);
+
+            DrawingLights = true;
+            // Set the render target
+            GraphicsDevice.SetRenderTarget(_BackBuffer.SourceMap);
+
+            GraphicsDevice.Clear(new Color(150, 150, 150)); //Set the Background of the SourceMap to Black (Important!)
+
+            SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.Add);
+            Lightmanager.Draw(gameTime);
             SpriteBatch.End();
+
+            GraphicsDevice.SetRenderTarget(_BackBuffer.LightMap); //Activate the LightMap-BackBuffer
+            GraphicsDevice.Clear(Color.White); //Set the Background of the LightMap
+            SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract); //The SoureMap as to be reverse substracted to the BackBuffer to invert the color values
+            SpriteBatch.Draw(_BackBuffer.SourceMap, new Vector2(0, 0), Color.White); //'Merge the SourceMap to the BackBuffer
+            SpriteBatch.End();
+            DrawingLights = false;
+            //set back normal target and draw game
+            GraphicsDevice.SetRenderTarget(null);
+            SpriteBatch.Begin();
+            base.Draw(gameTime);
+            SpriteBatch.End();
+
+            //add lights
+            SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);
+            SpriteBatch.Draw(_BackBuffer.LightMap, new Vector2(0, 0), new Color(255, 255, 255, 255));
+            SpriteBatch.End();
+
         }
+
 
 
     }

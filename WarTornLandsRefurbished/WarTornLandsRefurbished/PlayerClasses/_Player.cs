@@ -42,12 +42,25 @@ namespace WarTornLands.PlayerClasses
             AnimatedDrawer animS = new AnimatedDrawer(Game.Content.Load<Texture2D>("character_64x128"));
 
             Animation anim = new Animation("walkDown");
-
             for (int i = 0; i < 4; i++)
                 anim.AddFrame(new Rectangle(64 * i, 0, 64, 128));
             animS.AddAnimation(anim);
-
             animS.SetCurrentAnimation("walkDown");
+
+            anim = new Animation("walkLeft");
+            for (int i = 4; i < 8; i++)
+                anim.AddFrame(new Rectangle(64 * i, 0, 64, 128));
+            animS.AddAnimation(anim);
+
+            anim = new Animation("walkRight");
+            for (int i = 0; i < 4; i++)
+                anim.AddFrame(new Rectangle(64 * i, 128, 64, 128));
+            animS.AddAnimation(anim);
+
+            anim = new Animation("walkUp");
+            for (int i = 4; i < 8; i++)
+                anim.AddFrame(new Rectangle(64 * i, 128, 64, 128));
+            animS.AddAnimation(anim);
 
             this.AddModule(animS);
         }

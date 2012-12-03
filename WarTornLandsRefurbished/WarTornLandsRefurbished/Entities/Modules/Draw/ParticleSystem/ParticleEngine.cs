@@ -53,13 +53,14 @@ namespace WarTornLands.Entities.Modules.Draw.ParticleSystem
     {
         private EmitterSetting _setting;
         private Random _random = new Random();
-        public Vector2 EmitterLocation { get; set; }
         private List<Particle> _particles;
         private List<Texture2D> _textures;
+        private bool _isLight = false;
 
-        public ParticleSystem(EmitterSetting setting, List<Texture2D> textures, Vector2 location)
+        public bool IsLight { get { return _isLight; } set { _isLight = value; } }
+        public ParticleSystem(EmitterSetting setting, List<Texture2D> textures)
         {
-            EmitterLocation = location;
+
             this._textures = textures;
             this._particles = new List<Particle>();
             _setting = setting;
@@ -69,7 +70,6 @@ namespace WarTornLands.Entities.Modules.Draw.ParticleSystem
         private Particle GenerateNewParticle()
         {
             Texture2D texture = _textures[_random.Next(_textures.Count)];
-            Vector2 position = EmitterLocation;
             Vector2 velocity = new Vector2(_setting.SpeedX.ValueInRange, _setting.SpeedY.ValueInRange);
             float angle = _setting.StartingAngle.ValueInRange;
             float angularVelocity = _setting.AnglePermutation.ValueInRange;
@@ -78,14 +78,7 @@ namespace WarTornLands.Entities.Modules.Draw.ParticleSystem
             float ttl = _setting.Lifetime.ValueInRange;
             float alpha = _setting.Alpha.ValueInRange;
             float alphaDecay = _setting.AlphaDecay.ValueInRange;
-            return new Particle(texture, position, velocity, angle, angularVelocity, color, size, ttl,alpha,alphaDecay);
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Begin();
-            
-            spriteBatch.End();
+            return new Particle(texture,  velocity, angle, angularVelocity, color, size, ttl,alpha,alphaDecay);
         }
 
 
@@ -93,10 +86,11 @@ namespace WarTornLands.Entities.Modules.Draw.ParticleSystem
 
         public void Draw(SpriteBatch batch, DrawInformation information)
         {
+            if (_isLight != information.DrawLights)
+                return;
             for (int index = 0; index < _particles.Count; index++)
             {
-                _particles[index].StartingPosition = information.Position;
-                _particles[index].Draw(Game1.Instance.SpriteBatch);
+                _particles[index].Draw(Game1.Instance.SpriteBatch,information);
             }
         }
 
