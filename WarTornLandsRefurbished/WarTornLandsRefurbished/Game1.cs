@@ -197,7 +197,6 @@ namespace WarTornLands
             base.Draw(gameTime);
 
             SpriteBatch.End();*/
-            Inventory.DrawMenue();
             if (foreward)
                 drawcounter += gameTime.ElapsedGameTime.Milliseconds;
             else
@@ -232,7 +231,10 @@ namespace WarTornLands
             //set back normal target and draw game
             GraphicsDevice.SetRenderTarget(null);
             SpriteBatch.Begin();
+
             base.Draw(gameTime);
+
+            Inventory.DrawMenue();
             SpriteBatch.End();
 
             //add lights
