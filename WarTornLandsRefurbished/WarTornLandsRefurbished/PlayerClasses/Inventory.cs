@@ -23,17 +23,19 @@ namespace WarTornLands.PlayerClasses
 
        private bool _inventoryisopen;
 
+       private Texture2D _itempicture;
+
        private short _anzahlaktuellerItemsimSpiel;
 
         #endregion
 
         #region Itemvariablen
 
-        private short _anzahlaktuellerItemsimSpiel = 2;
-
+       private short _anzahlpotions;
+       private short _maxanzahlpotions;
 
         private short _anzahlschluessel;
-        private short _maxschluessel = 2;
+        private short _maxschluessel;
 
         private bool _getnormalhammer;
         private bool _usenormalhammer;
@@ -99,16 +101,6 @@ namespace WarTornLands.PlayerClasses
         }
 
        #endregion
-       
-       private Inventory()
-       { 
-           _deltawidth = (Game1.Instance.Window.ClientBounds.Width / _standardwidth);
-           _deltaheight = (Game1.Instance.Window.ClientBounds.Height / _standardheight);
-           _itempicture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
-           _radius = 100;
-           _anzahlaktuellerItemsimSpiel = 8;
-           _inventoryisopen = false;
-       }
 
         public Inventory()
             : base(Game1.Instance as Game)
@@ -117,6 +109,10 @@ namespace WarTornLands.PlayerClasses
             _deltaheight = (Game1.Instance.Window.ClientBounds.Height / _standardheight);
             _itempicture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
             _radius = 100;
+            _anzahlaktuellerItemsimSpiel = 8;
+            _inventoryisopen = false;
+            _maxanzahlpotions = 5;
+            _maxschluessel = 2;
 
             _items = new List<Item>();
         }
