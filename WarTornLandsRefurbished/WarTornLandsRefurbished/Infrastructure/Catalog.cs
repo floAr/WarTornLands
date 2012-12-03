@@ -80,9 +80,15 @@ namespace WarTornLands.Infrastructure
         public void SetupTestCatalog()
         {
             _npcs.Add("Jason");
+            _npcs.Add("Gruselute");
+            _npcs.Add("Frederik");
             _locations.Add("Crystal~Lake");
             _weapons.Add("machete");
+            _weapons.Add("Kleiner~Schluessel");
+            _weapons.Add("Riesenschluessel");
+            _weapons.Add("Schluessel");
             _armor.Add("Hockey~Mask");
+            _armor.Add("Koffer");
         }
 
         public void SetColors(
