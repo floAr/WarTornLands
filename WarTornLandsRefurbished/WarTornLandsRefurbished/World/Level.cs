@@ -26,10 +26,12 @@ namespace WarTornLands.World
     public class Level
     {
         private Dictionary<string, Area> _areas;
+        private Game _game;
 
         public Level(Game game)
         {
             _areas = new Dictionary<string, Area>();
+            _game = game;
         }
 
         public bool AddArea(string name, Area area)
@@ -353,7 +355,7 @@ namespace WarTornLands.World
             StaticDrawer bossDrawer = new StaticDrawer();
             bossDrawer.Texture = Game1.Instance.Content.Load<Texture2D>("gruselute");
             boss.AddModule(bossDrawer);
-            boss.AddModule(new ExplodeAndLoot(null));
+            //boss.AddModule(new ExplodeAndLoot(null));
             entityLayer.AddEntity(boss);
 
             //burp torch
