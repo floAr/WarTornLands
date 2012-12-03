@@ -35,6 +35,8 @@ namespace WarTornLands
         public bool DrawingLights { get { return _drawLights; } set { _drawLights = value; } }
 
         public Player Player { get; private set; }
+        //test für draw
+        public Inventory Inventory { get; private set; }
 
         //public Interface Interface { get; private set; }
         public Level Level { get; private set; }
@@ -76,8 +78,8 @@ namespace WarTornLands
             Player = Player.Instance;
             Player.DrawOrder = 100;
             Player.Position = new Vector2(39* Constants.TileSize, 15 * Constants.TileSize);
-            this.Components.Add(Player);
-            this.Components.Add(DialogManager.Instance);
+            Inventory = Inventory.GetInstance();
+            this.Components.Add(Player);            this.Components.Add(DialogManager.Instance);
 
             base.Initialize();
         }
@@ -187,6 +189,7 @@ namespace WarTornLands
             // Kapseln in eigene Klasse, für Menüs etc.
             SpriteBatch.Begin();
        
+
             particleTest.Draw(gameTime);
             staticTest.Draw(gameTime);
             particleTest.Draw(gameTime);
@@ -227,7 +230,10 @@ namespace WarTornLands
             //set back normal target and draw game
             GraphicsDevice.SetRenderTarget(null);
             SpriteBatch.Begin();
+
             base.Draw(gameTime);
+
+            Inventory.DrawMenue();
             SpriteBatch.End();
 
             //add lights

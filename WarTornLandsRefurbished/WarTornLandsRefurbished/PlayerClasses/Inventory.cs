@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 using WarTornLands.Infrastructure;
+using Microsoft.Xna.Framework;
 
 namespace WarTornLands.PlayerClasses
 {
@@ -12,15 +14,27 @@ namespace WarTornLands.PlayerClasses
     {
        private static Inventory _inventory;
 
+       #region Drawvariablen
+
+       private double _standardheight = 480;
+       private double _standardwidth = 800;
+       private double _deltaheight;
+       private double _deltawidth;
+       private int _radius;
+
+       private Texture2D _itempicture; 
+
+       #endregion
+
        #region Itemvariablen
 
        private short _anzahlaktuellerItemsimSpiel = 2;
 
        private short _anzahlpotions;
-       private short _maxpotions;
+       private short _maxpotions = 2;
 
        private short _anzahlschluessel;
-       private short _maxschluessel;
+       private short _maxschluessel = 2;
 
        private bool _getnormalhammer;       
        private bool _usenormalhammer;
@@ -86,12 +100,19 @@ namespace WarTornLands.PlayerClasses
        #endregion
        
        private Inventory()
-       { }
+       { 
+           _deltawidth = (Game1.Instance.Window.ClientBounds.Width / _standardwidth);
+           _deltaheight = (Game1.Instance.Window.ClientBounds.Height / _standardheight);
+           _itempicture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
+           _radius = 100;
+       }
 
        public static Inventory GetInstance()
        {
            if (_inventory == null)
-               _inventory = new Inventory();
+           {
+               _inventory = new Inventory();               
+           }
 
            return _inventory;
        }
@@ -128,5 +149,20 @@ namespace WarTornLands.PlayerClasses
            }
 
         }
+
+
+       public void AktivMenue()
+       {
+
+       }
+
+       public void DrawMenue()
+       {
+           for (double i = 0; i < 360; i += 360/8)
+           {
+               Game1.Instance.SpriteBatch.Draw(_itempicture, new Microsoft.Xna.Framework.Rectangle((int)(((400 + _radius * Math.Cos(i)) * _deltawidth)), (int)(((240 +_radius * Math.Sin(i)) * _deltaheight)), 60, 60), Color.White);
+           } 
+       }
+
     }
 }

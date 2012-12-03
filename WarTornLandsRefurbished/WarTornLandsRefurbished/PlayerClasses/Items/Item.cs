@@ -39,7 +39,9 @@ namespace WarTornLands.PlayerClasses.Items
         Holzschild = 201,
 
         // Schlüssel zum öffnen von Dungeontüren
-        Schluessel = 401
+        KleinerSchluessel = 401,
+
+        MasterKey = 402
     }
 
     public class Item
@@ -56,6 +58,18 @@ namespace WarTornLands.PlayerClasses.Items
         public Item(ItemTypes itemtyp)
         {
             _itemtyp = itemtyp;
+
+            if (ItemTypes.KleinerSchluessel == itemtyp)
+            {
+                Name = "Kleiner Schlüssel";
+            }
+        }
+
+        public Item(ItemTypes itemtyp, string name)
+        {
+            _itemtyp = itemtyp;
+            Name = name;
         }
     }
+
 }
