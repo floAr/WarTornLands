@@ -8,5 +8,6 @@ namespace WarTornLands.Entities.Modules.Think.Parts
     interface BaseAbility
     {
         bool TryExecute();
+        bool TryCancel();
     }
 }

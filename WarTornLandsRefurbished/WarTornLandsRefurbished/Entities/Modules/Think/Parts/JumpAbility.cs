@@ -96,6 +96,11 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             else return false;
         }
 
+        public bool TryCancel()
+        {
+            return false;
+        }
+
         #region Subscribed events
 
         private void OnBang(object sender, BangEventArgs e)

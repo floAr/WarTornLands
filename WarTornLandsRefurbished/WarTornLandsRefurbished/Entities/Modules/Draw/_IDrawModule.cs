@@ -40,6 +40,8 @@ namespace WarTornLands.Entities.Modules.Draw
         ///   <c>true</c> if centered; otherwise, <c>false</c>.
         /// </value>
         public bool Centered { get; set; }
+
+        public bool DrawLights { get; set; }
     }
     /// <summary>
     /// Interface for the class which executes the draw.
@@ -49,7 +51,7 @@ namespace WarTornLands.Entities.Modules.Draw
     {
          void Draw(SpriteBatch batch, DrawInformation information);
          void Update(GameTime gameTime);
-
+       
          Vector2 Size { get; }
     }
 }
