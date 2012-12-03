@@ -286,12 +286,12 @@ namespace WarTornLands.World
             // Add entities
             EntityLayer entityLayer = new EntityLayer(90);
 
-            // Herp door
+            // Normal door
             Entity door1 = new Entity(Game1.Instance, new Vector2(31, 31) * Constants.TileSize);
             StaticDrawer sd1 = new StaticDrawer();
             sd1.Texture = Game1.Instance.Content.Load<Texture2D>("doorClosed");
             door1.AddModule(sd1);
-            OpenDoorOnCollide d1coll = new OpenDoorOnCollide();
+            OpenDoorOnCollide d1coll = new OpenDoorOnCollide((int)ItemTypes.KleinerSchluessel);
             door1.AddModule(d1coll);
             entityLayer.AddEntity(door1);
 
