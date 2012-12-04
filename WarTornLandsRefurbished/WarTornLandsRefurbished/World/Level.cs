@@ -216,10 +216,10 @@ namespace WarTornLands.World
         /// </summary>
         public void LoadChristmasCaverns()
         {
+            SoundManager.Instance.PlaySong("69_spirit_temple");
             // Floor tiles
             const int STONE_FLOOR = 33; //was 49
             const int BOSS_FLOOR = 43;
-
             // Wall tiles
             const int STONE_WALL = 28;//was 28
 

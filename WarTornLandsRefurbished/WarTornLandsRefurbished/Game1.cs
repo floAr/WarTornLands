@@ -61,7 +61,6 @@ namespace WarTornLands
         protected override void Initialize()
         {
             // TODO: Fügen Sie Ihre Initialisierungslogik hier hinzu
-
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             Level = new Level(this);
             //Level.LoadTestLevel();
@@ -85,7 +84,8 @@ namespace WarTornLands
         {
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-
+          
+        //    SoundManager.Instance.StartPlaying("ambient");
             //Add Default Explosion Module
             Catalog.Instance.SetupTestCatalog();
 
@@ -122,15 +122,15 @@ namespace WarTornLands
             _BackBuffer = new BackBuffer(GraphicsDevice, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
 
             List<Color> daylight = new List<Color>();
-            daylight.Add(new Color(30,30,80));
-            daylight.Add(new Color(30, 30, 70));
-            daylight.Add(new Color(30, 20, 70));
-            daylight.Add(new Color(20, 30, 75));
+            daylight.Add(new Color(40,30,80));
+            daylight.Add(new Color(40, 30, 70));
+            daylight.Add(new Color(40, 20, 70));
+            daylight.Add(new Color(40, 30, 75));
             daylight.Add(new Color(25, 25, 80));
 
             Lightmanager.SetDayCycle(daylight, 18000);
 
-            //  Lightmanager.SetStaticColor(new Color(15,15,30));
+          //    Lightmanager.SetStaticColor(Color.White);
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
 
