@@ -152,6 +152,10 @@ namespace WarTornLands.PlayerClasses
                     _countKeys++;
                     _normalkeys.Add(item);
                     return true;
+                case Items.ItemTypes.MasterKey:
+                    _countKeys++;
+                    _normalkeys.Add(item);
+                    return true;
                 default:
                     return false;
             }
@@ -192,8 +196,15 @@ namespace WarTornLands.PlayerClasses
                         case 1:
                             _itemPicture = _keyPicture;
                             break;
-                        case 2: 
-                            _itemPicture = _bosskeyPicture;
+                        case 2:
+                            if (HasKey(402))
+                            {
+                                _itemPicture = _bosskeyPicture;
+                            }
+                            else
+                            {
+                                _itemPicture = _chestPicture;
+                            }
                             break;
                         default :
                             _itemPicture = _chestPicture;
