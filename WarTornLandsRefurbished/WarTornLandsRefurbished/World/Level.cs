@@ -26,7 +26,7 @@ namespace WarTornLands.World
     public class Level
     {
         private Dictionary<string, Area> _areas;
-
+        private Random r = new Random();
         public Level(Game game)
         {
             _areas = new Dictionary<string, Area>();
@@ -286,7 +286,7 @@ namespace WarTornLands.World
             #region Beautify level
             // I want to black out every wall which is not attached to a floor. we will assume a wall height of 2 tiles
             int wallheight = 2;
-            TileLayer overlayer = new TileLayer(99);
+            TileLayer overlayer = new TileLayer(52);
             Tile[,] mastergrid = new Tile[56, 46];
             for (int x = 0; x < 56; ++x)
             {
@@ -331,6 +331,7 @@ namespace WarTornLands.World
             {
                 for (int y = 0; y < 46; ++y)
                 {
+
                     if (mastergrid[x, y].TileNum != 0)//there shall be blackout
                     {
                         if (x == 0 || x == 55 || y == 0 || y == 45)
@@ -338,53 +339,74 @@ namespace WarTornLands.World
                             continue;
                         }
 
-                        if (mastergrid[x, y + 1].TileNum == 0)
+                        if (mastergrid[x, y + 1].TileNum == 0 || mastergrid[x, y + 1].TileNum > 9)
                         {
                             mastergrid[x, y].TileNum = 1;
                             continue;
                         }
-                        if (mastergrid[x - 1, y].TileNum == 0)
+                        if (mastergrid[x - 1, y].TileNum == 0 || mastergrid[x-1, y ].TileNum >9)
                         {
                             mastergrid[x, y].TileNum = 2;
                             continue;
                         }
-                        if (mastergrid[x, y-1].TileNum == 0)
+                        if (mastergrid[x, y - 1].TileNum == 0 || mastergrid[x, y - 1].TileNum >9)
                         {
                             mastergrid[x, y ].TileNum = 3;
                             continue;
                         }
-                        if (mastergrid[x + 1, y].TileNum == 0)
+                        if (mastergrid[x + 1, y].TileNum == 0 || mastergrid[x + 1, y].TileNum >9)
                         {
                             mastergrid[x, y].TileNum = 4;
                             continue;
                         }
-                        if (mastergrid[x - 1, y].TileNum == 0 && mastergrid[x, y + 1].TileNum == 0 && mastergrid[x-1, y + 1].TileNum == 0)
+                        if ((mastergrid[x - 1, y].TileNum == 0 && mastergrid[x, y + 1].TileNum == 0 && mastergrid[x-1, y + 1].TileNum == 0)||
+                            (mastergrid[x - 1, y].TileNum >9 && mastergrid[x, y + 1].TileNum >9 && mastergrid[x-1, y + 1].TileNum >9))
                         {
                             mastergrid[x, y].TileNum = 5;
                             continue;
                         }
-                        if (mastergrid[x - 1, y].TileNum == 0 && mastergrid[x, y - 1].TileNum == 0 && mastergrid[x - 1, y - 1].TileNum == 0)
+                        if ((mastergrid[x - 1, y].TileNum == 0 && mastergrid[x, y - 1].TileNum == 0 && mastergrid[x - 1, y - 1].TileNum == 0)||
+                        (mastergrid[x - 1, y].TileNum >9 && mastergrid[x, y - 1].TileNum >9 && mastergrid[x - 1, y - 1].TileNum >9))
                         {
                             mastergrid[x, y].TileNum = 6;
                             continue;
                         }
-                        if (mastergrid[x + 1, y ].TileNum == 0 && mastergrid[x , y - 1].TileNum == 0 && mastergrid[x + 1, y - 1].TileNum == 0)
+                        if ((mastergrid[x + 1, y ].TileNum == 0 && mastergrid[x , y - 1].TileNum == 0 && mastergrid[x + 1, y - 1].TileNum == 0)||
+                            (mastergrid[x + 1, y ].TileNum >9 && mastergrid[x , y - 1].TileNum >9 && mastergrid[x + 1, y - 1].TileNum >9))
                         {
                             mastergrid[x, y].TileNum = 7;
                             continue;
                         }
-                        if (mastergrid[x , y + 1].TileNum == 0 && mastergrid[x + 1, y].TileNum == 0 && mastergrid[x + 1, y + 1].TileNum == 0)
+                        if ((mastergrid[x , y + 1].TileNum == 0 && mastergrid[x + 1, y].TileNum == 0 && mastergrid[x + 1, y + 1].TileNum == 0)||
+                            (mastergrid[x , y + 1].TileNum >9 && mastergrid[x + 1, y].TileNum >9 && mastergrid[x + 1, y + 1].TileNum >9))
                         {
                             mastergrid[x, y].TileNum = 8;
                             continue;
                         }
 
                     }
+                    else //adding some magic
+                    {
+                        if (wallGrid[x, y].TileNum != 0)//we are talking about a wall
+                        {
+                            if (r.Next(100) > 60)
+                                //3rd row overlay
+                                mastergrid[x, y].TileNum = 19 + r.Next(9);
+                        }
+                        else//floor is here to come
+                        {
+                            if (r.Next(100) > 85)
+                            {
+                                //2nd row                         
+                                mastergrid[x, y].TileNum = 10 + r.Next(9);
+                            }
+                        }
+                    }
                 }
             }
 
 
-            overlayer.LoadGrid(mastergrid, false, "overlay", true);
+            overlayer.LoadGrid(mastergrid, false, "overlay", false);
             cavernsArea.AddLayer(overlayer);
             #endregion
             // Add entities
@@ -520,24 +542,28 @@ namespace WarTornLands.World
             //fungus
             StaticDrawer fungusS = new StaticDrawer();
             fungusS.Texture = Game1.Instance.Content.Load<Texture2D>("fungus");
-            AnimatedDrawer fungusGlow = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("fungus_light"));
-            Animation glow = new Animation("glow");
-            glow.AddFrame(new Rectangle(64, 0, 64, 64));
-            glow.AddFrame(new Rectangle(64, 0, 64, 64));
-            glow.AddFrame(new Rectangle(64, 0, 64, 64));
-            glow.AddFrame(new Rectangle(64, 0, 64, 64));
-            glow.AddFrame(new Rectangle(64, 0, 64, 64));
-            glow.AddFrame(new Rectangle(0, 0, 64, 64));
-            glow.AddFrame(new Rectangle(0, 0, 64, 64));
-            fungusGlow.AddAnimation(glow);
-            fungusGlow.SetCurrentAnimation("glow");
-            fungusGlow.IsLight = true;
-            Entity fungus = new Entity(Game1.Instance, new Vector2(15, 15) * Constants.TileSize, "fungus");
-            fungus.AddModule(new DualDraw(fungusS, fungusGlow));
+            
+          
 
-            entityLayer.AddEntity(fungus);
-            Lightmanager.AddLight(fungus);
-
+            for (int i = 0; i < 3; ++i)
+            {
+                Entity fungus = new Entity(Game1.Instance, new Vector2(13 + r.Next(8), 15 + r.Next(5)) * Constants.TileSize, "fungus");
+                AnimatedDrawer fungusGlow = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("fungus_light"));
+                Animation glow = new Animation("glow");
+                glow.AddFrame(new Rectangle(64, 0, 64, 64), r.Next(1000));
+                glow.AddFrame(new Rectangle(64, 0, 64, 64));
+                glow.AddFrame(new Rectangle(64, 0, 64, 64));
+                glow.AddFrame(new Rectangle(64, 0, 64, 64));
+                glow.AddFrame(new Rectangle(64, 0, 64, 64));
+                glow.AddFrame(new Rectangle(0, 0, 64, 64), r.Next(1000));
+                glow.AddFrame(new Rectangle(0, 0, 64, 64));
+                fungusGlow.AddAnimation(glow,r.Next(1000));
+                fungusGlow.SetCurrentAnimation("glow");
+                fungusGlow.IsLight = true;
+                fungus.AddModule(new DualDraw(fungusS, fungusGlow));
+                entityLayer.AddEntity(fungus);
+                Lightmanager.AddLight(fungus);
+            }
             //endfungus
             // Add area to level
             AddArea("ChristmasCaverns", cavernsArea);
