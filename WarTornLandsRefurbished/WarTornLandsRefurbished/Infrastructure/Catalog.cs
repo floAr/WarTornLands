@@ -21,7 +21,7 @@ namespace WarTornLands.Infrastructure
         public static Color ConsumableColor = Color.Wheat;
         private List<string> _consumables;
 
-        public static Color ArmorColor = Color.Green;
+        public static Color ArmorColor = Color.LightGreen;
         private List<string> _armor;
 
         public static Color NpcColor = Color.Violet;
@@ -89,6 +89,7 @@ namespace WarTornLands.Infrastructure
             _weapons.Add("Schluessel");
             _armor.Add("Hockey~Mask");
             _armor.Add("Koffer");
+            _armor.Add("Kaese");
         }
 
         public void SetColors(

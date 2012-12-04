@@ -186,10 +186,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="potion.png">
-      <Name>potion</Name>
+    <Compile Include="frederik.png">
+      <Name>frederik</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="69_spirit_temple.mp3">
+      <Name>69_spirit_temple</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +207,11 @@
     </Compile>
     <Compile Include="key.png">
       <Name>key</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="potion.png">
+      <Name>potion</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

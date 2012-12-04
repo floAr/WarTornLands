@@ -18,13 +18,13 @@ namespace WarTornLands.Infrastructure
         private Texture2D _textBox;
         private SpriteFont _font;
         private ConversationItem _currentDisplay;
-        private readonly static Vector2 _topLeftPosition = new Vector2(20, 200);
+        private readonly static Vector2 _topLeftPosition = new Vector2(30, 200);
         private readonly static Vector2 _relBoxPosition = new Vector2(0, 0);
         private readonly static Vector2 _relSpeakerNamePosition = new Vector2(10, 10);
 
         private readonly static Vector2 _relTextPosition = new Vector2(40, 20);
         private readonly static float _lineSpacing = -3;
-        private readonly static float _lineLength = 600;    // in pixels
+        private readonly static float _lineLength = 450;    // in pixels
 
         // Text format commands
         // Example: /n executes a line wrap
@@ -78,6 +78,9 @@ namespace WarTornLands.Infrastructure
             Game1 game = Game1.Instance;
             string text = _currentDisplay.Text;
             Vector2 pos = Vector2.Zero;
+
+            game.SpriteBatch.Draw(game.Content.Load<Texture2D>("dialogbox"),
+                _topLeftPosition - new Vector2(15, 10), Color.White);
 
             while (text.Length > 0)
             {

@@ -192,7 +192,7 @@ namespace WarTornLands.PlayerClasses
                         case 1:
                             _itemPicture = _keyPicture;
                             break;
-                        case 2:
+                        case 2: 
                             _itemPicture = _bosskeyPicture;
                             break;
                         default :
