@@ -186,6 +186,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frederik.png">
+      <Name>frederik</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="69_spirit_temple.mp3">
       <Name>69_spirit_temple</Name>
       <Importer>Mp3Importer</Importer>

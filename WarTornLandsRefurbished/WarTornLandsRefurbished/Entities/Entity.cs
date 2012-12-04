@@ -73,6 +73,7 @@ namespace WarTornLands.Entities
         public float Height { get; internal set; }
         public float BaseHeight { get; internal set; }
         public float Health { get; internal set; }
+        public float MaxHealth { get; internal set; }
         public string Name { get; internal set; }
 
         private Vector2 _prevPosition=Vector2.Zero;

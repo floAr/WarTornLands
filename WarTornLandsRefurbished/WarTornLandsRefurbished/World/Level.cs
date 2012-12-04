@@ -462,13 +462,14 @@ namespace WarTornLands.World
             Entity crazyDude = new Entity(Game1.Instance, new Vector2(18 * Constants.TileSize, 15 * Constants.TileSize + 10));
             crazyDude.AddModule(new Obstacle());
             StaticDrawer sd4 = new StaticDrawer();
-            sd4.Texture = Game1.Instance.Content.Load<Texture2D>("gruselute");
+            sd4.Texture = Game1.Instance.Content.Load<Texture2D>("frederik");
             crazyDude.AddModule(sd4);
             cons = new List<Conversation>();
             // First conversation
             con = new Conversation("1");
-            con.Add(new TextLine("Nein!! Ich bin nicht die Gruselute!"));
-            con.Add(new TextLine("Ich bin's, Frederik! Die boese Gruselute hat mich verhext. Hier, nimm diesen Schluessel und hau ihr eins vor'n Koffer!"));
+            con.Add(new TextLine("Piep Piep!! Hast du Kaese?"));
+            con.Add(new TextLine("Ich bin's, Frederik! Piep! Die boese Gruselute hat mich verhext."));
+            con.Add(new TextLine("Hier, nimm diesen Schluessel und hau ihr eins vor'n Koffer!"));
             key = new Item(ItemTypes.SmallKey);
             items = new List<Item>();
             items.Add(key);
@@ -477,7 +478,7 @@ namespace WarTornLands.World
             cons.Add(con);
             // Second conversation
             con = new Conversation("2");
-            con.Add(new TextLine("Die alte Gruselute schaffst du mit Links!"));
+            con.Add(new TextLine("Die alte Gruselute schaffst du mit links!"));
             cons.Add(con);
 
             crazyDude.AddModule(new Dialog(cons, crazyDude));
