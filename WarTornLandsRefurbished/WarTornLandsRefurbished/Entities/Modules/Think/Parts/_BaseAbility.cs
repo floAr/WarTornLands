@@ -9,5 +9,6 @@ namespace WarTornLands.Entities.Modules.Think.Parts
     {
         bool TryExecute();
         bool TryCancel();
+        void SetOwner(Entity owner);
     }
 }
