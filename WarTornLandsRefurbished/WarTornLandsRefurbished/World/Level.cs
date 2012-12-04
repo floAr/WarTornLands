@@ -574,6 +574,8 @@ namespace WarTornLands.World
                 entityLayer.AddEntity(fungus);
                 Lightmanager.AddLight(fungus);
             }
+
+       
             //endfungus
             // Add area to level
             AddArea("ChristmasCaverns", cavernsArea);
