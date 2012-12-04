@@ -64,7 +64,7 @@ namespace WarTornLands.PlayerClasses.Items
 
             if (ItemTypes.SmallKey == itemType)
             {
-                Name = "Kleiner Schluessel";
+                Name = "Kleiner~Schluessel";
             }
 
             if (ItemTypes.MasterKey == itemType)

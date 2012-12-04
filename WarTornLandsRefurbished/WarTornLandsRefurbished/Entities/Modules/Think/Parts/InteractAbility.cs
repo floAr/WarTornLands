@@ -60,27 +60,42 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
             Entity closest = targets.First();
             float closestDistSquared = float.PositiveInfinity;
-
+            SortedList<float, Entity> resultList = new SortedList<float, Entity>();
             foreach (Entity ent in targets)
             {
                 if (!ent.Equals(_owner))
                 {
                     Vector2 distance = _owner.Position - ent.Position;
-                    if (distance.LengthSquared() < closestDistSquared)
+                  /*  if (distance.LengthSquared() < closestDistSquared)
                     {
                         closest = ent;
                         closestDistSquared = distance.LengthSquared();
-                    }
+                    }*/
+                    float key = distance.LengthSquared();
+                    while (resultList.ContainsKey(key))
+                        key += 0.01f;                    
+                    resultList.Add(key, ent);
                 }
             }
 
+            for (int i = 0; i < resultList.Count; ++i)
+            {
+                Entity e = resultList.Values[i];
+                if (e.MInteractModule != null)
+                {
+                    e.Interact(_owner);
+                    return true;
+                }
+            }
+            return false;
+            /*
             if (!closest.Equals(_owner))
             {
                 closest.Interact(_owner);
                 return true;
             }
             else
-                return false;
+                return false;*/
         }
 
         public bool TryCancel()

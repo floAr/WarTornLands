@@ -111,7 +111,7 @@ namespace WarTornLands.Infrastructure
             List<Entity> temp = new List<Entity>(curEntities);
             foreach (Entity ent in temp)
             {
-                if (ent.MColideModule() == null)
+                if (ent.MColideModule == null)
                     curEntities.Remove(ent);
             }
 

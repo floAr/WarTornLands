@@ -38,6 +38,8 @@ namespace WarTornLands.PlayerClasses
         private Player(Game1 game)
             : base(game, new Vector2(0, 0),  "Player")
         {
+            Health = 80;
+            MaxHealth = 100;
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
             _inventory = new Inventory();
             this.AddModule(new ThinkInputGuided());

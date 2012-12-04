@@ -38,6 +38,7 @@ namespace WarTornLands.Entities.Modules.Think
             _input.Hit.Pressed += new EventHandler(OnExecuteHit);
             _input.Interact.Pressed += new EventHandler(OnInteract);
             _input.Jump.Pressed += new EventHandler(OnJump);
+            _input.Quit.Pressed += new EventHandler(OnQuit);
         }
 
         public void Update(GameTime gameTime)
@@ -73,8 +74,10 @@ namespace WarTornLands.Entities.Modules.Think
             // false = X direction over Y
             if (true)
             {
-                XFacing(moveDirection);
-                YFacing(moveDirection);
+                if (Math.Abs(moveDirection.X) >= Math.Abs(moveDirection.Y))
+                    XFacing(moveDirection);
+                else
+                    YFacing(moveDirection);
             }
             else
             {
@@ -133,6 +136,11 @@ namespace WarTornLands.Entities.Modules.Think
         private void OnJump(object sender, EventArgs e)
         {
             _jump.TryExecute();
+        }
+
+        private void OnQuit(object sender, EventArgs e)
+        {
+            Game1.Instance.Exit();
         }
 
         #endregion

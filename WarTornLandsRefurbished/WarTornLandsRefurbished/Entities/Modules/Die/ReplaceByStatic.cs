@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using WarTornLands.Entities.Modules.Draw;
 using Microsoft.Xna.Framework.Graphics;
+using WarTornLands.Entities.Modules.Collide;
 
 namespace WarTornLands.Entities.Modules.Die
 {
@@ -21,6 +22,7 @@ namespace WarTornLands.Entities.Modules.Die
             _owner.RemoveAllModules();
             StaticDrawer sd = new StaticDrawer();
             sd.Texture = Game1.Instance.Content.Load<Texture2D>(_name);
+            _owner.AddModule(new Obstacle());
             _owner.AddModule(sd);
         }
     }

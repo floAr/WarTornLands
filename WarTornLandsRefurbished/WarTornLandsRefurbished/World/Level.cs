@@ -28,6 +28,7 @@ namespace WarTornLands.World
         private Dictionary<string, Area> _areas;
         private Game _game;
 
+        private Random r = new Random();
         public Level(Game game)
         {
             _areas = new Dictionary<string, Area>();
@@ -203,9 +204,9 @@ namespace WarTornLands.World
             torchlight.IsLight = true;
 
             torchlight.Texture = Game1.Instance.Content.Load<Texture2D>("flame3");
-            
-            torch.AddModule(new DualDraw(torchlight,pSystem));
-     //       torch.AddModule(pSystem);
+
+            torch.AddModule(new DualDraw(torchlight, pSystem));
+            //       torch.AddModule(pSystem);
             layer3.AddEntity(torch);
             Lightmanager.AddLight(torch);
             //endtorch
@@ -218,20 +219,20 @@ namespace WarTornLands.World
         /// </summary>
         public void LoadChristmasCaverns()
         {
+            SoundManager.Instance.PlaySong("69_spirit_temple");
             // Floor tiles
-            const int STONE_FLOOR = 49;
+            const int STONE_FLOOR = 33; //was 49
             const int BOSS_FLOOR = 43;
-
             // Wall tiles
-            const int STONE_WALL = 28;
+            const int STONE_WALL = 28;//was 28
 
             // Create an empty area in the right size
-            Area cavernsArea= new Area(new Rectangle(0, 0, 56, 46));
+            Area cavernsArea = new Area(new Rectangle(0, 0, 56, 46));
 
             #region Add a floor layer
             TileLayer floorLayer = new TileLayer(0);
             Tile[,] floorGrid = new Tile[56, 46];
-            
+
             // Set normal floor
             for (int x = 0; x < 56; ++x)
                 for (int y = 0; y < 46; ++y)
@@ -285,11 +286,142 @@ namespace WarTornLands.World
             cavernsArea.AddLayer(wallLayer);
             #endregion
 
+             #region Beautify level
+            // I want to black out every wall which is not attached to a floor. we will assume a wall height of 2 tiles
+            int wallheight = 2;
+            TileLayer overlayer = new TileLayer(52);
+            Tile[,] mastergrid = new Tile[56, 46];
+            for (int x = 0; x < 56; ++x)
+            {
+                for (int y = 0; y < 46; ++y)
+                {
+                    if (wallGrid[x, y].TileNum != 0)//there shall be a wall
+                    {
+                        if (x == 0 || x == 55 || y == 0 || y == 45)
+                        {
+                            mastergrid[x, y].TileNum = 9;
+                            continue;
+                        }
+                        if (wallGrid[x + 1, y + 1].TileNum != 0 &&
+                            wallGrid[x + 1, y].TileNum != 0 &&
+                            wallGrid[x + 1, y - 1].TileNum != 0 &&
+                            wallGrid[x, y + 1].TileNum != 0 &&
+                            wallGrid[x, y - 1].TileNum != 0 &&
+                            wallGrid[x - 1, y + 1].TileNum != 0 &&
+                            wallGrid[x - 1, y].TileNum != 0 &&
+                            wallGrid[x - 1, y - 1].TileNum != 0)//we are surrounded by walls
+                        {
+                            if (x == 13 && y == 12)
+                                Console.WriteLine("derp");
+                            bool isWallPiece = false;
+                            for (int i = 0; i <= wallheight; ++i)
+                            {
+                                if (y >= 45 - wallheight)
+                                {
+                                    continue;
+                                }
+                                isWallPiece |= wallGrid[x - 1, y + i].TileNum == 0 || wallGrid[x, y + i].TileNum == 0 || wallGrid[x + 1, y + i].TileNum == 0;
+                                if (isWallPiece)
+                                    break;
+                            }
+                            if (!isWallPiece)
+                                mastergrid[x, y].TileNum = 9;
+                        }
+                    }
+                }
+            }
+            for (int x = 0; x < 56; ++x)
+            {
+                for (int y = 0; y < 46; ++y)
+                {
+
+                    if (mastergrid[x, y].TileNum != 0)//there shall be blackout
+                    {
+                        if (x == 0 || x == 55 || y == 0 || y == 45)
+                        {
+                            continue;
+                        }
+
+                        if (mastergrid[x, y + 1].TileNum == 0 || mastergrid[x, y + 1].TileNum > 9)
+                        {
+                            mastergrid[x, y].TileNum = 1;
+                            continue;
+                        }
+                        if (mastergrid[x - 1, y].TileNum == 0 || mastergrid[x-1, y ].TileNum >9)
+                        {
+                            mastergrid[x, y].TileNum = 2;
+                            continue;
+                        }
+                        if (mastergrid[x, y - 1].TileNum == 0 || mastergrid[x, y - 1].TileNum >9)
+                        {
+                            mastergrid[x, y ].TileNum = 3;
+                            continue;
+                        }
+                        if (mastergrid[x + 1, y].TileNum == 0 || mastergrid[x + 1, y].TileNum >9)
+                        {
+                            mastergrid[x, y].TileNum = 4;
+                            continue;
+                        }
+                        if ((mastergrid[x - 1, y].TileNum == 0 && mastergrid[x, y + 1].TileNum == 0 && mastergrid[x-1, y + 1].TileNum == 0)||
+                            (mastergrid[x - 1, y].TileNum >9 && mastergrid[x, y + 1].TileNum >9 && mastergrid[x-1, y + 1].TileNum >9))
+                        {
+                            mastergrid[x, y].TileNum = 5;
+                            continue;
+                        }
+                        if ((mastergrid[x - 1, y].TileNum == 0 && mastergrid[x, y - 1].TileNum == 0 && mastergrid[x - 1, y - 1].TileNum == 0)||
+                        (mastergrid[x - 1, y].TileNum >9 && mastergrid[x, y - 1].TileNum >9 && mastergrid[x - 1, y - 1].TileNum >9))
+                        {
+                            mastergrid[x, y].TileNum = 6;
+                            continue;
+                        }
+                        if ((mastergrid[x + 1, y ].TileNum == 0 && mastergrid[x , y - 1].TileNum == 0 && mastergrid[x + 1, y - 1].TileNum == 0)||
+                            (mastergrid[x + 1, y ].TileNum >9 && mastergrid[x , y - 1].TileNum >9 && mastergrid[x + 1, y - 1].TileNum >9))
+                        {
+                            mastergrid[x, y].TileNum = 7;
+                            continue;
+                        }
+                        if ((mastergrid[x , y + 1].TileNum == 0 && mastergrid[x + 1, y].TileNum == 0 && mastergrid[x + 1, y + 1].TileNum == 0)||
+                            (mastergrid[x , y + 1].TileNum >9 && mastergrid[x + 1, y].TileNum >9 && mastergrid[x + 1, y + 1].TileNum >9))
+                        {
+                            mastergrid[x, y].TileNum = 8;
+                            continue;
+                        }
+
+                    }
+                    else //adding some magic
+                    {
+                        if (wallGrid[x, y].TileNum != 0)//we are talking about a wall
+                        {
+                            if (r.Next(100) > 60)
+                                //3rd row overlay
+                                mastergrid[x, y].TileNum = 19 + r.Next(9);
+                        }
+                        else//floor is here to come
+                        {
+                            if (r.Next(100) > 85)
+                            {
+                                //2nd row                         
+                                mastergrid[x, y].TileNum = 10 + r.Next(9);
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            overlayer.LoadGrid(mastergrid, false, "overlay", false);
+            cavernsArea.AddLayer(overlayer);
+            #endregion
             // Add entities
             EntityLayer entityLayer = new EntityLayer(90);
 
             // Normal door
             Entity door1 = new Entity(Game1.Instance, new Vector2(31, 31) * Constants.TileSize);
+            List<Conversation> doorConList = new List<Conversation>();
+            Conversation doorCon = new Conversation("1");
+            doorCon.Add(new TextLine("Ich brauche einen kleinen Schluessel."));
+            doorConList.Add(doorCon);
+            door1.AddModule(new Dialog(doorConList, door1));            
             StaticDrawer sd1 = new StaticDrawer();
             sd1.Texture = Game1.Instance.Content.Load<Texture2D>("doorClosed");
             door1.AddModule(sd1);
@@ -299,6 +431,11 @@ namespace WarTornLands.World
 
             // Boss door
             Entity door2 = new Entity(Game1.Instance, new Vector2(39, 27) * Constants.TileSize);
+            doorConList = new List<Conversation>();
+            doorCon = new Conversation("1");
+            doorCon.Add(new TextLine("Ich brauche einen Riesenschluessel!"));
+            doorConList.Add(doorCon);
+            door2.AddModule(new Dialog(doorConList, door2));       
             StaticDrawer sd2 = new StaticDrawer();
             sd2.Texture = Game1.Instance.Content.Load<Texture2D>("doorClosedBoss");
             door2.AddModule(sd2);
@@ -308,6 +445,7 @@ namespace WarTornLands.World
 
             // Add chest
             Entity chest = new Entity(Game1.Instance, new Vector2(31, 35) * Constants.TileSize);
+            chest.AddModule(new Obstacle());
             chest.AddModule(new ReplaceByStatic("treasureChestLooted"));
             StaticDrawer sd3 = new StaticDrawer();
             sd3.Texture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
@@ -325,15 +463,17 @@ namespace WarTornLands.World
 
             // Add crazy dude
             Entity crazyDude = new Entity(Game1.Instance, new Vector2(18 * Constants.TileSize, 15 * Constants.TileSize + 10));
+            crazyDude.AddModule(new Obstacle());
             StaticDrawer sd4 = new StaticDrawer();
-            sd4.Texture = Game1.Instance.Content.Load<Texture2D>("gruselute");
+            sd4.Texture = Game1.Instance.Content.Load<Texture2D>("frederik");
             crazyDude.AddModule(sd4);
             crazyDude.AddModule(new Obstacle());
             cons = new List<Conversation>();
             // First conversation
             con = new Conversation("1");
-            con.Add(new TextLine("Nein!! Ich bin nicht die Gruselute!"));
-            con.Add(new TextLine("Ich bin's, Frederik! Die boese Gruselute hat mich verhext. Hier, nimm diesen Schluessel und hau ihr eins vor'n Koffer!"));
+            con.Add(new TextLine("Piep Piep!! Hast du Kaese?"));
+            con.Add(new TextLine("Ich bin's, Frederik! Piep! Die boese Gruselute hat mich verhext."));
+            con.Add(new TextLine("Hier, nimm diesen Schluessel und hau ihr eins vor'n Koffer!"));
             key = new Item(ItemTypes.SmallKey);
             items = new List<Item>();
             items.Add(key);
@@ -342,16 +482,16 @@ namespace WarTornLands.World
             cons.Add(con);
             // Second conversation
             con = new Conversation("2");
-            con.Add(new TextLine("Die alte Gruselute schaffst du mit Links!"));
+            con.Add(new TextLine("Die alte Gruselute schaffst du mit links!"));
             cons.Add(con);
-            
+
             crazyDude.AddModule(new Dialog(cons, crazyDude));
             entityLayer.AddEntity(crazyDude);
 
             cavernsArea.AddLayer(entityLayer);
 
             // Boss
-            Entity boss = new Entity((_game as Game1), new Vector2(39, 15) * Constants.TileSize, "GruselUte");
+            Entity boss = new Entity(Game1.Instance, new Vector2(39, 15) * Constants.TileSize, "GruselUte");
             boss.AddModule(new ThinkRoamAround(new Vector2(39, 12) * Constants.TileSize, 100));
             StaticDrawer bossDrawer = new StaticDrawer();
             bossDrawer.Texture = Game1.Instance.Content.Load<Texture2D>("gruselute");
@@ -361,7 +501,7 @@ namespace WarTornLands.World
             entityLayer.AddEntity(boss);
 
             //burp torch
-         
+
             for (int i = 0; i < 5; ++i)
             {
                 AnimatedDrawer body = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("torch_model"));
@@ -374,7 +514,7 @@ namespace WarTornLands.World
                 light.AddAnimation(simpleflicker);
                 light.SetCurrentAnimation("flicker");
                 light.IsLight = true;
-                Entity newTorch = new Entity(Game1.Instance, new Vector2(24, 27) * Constants.TileSize+new Vector2(100*i,0), "torchi");
+                Entity newTorch = new Entity(Game1.Instance, new Vector2(24, 27) * Constants.TileSize + new Vector2(100 * i, 0), "torchi");
                 newTorch.AddModule(new DualDraw(body, light));
                 Lightmanager.AddLight(newTorch);
                 entityLayer.AddEntity(newTorch);
@@ -415,7 +555,34 @@ namespace WarTornLands.World
             entityLayer.AddEntity(torch2);
             Lightmanager.AddLight(torch2);
             //endtorch
+            //fungus
+            StaticDrawer fungusS = new StaticDrawer();
+            fungusS.Texture = Game1.Instance.Content.Load<Texture2D>("fungus");
+            
+          
 
+            for (int i = 0; i < 3; ++i)
+            {
+                Entity fungus = new Entity(Game1.Instance, new Vector2(13 + r.Next(9), 15 + r.Next(7)) * Constants.TileSize, "fungus");
+                AnimatedDrawer fungusGlow = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("fungus_light"));
+                Animation glow = new Animation("glow");
+                glow.AddFrame(new Rectangle(64, 0, 64, 64), r.Next(1000));
+                glow.AddFrame(new Rectangle(64, 0, 64, 64));
+                glow.AddFrame(new Rectangle(64, 0, 64, 64));
+                glow.AddFrame(new Rectangle(64, 0, 64, 64));
+                glow.AddFrame(new Rectangle(64, 0, 64, 64));
+                glow.AddFrame(new Rectangle(0, 0, 64, 64), r.Next(1000));
+                glow.AddFrame(new Rectangle(0, 0, 64, 64));
+                fungusGlow.AddAnimation(glow,r.Next(1000));
+                fungusGlow.SetCurrentAnimation("glow");
+                fungusGlow.IsLight = true;
+                fungus.AddModule(new DualDraw(fungusS, fungusGlow));
+                entityLayer.AddEntity(fungus);
+                Lightmanager.AddLight(fungus);
+            }
+
+       
+            //endfungus
             // Add area to level
             AddArea("ChristmasCaverns", cavernsArea);
         }
