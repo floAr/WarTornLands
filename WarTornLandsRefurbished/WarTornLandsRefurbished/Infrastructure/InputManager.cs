@@ -21,7 +21,7 @@ namespace WarTornLands.Infrastructure
         #region Default controls
 
         // Keyboard
-        internal readonly static Keys KeyboardDefault_Hit = Keys.O;
+        internal readonly static Keys KeyboardDefault_Hit = Keys.Enter;
         internal readonly static Keys KeyboardDefault_Jump = Keys.Space;
         internal readonly static Keys KeyboardDefault_Interact = Keys.T;
         internal readonly static Keys KeyboardDefault_UsePotion = Keys.P;

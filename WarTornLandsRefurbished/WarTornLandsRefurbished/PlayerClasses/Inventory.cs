@@ -152,6 +152,10 @@ namespace WarTornLands.PlayerClasses
                     _countKeys++;
                     _normalkeys.Add(item);
                     return true;
+                case Items.ItemTypes.MasterKey:
+                    _countKeys++;
+                    _normalkeys.Add(item);
+                    return true;
                 default:
                     return false;
             }
@@ -165,76 +169,77 @@ namespace WarTornLands.PlayerClasses
         }
         public override void Draw(GameTime gameTime)
         {
-           // if (InputManager.Instance.Inventory.Value && !_previouskeystate)
-           // {
-           //     if (_inventoryIsOpen)
-           //     {
-           //         _inventoryIsOpen = false;
-           //     }
-           //     else
-           //     {
-           //         _inventoryIsOpen = true;
-           //     }
-           // }
-           // _previouskeystate = InputManager.Instance.Inventory.Value;
-           //double currentangle = MathHelper.PiOver2;
-           //double incrementangle = MathHelper.TwoPi / _totalItemCount;
-           //for (double i = 0; i < _totalItemCount; i++)
-           //{
-           //    Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.MDrawModule().Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.MDrawModule().Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
-           //    currentangle -= incrementangle;
+            if (InputManager.Instance.Inventory.Value && !_previouskeystate)
+            {
+                if (_inventoryIsOpen)
+                {
+                    _inventoryIsOpen = false;
+                }
+                else
+                {
+                    _inventoryIsOpen = true;
+                }
+            }
+            _previouskeystate = InputManager.Instance.Inventory.Value;
 
             if (_inventoryIsOpen)
             {
-                double currentangle = MathHelper.PiOver2;
-                double incrementangle = MathHelper.TwoPi / _totalItemCount;
-                for (float i = 0; i < _totalItemCount; i++)
-                {
+               double currentangle = MathHelper.PiOver2;
+               double incrementangle = MathHelper.TwoPi / _totalItemCount;
+               for (double i = 0; i < _totalItemCount; i++)
+               {
                     switch ((int)i)
                     {
                         case 0:
-                            _itemPicture = _potionPicture;
+                            if (_countPotions > 0)
+                            {
+                                _itemPicture = _potionPicture;
+                            }
+                            else
+                            {
+                                _itemPicture = _chestPicture;
+                            }
                             break;
                         case 1:
-                            _itemPicture = _keyPicture;
+                            if (HasKey(401))
+                            {
+                                _itemPicture = _keyPicture;
+                            }
+                            else
+                            {
+                                _itemPicture = _chestPicture;
+                            }
                             break;
-                        case 2: 
-                            _itemPicture = _bosskeyPicture;
+                        case 2:
+                            if (HasKey(402))
+                            {
+                                _itemPicture = _bosskeyPicture;
+                            }
+                            else
+                            {
+                                _itemPicture = _chestPicture;
+                            }
                             break;
                         default :
                             _itemPicture = _chestPicture;
                             break;
                     }
+
                     Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.MDrawModule.Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.MDrawModule.Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
                     currentangle -= incrementangle;
-           //    if (_inventoryIsOpen)
-           //    {
-           //        double currentangle = MathHelper.PiOver2;
-           //        double incrementangle = MathHelper.TwoPi / _totalItemCount;
-           //        for (double i = 0; i < _totalItemCount; i++)
-           //        {
-           //            Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.MDrawModule.Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.MDrawModule.Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
-           //            currentangle -= incrementangle;
 
-           //            if (i == 0 || i == _totalItemCount - 1)
-           //            {
+                    if (i == 0 || i == _totalItemCount - 1)
+                    {
 
-           //            }
-           //            else
-           //            {
-           //                Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * 0.125), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
-           //                Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * (2 * 0.125)), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
-                    }
+                    }                       
                     else
                     {
                         Game1.Instance.SpriteBatch.Draw(_chestPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * 0.125), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
                         Game1.Instance.SpriteBatch.Draw(_chestPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * (2 * 0.125)), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
 
-           //            }
-
-           //        }
-           //    }
-           //}
+                    }                   
+                }
+           }
        }
 
         internal bool HasKey(int _id)
