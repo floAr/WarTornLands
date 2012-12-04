@@ -67,6 +67,13 @@ namespace WarTornLands.Entities.Modules.Draw
             _animations.Add(anim.Name, anim);
         }
 
+        internal void AddAnimation(Animation anim,float offsetMS)
+        {
+            anim.Parent = this;
+            anim.AddOffset(offsetMS);
+            _animations.Add(anim.Name, anim);
+        }
+
 
 
 

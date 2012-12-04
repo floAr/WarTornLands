@@ -138,6 +138,10 @@ namespace WarTornLands.Entities.Modules.Draw
 
         public Rectangle CurrentFrame { get { return _frames[_currentFrame].FrameSource; } }
 
+        public void AddOffset(float offsetMS)
+        {
+            _counter += offsetMS;
+        }
         /// <summary>
         /// Updates the animation with the specified game time.
         /// </summary>
