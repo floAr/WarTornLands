@@ -24,6 +24,10 @@ namespace WarTornLands.PlayerClasses
         private int _radius;
          
 
+       private Texture2D _chestPicture;
+       private Texture2D _potionPicture;
+       private Texture2D _keyPicture;
+       private Texture2D _bosskeyPicture;
        private Texture2D _itemPicture;
 
        private short _totalItemCount;
@@ -32,8 +36,8 @@ namespace WarTornLands.PlayerClasses
 
         #region Itemvariablen
 
-       private short _countPotions;
-       private short _maxPotions;
+        private short _countPotions;
+        private short _maxPotions;
 
         private short _countKeys;
         private short _maxKeys;
@@ -47,7 +51,7 @@ namespace WarTornLands.PlayerClasses
         private bool _hasWoodenShield;
         private bool _useWoodenShield;
 
-        private List<Item> _items;
+        private List<Item> _normalkeys;
 
         #endregion
 
@@ -108,7 +112,10 @@ namespace WarTornLands.PlayerClasses
         {
             _deltaWidth = (Game1.Instance.Window.ClientBounds.Width / _standardWidth);
             _deltaHeight = (Game1.Instance.Window.ClientBounds.Height / _standardHeight);
-            _itemPicture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
+            _chestPicture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
+            _potionPicture = Game1.Instance.Content.Load<Texture2D>("potion");
+            _keyPicture = Game1.Instance.Content.Load<Texture2D>("key"); 
+            _bosskeyPicture = Game1.Instance.Content.Load<Texture2D>("bosskey");
             _radius = 100;
             _totalItemCount = 8;
             _inventoryIsOpen = false;
@@ -116,15 +123,13 @@ namespace WarTornLands.PlayerClasses
             _maxKeys = 2;
             _previouskeystate = false;
             _inventoryIsOpen = false;
-            _items = new List<Item>();
+            _normalkeys = new List<Item>();
             this.DrawOrder = 100000;
         }
 
 
         public bool Insert(Items.Item item)
         {
-            _items.Add(item);
-
             switch (item.ItemType)
             {
                 case Items.ItemTypes.Potion:
@@ -143,13 +148,10 @@ namespace WarTornLands.PlayerClasses
                 case Items.ItemTypes.WoodenShield:
                     _hasWoodenShield = true;
                     return true;
-                /*   case Items.ItemTypes.Schluessel:
-                       if (_anzahlschluessel < _maxschluessel)
-                       {
-                           _anzahlschluessel++;
-                           return true;
-                       }
-                       else return false;   */
+                case Items.ItemTypes.SmallKey:
+                    _countKeys++;
+                    _normalkeys.Add(item);
+                    return true;
                 default:
                     return false;
             }
@@ -182,6 +184,29 @@ namespace WarTornLands.PlayerClasses
            //    Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.MDrawModule().Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.MDrawModule().Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
            //    currentangle -= incrementangle;
 
+            if (_inventoryIsOpen)
+            {
+                double currentangle = MathHelper.PiOver2;
+                double incrementangle = MathHelper.TwoPi / _totalItemCount;
+                for (float i = 0; i < _totalItemCount; i++)
+                {
+                    switch ((int)i)
+                    {
+                        case 0:
+                            _itemPicture = _potionPicture;
+                            break;
+                        case 1:
+                            _itemPicture = _keyPicture;
+                            break;
+                        case 2: 
+                            _itemPicture = _bosskeyPicture;
+                            break;
+                        default :
+                            _itemPicture = _chestPicture;
+                            break;
+                    }
+                    Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.MDrawModule.Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.MDrawModule.Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
+                    currentangle -= incrementangle;
            //    if (_inventoryIsOpen)
            //    {
            //        double currentangle = MathHelper.PiOver2;
@@ -199,6 +224,11 @@ namespace WarTornLands.PlayerClasses
            //            {
            //                Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * 0.125), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
            //                Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * (2 * 0.125)), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
+                    }
+                    else
+                    {
+                        Game1.Instance.SpriteBatch.Draw(_chestPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * 0.125), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
+                        Game1.Instance.SpriteBatch.Draw(_chestPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * (2 * 0.125)), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
 
            //            }
 
@@ -211,7 +241,7 @@ namespace WarTornLands.PlayerClasses
         {
             // TODO change :-)
 
-            foreach (Item i in _items)
+            foreach (Item i in _normalkeys)
             {
                 if ((int)i.ItemType == _id)
                     return true;
