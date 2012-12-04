@@ -186,10 +186,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="69_spirit_temple.mp3">
-      <Name>69_spirit_temple</Name>
-      <Importer>Mp3Importer</Importer>
-      <Processor>SongProcessor</Processor>
+    <Compile Include="frederik.png">
+      <Name>frederik</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
