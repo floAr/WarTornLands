@@ -191,10 +191,24 @@ namespace WarTornLands.PlayerClasses
                     switch ((int)i)
                     {
                         case 0:
-                            _itemPicture = _potionPicture;
+                            if (_countPotions > 0)
+                            {
+                                _itemPicture = _potionPicture;
+                            }
+                            else
+                            {
+                                _itemPicture = _chestPicture;
+                            }
                             break;
                         case 1:
-                            _itemPicture = _keyPicture;
+                            if (HasKey(401))
+                            {
+                                _itemPicture = _keyPicture;
+                            }
+                            else
+                            {
+                                _itemPicture = _chestPicture;
+                            }
                             break;
                         case 2:
                             if (HasKey(402))
