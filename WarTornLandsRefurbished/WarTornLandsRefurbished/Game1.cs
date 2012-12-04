@@ -31,7 +31,7 @@ namespace WarTornLands
         //test für draw
         public Inventory Inventory { get; private set; }
 
-        //public Interface Interface { get; private set; }
+        public Interface Interface { get; private set; }
         public Level Level { get; private set; }
 
         private BackBuffer _BackBuffer;
@@ -71,7 +71,10 @@ namespace WarTornLands
             Player.DrawOrder = 100;
             Player.Position = new Vector2(14 * Constants.TileSize, 19  * Constants.TileSize);
             Inventory = Player.Inventory;
-            this.Components.Add(Player);            this.Components.Add(DialogManager.Instance);
+            this.Components.Add(Player);
+            this.Components.Add(DialogManager.Instance);
+            Interface = new Interface();
+            this.Components.Add(Interface);
 
             base.Initialize();
         }
