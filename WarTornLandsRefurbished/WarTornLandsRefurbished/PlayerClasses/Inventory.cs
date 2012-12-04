@@ -15,13 +15,14 @@ namespace WarTornLands.PlayerClasses
     {
         #region Drawvariablen
 
+        private bool _inventoryIsOpen;
+        private bool _previouskeystate;
         private double _standardHeight = 480;
         private double _standardWidth = 800;
         private double _deltaHeight;
         private double _deltaWidth;
         private int _radius;
-
-       private bool _inventoryIsOpen;
+         
 
        private Texture2D _itemPicture;
 
@@ -113,8 +114,10 @@ namespace WarTornLands.PlayerClasses
             _inventoryIsOpen = false;
             _maxPotions = 5;
             _maxKeys = 2;
-
+            _previouskeystate = false;
+            _inventoryIsOpen = false;
             _items = new List<Item>();
+            this.DrawOrder = 100000;
         }
 
 
@@ -154,32 +157,47 @@ namespace WarTornLands.PlayerClasses
         }
 
 
-        public void AktivMenue()
+        public override void Update(GameTime gameTime)
         {
-
+            base.Update(gameTime);
         }
-
         public override void Draw(GameTime gameTime)
         {
-           double currentangle = MathHelper.PiOver2;
-           double incrementangle = MathHelper.TwoPi / _totalItemCount;
-           for (double i = 0; i < _totalItemCount; i++)
-           {
-               Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.MDrawModule.Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.MDrawModule.Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
-               currentangle -= incrementangle;
+            if (InputManager.Instance.Inventory.Value && !_previouskeystate)
+            {
+                if (_inventoryIsOpen)
+                {
+                    _inventoryIsOpen = false;
+                }
+                else
+                {
+                    _inventoryIsOpen = true;
+                }
+            }
+            _previouskeystate = InputManager.Instance.Inventory.Value;
 
-               if (i == 0 || i == _totalItemCount-1)
-               {
+            if (_inventoryIsOpen)
+            {
+                double currentangle = MathHelper.PiOver2;
+                double incrementangle = MathHelper.TwoPi / _totalItemCount;
+                for (double i = 0; i < _totalItemCount; i++)
+                {
+                    Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.MDrawModule.Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.MDrawModule.Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
+                    currentangle -= incrementangle;
 
-               }
-               else
-               {
-                   Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * 0.125), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
-                   Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * (2*0.125)), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
+                    if (i == 0 || i == _totalItemCount - 1)
+                    {
 
-               }
-               
-           } 
+                    }
+                    else
+                    {
+                        Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * 0.125), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
+                        Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * (2 * 0.125)), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
+
+                    }
+
+                }
+            }
        }
 
         internal bool HasKey(int _id)
