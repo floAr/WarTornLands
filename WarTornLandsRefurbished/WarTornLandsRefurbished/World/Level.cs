@@ -283,7 +283,7 @@ namespace WarTornLands.World
             cavernsArea.AddLayer(wallLayer);
             #endregion
 
-            #region Beautify level
+             #region Beautify level
             // I want to black out every wall which is not attached to a floor. we will assume a wall height of 2 tiles
             int wallheight = 2;
             TileLayer overlayer = new TileLayer(52);
@@ -414,6 +414,11 @@ namespace WarTornLands.World
 
             // Normal door
             Entity door1 = new Entity(Game1.Instance, new Vector2(31, 31) * Constants.TileSize);
+            List<Conversation> doorConList = new List<Conversation>();
+            Conversation doorCon = new Conversation("1");
+            doorCon.Add(new TextLine("Ich brauche einen kleinen Schluessel."));
+            doorConList.Add(doorCon);
+            door1.AddModule(new Dialog(doorConList, door1));            
             StaticDrawer sd1 = new StaticDrawer();
             sd1.Texture = Game1.Instance.Content.Load<Texture2D>("doorClosed");
             door1.AddModule(sd1);
@@ -423,6 +428,11 @@ namespace WarTornLands.World
 
             // Boss door
             Entity door2 = new Entity(Game1.Instance, new Vector2(39, 27) * Constants.TileSize);
+            doorConList = new List<Conversation>();
+            doorCon = new Conversation("1");
+            doorCon.Add(new TextLine("Ich brauche einen Riesenschluessel!"));
+            doorConList.Add(doorCon);
+            door2.AddModule(new Dialog(doorConList, door2));       
             StaticDrawer sd2 = new StaticDrawer();
             sd2.Texture = Game1.Instance.Content.Load<Texture2D>("doorClosedBoss");
             door2.AddModule(sd2);
@@ -547,7 +557,7 @@ namespace WarTornLands.World
 
             for (int i = 0; i < 3; ++i)
             {
-                Entity fungus = new Entity(Game1.Instance, new Vector2(13 + r.Next(8), 15 + r.Next(5)) * Constants.TileSize, "fungus");
+                Entity fungus = new Entity(Game1.Instance, new Vector2(13 + r.Next(9), 15 + r.Next(7)) * Constants.TileSize, "fungus");
                 AnimatedDrawer fungusGlow = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("fungus_light"));
                 Animation glow = new Animation("glow");
                 glow.AddFrame(new Rectangle(64, 0, 64, 64), r.Next(1000));
