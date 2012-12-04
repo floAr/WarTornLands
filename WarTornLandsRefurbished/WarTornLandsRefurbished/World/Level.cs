@@ -26,10 +26,13 @@ namespace WarTornLands.World
     public class Level
     {
         private Dictionary<string, Area> _areas;
+        private Game _game;
+
         private Random r = new Random();
         public Level(Game game)
         {
             _areas = new Dictionary<string, Area>();
+            _game = game;
         }
 
         public bool AddArea(string name, Area area)
@@ -464,6 +467,7 @@ namespace WarTornLands.World
             StaticDrawer sd4 = new StaticDrawer();
             sd4.Texture = Game1.Instance.Content.Load<Texture2D>("frederik");
             crazyDude.AddModule(sd4);
+            crazyDude.AddModule(new Obstacle());
             cons = new List<Conversation>();
             // First conversation
             con = new Conversation("1");
@@ -488,10 +492,11 @@ namespace WarTornLands.World
 
             // Boss
             Entity boss = new Entity(Game1.Instance, new Vector2(39, 15) * Constants.TileSize, "GruselUte");
-            boss.AddModule(new ThinkRoamAround(boss, new Vector2(39, 15) * Constants.TileSize, 200));
+            boss.AddModule(new ThinkRoamAround(new Vector2(39, 12) * Constants.TileSize, 100));
             StaticDrawer bossDrawer = new StaticDrawer();
             bossDrawer.Texture = Game1.Instance.Content.Load<Texture2D>("gruselute");
             boss.AddModule(bossDrawer);
+            boss.AddModule(new Obstacle());
             boss.AddModule(new ExplodeAndLoot(null));
             entityLayer.AddEntity(boss);
 

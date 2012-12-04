@@ -21,11 +21,15 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         private Entity _owner;
         private Level _level;
 
-        public InteractAbility(Entity owner, float range = 50)
+        public InteractAbility(float range = 50)
         {
             Range = range;
-            _owner = owner;
             _level = Game1.Instance.Level;
+        }
+
+        public void SetOwner(Entity owner)
+        {
+            _owner = owner;
         }
 
         public bool TryExecute()

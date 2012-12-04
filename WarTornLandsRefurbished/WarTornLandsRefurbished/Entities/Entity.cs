@@ -48,10 +48,10 @@ namespace WarTornLands.Entities
 
 
         // Flags ////////
-        public bool CanBeAttacked { get; protected set; }
-        public bool CanSpeak { get; protected set; }
-        public bool CanBeUsed { get; protected set; }
-        public bool CanBePickedUp { get; protected set; }
+        public bool CanBeAttacked { get; set; }
+        public bool CanSpeak { get; set; }
+        public bool CanBeUsed { get; set; }
+        public bool CanBePickedUp { get; set; }
         public bool ToBeRemoved { get; set; }
         /////////////////
 
