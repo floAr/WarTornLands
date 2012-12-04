@@ -24,21 +24,16 @@ namespace WarTornLands.Entities.Modules.Think
         private SwingHitAbility _swing;
         private InteractAbility _interact;
 
-        public ThinkInputGuided(Entity owner, float speed = .125f)
+        public ThinkInputGuided(float speed = .125f)
         {
-            _owner = owner;
             Speed = speed;
-            Game1 game = _owner.Game as Game1;
 
-            _cm = owner.CM;
-            _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
-            _input = InputManager.Instance;
-
-            _jump = new JumpAbility(owner);
-            _swing = new SwingHitAbility(owner);
-            _interact = new InteractAbility(owner);
+            _jump = new JumpAbility();
+            _swing = new SwingHitAbility();
+            _interact = new InteractAbility();
 
             // Subscribe to Input events
+            _input = InputManager.Instance;
             _input.UsePotion.Pressed += new EventHandler(OnUsePotion);
             _input.Hit.Pressed += new EventHandler(OnExecuteHit);
             _input.Interact.Pressed += new EventHandler(OnInteract);
@@ -59,6 +54,18 @@ namespace WarTornLands.Entities.Modules.Think
                 ) + _owner.Position;
 
             CalcFacing(moveDirection);
+        }
+
+        public override void SetOwner(Entity owner)
+        {
+            base.SetOwner(owner);
+            _jump.SetOwner(owner);
+            _swing.SetOwner(owner);
+            _interact.SetOwner(owner);
+
+            _cm = owner.CM;
+            _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
+
         }
 
         private void CalcFacing(Vector2 moveDirection)

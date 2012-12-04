@@ -6,6 +6,7 @@ using WarTornLands.Counter;
 using WarTornLands.Entities;
 using WarTornLands.World;
 using Microsoft.Xna.Framework;
+using WarTornLands.PlayerClasses;
 
 namespace WarTornLands.Entities.Modules.Think.Parts
 {
@@ -78,25 +79,23 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         /// <param name="owner">The owner.</param>
         /// <param name="duration">The duration of a swing.</param>
         /// <param name="angle">The angle of the swing cone.</param>
-        public SwingHitAbility(Entity owner, int duration = 700, float angle = 2, float range = 50, float damage = 5)
+        public SwingHitAbility(int duration = 700, float angle = 2, float range = 50, float damage = 1)
         {
             Duration = duration;
             Angle = angle;
             Range = range;
             Damage = damage;
 
+            _level = Game1.Instance.Level;
+        }
+
+        public void SetOwner(Entity owner)
+        {
+            _owner = owner;
             _cm = owner.CM;
             _cm.AddCounter(_cSwingHit, Duration, true);
             _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
             _cm.Step += new EventHandler<BangEventArgs>(OnStep);
-
-            _level = Game1.Instance.Level;
-
-            _owner = owner;
-
-            #if DEBUG
-            //DweaponMarker = owner.Game.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("weapontest");
-            #endif
         }
 
         public bool TryExecute()
@@ -139,12 +138,14 @@ namespace WarTornLands.Entities.Modules.Think.Parts
                 }
                 else
                 {
-                    /*
-                    if (PLAYERAT(hitPos))
+                    // TODO: Check for other Entity the owner can hit
+                    // code a better check for the Player
+
+                    Vector2 toPlayer = Player.Instance.Position - hitPos;
+                    if(toPlayer.LengthSquared() < 18 * 18)
                     {
-                        Player.Damage(Damage);
+                        Player.Instance.Damage(Damage);
                     }
-                    */
                 }
             }
         }
