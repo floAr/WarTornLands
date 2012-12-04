@@ -245,7 +245,7 @@ namespace WarTornLands.Entities
         public override void Update(GameTime gameTime)
         {
 
-            if ((_prevPosition == _position) != _moving)
+            if ((this.MDrawModule is AnimatedDrawer) && (_prevPosition == _position) != _moving)
             {
                 if(!_moving)//stop
                     switch (Face)

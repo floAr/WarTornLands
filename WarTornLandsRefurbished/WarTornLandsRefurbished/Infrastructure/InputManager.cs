@@ -25,6 +25,8 @@ namespace WarTornLands.Infrastructure
         internal readonly static Keys KeyboardDefault_Jump = Keys.Space;
         internal readonly static Keys KeyboardDefault_Interact = Keys.T;
         internal readonly static Keys KeyboardDefault_UsePotion = Keys.P;
+        internal readonly static Keys KeyboardDefault_Inventory = Keys.I;
+        internal readonly static Keys KeyboardDefault_Quit = Keys.Escape;
         internal readonly static Keys[] KeyboardDefault_Move = { Keys.W, Keys.A, Keys.S, Keys.D };
 
         // GamePad
@@ -39,6 +41,7 @@ namespace WarTornLands.Infrastructure
         public Key Interact { get; private set; }
         public Key UsePotion { get; private set; }
         public Key Inventory { get; private set; }
+        public Key Quit { get; private set; }
 
         public DirectionInput Move { get; private set; }
         /////////////////
@@ -60,7 +63,9 @@ namespace WarTornLands.Infrastructure
             UsePotion = new Key();
             UsePotion.SetActivator(KeyboardDefault_UsePotion);
             Inventory = new Key();
-            Inventory.SetActivator(Keys.I);
+            Inventory.SetActivator(KeyboardDefault_Inventory);
+            Quit = new Key();
+            Quit.SetActivator(KeyboardDefault_Quit);
 
             Move = new DirectionInput();
             Move.SetActivator(KeyboardDefault_Move);
@@ -72,6 +77,7 @@ namespace WarTornLands.Infrastructure
             _inputList.Add(UsePotion);
             _inputList.Add(Move);
             _inputList.Add(Inventory);
+            _inputList.Add(Quit);
 
             foreach (InputKey ik in _inputList)
             {
