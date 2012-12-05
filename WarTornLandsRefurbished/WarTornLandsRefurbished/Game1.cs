@@ -257,7 +257,7 @@ namespace WarTornLands
             SpriteBatch.Begin();
 
             base.Draw(gameTime);
-            SpriteBatch.DrawString(Content.Load<SpriteFont>("Test"), Player.Position.ToString(), Vector2.Zero, Color.White);
+         //   SpriteBatch.DrawString(Content.Load<SpriteFont>("Test"), Player.Position.ToString(), Vector2.Zero, Color.White);
             SpriteBatch.End();
        
 
