@@ -106,6 +106,7 @@
     <Compile Include="Infrastructure\SoundManager.cs" />
     <Compile Include="Entities\Modules\Draw\AnimationSystem\Animation.cs" />
     <Compile Include="Entities\Modules\Draw\AnimationSystem\AnimationSystem.cs" />
+    <Compile Include="Infrastructure\Systems\Camera2D\Camera2D.cs" />
     <Compile Include="Infrastructure\Systems\Counter.cs" />
     <Compile Include="Infrastructure\Systems\DialogSystem\Conversation.cs" />
     <Compile Include="Infrastructure\Systems\DialogSystem\ItemContainer.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Infrastructure\Systems\DialogSystem\TextLine.cs" />
     <Compile Include="Infrastructure\Systems\DialogSystem\Obama.cs" />
     <Compile Include="Infrastructure\Systems\DialogSystem\Options.cs" />
+    <Compile Include="Infrastructure\Systems\DialogSystem\TextLineAndEvent.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\DirectionInput.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\InputKey.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\Key.cs" />

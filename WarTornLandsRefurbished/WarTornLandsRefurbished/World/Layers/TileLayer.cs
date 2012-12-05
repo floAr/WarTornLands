@@ -44,7 +44,7 @@ namespace WarTornLands.World.Layers
         public override void Draw(GameTime gameTime)
         {
             Game1 game = Game1.Instance;
-            Vector2 center = game.Player.Position;
+            Vector2 center = game.Camera.Center;
             int width = (int)Math.Floor((double)_tileSetTexture.Width / Constants.TileSize);
 
             // TODO:

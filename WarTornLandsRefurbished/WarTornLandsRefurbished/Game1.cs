@@ -10,6 +10,7 @@ using WarTornLands.Infrastructure;
 using WarTornLands.Infrastructure.Systems.SkyLight;
 using WarTornLands.PlayerClasses;
 using WarTornLands.World;
+using WarTornLands.Infrastructure.Systems.Camera2D;
 
 namespace WarTornLands
 {
@@ -36,6 +37,10 @@ namespace WarTornLands
 
         private BackBuffer _BackBuffer;
 
+        private Camera2D _camera;
+
+        public Camera2D Camera { get { return _camera; } }
+
         private static Game1 _instance = new Game1();
 
         public static Game1 Instance
@@ -60,16 +65,19 @@ namespace WarTornLands
         /// </summary>
         protected override void Initialize()
         {
+           
             // TODO: Fügen Sie Ihre Initialisierungslogik hier hinzu
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             Level = new Level(this);
             //Level.LoadTestLevel();
             Level.LoadChristmasCaverns();
-
-            this.Components.Add(InputManager.Instance);
             Player = Player.Instance;
             Player.DrawOrder = 100;
-            Player.Position = new Vector2(14 * Constants.TileSize, 19  * Constants.TileSize);
+            Player.Position = new Vector2(14 * Constants.TileSize, 19 * Constants.TileSize);
+            this.Components.Add(InputManager.Instance);
+           
+
+            _camera = new Camera2D(Player);
             Inventory = Player.Inventory;
             this.Components.Add(Player);
             this.Components.Add(DialogManager.Instance);
@@ -132,8 +140,18 @@ namespace WarTornLands
             daylight.Add(new Color(25, 25, 80));
 
             Lightmanager.SetDayCycle(daylight, 18000);
-
-          //    Lightmanager.SetStaticColor(Color.White);
+            #region opening
+            List<Vector2> points = new List<Vector2>();
+            points.Add(Player.Position);
+            points.Add(new Vector2(574, 546));
+            points.Add(new Vector2(670, 916));
+            points.Add(new Vector2(994, 1053));
+            points.Add(new Vector2(1244, 908));
+            points.Add(new Vector2(1250, 415));
+            points.Add(Player.Position);
+            _camera.PlayCinematic(points, 6000);
+            #endregion
+            //    Lightmanager.SetStaticColor(Color.White);
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
 
@@ -154,8 +172,12 @@ namespace WarTornLands
         /// <param name="gameTime">Bietet einen Schnappschuss der Timing-Werte.</param>
         protected override void Update(GameTime gameTime)
         {
-            if(Keyboard.GetState().IsKeyDown(Keys.Q))
-                Player.Health=-1;
+            _camera.Update(gameTime);
+            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            {
+                _camera.BrakCinematic();
+
+            }
             if (Player.ToBeRemoved)
             {
                 return;
@@ -185,6 +207,7 @@ namespace WarTornLands
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
             /*
             // TODO: Fügen Sie Ihren Zeichnungscode hier hinzu
 
@@ -234,13 +257,14 @@ namespace WarTornLands
             SpriteBatch.Begin();
 
             base.Draw(gameTime);
-
+            SpriteBatch.DrawString(Content.Load<SpriteFont>("Test"), Player.Position.ToString(), Vector2.Zero, Color.White);
             SpriteBatch.End();
        
 
             //add lights
             SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);
             SpriteBatch.Draw(_BackBuffer.LightMap, new Vector2(0, 0), new Color(255, 255, 255, 255));
+
             SpriteBatch.End();
 
             if (Player.ToBeRemoved)
