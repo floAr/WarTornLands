@@ -21,6 +21,7 @@ namespace WarTornLands.Entities.Modules.Die
 
         public void Die()
         {
+            _owner.RemoveAllModules();
             _owner.AddModule(_explosion);
             _owner.AddModule(_pick);
         }

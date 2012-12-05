@@ -38,8 +38,8 @@ namespace WarTornLands
         private BackBuffer _BackBuffer;
 
         private Camera2D _camera;
-
         public Camera2D Camera { get { return _camera; } }
+        
 
         private static Game1 _instance = new Game1();
 
@@ -71,6 +71,8 @@ namespace WarTornLands
             Level = new Level(this);
             //Level.LoadTestLevel();
             Level.LoadChristmasCaverns();
+
+
             Player = Player.Instance;
             Player.DrawOrder = 100;
             Player.Position = new Vector2(14 * Constants.TileSize, 19 * Constants.TileSize);
@@ -153,6 +155,8 @@ namespace WarTornLands
             _camera.PlayCinematic(points, 6000);
             #endregion
             //    Lightmanager.SetStaticColor(Color.White);
+
+          //    Lightmanager.SetStaticColor(Color.White);
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
         }
 
@@ -179,6 +183,7 @@ namespace WarTornLands
                 _camera.BreakCinematic();
 
             }
+              
             if (Player.ToBeRemoved)
             {
                 return;
@@ -208,7 +213,6 @@ namespace WarTornLands
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
             /*
             // TODO: Fügen Sie Ihren Zeichnungscode hier hinzu
 
@@ -265,7 +269,6 @@ namespace WarTornLands
             //add lights
             SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);
             SpriteBatch.Draw(_BackBuffer.LightMap, new Vector2(0, 0), new Color(255, 255, 255, 255));
-
             SpriteBatch.End();
 
             if (Player.ToBeRemoved)

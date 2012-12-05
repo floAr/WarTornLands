@@ -66,7 +66,7 @@ namespace WarTornLands.Entities.Modules.Draw
             else
                 _loc = information.Position;
 
-             Vector2 center = Game1.Instance.Camera.Center;
+            Vector2 center = Game1.Instance.Camera.Center;
             Rectangle bounds = Game1.Instance.Window.ClientBounds;
 
             // Invulnerable counter configuration

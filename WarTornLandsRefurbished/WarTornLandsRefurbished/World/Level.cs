@@ -427,9 +427,8 @@ namespace WarTornLands.World
                 points.Add(new Vector2(574, 500));
                 points.Add(new Vector2(574, 500));
                 points.Add(Game1.Instance.Player.Position);
-                Game1.Instance.Camera.PlayCinematic(points);})));
-            
-            
+                Game1.Instance.Camera.PlayCinematic(points);
+            })));
             doorConList.Add(doorCon);
             door1.AddModule(new Dialog(doorConList, door1));            
             StaticDrawer sd1 = new StaticDrawer();
@@ -443,17 +442,16 @@ namespace WarTornLands.World
             Entity door2 = new Entity(Game1.Instance, new Vector2(39, 27) * Constants.TileSize);
             doorConList = new List<Conversation>();
             doorCon = new Conversation("1");
-           // doorCon.Add(new TextLine("Ich brauche einen Riesenschluessel!"));
-
-
-            doorCon.Add(new TextLineAndEvent("Ich brauche einen Riesenschluessel!",new Action(delegate(){
+            //doorCon.Add(new TextLine("Ich brauche einen Riesenschluessel!"));
+            doorCon.Add(new TextLineAndEvent("Ich brauche einen Riesenschluessel!", new Action(delegate()
+            {
                 List<Vector2> points = new List<Vector2>();
                 points.Add(Game1.Instance.Player.Position);
                 points.Add(new Vector2(994, 1099));
                 points.Add(new Vector2(994, 1099));
                 points.Add(Game1.Instance.Player.Position);
-                Game1.Instance.Camera.PlayCinematic(points);})));
-
+                Game1.Instance.Camera.PlayCinematic(points);
+            })));
             doorConList.Add(doorCon);
             door2.AddModule(new Dialog(doorConList, door2));       
             StaticDrawer sd2 = new StaticDrawer();

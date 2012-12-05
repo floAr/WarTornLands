@@ -57,7 +57,7 @@ namespace WarTornLands.Entities.Modules.Draw.ParticleSystem
             else
                 _loc = information.Position;
 
-             Vector2 center = Game1.Instance.Camera.Center;
+            Vector2 center = Game1.Instance.Camera.Center;
             Rectangle bounds = Game1.Instance.Window.ClientBounds;
 
            // spriteBatch.Draw(Texture, new Rectangle((int)_loc.X - (int)center.X + (int)Math.Round(bounds.Width / 2.0f),
