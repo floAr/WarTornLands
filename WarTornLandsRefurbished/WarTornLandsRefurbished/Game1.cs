@@ -154,6 +154,12 @@ namespace WarTornLands
         /// <param name="gameTime">Bietet einen Schnappschuss der Timing-Werte.</param>
         protected override void Update(GameTime gameTime)
         {
+            if(Keyboard.GetState().IsKeyDown(Keys.Q))
+                Player.Health=-1;
+            if (Player.ToBeRemoved)
+            {
+                return;
+            }
             // Ermöglicht ein Beenden des Spiels
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -236,6 +242,16 @@ namespace WarTornLands
             SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);
             SpriteBatch.Draw(_BackBuffer.LightMap, new Vector2(0, 0), new Color(255, 255, 255, 255));
             SpriteBatch.End();
+
+            if (Player.ToBeRemoved)
+            {
+                SpriteFont font=Content.Load<SpriteFont>("Test");
+                string go= "Game Over :(";
+                SpriteBatch.Begin();
+                SpriteBatch.DrawString(font, go, new Vector2(_graphics.PreferredBackBufferWidth / 2 - (font.MeasureString(go).X / 2), _graphics.PreferredBackBufferHeight / 2 - (font.MeasureString(go).Y / 2)), Color.OrangeRed);
+                SpriteBatch.End();
+
+            }
 
         }
 
