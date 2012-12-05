@@ -154,8 +154,8 @@ namespace WarTornLands
         /// <param name="gameTime">Bietet einen Schnappschuss der Timing-Werte.</param>
         protected override void Update(GameTime gameTime)
         {
-            if(Keyboard.GetState().IsKeyDown(Keys.Q))
-                Player.Health=-1;
+            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+                Player.Damage(40);
             if (Player.ToBeRemoved)
             {
                 return;
