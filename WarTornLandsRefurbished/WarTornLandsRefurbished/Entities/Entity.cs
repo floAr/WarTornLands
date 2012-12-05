@@ -55,6 +55,12 @@ namespace WarTornLands.Entities
         public bool ToBeRemoved { get; set; }
         /////////////////
 
+        // Entity is currently temporarily invulnerable (after a hit)
+        public bool Invulnerable { get; protected set; }
+        // Counters
+        protected readonly string _cInvulnerable = "InvulnerableCounter";
+        protected readonly int _invulnerableDuration = 1000;
+
         // Counters ///
         public readonly string _cHit = "HitCounter";
         ///////////////
@@ -145,8 +151,11 @@ namespace WarTornLands.Entities
             this.Position = position;
             this.Health = 1;
             this.Name = name;
+            this.Invulnerable = false;
             Face = Facing.DOWN;
             CM = new CounterManager();
+            CM.AddCounter(_cInvulnerable, _invulnerableDuration);
+            CM.Bang += new EventHandler<BangEventArgs>(OnBang);
         }
 
         public void AddModule(BaseModule module)
@@ -191,8 +200,12 @@ namespace WarTornLands.Entities
 
         public float Damage(float damage)
         {
-            if (this.CanBeAttacked)
+            if (this.CanBeAttacked && !Invulnerable)
             {
+                // Make entity temporarily invulnerable
+                Invulnerable = true;
+                CM.StartCounter(_cInvulnerable);
+
                 // TODO evtl Rüstungen abziehen
                 this.Health -= Math.Min(damage, Health);
                 return Math.Min(damage, Health);
@@ -200,6 +213,14 @@ namespace WarTornLands.Entities
             else
             {
                 return 0;
+            }
+        }
+
+        private void OnBang(object sender, BangEventArgs e)
+        {
+            if (e.IsDesiredCounter(_cInvulnerable))
+            {
+                Invulnerable = false;
             }
         }
 
@@ -323,6 +344,7 @@ namespace WarTornLands.Entities
                 Position = this.Position,
                 Rotation = _rotation,
                 Scale = this.Size,
+                Invulnerable = this.Invulnerable,
                 DrawLights=Game1.Instance.DrawingLights
             };
 

@@ -17,6 +17,12 @@ namespace WarTornLands.Entities.Modules.Draw
         private Vector2 _loc;
         private Vector2 _size;
 
+        // Whether the last draw call was invulnerable
+        private bool _invulnerable = false;
+        // Counts the time in the current "blink" state when invulnerable (ms)
+        private float _blinkTime = 0;
+        // Total duration of a normal/highlighted blink duration (ms)
+        private float _blinkDuration = 400;
 
         private bool _isLight = false;
         public bool HasEnded { get { return _animations[_currentAnimation].HasEnded; } }
@@ -27,7 +33,6 @@ namespace WarTornLands.Entities.Modules.Draw
             _animations = new Dictionary<string, Animation>();
 
         }
-
 
         public void SetCurrentAnimation(string name)
         {
@@ -40,6 +45,13 @@ namespace WarTornLands.Entities.Modules.Draw
 
         public void Update(GameTime gameTime)
         {
+            if (_invulnerable)
+            {
+                _blinkTime += gameTime.ElapsedGameTime.Milliseconds;
+                while (_blinkTime > _blinkDuration)
+                    _blinkTime -= _blinkDuration;
+            }
+
             _animations[_currentAnimation].Update(gameTime);
         }
 
@@ -57,8 +69,23 @@ namespace WarTornLands.Entities.Modules.Draw
             Vector2 center = Game1.Instance.Player.Position;
             Rectangle bounds = Game1.Instance.Window.ClientBounds;
 
+            // Invulnerable counter configuration
+            if (_invulnerable != information.Invulnerable)
+            {
+                _invulnerable = information.Invulnerable;
+                if (!_invulnerable)
+                    _blinkTime = 0;
+            }
+
+            // Set color according to invulnerable and counter state
+            Color color;
+            if (_invulnerable && _blinkTime < _blinkDuration / 2.0)
+                color = Color.Red; // Red in the first half of the counter
+            else
+                color = Color.White; // White in the second half or when not invulnerable
+
             batch.Draw(_spriteSheet, new Rectangle((int)_loc.X - (int)center.X + (int)Math.Round(bounds.Width / 2.0f),
-                (int)_loc.Y - (int)center.Y + (int)Math.Round(bounds.Height / 2.0f), (int)_size.X, (int)_size.Y), _current.CurrentFrame, Color.White, information.Rotation, _size / 2, SpriteEffects.None, 0.5f);
+                (int)_loc.Y - (int)center.Y + (int)Math.Round(bounds.Height / 2.0f), (int)_size.X, (int)_size.Y), _current.CurrentFrame, color, information.Rotation, _size / 2, SpriteEffects.None, 0.5f);
         }
 
         internal void AddAnimation(Animation anim)
