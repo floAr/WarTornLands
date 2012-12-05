@@ -1,22 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using WarTornLands.Counter;
-using Microsoft.Xna.Framework.Content;
-using WarTornLands;
-using WarTornLands.PlayerClasses;
-using WarTornLands.Entities.Modules.Draw;
-
-using WarTornLands.Entities.Modules.Die;
-using WarTornLands.Entities.Modules.Think;
-using WarTornLands.Entities.Modules.Interact;
 using WarTornLands.Entities.Modules;
 using WarTornLands.Entities.Modules.Collide;
+using WarTornLands.Entities.Modules.Die;
+using WarTornLands.Entities.Modules.Draw;
 using WarTornLands.Entities.Modules.Draw.ParticleSystem;
+using WarTornLands.Entities.Modules.Interact;
+using WarTornLands.Entities.Modules.Think;
 using WarTornLands.Infrastructure;
+using WarTornLands.PlayerClasses;
 
 namespace WarTornLands.Entities
 {
@@ -306,7 +299,10 @@ namespace WarTornLands.Entities
                 _mDrawModule.Update(gameTime);
                 if (_mDrawModule is AnimatedDrawer)
                     if (((AnimatedDrawer)_mDrawModule).HasEnded)
+                    {
                         this._mDrawModule = null;
+                        this.ToBeRemoved = true;
+                    }
             }
             if (_mDrawModule != null && _mDrawModule is ParticleSystem)
             {
