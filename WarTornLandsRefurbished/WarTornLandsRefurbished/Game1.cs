@@ -65,7 +65,7 @@ namespace WarTornLands
         /// </summary>
         protected override void Initialize()
         {
-           
+
             // TODO: Fügen Sie Ihre Initialisierungslogik hier hinzu
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             Level = new Level(this);
@@ -75,7 +75,7 @@ namespace WarTornLands
             Player.DrawOrder = 100;
             Player.Position = new Vector2(14 * Constants.TileSize, 19 * Constants.TileSize);
             this.Components.Add(InputManager.Instance);
-           
+
 
             _camera = new Camera2D(Player);
             Inventory = Player.Inventory;
@@ -95,8 +95,8 @@ namespace WarTornLands
         {
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-          
-        //    SoundManager.Instance.StartPlaying("ambient");
+
+            //    SoundManager.Instance.StartPlaying("ambient");
             //Add Default Explosion Module
             Catalog.Instance.SetupTestCatalog();
 
@@ -133,11 +133,12 @@ namespace WarTornLands
             _BackBuffer = new BackBuffer(GraphicsDevice, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
 
             List<Color> daylight = new List<Color>();
-            daylight.Add(new Color(40,30,80));
+            daylight.Add(new Color(40, 30, 80));
             daylight.Add(new Color(40, 30, 70));
             daylight.Add(new Color(40, 20, 70));
             daylight.Add(new Color(40, 30, 75));
             daylight.Add(new Color(25, 25, 80));
+            daylight.Add(new Color(40, 30, 80));
 
             Lightmanager.SetDayCycle(daylight, 18000);
             #region opening
@@ -257,9 +258,9 @@ namespace WarTornLands
             SpriteBatch.Begin();
 
             base.Draw(gameTime);
-         //   SpriteBatch.DrawString(Content.Load<SpriteFont>("Test"), Player.Position.ToString(), Vector2.Zero, Color.White);
+            //   SpriteBatch.DrawString(Content.Load<SpriteFont>("Test"), Player.Position.ToString(), Vector2.Zero, Color.White);
             SpriteBatch.End();
-       
+
 
             //add lights
             SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);
@@ -269,8 +270,8 @@ namespace WarTornLands
 
             if (Player.ToBeRemoved)
             {
-                SpriteFont font=Content.Load<SpriteFont>("Test");
-                string go= "Game Over :(";
+                SpriteFont font = Content.Load<SpriteFont>("Test");
+                string go = "Game Over :(";
                 SpriteBatch.Begin();
                 SpriteBatch.DrawString(font, go, new Vector2(_graphics.PreferredBackBufferWidth / 2 - (font.MeasureString(go).X / 2), _graphics.PreferredBackBufferHeight / 2 - (font.MeasureString(go).Y / 2)), Color.OrangeRed);
                 SpriteBatch.End();
