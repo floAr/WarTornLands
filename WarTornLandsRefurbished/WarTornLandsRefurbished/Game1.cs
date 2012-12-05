@@ -175,7 +175,7 @@ namespace WarTornLands
             _camera.Update(gameTime);
             if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
-                _camera.BrakCinematic();
+                _camera.BreakCinematic();
 
             }
             if (Player.ToBeRemoved)

@@ -76,9 +76,7 @@ namespace WarTornLands.Infrastructure.Systems.Camera2D
 
 
 
-
-
-        internal void BrakCinematic()
+        internal void BreakCinematic()
         {
             _counter = 0;
             _cinematics = false;
