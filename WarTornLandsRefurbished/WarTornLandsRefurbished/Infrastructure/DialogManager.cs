@@ -18,13 +18,13 @@ namespace WarTornLands.Infrastructure
         private Texture2D _textBox;
         private SpriteFont _font;
         private ConversationItem _currentDisplay;
-        private static Vector2 _topLeftPosition = new Vector2(0);
-        private readonly static Vector2 _relBoxPosition = new Vector2(0, 0);
-        private readonly static Vector2 _relSpeakerNamePosition = new Vector2(10, 10);
-
-        private readonly static Vector2 _relTextPosition = new Vector2(40, 20);
+        private static Vector2 _topLeftPosition;
+        private readonly static Vector2 _relBoxPosition = new Vector2(0, -10);
+        // TODO display speaker name
+        //private readonly static Vector2 _relSpeakerNamePosition = new Vector2(10, 10);
+        private readonly static Vector2 _relTextPosition = new Vector2(20, 15);
         private readonly static float _lineSpacing = -3;
-        private readonly static float _lineLength = 450;    // in pixels
+        private static float _lineLength;    // in pixels
 
         // Text format commands
         // Example: /n executes a line wrap
@@ -58,9 +58,10 @@ namespace WarTornLands.Infrastructure
         protected override void LoadContent()
         {
             _textBox = Game1.Instance.Content.Load<Texture2D>("dialogbox");
+            _lineLength = _textBox.Width - 2 * _relTextPosition.X;
             _font = Game1.Instance.Content.Load<SpriteFont>("DialogFont");
-            _topLeftPosition = new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth * .5f - _textBox.Width * .5f + 50,
-                                           GraphicsDeviceManager.DefaultBackBufferHeight - _textBox.Height);
+            _topLeftPosition = new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth * .5f - _textBox.Width * .5f + _relBoxPosition.X,
+                                           GraphicsDeviceManager.DefaultBackBufferHeight - _textBox.Height + _relBoxPosition.Y);
 
             base.LoadContent();
         }
@@ -82,7 +83,7 @@ namespace WarTornLands.Infrastructure
             Vector2 pos = Vector2.Zero;
 
             game.SpriteBatch.Draw(game.Content.Load<Texture2D>("dialogbox"),
-                _topLeftPosition - new Vector2(15, 10), Color.White);
+                _topLeftPosition, Color.White);
 
             while (text.Length > 0)
             {
@@ -99,7 +100,7 @@ namespace WarTornLands.Infrastructure
                 Color drawColor = Catalog.Instance.CheckString(next);
 
                 next = next.Replace('~', ' ');
-                game.SpriteBatch.DrawString(_font, next, pos + _topLeftPosition, drawColor);
+                game.SpriteBatch.DrawString(_font, next, pos + _topLeftPosition + _relTextPosition, drawColor);
 
                 pos += new Vector2(_font.MeasureString(next).X, 0);
             }
