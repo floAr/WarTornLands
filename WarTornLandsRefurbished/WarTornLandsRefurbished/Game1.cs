@@ -43,6 +43,9 @@ namespace WarTornLands
 
         //Debug
         Texture2D weaponMarker;
+
+        // TODO remove splash screen
+        public Entity splash { get; set; }
         
 
         private static Game1 _instance = new Game1();
@@ -152,13 +155,15 @@ namespace WarTornLands
             Lightmanager.SetDayCycle(daylight, 18000);
             #region opening
             List<Vector2> points = new List<Vector2>();
+            points.Add(new Vector2(-400, Player.Position.Y));
+            points.Add(new Vector2(-400, Player.Position.Y));
             points.Add(Player.Position);
-            points.Add(new Vector2(574, 546));
+            /*points.Add(new Vector2(574, 546));
             points.Add(new Vector2(670, 916));
             points.Add(new Vector2(994, 1053));
             points.Add(new Vector2(1244, 908));
             points.Add(new Vector2(1250, 415));
-            points.Add(Player.Position);
+            points.Add(Player.Position);*/
             _camera.PlayCinematic(points, 6000);
             #endregion
             //    Lightmanager.SetStaticColor(Color.White);
@@ -168,6 +173,13 @@ namespace WarTornLands
 
 
             weaponMarker = Content.Load<Texture2D>("weapontest");
+
+            // Add splash screen
+            // TODO remove splash screen ;)
+            splash = new Entity(Game1.Instance, new Vector2(-400, 608));
+            StaticDrawer splashSd = new StaticDrawer();
+            splashSd.Texture = Game1.Instance.Content.Load<Texture2D>("xmasSplash");
+            splash.AddModule(splashSd);
         }
 
         /// <summary>
@@ -320,6 +332,10 @@ namespace WarTornLands
             SpriteBatch.Draw(weaponMarker, WarTornLands.Entities.Modules.Think.Parts.SwingHitAbility.WeaponMarkerA - new Vector2(weaponMarker.Height * scale * .5f), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             SpriteBatch.Draw(weaponMarker, WarTornLands.Entities.Modules.Think.Parts.SwingHitAbility.WeaponMarkerB - new Vector2(weaponMarker.Height * scale * .5f), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             SpriteBatch.End();
+
+            SpriteBatch.Begin();
+            splash.Draw(new GameTime());
+            SpriteBatch.End();
         }
 
         #region Subscribed events
@@ -330,5 +346,6 @@ namespace WarTornLands
         }
 
         #endregion
+
     }
 }
