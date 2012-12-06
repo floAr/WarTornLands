@@ -127,10 +127,20 @@ namespace WarTornLands.Infrastructure
             {
                 lastEntities.Clear();
                 lastEntities.AddRange(curEntities);
-                sensor--;
+                if (sensor >= 1)
+                    sensor--;
+                else
+                    sensor = 0;
                 move = direction * sensor;
                 curEntities = _level.GetEntitiesAt(start + pointOne + move);
                 curEntities.AddRange(_level.GetEntitiesAt(start + pointTwo + move));
+
+                temp = new List<Entity>(curEntities);
+                foreach (Entity ent in temp)
+                {
+                    if (ent.MColideModule == null || ent.Equals(source))
+                        curEntities.Remove(ent);
+                }
             }
 
             foreach (Entity ent in lastEntities)
