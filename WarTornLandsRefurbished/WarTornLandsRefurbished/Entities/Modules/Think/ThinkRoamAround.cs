@@ -66,6 +66,8 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
         public void Update(GameTime gameTime)
         {
             _goTo.Update(gameTime);
+            _swing.Update(gameTime);
+
             CheckForTarget();
 
             switch (_state)

@@ -47,7 +47,12 @@ namespace WarTornLands.Entities.Modules.Interact
             : base() 
         {
             _enter = new EventHandler(OnEnter);
-            _conversations = conversations;
+
+            _conversations = new List<Conversation>();
+            foreach(Conversation con in conversations)
+            {
+                _conversations.Add(con.Clone());
+            }
             _dm = DialogManager.Instance;
             _cm = owner.CM;
             _cm.AddCounter(_cShutdown);

@@ -111,20 +111,6 @@ namespace WarTornLands.PlayerClasses
             this.AddModule(animS);
         }
 
-        /*
-        public override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
-
-            #if DEBUG
-            (this.Game as Game1).SpriteBatch.Draw(
-                WarTornLands.Entities.Modules.Think.Parts.SwingHitAbility.DweaponMarker,
-                WarTornLands.Entities.Modules.Think.Parts.SwingHitAbility.WeaponPos - new Vector2(40,40),
-                Color.White);
-            #endif
-        }
-         * */
-
         #region Subscribed events
 
         private void OnBang(object sender, BangEventArgs e)

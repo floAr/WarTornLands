@@ -73,11 +73,6 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         // Counters
         private readonly string _cSwingHit = "SwingHitCounter";
 
-        #if DEBUG
-        static public Vector2 WeaponPos;
-        static public Microsoft.Xna.Framework.Graphics.Texture2D DweaponMarker;
-        #endif
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SwingHitAbility" /> class.
         /// </summary>
@@ -100,7 +95,6 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             _cm = owner.CM;
             _cm.AddCounter(_cSwingHit, Duration, true);
             _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
-            _cm.Step += new EventHandler<BangEventArgs>(OnStep);
         }
 
         public bool TryExecute()
@@ -118,49 +112,60 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             return false;
         }
 
-        private void Hit()
+        public void Update(GameTime gameTime)
         {
             if (_cm.GetPercentage(_cSwingHit) != 0)
             {
-                double baseAngle = _startAngle + (float)GetRoundedAngle();
-
-                double maxAddition = _goalAngle - _startAngle;
-                double finalAngle = _cm.GetPercentage(_cSwingHit) * maxAddition + baseAngle;
-                Vector2 hitPos = _owner.Position + new Vector2(Range * (float)Math.Cos(finalAngle),
-                                                Range * (float)Math.Sin(finalAngle));
-
-                // Debug
+                Hit();
+            }
+            else 
+            {
                 if (_owner.Name.Equals("Player"))
-                {
-                    WeaponMarkerA = hitPos - Player.Instance.Position + new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth * .5f, GraphicsDeviceManager.DefaultBackBufferHeight * .5f);
-                }
+                    WeaponMarkerA = new Vector2(-500);
                 if (_owner.Name.Equals("GruselUte"))
-                {
-                    WeaponMarkerB = hitPos - Player.Instance.Position + new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth * .5f, GraphicsDeviceManager.DefaultBackBufferHeight * .5f);
-                }
-                //enddebug
+                    WeaponMarkerB = new Vector2(-500); 
+            }
+        }
 
-                if (_owner is PlayerClasses.Player)
-                {
-                    List<Entity> targets = (Game1.Instance.Level.GetEntitiesAt(hitPos));
-                    foreach (Entity ent in targets)
-                    {
-                        ent.Damage(this.Damage);
-                    }
-                }
-                else
-                {
-                    // TODO: Check for other Entity the owner can hit
-                    // code a better check for the Player
+        private void Hit()
+        {
+            double baseAngle = _startAngle + (float)GetRoundedAngle();
 
-                    Vector2 toPlayer = Player.Instance.Position - hitPos;
-                    if(toPlayer.LengthSquared() < 18 * 18)
-                    {
-                        Player.Instance.Damage(Damage);
-                    }
+            double maxAddition = _goalAngle - _startAngle;
+            double finalAngle = _cm.GetPercentage(_cSwingHit) * maxAddition + baseAngle;
+            Vector2 hitPos = _owner.Position + new Vector2(Range * (float)Math.Cos(finalAngle),
+                                            Range * (float)Math.Sin(finalAngle));
+
+            // Debug
+            if (_owner.Name.Equals("Player"))
+            {
+                WeaponMarkerA = hitPos - Player.Instance.Position + new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth * .5f, GraphicsDeviceManager.DefaultBackBufferHeight * .5f);
+            }
+            if (_owner.Name.Equals("GruselUte"))
+            {
+                WeaponMarkerB = hitPos - Player.Instance.Position + new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth * .5f, GraphicsDeviceManager.DefaultBackBufferHeight * .5f);
+            }
+            //enddebug
+
+            if (_owner is PlayerClasses.Player)
+            {
+                List<Entity> targets = (Game1.Instance.Level.GetEntitiesAt(hitPos));
+                foreach (Entity ent in targets)
+                {
+                    ent.Damage(this.Damage);
                 }
             }
-            else { WeaponMarkerA = new Vector2(-500); WeaponMarkerB = new Vector2(-500); }
+            else
+            {
+                // TODO: Check for other Entity the owner can hit
+                // code a better check for the Player
+
+                Vector2 toPlayer = Player.Instance.Position - hitPos;
+                if(toPlayer.LengthSquared() < 18 * 18)
+                {
+                    Player.Instance.Damage(Damage);
+                }
+            }
         }
 
         private double GetRoundedAngle()
@@ -180,14 +185,6 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         private void OnBang(object sender, BangEventArgs e)
         {
             
-        }
-
-        private void OnStep(object sender, BangEventArgs e)
-        {
-            if (e.IsDesiredCounter(_cSwingHit))
-            {
-                Hit();
-            }
         }
 
         #endregion

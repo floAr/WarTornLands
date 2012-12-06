@@ -30,6 +30,17 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
             _lines = new List<ConversationItem>();
         }
 
+        private Conversation(string id, List<ConversationItem> lines)
+        {
+            ID = id;
+            _lines = lines;
+        }
+
+        public Conversation Clone()
+        {
+            return new Conversation(ID, new List<ConversationItem>(_lines));
+        }
+
         public ConversationIterator GetIterator()
         {
             return new ConversationIterator(this);

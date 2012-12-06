@@ -32,6 +32,11 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             _owner = owner;
         }
 
+        public void Update(GameTime gameTime)
+        {
+ 
+        }
+
         public bool TryExecute()
         {
             Vector2 testPos = _owner.Position;

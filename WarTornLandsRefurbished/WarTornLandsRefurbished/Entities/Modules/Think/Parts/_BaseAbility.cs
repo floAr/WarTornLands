@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace WarTornLands.Entities.Modules.Think.Parts
 {
@@ -9,6 +10,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
     {
         bool TryExecute();
         bool TryCancel();
+        void Update(GameTime gameTime);
         void SetOwner(Entity owner);
     }
 }

@@ -11,6 +11,7 @@ using WarTornLands.Infrastructure.Systems.SkyLight;
 using WarTornLands.PlayerClasses;
 using WarTornLands.World;
 using WarTornLands.Infrastructure.Systems.Camera2D;
+using System;
 
 namespace WarTornLands
 {
@@ -89,6 +90,9 @@ namespace WarTornLands
             Interface = new Interface();
             this.Components.Add(Interface);
 
+
+            InputManager.Instance.Quit.Pressed += new EventHandler(OnQuit);
+
             base.Initialize();
         }
 
@@ -132,7 +136,7 @@ namespace WarTornLands
                     AlphaDecay = new Range(0.01f, 0.1f)
 
                 },
-        pL);
+            pL);
             particleTest.AddModule(pSystem);
 
             _BackBuffer = new BackBuffer(GraphicsDevice, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
@@ -192,8 +196,9 @@ namespace WarTornLands
               
             if (Player.ToBeRemoved)
             {
-                return;
+                FreezeGame();
             }
+
             // Ermöglicht ein Beenden des Spiels
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -207,6 +212,15 @@ namespace WarTornLands
             }
 
             base.Update(gameTime);
+        }
+
+        private void FreezeGame()
+        {
+            foreach (GameComponent comp in Components)
+            {
+                if (comp is WarTornLands.World.Layers.EntityLayer)
+                    comp.Enabled = false;
+            }
         }
 
         int counter = 0;
@@ -308,5 +322,13 @@ namespace WarTornLands
             SpriteBatch.End();
         }
 
+        #region Subscribed events
+
+        private void OnQuit(object sender, EventArgs e)
+        {
+            this.Exit();
+        }
+
+        #endregion
     }
 }
