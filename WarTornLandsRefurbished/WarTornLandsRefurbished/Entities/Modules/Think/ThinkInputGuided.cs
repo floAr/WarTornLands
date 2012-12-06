@@ -23,13 +23,14 @@ namespace WarTornLands.Entities.Modules.Think
         private JumpAbility _jump;
         private SwingHitAbility _swing;
         private InteractAbility _interact;
+        private bool _frozen;
 
         public ThinkInputGuided(float speed = .125f)
         {
             Speed = speed;
 
             _jump = new JumpAbility();
-            _swing = new SwingHitAbility();
+            _swing = new SwingHitAbility(700, 1);
             _interact = new InteractAbility();
 
             // Subscribe to Input events
@@ -43,17 +44,30 @@ namespace WarTornLands.Entities.Modules.Think
 
         public void Update(GameTime gameTime)
         {
-            Vector2 oldPos = _owner.Position;
-            Vector2 moveDirection = _input.Move.Value;
-            _owner.Position = 
-                CollisionManager.Instance.TryMove(
-                _owner.Position,
-                moveDirection * Speed * gameTime.ElapsedGameTime.Milliseconds,
-                Radius,
-                _owner
-                ) + _owner.Position;
+            if (!_frozen)
+            {
+                Vector2 oldPos = _owner.Position;
+                Vector2 moveDirection = _input.Move.Value;
+                _owner.Position =
+                    CollisionManager.Instance.TryMove(
+                    _owner.Position,
+                    moveDirection * Speed * gameTime.ElapsedGameTime.Milliseconds,
+                    Radius,
+                    _owner
+                    ) + _owner.Position;
 
-            CalcFacing(moveDirection);
+                CalcFacing(moveDirection);
+            }
+        }
+
+        public void Freeze()
+        {
+            _frozen = true;
+        }
+
+        public void Thaw()
+        {
+            _frozen = false;
         }
 
         public override void SetOwner(Entity owner)

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Content;
 using WarTornLands.Entities.Modules.Think;
 using WarTornLands.Infrastructure.Systems.DialogSystem;
 using WarTornLands.Entities.Modules.Die;
+using WarTornLands.Entities.Modules.Collide;
 
 namespace WarTornLands.PlayerClasses
 {
@@ -43,8 +44,19 @@ namespace WarTornLands.PlayerClasses
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
             _inventory = new Inventory();
             this.AddModule(new ThinkInputGuided());
+            this.AddModule(new Obstacle());
             this.AddModule(new ExplodeAndLoot(null));
             this.CanBeAttacked = true;
+        }
+
+        public void ProvisionalFreezePlayerForDialog()
+        {
+            (this._mThinkModule as ThinkInputGuided).Freeze();
+        }
+
+        public void ProvisionalThawPlayerForDialog()
+        {
+            (this._mThinkModule as ThinkInputGuided).Thaw();
         }
 
         protected override void LoadContent()

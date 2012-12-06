@@ -15,8 +15,16 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
     public class ThinkRoamAround : BaseModule, IThinkModule
     {
         public float SightRange { get; set; }
-        public float AttackRange { get; set; }
-        public float AttackDamage { get; set; }
+        public float AttackRange 
+        {
+            get { return _swing.Range; }
+            set { _swing.Range = value; } 
+        }
+        public float AttackDamage
+        {
+            get { return _swing.Damage; }
+            set { _swing.Damage = value; }
+        }
 
         private enum RoamState 
         {
@@ -34,12 +42,12 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
         private RoamState _lastState;
         private bool _canBeAttacked;
 
-        public ThinkRoamAround(Vector2 anchor, float roamingRadius, float attackRange = 45, float sightRange = 110, float damage = .5f, bool canBeAttacked = true)
+        public ThinkRoamAround(Vector2 anchor, float roamingRadius, float attackRange = 60, float sightRange = 110, float damage = 10f, bool canBeAttacked = true)
             : base()
         {
             _canBeAttacked = canBeAttacked;
-            _goTo = new GoToPosition(.2f);
-            _swing = new SwingHitAbility(1000, 3, AttackRange + 1, damage);
+            _goTo = new GoToPosition(.5f);
+            _swing = new SwingHitAbility(1500, 0f, attackRange, damage);
             _rand = new Random();
             _anchor = anchor;
             _radius = roamingRadius;
@@ -94,7 +102,7 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
 
             if (!_goTo.Active)
             {
-                _goTo.Unfreeze();
+                _goTo.Thaw();
                 _goTo.TryExecute();
                 _goTo.TargetPosition = CreateTargetPosition();
             }
@@ -114,17 +122,19 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
             Vector2 rangeCheck = new Vector2(float.PositiveInfinity);
             if(_goTo.Bait != null)
                 rangeCheck = _goTo.Bait.Position - _owner.Position;
-            if (rangeCheck.Equals(Vector2.Zero) || rangeCheck.LengthSquared() < AttackRange * AttackRange)
+            if (/*rangeCheck.Equals(Vector2.Zero) || */rangeCheck.LengthSquared() < AttackRange * AttackRange)
             {
                 _goTo.Freeze();
                 _swing.TryExecute();
             }
-
-            Vector2 awayFromHome = _owner.Position - _anchor;
-            if (awayFromHome.LengthSquared() > _radius * _radius)
-                _goTo.Freeze();
             else
-                _goTo.Unfreeze();
+            {
+                Vector2 awayFromHome = _owner.Position - _anchor;
+                if (awayFromHome.LengthSquared() >= _radius * _radius)
+                    _goTo.Freeze();
+                else
+                    _goTo.Thaw();
+            }
         }
 
         private Vector2 CreateTargetPosition()

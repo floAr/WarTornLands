@@ -39,6 +39,9 @@ namespace WarTornLands
 
         private Camera2D _camera;
         public Camera2D Camera { get { return _camera; } }
+
+        //Debug
+        Texture2D weaponMarker;
         
 
         private static Game1 _instance = new Game1();
@@ -158,6 +161,9 @@ namespace WarTornLands
 
           //    Lightmanager.SetStaticColor(Color.White);
             // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
+
+
+            weaponMarker = Content.Load<Texture2D>("weapontest");
         }
 
         /// <summary>
@@ -281,9 +287,26 @@ namespace WarTornLands
 
             }
 
+            if (Level.Ute.ToBeRemoved)
+            {
+                SpriteFont font = Content.Load<SpriteFont>("Test");
+                string line1 = "CONGRATURATION";
+                string line2 = "A WINRAR";
+                string line3 = "IS YOU";
+                SpriteBatch.Begin();
+                SpriteBatch.DrawString(font, line1, new Vector2(_graphics.PreferredBackBufferWidth / 2 - (font.MeasureString(line1).X / 2), _graphics.PreferredBackBufferHeight / 2 - (font.MeasureString(line1).Y * .5f) - font.MeasureString(line1).Y), Color.OrangeRed);
+                SpriteBatch.DrawString(font, line2, new Vector2(_graphics.PreferredBackBufferWidth / 2 - (font.MeasureString(line2).X / 2), _graphics.PreferredBackBufferHeight / 2 - (font.MeasureString(line2).Y / 2)), Color.OrangeRed);
+                SpriteBatch.DrawString(font, line3, new Vector2(_graphics.PreferredBackBufferWidth / 2 - (font.MeasureString(line3).X / 2), _graphics.PreferredBackBufferHeight / 2 - (font.MeasureString(line3).Y / 2) + font.MeasureString(line1).Y), Color.OrangeRed);           
+                SpriteBatch.End();
+                Player.ProvisionalFreezePlayerForDialog();
+            }
+
+            SpriteBatch.Begin();
+            float scale = .2f;
+            SpriteBatch.Draw(weaponMarker, WarTornLands.Entities.Modules.Think.Parts.SwingHitAbility.WeaponMarkerA - new Vector2(weaponMarker.Height * scale * .5f), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+            SpriteBatch.Draw(weaponMarker, WarTornLands.Entities.Modules.Think.Parts.SwingHitAbility.WeaponMarkerB - new Vector2(weaponMarker.Height * scale * .5f), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+            SpriteBatch.End();
         }
-
-
 
     }
 }

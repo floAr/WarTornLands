@@ -64,7 +64,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             _frozen = true;
         }
 
-        public void Unfreeze()
+        public void Thaw()
         {
             _frozen = false;
         }

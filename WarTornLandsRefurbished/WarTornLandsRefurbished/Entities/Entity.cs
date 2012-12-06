@@ -142,7 +142,7 @@ namespace WarTornLands.Entities
             : base(game)
         {
             this.Position = position;
-            this.Health = 1;
+            this.Health = 5;
             this.Name = name;
             this.Invulnerable = false;
             Face = Facing.DOWN;

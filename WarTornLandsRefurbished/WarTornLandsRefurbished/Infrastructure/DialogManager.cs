@@ -18,7 +18,7 @@ namespace WarTornLands.Infrastructure
         private Texture2D _textBox;
         private SpriteFont _font;
         private ConversationItem _currentDisplay;
-        private readonly static Vector2 _topLeftPosition = new Vector2(30, 200);
+        private static Vector2 _topLeftPosition = new Vector2(0);
         private readonly static Vector2 _relBoxPosition = new Vector2(0, 0);
         private readonly static Vector2 _relSpeakerNamePosition = new Vector2(10, 10);
 
@@ -58,7 +58,9 @@ namespace WarTornLands.Infrastructure
         protected override void LoadContent()
         {
             _textBox = Game1.Instance.Content.Load<Texture2D>("dialogbox");
-            _font = Game1.Instance.Content.Load<SpriteFont>("Test");
+            _font = Game1.Instance.Content.Load<SpriteFont>("DialogFont");
+            _topLeftPosition = new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth * .5f - _textBox.Width * .5f + 50,
+                                           GraphicsDeviceManager.DefaultBackBufferHeight - _textBox.Height);
 
             base.LoadContent();
         }
@@ -84,7 +86,7 @@ namespace WarTornLands.Infrastructure
 
             while (text.Length > 0)
             {
-                string next = NextPart(ref text, ref pos);
+                string next = NextWord(ref text, ref pos);
 
                 // If the next word would exeed line length wrap it
                 if (pos.X + _font.MeasureString(next).X > _lineLength)
@@ -103,7 +105,7 @@ namespace WarTornLands.Infrastructure
             }
         }
 
-        private string NextPart(ref string text, ref Vector2 position)
+        private string NextWord(ref string text, ref Vector2 position)
         {
             int i = 0;
             string res = "";
@@ -171,10 +173,12 @@ namespace WarTornLands.Infrastructure
             if (statement == null)
             {
                 _currentDisplay = null;
+                Player.Instance.ProvisionalThawPlayerForDialog();
             }
             else
             {
                 _currentDisplay = statement;
+                Player.Instance.ProvisionalFreezePlayerForDialog();
             }
         }
 

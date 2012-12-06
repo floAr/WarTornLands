@@ -59,6 +59,8 @@ namespace WarTornLands.World
             return false;
         }
 
+        public static Entity Ute;
+
         /// <summary>
         /// Queries the Tile Map whether a given pixel position is accessible.
         /// Entities are not considered in the collision check. This is done
@@ -87,6 +89,9 @@ namespace WarTornLands.World
             {
                 result.AddRange(pair.Value.GetEntitiesAt(position));
             }
+
+            if ((Player.Instance.Position - position).Length() < 40)
+                result.Add(Player.Instance);
 
             return result;
         }
@@ -510,13 +515,14 @@ namespace WarTornLands.World
 
             // Boss
             Entity boss = new Entity(Game1.Instance, new Vector2(39, 15) * Constants.TileSize, "GruselUte");
-            boss.AddModule(new ThinkRoamAround(new Vector2(39, 12) * Constants.TileSize, 100));
+            boss.AddModule(new ThinkRoamAround(new Vector2(39, 11) * Constants.TileSize, 170));
             StaticDrawer bossDrawer = new StaticDrawer();
             bossDrawer.Texture = Game1.Instance.Content.Load<Texture2D>("gruselute");
             boss.AddModule(bossDrawer);
             boss.AddModule(new Obstacle());
             boss.AddModule(new ExplodeAndLoot(null));
             entityLayer.AddEntity(boss);
+            Ute = boss;
 
             //burp torch
 

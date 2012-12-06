@@ -87,20 +87,27 @@ namespace WarTornLands.Infrastructure
             else
                 move.X = 0;
 
+            if (!source.Name.Equals("GruselUte"))
+                move = move;
+
             Vector2 direction = Vector2.Normalize(toGoal);
-            int sensor = (int)toGoal.Length();
+            float sensor = (float)toGoal.Length();
+
 
             // Tile collision
-            while (!_level.IsPositionAccessible(start + pointOne + move) ||
-                   !_level.IsPositionAccessible(start + pointTwo + move) ||
-                    sensor == 1)
+            while ((!_level.IsPositionAccessible(start + pointOne + move) ||
+                   !_level.IsPositionAccessible(start + pointTwo + move)) &&
+                    sensor > 0)
             {
-                sensor--;
                 move = direction * sensor;
                 if (xDir)
                     move.Y = 0;
                 else
                     move.X = 0;
+                if (sensor > 1)
+                    sensor--;
+                else
+                    return 0;
             }
 
             // Entity collision
@@ -111,12 +118,12 @@ namespace WarTornLands.Infrastructure
             List<Entity> temp = new List<Entity>(curEntities);
             foreach (Entity ent in temp)
             {
-                if (ent.MColideModule == null)
+                if (ent.MColideModule == null || ent.Equals(source))
                     curEntities.Remove(ent);
             }
 
             while (curEntities.Count > 0 &&
-                   sensor >= 1)
+                   sensor > 0)
             {
                 lastEntities.Clear();
                 lastEntities.AddRange(curEntities);

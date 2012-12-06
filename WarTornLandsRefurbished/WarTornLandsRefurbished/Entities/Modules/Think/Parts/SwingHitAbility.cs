@@ -57,6 +57,11 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         {
             get { return _cm.GetPercentage(_cSwingHit) != 0; }
         }
+        
+        //Debug WeaponMarker
+        public static Vector2 WeaponMarkerA = new Vector2(-500); 
+        public static Vector2 WeaponMarkerB = new Vector2(-500);
+
 
 
         private CounterManager _cm;
@@ -124,9 +129,16 @@ namespace WarTornLands.Entities.Modules.Think.Parts
                 Vector2 hitPos = _owner.Position + new Vector2(Range * (float)Math.Cos(finalAngle),
                                                 Range * (float)Math.Sin(finalAngle));
 
-                #if DEBUG
-                WeaponPos = hitPos;
-                #endif
+                // Debug
+                if (_owner.Name.Equals("Player"))
+                {
+                    WeaponMarkerA = hitPos - Player.Instance.Position + new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth * .5f, GraphicsDeviceManager.DefaultBackBufferHeight * .5f);
+                }
+                if (_owner.Name.Equals("GruselUte"))
+                {
+                    WeaponMarkerB = hitPos - Player.Instance.Position + new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth * .5f, GraphicsDeviceManager.DefaultBackBufferHeight * .5f);
+                }
+                //enddebug
 
                 if (_owner is PlayerClasses.Player)
                 {
@@ -148,6 +160,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
                     }
                 }
             }
+            else { WeaponMarkerA = new Vector2(-500); WeaponMarkerB = new Vector2(-500); }
         }
 
         private double GetRoundedAngle()
