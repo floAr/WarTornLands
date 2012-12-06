@@ -91,7 +91,7 @@ namespace WarTornLands
             this.Components.Add(Interface);
 
 
-            InputManager.Instance.Quit.Pressed += new EventHandler(OnQuit);
+            InputManager.Instance.KQuit.Pressed += new EventHandler(OnQuit);
 
             base.Initialize();
         }

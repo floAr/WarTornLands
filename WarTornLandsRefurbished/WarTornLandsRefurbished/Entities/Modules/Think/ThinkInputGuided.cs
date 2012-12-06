@@ -35,10 +35,10 @@ namespace WarTornLands.Entities.Modules.Think
 
             // Subscribe to Input events
             _input = InputManager.Instance;
-            _input.UsePotion.Pressed += new EventHandler(OnUsePotion);
-            _input.Hit.Pressed += new EventHandler(OnExecuteHit);
-            _input.Interact.Pressed += new EventHandler(OnInteract);
-            _input.Jump.Pressed += new EventHandler(OnJump);
+            _input.KUsePotion.Pressed += new EventHandler(OnUsePotion);
+            _input.KHit.Pressed += new EventHandler(OnExecuteHit);
+            _input.KInteract.Pressed += new EventHandler(OnInteract);
+            _input.KJump.Pressed += new EventHandler(OnJump);
         }
 
         public void Update(GameTime gameTime)
@@ -46,7 +46,7 @@ namespace WarTornLands.Entities.Modules.Think
             if (!_frozen)
             {
                 Vector2 oldPos = _owner.Position;
-                Vector2 moveDirection = _input.Move.Value;
+                Vector2 moveDirection = _input.KMove.Value;
                 _owner.Position =
                     CollisionManager.Instance.TryMove(
                     _owner.Position,

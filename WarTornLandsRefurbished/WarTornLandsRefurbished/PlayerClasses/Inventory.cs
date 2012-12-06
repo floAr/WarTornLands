@@ -169,7 +169,7 @@ namespace WarTornLands.PlayerClasses
         }
         public override void Draw(GameTime gameTime)
         {
-            if (InputManager.Instance.Inventory.Value && !_previouskeystate)
+            if (InputManager.Instance.KInventory.Value && !_previouskeystate)
             {
                 if (_inventoryIsOpen)
                 {
@@ -180,7 +180,7 @@ namespace WarTornLands.PlayerClasses
                     _inventoryIsOpen = true;
                 }
             }
-            _previouskeystate = InputManager.Instance.Inventory.Value;
+            _previouskeystate = InputManager.Instance.KInventory.Value;
 
             if (_inventoryIsOpen)
             {

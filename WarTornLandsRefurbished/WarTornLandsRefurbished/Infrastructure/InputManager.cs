@@ -36,14 +36,14 @@ namespace WarTornLands.Infrastructure
         #endregion
 
         // Keys /////////
-        public Key Hit { get; private set; }
-        public Key Jump { get; private set; }
-        public Key Interact { get; private set; }
-        public Key UsePotion { get; private set; }
-        public Key Inventory { get; private set; }
-        public Key Quit { get; private set; }
+        public Key KHit { get; private set; }
+        public Key KJump { get; private set; }
+        public Key KInteract { get; private set; }
+        public Key KUsePotion { get; private set; }
+        public Key KInventory { get; private set; }
+        public Key KQuit { get; private set; }
 
-        public DirectionInput Move { get; private set; }
+        public DirectionInput KMove { get; private set; }
         /////////////////
 
         private readonly static InputMode _defaultMode = InputMode.KEYBOARD;
@@ -54,30 +54,30 @@ namespace WarTornLands.Infrastructure
         private InputManager(Game game)
             : base(game)
         {
-            Hit = new Key();
-            Hit.SetActivator(KeyboardDefault_Hit);
-            Jump = new Key();
-            Jump.SetActivator(KeyboardDefault_Jump);
-            Interact = new Key();
-            Interact.SetActivator(KeyboardDefault_Interact);
-            UsePotion = new Key();
-            UsePotion.SetActivator(KeyboardDefault_UsePotion);
-            Inventory = new Key();
-            Inventory.SetActivator(KeyboardDefault_Inventory);
-            Quit = new Key();
-            Quit.SetActivator(KeyboardDefault_Quit);
+            KHit = new Key();
+            KHit.SetActivator(KeyboardDefault_Hit);
+            KJump = new Key();
+            KJump.SetActivator(KeyboardDefault_Jump);
+            KInteract = new Key();
+            KInteract.SetActivator(KeyboardDefault_Interact);
+            KUsePotion = new Key();
+            KUsePotion.SetActivator(KeyboardDefault_UsePotion);
+            KInventory = new Key();
+            KInventory.SetActivator(KeyboardDefault_Inventory);
+            KQuit = new Key();
+            KQuit.SetActivator(KeyboardDefault_Quit);
 
-            Move = new DirectionInput();
-            Move.SetActivator(KeyboardDefault_Move);
+            KMove = new DirectionInput();
+            KMove.SetActivator(KeyboardDefault_Move);
 
 
-            _inputList.Add(Hit);
-            _inputList.Add(Jump);
-            _inputList.Add(Interact);
-            _inputList.Add(UsePotion);
-            _inputList.Add(Move);
-            _inputList.Add(Inventory);
-            _inputList.Add(Quit);
+            _inputList.Add(KHit);
+            _inputList.Add(KJump);
+            _inputList.Add(KInteract);
+            _inputList.Add(KUsePotion);
+            _inputList.Add(KMove);
+            _inputList.Add(KInventory);
+            _inputList.Add(KQuit);
 
             foreach (InputKey ik in _inputList)
             {
