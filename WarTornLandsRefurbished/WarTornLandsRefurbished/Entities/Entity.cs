@@ -137,7 +137,6 @@ namespace WarTornLands.Entities
         protected IDieModule _mDieModule;
         #endregion
 
-
         public Entity(Game1 game, Vector2 position, String name = "Entity")
             : base(game)
         {
@@ -259,6 +258,9 @@ namespace WarTornLands.Entities
 
         public override void Update(GameTime gameTime)
         {
+            // Return if single entity is not enabled, but someone calls update anyway
+            if (!this.Enabled)
+                return;
 
             if ((this.MDrawModule is AnimatedDrawer) && (_prevPosition == _position) != _moving)
             {
@@ -324,10 +326,6 @@ namespace WarTornLands.Entities
                         this._mDrawModule = null;
                         this.ToBeRemoved = true;
                     }
-            }
-            if (_mDrawModule != null && _mDrawModule is ParticleSystem)
-            {
-                _mDrawModule.Update(gameTime);
             }
         }
 

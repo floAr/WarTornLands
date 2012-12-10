@@ -44,10 +44,6 @@ namespace WarTornLands
         //Debug
         Texture2D weaponMarker;
 
-        // TODO remove splash screen
-        public Entity splash { get; set; }
-        
-
         private static Game1 _instance = new Game1();
 
         public static Game1 Instance
@@ -153,19 +149,6 @@ namespace WarTornLands
             daylight.Add(new Color(40, 30, 80));
 
             Lightmanager.SetDayCycle(daylight, 18000);
-            #region opening
-            List<Vector2> points = new List<Vector2>();
-            points.Add(new Vector2(-400, Player.Position.Y));
-            points.Add(new Vector2(-400, Player.Position.Y));
-            points.Add(Player.Position);
-            /*points.Add(new Vector2(574, 546));
-            points.Add(new Vector2(670, 916));
-            points.Add(new Vector2(994, 1053));
-            points.Add(new Vector2(1244, 908));
-            points.Add(new Vector2(1250, 415));
-            points.Add(Player.Position);*/
-            _camera.PlayCinematic(points, 6000);
-            #endregion
             //    Lightmanager.SetStaticColor(Color.White);
 
           //    Lightmanager.SetStaticColor(Color.White);
@@ -173,13 +156,6 @@ namespace WarTornLands
 
 
             weaponMarker = Content.Load<Texture2D>("weapontest");
-
-            // Add splash screen
-            // TODO remove splash screen ;)
-            splash = new Entity(Game1.Instance, new Vector2(-400, 608));
-            StaticDrawer splashSd = new StaticDrawer();
-            splashSd.Texture = Game1.Instance.Content.Load<Texture2D>("xmasSplash");
-            splash.AddModule(splashSd);
         }
 
         /// <summary>
@@ -203,7 +179,6 @@ namespace WarTornLands
             if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
                 _camera.BreakCinematic();
-
             }
               
             if (Player.ToBeRemoved)
@@ -324,17 +299,13 @@ namespace WarTornLands
                 SpriteBatch.DrawString(font, line2, new Vector2(_graphics.PreferredBackBufferWidth / 2 - (font.MeasureString(line2).X / 2), _graphics.PreferredBackBufferHeight / 2 - (font.MeasureString(line2).Y / 2)), Color.OrangeRed);
                 SpriteBatch.DrawString(font, line3, new Vector2(_graphics.PreferredBackBufferWidth / 2 - (font.MeasureString(line3).X / 2), _graphics.PreferredBackBufferHeight / 2 - (font.MeasureString(line3).Y / 2) + font.MeasureString(line1).Y), Color.OrangeRed);           
                 SpriteBatch.End();
-                Player.ProvisionalFreezePlayerForDialog();
+                Player.Enabled = false;
             }
 
             SpriteBatch.Begin();
             float scale = .2f;
             SpriteBatch.Draw(weaponMarker, WarTornLands.Entities.Modules.Think.Parts.SwingHitAbility.WeaponMarkerA - new Vector2(weaponMarker.Height * scale * .5f), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             SpriteBatch.Draw(weaponMarker, WarTornLands.Entities.Modules.Think.Parts.SwingHitAbility.WeaponMarkerB - new Vector2(weaponMarker.Height * scale * .5f), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-            SpriteBatch.End();
-
-            SpriteBatch.Begin();
-            splash.Draw(new GameTime());
             SpriteBatch.End();
         }
 

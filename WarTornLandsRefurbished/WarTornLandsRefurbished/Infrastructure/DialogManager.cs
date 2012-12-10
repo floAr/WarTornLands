@@ -174,12 +174,12 @@ namespace WarTornLands.Infrastructure
             if (statement == null)
             {
                 _currentDisplay = null;
-                Player.Instance.ProvisionalThawPlayerForDialog();
+                Player.Instance.Enabled = true;
             }
             else
             {
                 _currentDisplay = statement;
-                Player.Instance.ProvisionalFreezePlayerForDialog();
+                Player.Instance.Enabled = false;
             }
         }
 
