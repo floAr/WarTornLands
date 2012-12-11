@@ -87,7 +87,7 @@ namespace WarTornLands.Entities
 
             internal set
             {
-                if (_face != value && this.MDrawModule is AnimatedDrawer)
+                /*if (_face != value && this.MDrawModule is AnimatedDrawer)
                 {
                     switch (value)
                     {
@@ -104,7 +104,7 @@ namespace WarTornLands.Entities
                             (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("walkUp");
                             break;
                     }
-                }
+                }*/
 
                 _face = value;
             }
@@ -262,9 +262,14 @@ namespace WarTornLands.Entities
             if (!this.Enabled)
                 return;
 
-            if ((this.MDrawModule is AnimatedDrawer) && (_prevPosition == _position) != _moving)
+            // If animated entity, and we toggled our moving state
+            if ((this.MDrawModule is AnimatedDrawer) && (_prevPosition != _position) != _moving)
             {
-                if(!_moving)//stop
+                // Update moving flag
+                _moving = (_prevPosition != _position);
+
+                if (!_moving) // stop
+                {
                     switch (Face)
                     {
                         case Facing.DOWN:
@@ -280,7 +285,9 @@ namespace WarTornLands.Entities
                             (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("standUp");
                             break;
                     }
-                else//move on
+                }
+                else // move on
+                {
                     switch (Face)
                     {
                         case Facing.DOWN:
@@ -296,10 +303,9 @@ namespace WarTornLands.Entities
                             (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("walkUp");
                             break;
                     }
-                _moving = _prevPosition == _position;
-
+                }
             }
-        
+
             CM.Update(gameTime);
 
             #region Calc tilepos

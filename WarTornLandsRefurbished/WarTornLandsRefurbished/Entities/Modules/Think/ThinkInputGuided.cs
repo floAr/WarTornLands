@@ -84,44 +84,16 @@ namespace WarTornLands.Entities.Modules.Think
 
         private void CalcFacing(Vector2 moveDirection)
         {
-            // true = Y direction over X
-            // false = X direction over Y
-            if (true)
-            {
-                if (Math.Abs(moveDirection.X) >= Math.Abs(moveDirection.Y))
-                    XFacing(moveDirection);
-                else
-                    YFacing(moveDirection);
-            }
-            else
-            {
-                YFacing(moveDirection);
-                XFacing(moveDirection);
-            }
-        }
+            // TODO direction somehow buggy... animation or facing value?!
 
-        private void XFacing(Vector2 moveDirection)
-        {
-            if (moveDirection.X > 0)
-            {
+            if (moveDirection.X == 1)
                 _owner.Face = Facing.RIGHT;
-            }
-            if (moveDirection.X < 0)
-            {
+            else if (moveDirection.X == -1)
                 _owner.Face = Facing.LEFT;
-            }
-        }
-
-        private void YFacing(Vector2 moveDirection)
-        {
-            if (moveDirection.Y > 0)
-            {
+            else if (moveDirection.Y == 1)
                 _owner.Face = Facing.DOWN;
-            }
-            if (moveDirection.Y < 0)
-            {
+            else if (moveDirection.Y == -1)
                 _owner.Face = Facing.UP;
-            }
         }
 
 
