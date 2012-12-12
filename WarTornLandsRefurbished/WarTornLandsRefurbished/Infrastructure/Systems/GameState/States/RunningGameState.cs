@@ -165,7 +165,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
                 Game1.Instance.SpriteBatch.DrawString(font, line2, new Vector2( Game1.Instance.GraphicsDevice.Viewport.Width/ 2 - (font.MeasureString(line2).X / 2),  Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line2).Y / 2)), Color.OrangeRed);
                 Game1.Instance.SpriteBatch.DrawString(font, line3, new Vector2( Game1.Instance.GraphicsDevice.Viewport.Width/ 2 - (font.MeasureString(line3).X / 2),  Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line3).Y / 2) + font.MeasureString(line1).Y), Color.OrangeRed);
                 Game1.Instance.SpriteBatch.End();
-                Game1.Instance.Player.ProvisionalFreezePlayerForDialog();
+
             }
 
             Game1.Instance.SpriteBatch.Begin();
