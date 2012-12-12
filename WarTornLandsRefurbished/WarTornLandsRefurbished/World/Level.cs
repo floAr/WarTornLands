@@ -208,7 +208,7 @@ namespace WarTornLands.World
             StaticDrawer torchlight = new StaticDrawer();
             torchlight.IsLight = true;
 
-            torchlight.Texture = Game1.Instance.Content.Load<Texture2D>("flame3");
+            torchlight.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/flame3");
 
             torch.AddModule(new DualDraw(torchlight, pSystem));
             //       torch.AddModule(pSystem);
@@ -224,7 +224,7 @@ namespace WarTornLands.World
         /// </summary>
         public void LoadChristmasCaverns()
         {
-            SoundManager.Instance.PlaySong("69_spirit_temple");
+            SoundManager.Instance.PlaySong("sound/69_spirit_temple");
             // Floor tiles
             const int STONE_FLOOR = 33; //was 49
             const int BOSS_FLOOR = 43;
@@ -248,7 +248,7 @@ namespace WarTornLands.World
                 for (int y = 10; y <= 17; ++y)
                     floorGrid[x, y].TileNum = BOSS_FLOOR;
 
-            floorLayer.LoadGrid(floorGrid, false, "dg_grounds32", false);
+            floorLayer.LoadGrid(floorGrid, false, "tileset/dg_grounds32", false);
             cavernsArea.AddLayer(floorLayer);
             #endregion
 
@@ -287,7 +287,7 @@ namespace WarTornLands.World
                 for (int y = 10; y <= 17; ++y)
                     wallGrid[x, y].TileNum = 0;
 
-            wallLayer.LoadGrid(wallGrid, false, "dg_dungeon32", true);
+            wallLayer.LoadGrid(wallGrid, false, "tileset/dg_dungeon32", true);
             cavernsArea.AddLayer(wallLayer);
             #endregion
 
@@ -414,7 +414,7 @@ namespace WarTornLands.World
             }
 
 
-            overlayer.LoadGrid(mastergrid, false, "overlay", false);
+            overlayer.LoadGrid(mastergrid, false, "tileset/overlay", false);
             cavernsArea.AddLayer(overlayer);
             #endregion
             // Add entities
@@ -437,7 +437,7 @@ namespace WarTornLands.World
             doorConList.Add(doorCon);
             door1.AddModule(new Dialog(doorConList, door1));            
             StaticDrawer sd1 = new StaticDrawer();
-            sd1.Texture = Game1.Instance.Content.Load<Texture2D>("doorClosed");
+            sd1.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/doorClosed");
             door1.AddModule(sd1);
             OpenDoorOnCollide d1coll = new OpenDoorOnCollide((int)ItemTypes.SmallKey);
             door1.AddModule(d1coll);
@@ -460,7 +460,7 @@ namespace WarTornLands.World
             doorConList.Add(doorCon);
             door2.AddModule(new Dialog(doorConList, door2));       
             StaticDrawer sd2 = new StaticDrawer();
-            sd2.Texture = Game1.Instance.Content.Load<Texture2D>("doorClosedBoss");
+            sd2.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/doorClosedBoss");
             door2.AddModule(sd2);
             OpenDoorOnCollide d2coll = new OpenDoorOnCollide((int)ItemTypes.MasterKey);
             door2.AddModule(d2coll);
@@ -469,9 +469,9 @@ namespace WarTornLands.World
             // Add chest
             Entity chest = new Entity(Game1.Instance, new Vector2(31, 35) * Constants.TileSize);
             chest.AddModule(new Obstacle());
-            chest.AddModule(new ReplaceByStatic("treasureChestLooted"));
+            chest.AddModule(new ReplaceByStatic("sprite/treasureChestLooted"));
             StaticDrawer sd3 = new StaticDrawer();
-            sd3.Texture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
+            sd3.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/treasureChest");
             chest.AddModule(sd3);
             List<Conversation> cons = new List<Conversation>();
             Conversation con = new Conversation("1");
@@ -488,7 +488,7 @@ namespace WarTornLands.World
             Entity crazyDude = new Entity(Game1.Instance, new Vector2(18 * Constants.TileSize, 15 * Constants.TileSize + 10));
             crazyDude.AddModule(new Obstacle());
             StaticDrawer sd4 = new StaticDrawer();
-            sd4.Texture = Game1.Instance.Content.Load<Texture2D>("frederik");
+            sd4.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/frederik");
             crazyDude.AddModule(sd4);
             crazyDude.AddModule(new Obstacle());
             cons = new List<Conversation>();
@@ -517,7 +517,7 @@ namespace WarTornLands.World
             Entity boss = new Entity(Game1.Instance, new Vector2(39, 15) * Constants.TileSize, "GruselUte");
             boss.AddModule(new ThinkRoamAround(new Vector2(39, 11) * Constants.TileSize, 170));
             StaticDrawer bossDrawer = new StaticDrawer();
-            bossDrawer.Texture = Game1.Instance.Content.Load<Texture2D>("gruselute");
+            bossDrawer.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/gruselute");
             boss.AddModule(bossDrawer);
             boss.AddModule(new Obstacle());
             boss.AddModule(new ExplodeAndLoot(null));
@@ -528,13 +528,13 @@ namespace WarTornLands.World
 
             for (int i = 0; i < 5; ++i)
             {
-                AnimatedDrawer body = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("torch_model"));
+                AnimatedDrawer body = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("sprite/torch_model"));
                 Animation simpleflicker = new Animation("flicker");
                 simpleflicker.AddFrame(new Rectangle(0, 0, 32, 32));
                 simpleflicker.AddFrame(new Rectangle(32, 0, 32, 32));
                 body.AddAnimation(simpleflicker);
                 body.SetCurrentAnimation("flicker");
-                AnimatedDrawer light = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("torch_light"));
+                AnimatedDrawer light = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("sprite/torch_light"));
                 light.AddAnimation(simpleflicker);
                 light.SetCurrentAnimation("flicker");
                 light.IsLight = true;
@@ -547,7 +547,7 @@ namespace WarTornLands.World
 
             //fire
             List<Texture2D> pL = new List<Texture2D>();
-            pL.Add(Game1.Instance.Content.Load<Texture2D>("flame3"));
+            pL.Add(Game1.Instance.Content.Load<Texture2D>("sprite/flame3"));
             Entity torch = new Entity(Game1.Instance, new Vector2(29, 32) * Constants.TileSize, "torch");
             Entity torch2 = new Entity(Game1.Instance, new Vector2(33, 32) * Constants.TileSize, "torch");
             ParticleSystem pSystem = new ParticleSystem(
@@ -569,7 +569,7 @@ namespace WarTornLands.World
             StaticDrawer torchlight = new StaticDrawer();
             torchlight.IsLight = true;
 
-            torchlight.Texture = Game1.Instance.Content.Load<Texture2D>("flame3");
+            torchlight.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/flame3");
 
             torch.AddModule(new DualDraw(torchlight, pSystem));
             torch2.AddModule(new DualDraw(torchlight, pSystem));
@@ -581,14 +581,14 @@ namespace WarTornLands.World
             //endtorch
             //fungus
             StaticDrawer fungusS = new StaticDrawer();
-            fungusS.Texture = Game1.Instance.Content.Load<Texture2D>("fungus");
+            fungusS.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/fungus");
             
           
 
             for (int i = 0; i < 3; ++i)
             {
                 Entity fungus = new Entity(Game1.Instance, new Vector2(13 + r.Next(9), 15 + r.Next(7)) * Constants.TileSize, "fungus");
-                AnimatedDrawer fungusGlow = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("fungus_light"));
+                AnimatedDrawer fungusGlow = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("sprite/fungus_light"));
                 Animation glow = new Animation("glow");
                 glow.AddFrame(new Rectangle(64, 0, 64, 64), r.Next(1000));
                 glow.AddFrame(new Rectangle(64, 0, 64, 64));

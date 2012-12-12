@@ -10,7 +10,11 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
 {
     public static class Lightmanager
     {
-        private static List<Entities.Entity> _lights = new List<Entities.Entity>();
+
+
+
+        private static List<Entities.Entity> _groundLights = new List<Entities.Entity>();
+        private static List<Entities.Entity> _upperLights = new List<Entities.Entity>(); 
         
         //Daylight
         private static Color _skyColor = Color.White;
@@ -41,9 +45,13 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
             _dynamicLightCycle = true;
         }
 
-        public static void AddLight(Entities.Entity light)
+        public static void AddLight(Entities.Entity light,bool isUpperLight=false)
         {
-            _lights.Add(light);
+            if (isUpperLight)
+                _upperLights.Add(light);
+            else
+                _groundLights.Add(light);
+
         }
 
         public static void Draw(GameTime gameTime)
@@ -65,11 +73,14 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
                 }
                 float a = _counter / _fractal;
                 _skyColor = Color.Lerp(_dayGradient[_currentColor], _dayGradient[_currentColor + 1], a);
-               // _skyColor = _dayGradient[_currentColor];
             }
 
-            Game1.Instance.SpriteBatch.Draw(Game1.Instance.Content.Load<Texture2D>("light"), new Rectangle(-20, -20, Game1.Instance.GraphicsDevice.DisplayMode.Width + 40, Game1.Instance.GraphicsDevice.DisplayMode.Height + 20), _skyColor);
-            foreach (Entities.Entity e in _lights)
+            Game1.Instance.SpriteBatch.Draw(Game1.Instance.Content.Load<Texture2D>("sprite/light"), new Rectangle(-20, -20, Game1.Instance.GraphicsDevice.DisplayMode.Width + 40, Game1.Instance.GraphicsDevice.DisplayMode.Height + 20), _skyColor);
+            foreach (Entities.Entity e in _groundLights)
+            {
+                e.Draw(gameTime);
+            }
+            foreach (Entities.Entity e in _upperLights)
             {
                 e.Draw(gameTime);
             }

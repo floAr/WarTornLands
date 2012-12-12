@@ -112,10 +112,10 @@ namespace WarTornLands.PlayerClasses
         {
             _deltaWidth = (Game1.Instance.Window.ClientBounds.Width / _standardWidth);
             _deltaHeight = (Game1.Instance.Window.ClientBounds.Height / _standardHeight);
-            _chestPicture = Game1.Instance.Content.Load<Texture2D>("treasureChest");
-            _potionPicture = Game1.Instance.Content.Load<Texture2D>("potion");
-            _keyPicture = Game1.Instance.Content.Load<Texture2D>("key"); 
-            _bosskeyPicture = Game1.Instance.Content.Load<Texture2D>("bosskey");
+            _chestPicture = Game1.Instance.Content.Load<Texture2D>("sprite/treasureChest");
+            _potionPicture = Game1.Instance.Content.Load<Texture2D>("sprite/potion");
+            _keyPicture = Game1.Instance.Content.Load<Texture2D>("sprite/key");
+            _bosskeyPicture = Game1.Instance.Content.Load<Texture2D>("sprite/bosskey");
             _radius = 100;
             _totalItemCount = 8;
             _inventoryIsOpen = false;

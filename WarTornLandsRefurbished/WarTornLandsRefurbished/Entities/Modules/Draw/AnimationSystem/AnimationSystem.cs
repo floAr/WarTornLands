@@ -115,7 +115,7 @@ namespace WarTornLands.Entities.Modules.Draw
         {
             get
             {
-                AnimatedDrawer explosion = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("explosion"));
+                AnimatedDrawer explosion = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("sprite/explosion"));
                 Animation explode = new Animation("explode");
                 for (int y = 0; y < 2; ++y)
                 {

@@ -57,9 +57,9 @@ namespace WarTornLands.Infrastructure
 
         protected override void LoadContent()
         {
-            _textBox = Game1.Instance.Content.Load<Texture2D>("dialogbox");
+            _textBox = Game1.Instance.Content.Load<Texture2D>("sprite/dialogbox");
             _lineLength = _textBox.Width - 2 * _relTextPosition.X;
-            _font = Game1.Instance.Content.Load<SpriteFont>("DialogFont");
+            _font = Game1.Instance.Content.Load<SpriteFont>("font/DialogFont");
             _topLeftPosition = new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth * .5f - _textBox.Width * .5f + _relBoxPosition.X,
                                            GraphicsDeviceManager.DefaultBackBufferHeight - _textBox.Height + _relBoxPosition.Y);
 
@@ -82,7 +82,7 @@ namespace WarTornLands.Infrastructure
             string text = _currentDisplay.Text;
             Vector2 pos = Vector2.Zero;
 
-            game.SpriteBatch.Draw(game.Content.Load<Texture2D>("dialogbox"),
+            game.SpriteBatch.Draw(game.Content.Load<Texture2D>("sprite/dialogbox"),
                 _topLeftPosition, Color.White);
 
             while (text.Length > 0)

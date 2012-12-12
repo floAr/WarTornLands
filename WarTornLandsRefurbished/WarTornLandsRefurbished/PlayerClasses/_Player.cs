@@ -61,7 +61,7 @@ namespace WarTornLands.PlayerClasses
 
         protected override void LoadContent()
         {
-            AnimatedDrawer animS = new AnimatedDrawer(Game.Content.Load<Texture2D>("character_64x128"));
+            AnimatedDrawer animS = new AnimatedDrawer(Game.Content.Load<Texture2D>("sprite/character_64x128"));
             
             Animation anim = new Animation("walkDown");
             anim.AddFrame(new Rectangle(64 * 1, 0, 64, 128));

@@ -30,210 +30,204 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="blackhole.png">
+    <Compile Include="sprite\blackhole.png">
       <Name>blackhole</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="character_64x128.png">
+    <Compile Include="sprite\character_64x128.png">
       <Name>character_64x128</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="deadtree.png">
+    <Compile Include="sprite\deadtree.png">
       <Name>deadtree</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="dialogbox.png">
+    <Compile Include="sprite\dialogbox.png">
       <Name>dialogbox</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="explosion.png">
+    <Compile Include="sprite\explosion.png">
       <Name>explosion</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="gruselute.png">
+    <Compile Include="sprite\gruselute.png">
       <Name>gruselute</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="minidot.png">
+    <Compile Include="sprite\minidot.png">
       <Name>minidot</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="weapontest.png">
+    <Compile Include="sprite\weapontest.png">
       <Name>weapontest</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="wildboar.png">
+    <Compile Include="sprite\wildboar.png">
       <Name>wildboar</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DialogFont.spritefont">
+    <Compile Include="font\DialogFont.spritefont">
       <Name>DialogFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="flame3.png">
+    <Compile Include="sprite\flame3.png">
       <Name>flame3</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="flame3.png">
-      <Name>flame3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="dg_dungeon32.png">
+    <Compile Include="tileset\dg_dungeon32.png">
       <Name>dg_dungeon32</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="dg_grounds32.png">
+    <Compile Include="tileset\dg_grounds32.png">
       <Name>dg_grounds32</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="doorClosed.png">
+    <Compile Include="sprite\doorClosed.png">
       <Name>doorClosed</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="doorClosedBoss.png">
+    <Compile Include="sprite\doorClosedBoss.png">
       <Name>doorClosedBoss</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="doorOpen.png">
+    <Compile Include="sprite\doorOpen.png">
       <Name>doorOpen</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="treasureChest.png">
+    <Compile Include="sprite\treasureChest.png">
       <Name>treasureChest</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="light.png">
+    <Compile Include="sprite\light.png">
       <Name>light</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="torch_light.png">
+    <Compile Include="sprite\torch_light.png">
       <Name>torch_light</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="torch_model.png">
+    <Compile Include="sprite\torch_model.png">
       <Name>torch_model</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="treasureChestLooted.png">
+    <Compile Include="sprite\treasureChestLooted.png">
       <Name>treasureChestLooted</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="fungus.png">
+    <Compile Include="sprite\fungus.png">
       <Name>fungus</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="fungus_light.png">
+    <Compile Include="sprite\fungus_light.png">
       <Name>fungus_light</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="overlay.png">
+    <Compile Include="tileset\overlay.png">
       <Name>overlay</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="dyn_overlay.png">
+    <Compile Include="tileset\dyn_overlay.png">
       <Name>dyn_overlay</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="69_spirit_temple.mp3">
+    <Compile Include="sound\69_spirit_temple.mp3">
       <Name>69_spirit_temple</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frederik.png">
+    <Compile Include="sprite\frederik.png">
       <Name>frederik</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="potion.png">
+    <Compile Include="sprite\potion.png">
       <Name>potion</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="key.png">
+    <Compile Include="sprite\key.png">
       <Name>key</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="bosskey.png">
+    <Compile Include="sprite\bosskey.png">
       <Name>bosskey</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Test.spritefont">
+    <Compile Include="font\Test.spritefont">
       <Name>Test</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="xmasSplash.jpg">
+    <Compile Include="sprite\xmasSplash.jpg">
       <Name>xmasSplash</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

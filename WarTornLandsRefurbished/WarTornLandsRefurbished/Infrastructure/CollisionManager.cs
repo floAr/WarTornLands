@@ -10,7 +10,7 @@ namespace WarTornLands.Infrastructure
 {
     public class CollisionManager
     {
-        private Level _level;
+      
 
         #region Singleton Stuff
         private static CollisionManager _instance;
@@ -30,7 +30,7 @@ namespace WarTornLands.Infrastructure
 
         private CollisionManager()
         {
-            _level = Game1.Instance.Level;
+            Game1.Instance.Level = Game1.Instance.Level;
         }
 
         /// <summary>
@@ -95,8 +95,8 @@ namespace WarTornLands.Infrastructure
 
 
             // Tile collision
-            while ((!_level.IsPositionAccessible(start + pointOne + move) ||
-                   !_level.IsPositionAccessible(start + pointTwo + move)) &&
+            while ((!Game1.Instance.Level.IsPositionAccessible(start + pointOne + move) ||
+                   !Game1.Instance.Level.IsPositionAccessible(start + pointTwo + move)) &&
                     sensor > 0)
             {
                 move = direction * sensor;
@@ -112,8 +112,8 @@ namespace WarTornLands.Infrastructure
 
             // Entity collision
             List<Entity> lastEntities = new List<Entity>();
-            List<Entity> curEntities = _level.GetEntitiesAt(start + pointOne + move);
-            curEntities.AddRange(_level.GetEntitiesAt(start + pointTwo + move));
+            List<Entity> curEntities = Game1.Instance.Level.GetEntitiesAt(start + pointOne + move);
+            curEntities.AddRange(Game1.Instance.Level.GetEntitiesAt(start + pointTwo + move));
 
             List<Entity> temp = new List<Entity>(curEntities);
             foreach (Entity ent in temp)
@@ -132,8 +132,8 @@ namespace WarTornLands.Infrastructure
                 else
                     sensor = 0;
                 move = direction * sensor;
-                curEntities = _level.GetEntitiesAt(start + pointOne + move);
-                curEntities.AddRange(_level.GetEntitiesAt(start + pointTwo + move));
+                curEntities = Game1.Instance.Level.GetEntitiesAt(start + pointOne + move);
+                curEntities.AddRange(Game1.Instance.Level.GetEntitiesAt(start + pointTwo + move));
 
                 temp = new List<Entity>(curEntities);
                 foreach (Entity ent in temp)

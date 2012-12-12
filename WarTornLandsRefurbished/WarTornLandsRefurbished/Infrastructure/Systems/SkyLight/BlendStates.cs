@@ -61,23 +61,29 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
     public class BackBuffer
     {
         private RenderTarget2D _SourcetMap;
-
-        private RenderTarget2D _LightMap;
+        private RenderTarget2D _lowerLightMap;
+        private RenderTarget2D _upperLightMap;
         public RenderTarget2D SourceMap
         {
             get { return _SourcetMap; }
             set { _SourcetMap = value; }
         }
-        public RenderTarget2D LightMap
+        public RenderTarget2D UpperLightMap
         {
-            get { return _LightMap; }
-            set { _LightMap = value; }
+            get { return _upperLightMap; }
+            set { _upperLightMap = value; }
+        }
+        public RenderTarget2D LowerLightMap
+        {
+            get { return _lowerLightMap; }
+            set { _lowerLightMap = value; }
         }
 
         public BackBuffer(GraphicsDevice Device, Rectangle Size)
         {
             _SourcetMap = new RenderTarget2D(Device, Size.Width, Size.Height, false, Device.DisplayMode.Format, DepthFormat.Depth24);
-            _LightMap = new RenderTarget2D(Device, Size.Width, Size.Height, false, Device.DisplayMode.Format, DepthFormat.Depth24);
+            _upperLightMap = new RenderTarget2D(Device, Size.Width, Size.Height, false, Device.DisplayMode.Format, DepthFormat.Depth24);
+            _lowerLightMap = new RenderTarget2D(Device, Size.Width, Size.Height, false, Device.DisplayMode.Format, DepthFormat.Depth24);
         }
     }
 

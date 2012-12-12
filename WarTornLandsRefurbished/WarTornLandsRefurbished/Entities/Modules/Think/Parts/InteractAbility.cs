@@ -19,12 +19,10 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
 
         private Entity _owner;
-        private Level _level;
 
         public InteractAbility(float range = 50)
         {
             Range = range;
-            _level = Game1.Instance.Level;
         }
 
         public void SetOwner(Entity owner)
@@ -58,7 +56,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
                     break;
             }
 
-            List<Entity> targets = _level.GetEntitiesAt(testPos);
+            List<Entity> targets = Game1.Instance.Level.GetEntitiesAt(testPos);
 
             if (targets.Count == 0 || (targets.Count == 1 && targets.First().Equals(_owner)))
                 return false;
