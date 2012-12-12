@@ -60,13 +60,16 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
 
     public class BackBuffer
     {
-        private RenderTarget2D _SourcetMap;
+        private RenderTarget2D _SourceMap;
         private RenderTarget2D _lowerLightMap;
         private RenderTarget2D _upperLightMap;
+
+        private RenderTarget2D _lastFrame;
+
         public RenderTarget2D SourceMap
         {
-            get { return _SourcetMap; }
-            set { _SourcetMap = value; }
+            get { return _SourceMap; }
+            set { _SourceMap = value; }
         }
         public RenderTarget2D UpperLightMap
         {
@@ -79,11 +82,18 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
             set { _lowerLightMap = value; }
         }
 
+        public RenderTarget2D LastFrame
+        {
+            get { return _lastFrame; }
+            set { _lastFrame = value; }
+        }
+
         public BackBuffer(GraphicsDevice Device, Rectangle Size)
         {
-            _SourcetMap = new RenderTarget2D(Device, Size.Width, Size.Height, false, Device.DisplayMode.Format, DepthFormat.Depth24);
+            _SourceMap = new RenderTarget2D(Device, Size.Width, Size.Height, false, Device.DisplayMode.Format, DepthFormat.Depth24);
             _upperLightMap = new RenderTarget2D(Device, Size.Width, Size.Height, false, Device.DisplayMode.Format, DepthFormat.Depth24);
             _lowerLightMap = new RenderTarget2D(Device, Size.Width, Size.Height, false, Device.DisplayMode.Format, DepthFormat.Depth24);
+            _lastFrame = new RenderTarget2D(Device, Size.Width, Size.Height, false, Device.DisplayMode.Format, DepthFormat.Depth24);
         }
     }
 

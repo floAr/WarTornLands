@@ -14,12 +14,11 @@ using Microsoft.Xna.Framework.Input;
 namespace WarTornLands.Infrastructure.Systems.GameState.States
 {
    public class RunningGameState:BaseGameState
-    {
-        private bool _drawLights = false;
-        public bool DrawingLights { get { return _drawLights; } set { _drawLights = value; } }
+   {
 
         private BackBuffer _BackBuffer;
 
+        private RenderTarget2D _lastFrame;
         //Debug
         Texture2D weaponMarker;
 
@@ -108,6 +107,8 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
         {
             if (Keyboard.GetState().IsKeyDown(Keys.M))
                 Game1.Instance.PopState();
+            if (Keyboard.GetState().IsKeyDown(Keys.I))
+                Game1.Instance.PushState(new InventoryState(_BackBuffer.LastFrame));
         }
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
@@ -132,7 +133,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
            Game1.Instance.DrawingLights = false;
             //set back normal target and draw game
-            Game1.Instance.GraphicsDevice.SetRenderTarget(null);
+            Game1.Instance.GraphicsDevice.SetRenderTarget(_BackBuffer.LastFrame);
             Game1.Instance.SpriteBatch.Begin();
             Game1.Instance.DebugDraw(gameTime);
             //   Game1.Instance.SpriteBatch.DrawString(Content.Load<SpriteFont>("Test"), Player.Position.ToString(), Vector2.Zero, Color.White);
@@ -143,6 +144,13 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);
             Game1.Instance.SpriteBatch.Draw(_BackBuffer.LowerLightMap, new Vector2(0, 0), new Color(255, 255, 255, 255));
             Game1.Instance.SpriteBatch.End();
+
+
+            Game1.Instance.GraphicsDevice.SetRenderTarget(null);
+            Game1.Instance.SpriteBatch.Begin();
+            Game1.Instance.SpriteBatch.Draw(_BackBuffer.LastFrame,Vector2.Zero,Color.White);
+            Game1.Instance.SpriteBatch.End();
+
 
             if (Game1.Instance.Player.ToBeRemoved)
             {

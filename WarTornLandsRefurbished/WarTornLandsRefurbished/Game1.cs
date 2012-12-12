@@ -91,7 +91,6 @@ namespace WarTornLands
             //Inventory = Player.Inventory;
 
             this.Components.Add(Player);
-            this.Components.Add(Player.Inventory);
             this.Components.Add(DialogManager.Instance);
             Interface = new Interface();
             this.Components.Add(Interface);

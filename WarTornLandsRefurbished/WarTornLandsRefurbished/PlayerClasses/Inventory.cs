@@ -11,7 +11,7 @@ namespace WarTornLands.PlayerClasses
 {
 
 
-    public class Inventory : DrawableGameComponent
+    public class Inventory 
     {
         #region Drawvariablen
 
@@ -108,7 +108,6 @@ namespace WarTornLands.PlayerClasses
        #endregion
 
         public Inventory()
-            : base(Game1.Instance as Game)
         {
             _deltaWidth = (Game1.Instance.Window.ClientBounds.Width / _standardWidth);
             _deltaHeight = (Game1.Instance.Window.ClientBounds.Height / _standardHeight);
@@ -124,7 +123,7 @@ namespace WarTornLands.PlayerClasses
             _previouskeystate = false;
             _inventoryIsOpen = false;
             _normalkeys = new List<Item>();
-            this.DrawOrder = 100000;
+            
         }
 
 
@@ -163,11 +162,7 @@ namespace WarTornLands.PlayerClasses
         }
 
 
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
-        public override void Draw(GameTime gameTime)
+        public  void Draw(GameTime gameTime)
         {
             if (InputManager.Instance.KInventory.Value && !_previouskeystate)
             {
