@@ -19,7 +19,7 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
 
 
         public override void  SetMode(InputMode mode)
-{
+        {
             _mode = mode;
         }
         public void SetActivator(Keys key)
@@ -39,10 +39,7 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
         {
             // Keyboard ///
             if ((int)_mode == 0)
-            {
-                if(_key == null)
-                    throw new Exception("Input keys not set.");
-                
+            {              
                 KeyboardState state = Keyboard.GetState();
 
                 if (state.IsKeyDown(_key))

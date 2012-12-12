@@ -49,16 +49,6 @@ namespace WarTornLands.PlayerClasses
             this.CanBeAttacked = true;
         }
 
-        public void ProvisionalFreezePlayerForDialog()
-        {
-            (this._mThinkModule as ThinkInputGuided).Freeze();
-        }
-
-        public void ProvisionalThawPlayerForDialog()
-        {
-            (this._mThinkModule as ThinkInputGuided).Thaw();
-        }
-
         protected override void LoadContent()
         {
             AnimatedDrawer animS = new AnimatedDrawer(Game.Content.Load<Texture2D>("sprite/character_64x128"));

@@ -14,6 +14,15 @@ namespace WarTornLands.World
         public Rectangle Bounds { get; private set; }
         LinkedList<Layer> _layers;
 
+        public bool Enabled
+        {
+            set
+            {
+                foreach (Layer l in _layers)
+                    l.Enabled = false;
+            }
+        }
+
         public Area(Rectangle bounds)
         {
             Bounds = bounds;

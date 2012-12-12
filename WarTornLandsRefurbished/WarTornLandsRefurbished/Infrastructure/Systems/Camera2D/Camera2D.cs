@@ -24,7 +24,7 @@ namespace WarTornLands.Infrastructure.Systems.Camera2D
         public Camera2D(Entities.Entity target)
         {
             _target = target;
-            _center = Vector2.Zero;
+            _center = target.Position;
         }
 
         public void SetTarget(Entities.Entity anchor)
@@ -55,18 +55,25 @@ namespace WarTornLands.Infrastructure.Systems.Camera2D
         public void Update(GameTime gameTime)
         {
              _counter += gameTime.ElapsedGameTime.Milliseconds;
-            if (!_cinematics)//no cinematic
+
+            // Check whether we are in a cinematic or not
+            if (!_cinematics)
             {
-                _center = Vector2.Lerp(_center, _target.Position, Math.Min( _counter/_lerpBack, 1));
+                // Check whether camera position equals target position
+                if (_lerpBack == 0)
+                    _center = Vector2.Lerp(_center, _target.Position, 1);
+                else
+                    _center = Vector2.Lerp(_center, _target.Position, Math.Min(_counter/_lerpBack, 1));
             }
             else
             {
-               
+                // Spline interpolation
                 _center.X = splineX.Evaluate(Math.Min(_counter, _duration));
                 _center.Y = splineY.Evaluate(Math.Min(_counter, _duration));
+
                 if (_counter > _duration)
                 {
-                    _counter=0;
+                    _counter = 0;
                     _cinematics = false;
                     _lerpBack = Math.Abs(Vector2.Distance(_target.Position, _center)) * 10;
                 }

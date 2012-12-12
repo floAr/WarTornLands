@@ -27,6 +27,14 @@ namespace WarTornLands.World
     {
         private Dictionary<string, Area> _areas;
         private Game _game;
+        public bool Enabled
+        {
+            set
+            {
+                foreach (KeyValuePair<string, Area> a in _areas)
+                    a.Value.Enabled = false;
+            }
+        }
 
         private Random r = new Random();
         public Level(Game game)
