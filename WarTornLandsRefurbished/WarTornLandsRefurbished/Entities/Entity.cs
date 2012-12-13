@@ -64,7 +64,6 @@ namespace WarTornLands.Entities
             {
                 _prevPosition = _position;
                 _position = value;
-
             }
         }
         public Vector2 InitialPosition { get; internal set; }
@@ -75,44 +74,22 @@ namespace WarTornLands.Entities
         public float MaxHealth { get; internal set; }
         public string Name { get; internal set; }
 
-        private Vector2 _prevPosition=Vector2.Zero;
+        private Vector2 _prevPosition = Vector2.Zero;
         private Vector2 _position = Vector2.Zero;
         private bool _moving = false;
         public Facing Face
         {
-            get
+            get { return _face; }
+            set
             {
-                return _face;
-            }
-
-            internal set
-            {
-                /*if (_face != value && this.MDrawModule is AnimatedDrawer)
-                {
-                    switch (value)
-                    {
-                        case Facing.DOWN:
-                            (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("walkDown");
-                            break;
-                        case Facing.LEFT:
-                            (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("walkLeft");
-                            break;
-                        case Facing.RIGHT:
-                            (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("walkRight");
-                            break;
-                        case Facing.UP:
-                            (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("walkUp");
-                            break;
-                    }
-                }*/
-
+                _prevFace = _face;
                 _face = value;
             }
         }
+        private Facing _face;
+        private Facing _prevFace;
 
         internal CounterManager CM;
-
-        private Facing _face;
 
         #region CollideModule
         protected ICollideModule _mCollideModule;
@@ -262,8 +239,9 @@ namespace WarTornLands.Entities
             if (!this.Enabled)
                 return;
 
-            // If animated entity, and we toggled our moving state
-            if ((this.MDrawModule is AnimatedDrawer) && (_prevPosition != _position) != _moving)
+            // If animated entity, and we changed our moving state / facing
+            if (this.MDrawModule is AnimatedDrawer &&
+                ((_prevPosition != _position) != _moving || _prevFace != Face))
             {
                 // Update moving flag
                 _moving = (_prevPosition != _position);

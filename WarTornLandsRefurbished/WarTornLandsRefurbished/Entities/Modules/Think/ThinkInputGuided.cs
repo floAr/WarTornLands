@@ -32,6 +32,7 @@ namespace WarTornLands.Entities.Modules.Think
             _jump = new JumpAbility();
             _swing = new SwingHitAbility(700, 1);
             _interact = new InteractAbility();
+            _frozen = false;
 
             // Subscribe to Input events
             _input = InputManager.Instance;
@@ -84,8 +85,6 @@ namespace WarTornLands.Entities.Modules.Think
 
         private void CalcFacing(Vector2 moveDirection)
         {
-            // TODO direction somehow buggy... animation or facing value?!
-
             if (moveDirection.X == 1)
                 _owner.Face = Facing.RIGHT;
             else if (moveDirection.X == -1)
