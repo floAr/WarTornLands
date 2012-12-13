@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using WarTornLands.Infrastructure.Systems.DrawSystem;
 
 namespace WarTornLands.Infrastructure.Systems.GameState
 {
@@ -18,5 +19,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState
         public abstract void Draw(GameTime gameTime);
 
         public bool DrawingLights;
+
+        protected DrawManager _drawManager=new DrawManager();
     }
 }

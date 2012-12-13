@@ -77,11 +77,12 @@ namespace WarTornLands
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             _states = new Stack<BaseGameState>();
 
-         
+
+            this.Components.Add(InputManager.Instance);
         
 
 
-            this.Components.Add(InputManager.Instance);
+            
             Player = Player.Instance;
             Player.DrawOrder = 100;
             Player.Position = new Vector2(14 * Constants.TileSize, 19 * Constants.TileSize);
@@ -166,6 +167,7 @@ namespace WarTornLands
         /// 
         protected override void Draw(GameTime gameTime)
         {
+            
             _states.Peek().Draw(gameTime);
         }
 

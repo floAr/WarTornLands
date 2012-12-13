@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 
 namespace WarTornLands.Infrastructure.Systems.GameState.States
 {
@@ -39,11 +40,12 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            base.Draw(gameTime);
+            /*base.Draw(gameTime);
             //Own Draw logic here
             Game1.Instance.SpriteBatch.Begin();
-            Game1.Instance.Player.Inventory.Draw(gameTime);
-            Game1.Instance.SpriteBatch.End();
+              Game1.Instance.SpriteBatch.Draw(_background, Vector2.Zero, Color.Tomato);
+            Game1.Instance.SpriteBatch.End();/**/
+            _drawManager.Draw(_drawManager.B(_drawManager.B(Game1.Instance.Player.Inventory),_drawManager.B( _background,Game1.Instance.Content.Load<Effect>("effect/test"))), gameTime);
         }
     }
 }

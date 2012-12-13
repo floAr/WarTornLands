@@ -6,12 +6,13 @@ using Microsoft.Xna.Framework.Graphics;
 using WarTornLands.Infrastructure;
 using Microsoft.Xna.Framework;
 using WarTornLands.PlayerClasses.Items;
+using WarTornLands.Infrastructure.Systems.DrawSystem;
 
 namespace WarTornLands.PlayerClasses
 {
 
 
-    public class Inventory 
+    public class Inventory :IDrawProvider
     {
         #region Drawvariablen
 

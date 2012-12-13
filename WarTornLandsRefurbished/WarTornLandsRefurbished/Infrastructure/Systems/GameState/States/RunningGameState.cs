@@ -43,15 +43,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
         public override void LoadContent()
         {
-            // Erstellen Sie einen neuen Game1.Instance.SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann
-
-            //    SoundManager.Instance.StartPlaying("ambient");
-            //Add Default Explosion Module
             Catalog.Instance.SetupTestCatalog();
-
-
-
-
 
             _BackBuffer = new BackBuffer(Game1.Instance.GraphicsDevice, new Rectangle(0, 0, Game1.Instance.GraphicsDevice.Viewport.Width, Game1.Instance.GraphicsDevice.Viewport.Height));
 
@@ -69,24 +61,10 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             points.Add(new Vector2(-400, Game1.Instance.Player.Position.Y));
             points.Add(new Vector2(-400, Game1.Instance.Player.Position.Y));
             points.Add(Game1.Instance.Player.Position);
-            /*points.Add(new Vector2(574, 546));
-            points.Add(new Vector2(670, 916));
-            points.Add(new Vector2(994, 1053));
-            points.Add(new Vector2(1244, 908));
-            points.Add(new Vector2(1250, 415));
-            points.Add(Player.Position);*/
             Game1.Instance.Camera.PlayCinematic(points, 6000);
             #endregion
-            //    Lightmanager.SetStaticColor(Color.White);
-
-            //    Lightmanager.SetStaticColor(Color.White);
-            // TODO: Verwenden Sie this.Content, um Ihren Spiel-Inhalt hier zu laden
-
 
             weaponMarker = Game1.Instance.Content.Load<Texture2D>("sprite/weapontest");
-
-            // Add splash screen
-            // TODO remove splash screen ;)
             splash = new Entity(Game1.Instance, new Vector2(-400, 608));
             StaticDrawer splashSd = new StaticDrawer();
             splashSd.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/xmasSplash");
