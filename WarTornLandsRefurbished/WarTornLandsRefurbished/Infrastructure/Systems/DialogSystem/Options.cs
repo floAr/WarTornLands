@@ -69,9 +69,9 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
         {
             base.Text = DecryptOptionsToString();
 
-            (Game1.Instance.CurrentState.InputSheet["Move"] as DirectionInput).Up += _scrollUp;
-            (Game1.Instance.CurrentState.InputSheet["Move"] as DirectionInput).Down += _scrollDown;
-            (Game1.Instance.CurrentState.InputSheet["Interact"] as Key).Pressed += _enter;
+            (InputManager.Instance["Move"] as DirectionInput).Up += _scrollUp;
+            (InputManager.Instance["Move"] as DirectionInput).Down += _scrollDown;
+            (InputManager.Instance["Interact"] as Key).Pressed += _enter;
 
             base.Trigger();
         }
@@ -99,9 +99,9 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
 
         private void OnEnter(object sender, EventArgs e)
         {
-            (Game1.Instance.CurrentState.InputSheet["Move"] as DirectionInput).Up -= _scrollUp;
-            (Game1.Instance.CurrentState.InputSheet["Move"] as DirectionInput).Down -= _scrollDown;
-            (Game1.Instance.CurrentState.InputSheet["Interact"] as Key).Pressed -= _enter;
+            (InputManager.Instance["Move"] as DirectionInput).Up -= _scrollUp;
+            (InputManager.Instance["Move"] as DirectionInput).Down -= _scrollDown;
+            (InputManager.Instance["Interact"] as Key).Pressed -= _enter;
 
             if (_options[_current].ConID.Equals("#this"))
                 (_owner.MInteractModule as Dialog).SetNewDefault(this.ConversationID, this.ConversationID);

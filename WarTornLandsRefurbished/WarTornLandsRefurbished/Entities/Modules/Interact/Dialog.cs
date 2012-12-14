@@ -85,7 +85,7 @@ namespace WarTornLands.Entities.Modules.Interact
                     OnEnter(null, EventArgs.Empty);
 
                     // Subscribe Enter event to continue conversations
-                    InputManager.Instance.Subscribe((Game1.Instance.CurrentState.InputSheet["Interact"] as Key), ref _enter);
+                    InputManager.Instance.Subscribe((InputManager.Instance["Interact"] as Key), ref _enter);
                 }
                 else
                 {
@@ -120,7 +120,7 @@ namespace WarTornLands.Entities.Modules.Interact
         public void ShutDown()
         {
             Active = false;
-            InputManager.Instance.Unsubscribe((Game1.Instance.CurrentState.InputSheet["Interact"] as Key), ref _enter);
+            InputManager.Instance.Unsubscribe((InputManager.Instance["Interact"] as Key), ref _enter);
             _cm.StartCounter(_cShutdown, Cooldown);
             OnCooldown = true;
         }

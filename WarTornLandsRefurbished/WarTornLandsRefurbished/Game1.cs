@@ -84,14 +84,13 @@ namespace WarTornLands
 
             
             Player = Player.Instance;
-            Player.DrawOrder = 100;
             Player.Position = new Vector2(14 * Constants.TileSize, 19 * Constants.TileSize);
 
             _camera=new Camera2D(Player);
 
             //Inventory = Player.Inventory;
 
-            this.Components.Add(Player);
+           
             this.Components.Add(DialogManager.Instance);
             Interface = new Interface();
             this.Components.Add(Interface);
@@ -107,7 +106,7 @@ namespace WarTornLands
         /// </summary>
         protected override void LoadContent()
         {
-            this.PushState(new MainMenueState());
+            this.PushState(MainMenueState.Instance);
         }
 
         /// <summary>
@@ -119,7 +118,6 @@ namespace WarTornLands
             // TODO: Entladen Sie jeglichen Nicht-ContentManager-Inhalt hier
         }
 
-        int drawcounter = 0;
         /// <summary>
         /// Ermöglicht dem Spiel die Ausführung der Logik, wie zum Beispiel Aktualisierung der Welt,
         /// Überprüfung auf Kollisionen, Erfassung von Eingaben und Abspielen von Ton.
@@ -169,6 +167,9 @@ namespace WarTornLands
         {
             
             _states.Peek().Draw(gameTime);
+            SpriteBatch.Begin();
+            base.Draw(gameTime);
+            SpriteBatch.End();
         }
 
         #region Subscribed events
@@ -183,12 +184,18 @@ namespace WarTornLands
 
         internal void PushState(BaseGameState newState)
         {
-           
+            if (_states.Count>0&&newState == _states.Peek())
+                return;
             if(_states.Count>0)
                 _states.Peek().Pause();
             _states.Push(newState);
-            newState.Initialize();
-            newState.LoadContent();
+            if (!newState.IsInitializedAndLoaded)
+            {
+                newState.Initialize();
+                newState.LoadContent();
+            }
+            else
+                newState.Resume();
 
         }
 

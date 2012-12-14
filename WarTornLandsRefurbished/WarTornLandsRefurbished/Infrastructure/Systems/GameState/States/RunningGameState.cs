@@ -11,15 +11,19 @@ using WarTornLands.PlayerClasses;
 using WarTornLands.Entities.Modules.Draw;
 using Microsoft.Xna.Framework.Input;
 using WarTornLands.Entities.Modules.Think;
+using WarTornLands.Infrastructure.Systems.InputSystem;
 
 namespace WarTornLands.Infrastructure.Systems.GameState.States
 {
     public class RunningGameState : BaseGameState
     {
+        private static RunningGameState _instance = new RunningGameState();
+        public static RunningGameState Instance { get { return _instance; } }
+
 
         private BackBuffer _BackBuffer;
 
-        private RenderTarget2D _lastFrame;
+
         //Debug
         Texture2D weaponMarker;
 
@@ -48,11 +52,16 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
 
 
-
+            base.Initialize();
         }
 
         public override void LoadContent()
         {
+            (InputManager.Instance["Inventory"] as Key).Pressed += new EventHandler(OpenInventory);
+            (InputManager.Instance["Quit"] as Key).Pressed += new EventHandler(QuitRunningGame);
+
+
+
             Catalog.Instance.SetupTestCatalog();
 
             Game1.Instance.Player.AddModule(new ThinkInputGuided());
@@ -85,6 +94,16 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             base.LoadContent();
         }
 
+        void QuitRunningGame(object sender, EventArgs e)
+        {
+            Game1.Instance.PopState();
+        }
+
+        void OpenInventory(object sender, EventArgs e)
+        {
+            Game1.Instance.PushState(new InventoryState(_BackBuffer.LastFrame));
+        }
+
         public override void Pause()
         {
 
@@ -92,15 +111,13 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
         public override void Resume()
         {
-
+            base.Resume();
         }
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.M))
-                Game1.Instance.PopState();
-            if (Keyboard.GetState().IsKeyDown(Keys.I))
-                Game1.Instance.PushState(new InventoryState(_BackBuffer.LastFrame));
+            Game1.Instance.Level.Update(gameTime);
+            Game1.Instance.Player.Update(gameTime);
         }
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
@@ -127,7 +144,8 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             //set back normal target and draw game
             Game1.Instance.GraphicsDevice.SetRenderTarget(_BackBuffer.LastFrame);
             Game1.Instance.SpriteBatch.Begin();
-            Game1.Instance.DebugDraw(gameTime);
+            Game1.Instance.Level.Draw(gameTime);
+            Game1.Instance.Player.Draw(gameTime);
             //   Game1.Instance.SpriteBatch.DrawString(Content.Load<SpriteFont>("Test"), Player.Position.ToString(), Vector2.Zero, Color.White);
             Game1.Instance.SpriteBatch.End();
 

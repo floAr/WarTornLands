@@ -11,10 +11,14 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 {
     public class MainMenueState : BaseGameState
     {
+        private static MainMenueState _instance = new MainMenueState();
+        public static MainMenueState Instance { get { return _instance; } }
+
         public override void Initialize()
         {
             this._inputSheet.RegisterKey("Exit", Keys.Escape);
             this._inputSheet.RegisterKey("New", Keys.Enter);
+            base.Initialize();
         }
 
         public override void LoadContent()
@@ -32,21 +36,21 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
         public override void Resume()
         {
-
+            base.Resume();
         }
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            (_inputSheet["Exit"] as Key).Pressed += new EventHandler(ExitGame);
-            (_inputSheet["New"] as Key).FreshPressed += new EventHandler(NewGame);
+            (InputManager.Instance["Exit"] as Key).Pressed += new EventHandler(ExitGame);
+            (InputManager.Instance["New"] as Key).FreshPressed += new EventHandler(NewGame);
         }
 
         bool  debugFirstPush=true;
         void NewGame(object sender, EventArgs e)
         {
-            if (debugFirstPush)
+        //    if (debugFirstPush)
             {
-                Game1.Instance.PushState(new RunningGameState());
+                Game1.Instance.PushState(RunningGameState.Instance);
                 debugFirstPush = false;
             }
 

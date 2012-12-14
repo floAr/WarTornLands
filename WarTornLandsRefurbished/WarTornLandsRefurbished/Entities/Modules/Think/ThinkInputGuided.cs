@@ -41,10 +41,10 @@ namespace WarTornLands.Entities.Modules.Think
             _input.KHit.Pressed += new EventHandler(OnExecuteHit);
             _input.KInteract.Pressed += new EventHandler(OnInteract);
             _input.KJump.Pressed += new EventHandler(OnJump);*/
-            (Game1.Instance.CurrentState.InputSheet["UsePotion"] as Key).Pressed+=new EventHandler(OnUsePotion);
-             (Game1.Instance.CurrentState.InputSheet["Hit"] as Key).Pressed += new EventHandler(OnExecuteHit);
-             (Game1.Instance.CurrentState.InputSheet["Interact"] as Key).Pressed += new EventHandler(OnInteract);
-             (Game1.Instance.CurrentState.InputSheet["Jump"] as Key).Pressed += new EventHandler(OnJump);
+            (InputManager.Instance["UsePotion"] as Key).Pressed+=new EventHandler(OnUsePotion);
+             (InputManager.Instance["Hit"] as Key).FreshPressed += new EventHandler(OnExecuteHit);
+             (InputManager.Instance["Interact"] as Key).Pressed += new EventHandler(OnInteract);
+             (InputManager.Instance["Jump"] as Key).Pressed += new EventHandler(OnJump);
         }
 
         public void Update(GameTime gameTime)
@@ -52,7 +52,7 @@ namespace WarTornLands.Entities.Modules.Think
             if (!_frozen)
             {
                 Vector2 oldPos = _owner.Position;
-                Vector2 moveDirection = ((DirectionInput)Game1.Instance.CurrentState.InputSheet["Move"]).Value;
+                Vector2 moveDirection = ((DirectionInput)InputManager.Instance["Move"]).Value;
                 _owner.Position =
                     CollisionManager.Instance.TryMove(
                     _owner.Position,

@@ -45,15 +45,7 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
             _keys.Add(name, k);
         }
 
-        public InputKey this[String keyName]
-        {
-            get
-            {
-                if (!_keys.ContainsKey(keyName))
-                    throw new Exception("Key " + keyName + " is not registered yet.\nRegister key in Initialize of current GameState");
-                return _keys[keyName];
-            }
-        }
+       
 
 
 

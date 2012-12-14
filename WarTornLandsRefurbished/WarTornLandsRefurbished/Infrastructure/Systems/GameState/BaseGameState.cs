@@ -10,14 +10,22 @@ namespace WarTornLands.Infrastructure.Systems.GameState
 {
     public abstract class BaseGameState
     {
-        public abstract void Initialize();
-        public virtual void LoadContent()
+
+        public bool IsInitializedAndLoaded = false;
+        public virtual void Initialize()
         {
             InputManager.Instance.RegisterControlSheet(_inputSheet);
         }
+        public virtual void LoadContent()
+        {
+            IsInitializedAndLoaded = true;
+        }
 
         public abstract void Pause();
-        public abstract void Resume();
+        public virtual void Resume()
+        {
+            InputManager.Instance.RegisterControlSheet(_inputSheet);
+        }
 
         public abstract void Update(GameTime gameTime);
         public abstract void Draw(GameTime gameTime);

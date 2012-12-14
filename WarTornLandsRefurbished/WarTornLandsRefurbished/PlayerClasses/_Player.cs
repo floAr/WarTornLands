@@ -20,6 +20,8 @@ namespace WarTornLands.PlayerClasses
     {
         private static Player _instance;
         private Inventory _inventory;
+
+       
         public static Player Instance
         {
             get
@@ -47,11 +49,12 @@ namespace WarTornLands.PlayerClasses
             this.AddModule(new Obstacle());
             this.AddModule(new ExplodeAndLoot(null));
             this.CanBeAttacked = true;
+            LoadContent();
         }
 
-        protected override void LoadContent()
+        protected void LoadContent()
         {
-            AnimatedDrawer animS = new AnimatedDrawer(Game.Content.Load<Texture2D>("sprite/character_64x128"));
+            AnimatedDrawer animS = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("sprite/character_64x128"));
             
             Animation anim = new Animation("walkDown");
             anim.AddFrame(new Rectangle(64 * 1, 0, 64, 128));

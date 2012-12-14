@@ -27,14 +27,8 @@ namespace WarTornLands.World
     {
         private Dictionary<string, Area> _areas;
         private Game _game;
-        public bool Enabled
-        {
-            set
-            {
-                foreach (KeyValuePair<string, Area> a in _areas)
-                    a.Value.Enabled = false;
-            }
-        }
+
+
 
         private Random r = new Random();
         public Level(Game game)
@@ -48,7 +42,6 @@ namespace WarTornLands.World
             if (!_areas.ContainsKey(name))
             {
                 _areas.Add(name, area);
-                area.Add();
                 return true;
             }
 
@@ -59,7 +52,6 @@ namespace WarTornLands.World
         {
             if (_areas.ContainsKey(name))
             {
-                _areas[name].Remove();
                 _areas.Remove(name);
                 return true;
             }
@@ -639,5 +631,17 @@ namespace WarTornLands.World
         }
 
 
+
+        internal void Update(GameTime gameTime)
+        {
+            foreach (Area a in _areas.Values)
+                a.Update(gameTime);
+        }
+
+        internal void Draw(GameTime gameTime)
+        {
+            foreach (Area a in _areas.Values)
+                a.Draw(gameTime);
+        }
     }
 }

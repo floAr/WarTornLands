@@ -18,7 +18,10 @@ namespace WarTornLands.Infrastructure
     {
         private static InputManager _instance;
 
+
         #region Default controls
+
+
 
         // Keyboard
         internal readonly static Keys KeyboardDefault_Hit = Keys.Enter;
@@ -39,7 +42,7 @@ namespace WarTornLands.Infrastructure
 
         private readonly static InputMode _defaultMode = InputMode.KEYBOARD;
         private readonly InputMode _mode = _defaultMode;
-        private readonly List<InputKey> _inputList = new List<InputKey>();
+        private  Dictionary<String, InputKey> _inputList =new Dictionary<String, InputKey>();
         private KeyboardState _oldKeys = Keyboard.GetState();
 
         private InputManager(Game game)
@@ -60,9 +63,19 @@ namespace WarTornLands.Infrastructure
             }
         }
 
+        public InputKey this[String keyName]
+        {
+            get
+            {
+                if (!_inputList.ContainsKey(keyName))
+                    throw new Exception("Key " + keyName + " is not registered yet.\nRegister key in Initialize of current GameState");
+                return _inputList[keyName];
+            }
+        }
+
         public override void Update(GameTime gt)
         {
-            foreach (InputKey ik in new List<InputKey>(_inputList))
+            foreach (InputKey ik in new List<InputKey>(_inputList.Values))
             {
                 ik.Update(gt, _oldKeys);
             }
@@ -87,8 +100,7 @@ namespace WarTornLands.Infrastructure
 
         internal void RegisterControlSheet(ControlSheet _inputSheet)
         {
-            _inputList.Clear();
-            _inputList.AddRange(_inputSheet.Keys);
+            _inputList = _inputSheet.InputSheme;
         }
     }
 }

@@ -14,15 +14,6 @@ namespace WarTornLands.World
         public Rectangle Bounds { get; private set; }
         LinkedList<Layer> _layers;
 
-        public bool Enabled
-        {
-            set
-            {
-                foreach (Layer l in _layers)
-                    l.Enabled = false;
-            }
-        }
-
         public Area(Rectangle bounds)
         {
             Bounds = bounds;
@@ -34,29 +25,6 @@ namespace WarTornLands.World
             _layers.AddLast(layer);
         }
 
-        /// <summary>
-        /// Adds the area's layers to the Game's component list, so they will be
-        /// automatically updated and drawn by the game loop.
-        /// </summary>
-        internal void Add()
-        {
-            foreach (Layer layer in _layers)
-            {
-                layer.Add();
-            }
-        }
-
-        /// <summary>
-        /// Removes the area's layers from the Game's component list, so they won't be
-        /// automatically updated or drawn by the game loop.
-        /// </summary>
-        internal void Remove()
-        {
-            foreach (Layer layer in _layers)
-            {
-                layer.Remove();
-            }
-        }
 
         private bool Contains(Vector2 position)
         {
@@ -120,6 +88,22 @@ namespace WarTornLands.World
             }
 
             return result;
+        }
+
+        internal void Update(GameTime gameTime)
+        {
+            foreach (Layer layer in _layers)
+            {
+                layer.Update(gameTime);
+            }
+        }
+
+        internal void Draw(GameTime gameTime)
+        {
+            foreach (Layer layer in _layers)
+            {
+                layer.Draw(gameTime);
+            }
         }
     }
 }

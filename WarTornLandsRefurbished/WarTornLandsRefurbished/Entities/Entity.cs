@@ -22,7 +22,7 @@ namespace WarTornLands.Entities
     }
 
 
-    public class Entity : DrawableGameComponent
+    public class Entity
     {
         /* TODO
          * Interface als Events oder Methoden?
@@ -46,6 +46,7 @@ namespace WarTornLands.Entities
         public bool CanBeUsed { get; set; }
         public bool CanBePickedUp { get; set; }
         public bool ToBeRemoved { get; set; }
+        public bool IsEnabled { get; set; }
         /////////////////
 
         // Entity is currently temporarily invulnerable (after a hit)
@@ -115,7 +116,7 @@ namespace WarTornLands.Entities
         #endregion
 
         public Entity(Game1 game, Vector2 position, String name = "Entity")
-            : base(game)
+            
         {
             this.Position = position;
             this.Health = 5;
@@ -125,6 +126,8 @@ namespace WarTornLands.Entities
             CM = new CounterManager();
             CM.AddCounter(_cInvulnerable, _invulnerableDuration);
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
+            IsEnabled = true;
+            
         }
 
         public void AddModule(BaseModule module)
@@ -233,10 +236,10 @@ namespace WarTornLands.Entities
             }
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             // Return if single entity is not enabled, but someone calls update anyway
-            if (!this.Enabled)
+            if (!IsEnabled)
                 return;
 
             // If animated entity, and we changed our moving state / facing
@@ -313,7 +316,7 @@ namespace WarTornLands.Entities
             }
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             // Point drawPos = new Point((int)this.GetDrawPosition().X, (int)this.GetDrawPosition().Y);
 
@@ -327,7 +330,7 @@ namespace WarTornLands.Entities
             };
 
             if (_mDrawModule != null)
-                _mDrawModule.Draw(((Game1)Game).SpriteBatch, information);
+                _mDrawModule.Draw(Game1.Instance.SpriteBatch, information);
         }
 
       

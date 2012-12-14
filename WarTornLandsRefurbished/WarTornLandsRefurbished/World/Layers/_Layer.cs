@@ -7,22 +7,15 @@ using WarTornLands.Entities;
 
 namespace WarTornLands.World.Layers
 {
-    public abstract class Layer : DrawableGameComponent
+    public abstract class Layer
     {
-        public Layer(int depth)
-            : base(Game1.Instance)
+        public Layer(int depth)           
         {
-            DrawOrder = depth;
+           
         }
 
-        public void Add()
-        {
-            Game.Components.Add(this);
-        }
 
-        internal void Remove()
-        {
-            Game.Components.Remove(this);
-        }
+     public abstract void Update(GameTime gameTime);
+     public  abstract void Draw(GameTime gameTime);
     }
 }
