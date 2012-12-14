@@ -122,6 +122,7 @@
     <Compile Include="Infrastructure\Systems\GameState\States\InventoryState.cs" />
     <Compile Include="Infrastructure\Systems\GameState\States\MainMenueState.cs" />
     <Compile Include="Infrastructure\Systems\GameState\States\RunningGameState.cs" />
+    <Compile Include="Infrastructure\Systems\InputSystem\ControlSheet.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\DirectionInput.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\InputKey.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\Key.cs" />

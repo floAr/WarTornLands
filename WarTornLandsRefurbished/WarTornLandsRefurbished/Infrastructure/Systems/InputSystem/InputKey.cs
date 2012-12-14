@@ -9,6 +9,11 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
 {
     public abstract class InputKey
     {
+        public enum KeyType
+        {
+            Key,
+            DirectionalInput
+        }
         public InputKey()
         {
         }

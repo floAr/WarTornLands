@@ -60,6 +60,7 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
         public DirectionInput()
             : base()
         {
+            Value = Vector2.Zero;
         }
 
         public override void Update(GameTime gt, KeyboardState oldKeys)

@@ -43,7 +43,7 @@ namespace WarTornLands.PlayerClasses
             Health = MaxHealth;
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
             _inventory = new Inventory();
-            this.AddModule(new ThinkInputGuided());
+          //  this.AddModule(new ThinkInputGuided());
             this.AddModule(new Obstacle());
             this.AddModule(new ExplodeAndLoot(null));
             this.CanBeAttacked = true;

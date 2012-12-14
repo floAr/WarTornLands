@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using WarTornLands.Infrastructure.Systems.InputSystem;
 
 namespace WarTornLands.Infrastructure.Systems.GameState.States
 {
@@ -12,13 +13,17 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
     {
         public override void Initialize()
         {
-
+            this._inputSheet.RegisterKey("Exit", Keys.Escape);
+            this._inputSheet.RegisterKey("New", Keys.Enter);
         }
 
         public override void LoadContent()
         {
-
+        
+            base.LoadContent();
         }
+
+     
 
         public override void Pause()
         {
@@ -32,10 +37,24 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Game1.Instance.Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            (_inputSheet["Exit"] as Key).Pressed += new EventHandler(ExitGame);
+            (_inputSheet["New"] as Key).FreshPressed += new EventHandler(NewGame);
+        }
+
+        bool  debugFirstPush=true;
+        void NewGame(object sender, EventArgs e)
+        {
+            if (debugFirstPush)
+            {
                 Game1.Instance.PushState(new RunningGameState());
+                debugFirstPush = false;
+            }
+
+        }
+
+        void ExitGame(object sender, EventArgs e)
+        {
+            Game1.Instance.Exit();
         }
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)

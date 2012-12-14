@@ -14,12 +14,17 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
         public override void Initialize()
         {
-            
+            this._inputSheet.RegisterKey("Exit", Keys.I);
+          
         }
 
         public override void LoadContent()
         {
+            //own logic here
             
+
+            //bind input
+            base.LoadContent();
         }
 
         public override void Pause()

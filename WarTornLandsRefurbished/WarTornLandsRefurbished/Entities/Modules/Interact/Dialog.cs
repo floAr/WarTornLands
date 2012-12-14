@@ -7,6 +7,7 @@ using WarTornLands.PlayerClasses;
 using Microsoft.Xna.Framework;
 using WarTornLands.Infrastructure;
 using WarTornLands.Counter;
+using WarTornLands.Infrastructure.Systems.InputSystem;
 
 namespace WarTornLands.Entities.Modules.Interact
 {
@@ -84,7 +85,7 @@ namespace WarTornLands.Entities.Modules.Interact
                     OnEnter(null, EventArgs.Empty);
 
                     // Subscribe Enter event to continue conversations
-                    InputManager.Instance.Subscribe(InputManager.Instance.KInteract, ref _enter);
+                    InputManager.Instance.Subscribe((Game1.Instance.CurrentState.InputSheet["Interact"] as Key), ref _enter);
                 }
                 else
                 {
@@ -119,7 +120,7 @@ namespace WarTornLands.Entities.Modules.Interact
         public void ShutDown()
         {
             Active = false;
-            InputManager.Instance.Unsubscribe(InputManager.Instance.KInteract, ref _enter);
+            InputManager.Instance.Unsubscribe((Game1.Instance.CurrentState.InputSheet["Interact"] as Key), ref _enter);
             _cm.StartCounter(_cShutdown, Cooldown);
             OnCooldown = true;
         }

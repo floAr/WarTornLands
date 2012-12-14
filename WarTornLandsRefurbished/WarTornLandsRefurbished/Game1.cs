@@ -142,8 +142,8 @@ namespace WarTornLands
 
 
             // Ermöglicht ein Beenden des Spiels
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+      //      if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+        //        this.Exit();
 
 
 
@@ -183,11 +183,13 @@ namespace WarTornLands
 
         internal void PushState(BaseGameState newState)
         {
-            newState.Initialize();
-            newState.LoadContent();
+           
             if(_states.Count>0)
                 _states.Peek().Pause();
             _states.Push(newState);
+            newState.Initialize();
+            newState.LoadContent();
+
         }
 
         internal void PopState()

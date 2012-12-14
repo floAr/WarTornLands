@@ -10,15 +10,17 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
     public class Key : InputKey
     {
         public bool Value { get; private set; }
-        
+
         private Keys _key;
         private Buttons _button;
         private InputMode _mode;
-        
+
         public event EventHandler Pressed;
+        public event EventHandler FreshPressed;
+        public event EventHandler FreshReleased;
 
 
-        public override void  SetMode(InputMode mode)
+        public override void SetMode(InputMode mode)
         {
             _mode = mode;
         }
@@ -39,11 +41,14 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
         {
             // Keyboard ///
             if ((int)_mode == 0)
-            {              
+            {
                 KeyboardState state = Keyboard.GetState();
 
                 if (state.IsKeyDown(_key))
                 {
+                    if (!Value)
+                        if (FreshPressed != null)
+                            FreshPressed(null, EventArgs.Empty);
                     Value = true;
                     Held += gt.ElapsedGameTime.Milliseconds;
 
@@ -55,6 +60,9 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
                 }
                 else
                 {
+                    if (Value)
+                        if (FreshReleased != null)
+                            FreshReleased(null, EventArgs.Empty);
                     Value = false;
                     Held = 0;
                 }
@@ -78,6 +86,6 @@ namespace WarTornLands.Infrastructure.Systems.InputSystem
             /////////////
         }
 
-       
+
     }
 }

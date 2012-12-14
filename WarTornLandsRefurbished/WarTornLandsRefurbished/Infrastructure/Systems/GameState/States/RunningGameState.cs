@@ -10,11 +10,12 @@ using WarTornLands.World;
 using WarTornLands.PlayerClasses;
 using WarTornLands.Entities.Modules.Draw;
 using Microsoft.Xna.Framework.Input;
+using WarTornLands.Entities.Modules.Think;
 
 namespace WarTornLands.Infrastructure.Systems.GameState.States
 {
-   public class RunningGameState:BaseGameState
-   {
+    public class RunningGameState : BaseGameState
+    {
 
         private BackBuffer _BackBuffer;
 
@@ -35,15 +36,26 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             Game1.Instance.Level = new Level(Game1.Instance);
             //Level.LoadTestLevel();
             Game1.Instance.Level.LoadChristmasCaverns();
+            this._inputSheet.RegisterKey("Exit", Keys.Escape);
+            this._inputSheet.RegisterKey("New", Keys.Enter);
+            this._inputSheet.RegisterKey("Hit", Keys.Enter);
+            this._inputSheet.RegisterKey("Jump", Keys.Space);
+            this._inputSheet.RegisterKey("Interact", Keys.T);
+            this._inputSheet.RegisterKey("UsePotion", Keys.P);
+            this._inputSheet.RegisterKey("Inventory", Keys.I);
+            this._inputSheet.RegisterKey("Quit", Keys.Escape);
+            this._inputSheet.RegisterKey("Move", new Keys[] { Keys.W, Keys.A, Keys.S, Keys.D });
 
 
-            
+
 
         }
 
         public override void LoadContent()
         {
             Catalog.Instance.SetupTestCatalog();
+
+            Game1.Instance.Player.AddModule(new ThinkInputGuided());
 
             _BackBuffer = new BackBuffer(Game1.Instance.GraphicsDevice, new Rectangle(0, 0, Game1.Instance.GraphicsDevice.Viewport.Width, Game1.Instance.GraphicsDevice.Viewport.Height));
 
@@ -69,16 +81,18 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             StaticDrawer splashSd = new StaticDrawer();
             splashSd.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/xmasSplash");
             splash.AddModule(splashSd);
+
+            base.LoadContent();
         }
 
         public override void Pause()
         {
-            
+
         }
 
         public override void Resume()
         {
-          
+
         }
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
@@ -91,9 +105,9 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-           Game1.Instance.GraphicsDevice.Clear(Color.CornflowerBlue);
+            Game1.Instance.GraphicsDevice.Clear(Color.CornflowerBlue);
 
-           Game1.Instance.DrawingLights = true;
+            Game1.Instance.DrawingLights = true;
             // Set the render target
             Game1.Instance.GraphicsDevice.SetRenderTarget(_BackBuffer.SourceMap);
 
@@ -109,7 +123,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             Game1.Instance.SpriteBatch.Draw(_BackBuffer.SourceMap, new Vector2(0, 0), Color.White); //'Merge the SourceMap to the BackBuffer
             Game1.Instance.SpriteBatch.End();
 
-           Game1.Instance.DrawingLights = false;
+            Game1.Instance.DrawingLights = false;
             //set back normal target and draw game
             Game1.Instance.GraphicsDevice.SetRenderTarget(_BackBuffer.LastFrame);
             Game1.Instance.SpriteBatch.Begin();
@@ -126,7 +140,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
             Game1.Instance.GraphicsDevice.SetRenderTarget(null);
             Game1.Instance.SpriteBatch.Begin();
-            Game1.Instance.SpriteBatch.Draw(_BackBuffer.LastFrame,Vector2.Zero,Color.White);
+            Game1.Instance.SpriteBatch.Draw(_BackBuffer.LastFrame, Vector2.Zero, Color.White);
             Game1.Instance.SpriteBatch.End();
 
 
@@ -135,7 +149,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
                 SpriteFont font = Game1.Instance.Content.Load<SpriteFont>("Test");
                 string go = "Game Over :(";
                 Game1.Instance.SpriteBatch.Begin();
-                Game1.Instance.SpriteBatch.DrawString(font, go, new Vector2( Game1.Instance.GraphicsDevice.Viewport.Width / 2 - (font.MeasureString(go).X / 2),  Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(go).Y / 2)), Color.OrangeRed);
+                Game1.Instance.SpriteBatch.DrawString(font, go, new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width / 2 - (font.MeasureString(go).X / 2), Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(go).Y / 2)), Color.OrangeRed);
                 Game1.Instance.SpriteBatch.End();
 
             }
@@ -147,9 +161,9 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
                 string line2 = "A WINRAR";
                 string line3 = "IS YOU";
                 Game1.Instance.SpriteBatch.Begin();
-                Game1.Instance.SpriteBatch.DrawString(font, line1, new Vector2( Game1.Instance.GraphicsDevice.Viewport.Width/ 2 - (font.MeasureString(line1).X / 2),  Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line1).Y * .5f) - font.MeasureString(line1).Y), Color.OrangeRed);
-                Game1.Instance.SpriteBatch.DrawString(font, line2, new Vector2( Game1.Instance.GraphicsDevice.Viewport.Width/ 2 - (font.MeasureString(line2).X / 2),  Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line2).Y / 2)), Color.OrangeRed);
-                Game1.Instance.SpriteBatch.DrawString(font, line3, new Vector2( Game1.Instance.GraphicsDevice.Viewport.Width/ 2 - (font.MeasureString(line3).X / 2),  Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line3).Y / 2) + font.MeasureString(line1).Y), Color.OrangeRed);
+                Game1.Instance.SpriteBatch.DrawString(font, line1, new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width / 2 - (font.MeasureString(line1).X / 2), Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line1).Y * .5f) - font.MeasureString(line1).Y), Color.OrangeRed);
+                Game1.Instance.SpriteBatch.DrawString(font, line2, new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width / 2 - (font.MeasureString(line2).X / 2), Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line2).Y / 2)), Color.OrangeRed);
+                Game1.Instance.SpriteBatch.DrawString(font, line3, new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width / 2 - (font.MeasureString(line3).X / 2), Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line3).Y / 2) + font.MeasureString(line1).Y), Color.OrangeRed);
                 Game1.Instance.SpriteBatch.End();
 
             }
@@ -165,6 +179,6 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             Game1.Instance.SpriteBatch.End();
         }
 
-        
+
     }
 }
