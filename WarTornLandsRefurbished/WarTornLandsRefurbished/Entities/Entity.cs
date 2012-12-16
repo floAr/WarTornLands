@@ -119,7 +119,7 @@ namespace WarTornLands.Entities
         protected IHitModule _hitModule;
         #endregion
 
-        public Entity(Game1 game, Vector2 position, String name = "Entity")
+        public Entity(Vector2 position, String name = "Entity")
         {
             Position = position;
             Health = 5;
