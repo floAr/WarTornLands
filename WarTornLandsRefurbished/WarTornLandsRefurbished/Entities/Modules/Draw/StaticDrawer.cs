@@ -12,7 +12,6 @@ namespace WarTornLands.Entities.Modules.Draw
     /// </summary>
     public class StaticDrawer :BaseModule, IDrawExecuter
     {
-        private Vector2 _loc;
         private Vector2 _size;
         private Texture2D _tex;
         private bool _isLight = false;
@@ -26,7 +25,7 @@ namespace WarTornLands.Entities.Modules.Draw
         public bool IsLight { get { return _isLight; } set { _isLight = value; } }
 
         // Whether the last draw call was invulnerable
-        private bool _invulnerable = false;
+        private bool _flashing = false;
         // Counts the time in the current "blink" state when invulnerable (ms)
         private float _blinkTime = 0;
         // Total duration of a normal/highlighted blink duration (ms)
@@ -41,32 +40,49 @@ namespace WarTornLands.Entities.Modules.Draw
         {
             if (_isLight != information.DrawLights)
                 return;
-            
+
+            Vector2 drawLocation;
             if (information.Centered)
-                _loc = information.Position - (_size / 2);
+                drawLocation = information.Position - (_size / 2);
             else
-                _loc = information.Position;
+                drawLocation = information.Position;
 
             Vector2 center = Game1.Instance.Camera.Center;
             Rectangle bounds = Game1.Instance.Window.ClientBounds;
 
             // Invulnerable counter configuration
-            if (_invulnerable != information.Invulnerable)
+            if (_flashing != information.Flashing)
             {
-                _invulnerable = information.Invulnerable;
-                if (!_invulnerable)
+                _flashing = information.Flashing;
+                if (!_flashing)
                     _blinkTime = 0;
             }
-
+            
             // Set color according to invulnerable and counter state
             Color color;
-            if (_invulnerable && _blinkTime < _blinkDuration / 2.0)
+            if (_flashing && _blinkTime < _blinkDuration / 2.0)
                 color = Color.Red; // Red in the first half of the counter
             else
                 color = Color.White; // White in the second half or when not invulnerable
 
-            batch.Draw(Texture, new Rectangle((int)_loc.X - (int)center.X + (int)Math.Round(bounds.Width / 2.0f),
-                (int)_loc.Y - (int)center.Y + (int)Math.Round(bounds.Height / 2.0f), (int)_size.X, (int)_size.Y),
+            // Draw shadow if requested
+            if (information.Shadow)
+            {
+                Texture2D tex = Game1.Instance.Content.Load<Texture2D>("sprite/shadow");
+
+                batch.Draw(tex,
+                    new Rectangle(
+                        (int)drawLocation.X - (int)center.X + (int)Math.Round(bounds.Width / 2f) - (int)(_size.X / 2f),
+                        (int)drawLocation.Y - (int)center.Y + (int)Math.Round(bounds.Height / 2f) + (int)(_size.Y / 2f) - (int)(tex.Bounds.Height / 2f) - 24,
+                        tex.Bounds.Width, tex.Bounds.Height),
+                    Color.White);
+            }
+
+            // Consider entity altitude
+            drawLocation.Y -= information.Altitude;
+
+            batch.Draw(Texture, new Rectangle((int)drawLocation.X - (int)center.X + (int)Math.Round(bounds.Width / 2.0f),
+                (int)drawLocation.Y - (int)center.Y + (int)Math.Round(bounds.Height / 2.0f), (int)_size.X, (int)_size.Y),
                 new Rectangle(0, 0, (int)_size.X, (int)_size.Y), color, information.Rotation, _size / 2, SpriteEffects.None, 0.5f);
         }
 
@@ -78,7 +94,7 @@ namespace WarTornLands.Entities.Modules.Draw
 
         public void Update(GameTime gameTime)
         {
-            if (_invulnerable)
+            if (_flashing)
             {
                 _blinkTime += gameTime.ElapsedGameTime.Milliseconds;
                 while (_blinkTime > _blinkDuration)

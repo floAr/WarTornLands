@@ -85,6 +85,8 @@
     <Compile Include="Entities\Modules\Draw\DualDraw.cs" />
     <Compile Include="Entities\Modules\Draw\ParticleSystem\Particle.cs" />
     <Compile Include="Entities\Modules\Draw\ParticleSystem\ParticleEngine.cs" />
+    <Compile Include="Entities\Modules\Hit\DamageFlash.cs" />
+    <Compile Include="Entities\Modules\Hit\_IHitModule.cs" />
     <Compile Include="Entities\Modules\Interact\Dialog.cs" />
     <Compile Include="Entities\Modules\Interact\_IInteractModule.cs" />
     <Compile Include="Entities\Modules\Think\Parts\GoToPosition.cs" />

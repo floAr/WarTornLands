@@ -20,6 +20,7 @@ using WarTornLands.Entities.Modules.Draw.ParticleSystem;
 using WarTornLands.Infrastructure.Systems.SkyLight;
 using WarTornLandsRefurbished.Entities.Modules.Think;
 using WarTornLands.PlayerClasses.Items;
+using WarTornLands.Entities.Modules.Hit;
 
 namespace WarTornLands.World
 {
@@ -486,6 +487,7 @@ namespace WarTornLands.World
 
             // Add crazy dude
             Entity crazyDude = new Entity(Game1.Instance, new Vector2(18 * Constants.TileSize, 15 * Constants.TileSize + 10));
+            crazyDude.DropShadow = true;
             crazyDude.AddModule(new Obstacle());
             StaticDrawer sd4 = new StaticDrawer();
             sd4.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/frederik");
@@ -515,7 +517,9 @@ namespace WarTornLands.World
 
             // Boss
             Entity boss = new Entity(Game1.Instance, new Vector2(39, 15) * Constants.TileSize, "GruselUte");
+            boss.DropShadow = true;
             boss.AddModule(new ThinkRoamAround(new Vector2(39, 11) * Constants.TileSize, 170));
+            boss.AddModule(new DamageFlash());
             StaticDrawer bossDrawer = new StaticDrawer();
             bossDrawer.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/gruselute");
             boss.AddModule(bossDrawer);

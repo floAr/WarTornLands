@@ -13,6 +13,8 @@ using WarTornLands.Entities.Modules.Think;
 using WarTornLands.Infrastructure.Systems.DialogSystem;
 using WarTornLands.Entities.Modules.Die;
 using WarTornLands.Entities.Modules.Collide;
+using WarTornLands.Entities.Modules.Hit;
+using WarTornLands.PlayerClasses.Items;
 
 namespace WarTornLands.PlayerClasses
 {
@@ -43,12 +45,13 @@ namespace WarTornLands.PlayerClasses
         {
             MaxHealth = 80;
             Health = MaxHealth;
+            DropShadow = true;
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
             _inventory = new Inventory();
           //  this.AddModule(new ThinkInputGuided());
+            this.AddModule(new DamageFlash());
             this.AddModule(new Obstacle());
             this.AddModule(new ExplodeAndLoot(null));
-            this.CanBeAttacked = true;
             LoadContent();
         }
 

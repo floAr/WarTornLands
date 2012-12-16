@@ -84,7 +84,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             for (int i = 0; i < resultList.Count; ++i)
             {
                 Entity e = resultList.Values[i];
-                if (e.MInteractModule != null)
+                if (e.InteractModule != null)
                 {
                     e.Interact(_owner);
                     return true;

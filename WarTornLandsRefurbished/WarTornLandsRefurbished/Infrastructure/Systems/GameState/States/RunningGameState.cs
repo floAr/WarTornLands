@@ -27,11 +27,6 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
         //Debug
         Texture2D weaponMarker;
 
-        // TODO remove splash screen
-        public Entity splash { get; set; }
-
-
-
 
         public override void Initialize()
         {
@@ -77,19 +72,8 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             daylight.Add(new Color(40, 30, 80));
 
             Lightmanager.SetDayCycle(daylight, 18000);
-            #region opening
-            List<Vector2> points = new List<Vector2>();
-            points.Add(new Vector2(-400, Game1.Instance.Player.Position.Y));
-            points.Add(new Vector2(-400, Game1.Instance.Player.Position.Y));
-            points.Add(Game1.Instance.Player.Position);
-            Game1.Instance.Camera.PlayCinematic(points, 6000);
-            #endregion
 
             weaponMarker = Game1.Instance.Content.Load<Texture2D>("sprite/weapontest");
-            splash = new Entity(Game1.Instance, new Vector2(-400, 608));
-            StaticDrawer splashSd = new StaticDrawer();
-            splashSd.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/xmasSplash");
-            splash.AddModule(splashSd);
 
             base.LoadContent();
         }
@@ -164,12 +148,11 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
             if (Game1.Instance.Player.ToBeRemoved)
             {
-                SpriteFont font = Game1.Instance.Content.Load<SpriteFont>("Test");
+                SpriteFont font = Game1.Instance.Content.Load<SpriteFont>("font/Test");
                 string go = "Game Over :(";
                 Game1.Instance.SpriteBatch.Begin();
                 Game1.Instance.SpriteBatch.DrawString(font, go, new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width / 2 - (font.MeasureString(go).X / 2), Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(go).Y / 2)), Color.OrangeRed);
                 Game1.Instance.SpriteBatch.End();
-
             }
 
             if (Level.Ute.ToBeRemoved)
@@ -190,10 +173,6 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             float scale = .2f;
             Game1.Instance.SpriteBatch.Draw(weaponMarker, WarTornLands.Entities.Modules.Think.Parts.SwingHitAbility.WeaponMarkerA - new Vector2(weaponMarker.Height * scale * .5f), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             Game1.Instance.SpriteBatch.Draw(weaponMarker, WarTornLands.Entities.Modules.Think.Parts.SwingHitAbility.WeaponMarkerB - new Vector2(weaponMarker.Height * scale * .5f), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-            Game1.Instance.SpriteBatch.End();
-
-            Game1.Instance.SpriteBatch.Begin();
-            splash.Draw(new GameTime());
             Game1.Instance.SpriteBatch.End();
         }
 

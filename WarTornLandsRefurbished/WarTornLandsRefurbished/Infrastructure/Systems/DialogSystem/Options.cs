@@ -104,11 +104,11 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
             (InputManager.Instance["Interact"] as Key).Pressed -= _enter;
 
             if (_options[_current].ConID.Equals("#this"))
-                (_owner.MInteractModule as Dialog).SetNewDefault(this.ConversationID, this.ConversationID);
+                (_owner.InteractModule as Dialog).SetNewDefault(this.ConversationID, this.ConversationID);
             else
-                (_owner.MInteractModule as Dialog).SetNewDefault(_options[_current].ConID, this.ConversationID);
+                (_owner.InteractModule as Dialog).SetNewDefault(_options[_current].ConID, this.ConversationID);
 
-            (_owner.MInteractModule as Dialog).Interact(PlayerClasses.Player.Instance);
+            (_owner.InteractModule as Dialog).Interact(PlayerClasses.Player.Instance);
         }
 
         private void OnScrollUp(object sender, EventArgs e)
