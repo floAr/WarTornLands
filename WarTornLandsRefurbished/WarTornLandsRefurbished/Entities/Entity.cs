@@ -11,6 +11,7 @@ using WarTornLands.Entities.Modules.Think;
 using WarTornLands.Infrastructure;
 using WarTornLands.PlayerClasses;
 using WarTornLands.Infrastructure.Systems.DrawSystem;
+using WarTornLands.Entities.Modules.Hit;
 
 namespace WarTornLands.Entities
 {
@@ -23,7 +24,7 @@ namespace WarTornLands.Entities
     }
 
 
-    public class Entity :IDrawProvider
+    public class Entity : IComparable<Entity>, IDrawProvider
     {
         /* TODO
          * Interface als Events oder Methoden?
@@ -42,21 +43,15 @@ namespace WarTornLands.Entities
 
 
         // Flags ////////
-        public bool CanBeAttacked { get; set; }
-        public bool CanSpeak { get; set; }
-        public bool CanBeUsed { get; set; }
-        public bool CanBePickedUp { get; set; }
         public bool ToBeRemoved { get; set; }
         public bool IsEnabled { get; set; }
+        public bool IsStatic { get; set; } // set to true if entity can not move or change altitude for performance
+        public bool DropShadow { get; set; }
         /////////////////
 
-        // Entity is currently temporarily invulnerable (after a hit)
-        public bool Invulnerable { get; protected set; }
-        // Counters
+        // Counters ///
         protected readonly string _cInvulnerable = "InvulnerableCounter";
         protected readonly int _invulnerableDuration = 1000;
-
-        // Counters ///
         public readonly string _cHit = "HitCounter";
         ///////////////
 
@@ -70,10 +65,11 @@ namespace WarTornLands.Entities
         }
         public Vector2 InitialPosition { get; internal set; }
         public Point TilePosition { get; set; }
-        public float Height { get; internal set; }
-        public float BaseHeight { get; internal set; }
-        public float Health { get; internal set; }
-        public float MaxHealth { get; internal set; }
+        public float Altitude { get; internal set; }
+        public float BaseAltitude { get; internal set; }
+        public float BodyHeight { get; internal set; }
+        public int Health { get; internal set; }
+        public int MaxHealth { get; internal set; }
         public string Name { get; internal set; }
 
         private Vector2 _prevPosition = Vector2.Zero;
@@ -85,116 +81,115 @@ namespace WarTornLands.Entities
             set
             {
                 _prevFace = _face;
-                _face = value;
+                if (!FaceLock)
+                {
+                    _face = value;
+                }
             }
         }
         private Facing _face;
         private Facing _prevFace;
+        public bool FaceLock; // set to true if player Facing should not change
 
         internal CounterManager CM;
 
         #region CollideModule
-        protected ICollideModule _mCollideModule;
+        protected ICollideModule _collideModule;
         #endregion
 
         #region DrawModule
-        protected IDrawExecuter _mDrawModule;
+        protected IDrawExecuter _drawModule;
 
         private float _rotation;
         private float _scale;
         #endregion
 
         #region InteractModule
-        protected IInteractModule _mInteractModule;
+        protected IInteractModule _interactModule;
         #endregion
 
         #region ThinkModule
-        protected IThinkModule _mThinkModule;
+        protected IThinkModule _thinkModule;
         #endregion
 
         #region DieModule
-        protected IDieModule _mDieModule;
+        protected IDieModule _dieModule;
         #endregion
 
-        public Entity(Game1 game, Vector2 position, String name = "Entity")
-            
+        #region HitModule
+        protected IHitModule _hitModule;
+        #endregion
+
+        public Entity(Vector2 position, String name = "Entity")
         {
-            this.Position = position;
-            this.Health = 5;
-            this.Name = name;
-            this.Invulnerable = false;
+            Position = position;
+            Health = 5;
+            BodyHeight = 40;
+            Name = name;
             Face = Facing.DOWN;
-            CM = new CounterManager();
-            CM.AddCounter(_cInvulnerable, _invulnerableDuration);
-            CM.Bang += new EventHandler<BangEventArgs>(OnBang);
+            FaceLock = false;
             IsEnabled = true;
-            
+            IsStatic = false;
+            DropShadow = false;
+
+            CM = new CounterManager();
         }
 
         public void AddModule(BaseModule module)
         {
             module.SetOwner(this);
             if (module is IThinkModule)
-                _mThinkModule = module as IThinkModule;
+                _thinkModule = module as IThinkModule;
             if (module is IDrawExecuter)
-                _mDrawModule = module as IDrawExecuter;
+                _drawModule = module as IDrawExecuter;
             if (module is IInteractModule)
-                _mInteractModule = module as IInteractModule;
+                _interactModule = module as IInteractModule;
             if (module is IDieModule)
-                _mDieModule = module as IDieModule;
+                _dieModule = module as IDieModule;
             if (module is ICollideModule)
-                _mCollideModule = module as ICollideModule;
+                _collideModule = module as ICollideModule;
+            if (module is IHitModule)
+                _hitModule = module as IHitModule;
         }
 
-        public IInteractModule MInteractModule
+        public IInteractModule InteractModule
         {
-            get{return  _mInteractModule;}
+            get{return  _interactModule;}
         }
 
-        public IDrawExecuter MDrawModule
+        public IDrawExecuter DrawModule
         {
-            get{return  _mDrawModule;}
+            get{return  _drawModule;}
         }
 
-        public IDieModule MDieModule
+        public IDieModule DieModule
         {
-            get{return  _mDieModule;}
+            get{return  _dieModule;}
         }
 
-        public IThinkModule MThinkModule
+        public IThinkModule ThinkModule
         {
-            get{return  _mThinkModule;}
+            get{return  _thinkModule;}
         }
 
-        public ICollideModule MColideModule
+        public ICollideModule CollideModule
         {
-            get{return  _mCollideModule;}
+            get{return  _collideModule;}
         }
 
-        public float Damage(float damage)
+        public IHitModule HitModule
         {
-            if (this.CanBeAttacked && !Invulnerable)
-            {
-                // Make entity temporarily invulnerable
-                Invulnerable = true;
-                CM.StartCounter(_cInvulnerable);
+            get { return _hitModule; }
+        }
 
-                // TODO evtl Rüstungen abziehen
-                this.Health -= Math.Min(damage, Health);
-                return Math.Min(damage, Health);
-            }
-            else
-            {
+        public float Damage(int damage)
+        {
+            if (_hitModule == null)
                 return 0;
-            }
-        }
 
-        private void OnBang(object sender, BangEventArgs e)
-        {
-            if (e.IsDesiredCounter(_cInvulnerable))
-            {
-                Invulnerable = false;
-            }
+            int dmgDone = Math.Min(_hitModule.Damage(damage), Health);
+            this.Health -= dmgDone;
+            return dmgDone;
         }
 
      /*   public void SetPosition(Vector2 position)
@@ -209,30 +204,17 @@ namespace WarTornLands.Entities
             Health = health;
         }
 
-        /// <summary>
-        /// Gibt den Objekttyp als Zahl zurück.
-        /// </summary>
-        /// <returns>0 = keine Aktionmöglich, 1 = Angreifbar, 2 = Ansprechbar, 3 = Benutzbar(öffnen), 4 = Aufhebbar</returns>
-        public int IdentifyObjectType()
-        {
-            if (CanBeAttacked) return 1;
-            if (CanSpeak) return 2;
-            if (CanBeUsed) return 3;
-            if (CanBePickedUp) return 4;
-            return 0;
-        }
-
         public Vector2 Size
         {
             get
             {
-                if (_mDrawModule == null)
+                if (_drawModule == null)
                 {
                     return new Vector2(0, 0);
                 }
                 else
                 {
-                    return _mDrawModule.Size;
+                    return _drawModule.Size;
                 }
             }
         }
@@ -244,7 +226,7 @@ namespace WarTornLands.Entities
                 return;
 
             // If animated entity, and we changed our moving state / facing
-            if (this.MDrawModule is AnimatedDrawer &&
+            if (this.DrawModule is AnimatedDrawer &&
                 ((_prevPosition != _position) != _moving || _prevFace != Face))
             {
                 // Update moving flag
@@ -255,16 +237,16 @@ namespace WarTornLands.Entities
                     switch (Face)
                     {
                         case Facing.DOWN:
-                            (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("standDown");
+                            (this.DrawModule as AnimatedDrawer).SetCurrentAnimation("standDown");
                             break;
                         case Facing.LEFT:
-                            (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("standLeft");
+                            (this.DrawModule as AnimatedDrawer).SetCurrentAnimation("standLeft");
                             break;
                         case Facing.RIGHT:
-                            (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("standRight");
+                            (this.DrawModule as AnimatedDrawer).SetCurrentAnimation("standRight");
                             break;
                         case Facing.UP:
-                            (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("standUp");
+                            (this.DrawModule as AnimatedDrawer).SetCurrentAnimation("standUp");
                             break;
                     }
                 }
@@ -273,16 +255,16 @@ namespace WarTornLands.Entities
                     switch (Face)
                     {
                         case Facing.DOWN:
-                            (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("walkDown");
+                            (this.DrawModule as AnimatedDrawer).SetCurrentAnimation("walkDown");
                             break;
                         case Facing.LEFT:
-                            (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("walkLeft");
+                            (this.DrawModule as AnimatedDrawer).SetCurrentAnimation("walkLeft");
                             break;
                         case Facing.RIGHT:
-                            (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("walkRight");
+                            (this.DrawModule as AnimatedDrawer).SetCurrentAnimation("walkRight");
                             break;
                         case Facing.UP:
-                            (this.MDrawModule as AnimatedDrawer).SetCurrentAnimation("walkUp");
+                            (this.DrawModule as AnimatedDrawer).SetCurrentAnimation("walkUp");
                             break;
                     }
                 }
@@ -294,24 +276,24 @@ namespace WarTornLands.Entities
 
             TilePosition = new Point((int)(Position.X / Constants.TileSize), (int)(Position.Y / Constants.TileSize));
 
-            if (_mDrawModule is AnimatedDrawer)
-                ((AnimatedDrawer)_mDrawModule).Update(gameTime);
+            if (_drawModule is AnimatedDrawer)
+                ((AnimatedDrawer)_drawModule).Update(gameTime);
 
 
             #endregion
-            if (_mInteractModule != null)
-                _mInteractModule.Update(gameTime);
-            if (_mThinkModule != null)
-                _mThinkModule.Update(gameTime);
-            if (_mDieModule != null && Health <= 0)
-                _mDieModule.Die();
-            if (_mDrawModule != null)
+            if (_interactModule != null)
+                _interactModule.Update(gameTime);
+            if (_thinkModule != null)
+                _thinkModule.Update(gameTime);
+            if (_dieModule != null && Health <= 0)
+                _dieModule.Die();
+            if (_drawModule != null)
             {
-                _mDrawModule.Update(gameTime);
-                if (_mDrawModule is AnimatedDrawer)
-                    if (((AnimatedDrawer)_mDrawModule).HasEnded)
+                _drawModule.Update(gameTime);
+                if (_drawModule is AnimatedDrawer)
+                    if (((AnimatedDrawer)_drawModule).HasEnded)
                     {
-                        this._mDrawModule = null;
+                        this._drawModule = null;
                         this.ToBeRemoved = true;
                     }
             }
@@ -319,53 +301,54 @@ namespace WarTornLands.Entities
 
         public void Draw(GameTime gameTime)
         {
-            // Point drawPos = new Point((int)this.GetDrawPosition().X, (int)this.GetDrawPosition().Y);
-
             DrawInformation information = new DrawInformation()
             {
                 Position = this.Position,
                 Rotation = _rotation,
                 Scale = this.Size,
-                Invulnerable = this.Invulnerable,
+                Altitude = this.Altitude,
+                Shadow = DropShadow,
+                Flashing = _hitModule != null ? _hitModule.IsFlashing() : false,
                 DrawLights=Game1.Instance.DrawingLights
             };
 
-            if (_mDrawModule != null)
-                _mDrawModule.Draw(Game1.Instance.SpriteBatch, information);
+            if (_drawModule != null)
+                _drawModule.Draw(Game1.Instance.SpriteBatch, information);
         }
-
-      
-
-        /*  protected virtual Vector2 GetDrawPosition()
-          {
-              Vector2 center = (Game as Game1).Player.Position;
-              return new Vector2((this.Position.X - center.X - _texture.Width * 0.5f + (float)Math.Round((Game as Game1).Window.ClientBounds.Width / 2.0f)),
-                                  (this.Position.Y - center.Y - _texture.Height * 0.5f + (float)Math.Round((Game as Game1).Window.ClientBounds.Height / 2.0f)));
-          }*/
-
 
         public void Interact(Entity user)
         {
-            if(_mInteractModule != null)
-                _mInteractModule.Interact(user);
+            if(_interactModule != null)
+                _interactModule.Interact(user);
         }
 
         public void Collide(Entity source)
         {
-            if (_mCollideModule != null)
+            if (_collideModule != null)
             {
                 CollideInformation info = new CollideInformation() { Collider = source, IsPlayer = source is Player };
-                _mCollideModule.OnCollide(info);
+                _collideModule.OnCollide(info);
             }
         }
 
         internal void RemoveAllModules()
         {
-            _mCollideModule = null;
-            _mInteractModule = null;
-            _mThinkModule = null;
-            _mDieModule = null;
-            _mDrawModule = null;
+            _collideModule = null;
+            _interactModule = null;
+            _thinkModule = null;
+            _dieModule = null;
+            _drawModule = null;
+            _hitModule = null;
+        }
+
+        public int CompareTo(Entity other)
+        {
+            if (this.Position.Y < other.Position.Y)
+                return -1;
+            else if (this.Position.Y == other.Position.Y)
+                return 0;
+            else
+                return 1;
         }
     }
 }

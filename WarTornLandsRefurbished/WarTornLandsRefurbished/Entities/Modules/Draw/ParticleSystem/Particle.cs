@@ -52,10 +52,7 @@ namespace WarTornLands.Entities.Modules.Draw.ParticleSystem
             Vector2 origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
             Vector2 _loc = information.Position;
             Vector2 _size = new Vector2(Size,Size);
-            if (information.Centered)
-                _loc = information.Position - (_size / 2);
-            else
-                _loc = information.Position;
+            _loc = information.Position - (_size / 2);
 
             Vector2 center = Game1.Instance.Camera.Center;
             Rectangle bounds = Game1.Instance.Window.ClientBounds;

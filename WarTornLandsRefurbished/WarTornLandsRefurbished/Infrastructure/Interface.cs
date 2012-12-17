@@ -27,7 +27,7 @@ namespace WarTornLands.Infrastructure
             Game1 g = Game1.Instance;
             int border = 2;
             int maxWidth = 150;
-            int width = (int)(g.Player.Health/g.Player.MaxHealth * maxWidth);
+            int width = (int)(g.Player.Health/(float)g.Player.MaxHealth * maxWidth);
             Vector2 start = new Vector2(g.Window.ClientBounds.Width - 10 - maxWidth, 10);
             g.SpriteBatch.Draw(dummyTexture, new Rectangle((int)start.X - border, (int)start.Y - border, maxWidth + 2 * border, 25 + 2 * border), Color.DarkRed);
             g.SpriteBatch.Draw(dummyTexture, new Rectangle((int)start.X, (int)start.Y, width, 25), Color.Red);

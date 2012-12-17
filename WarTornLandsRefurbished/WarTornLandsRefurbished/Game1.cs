@@ -84,7 +84,8 @@ namespace WarTornLands
 
             
             Player = Player.Instance;
-            Player.Position = new Vector2(14 * Constants.TileSize, 19 * Constants.TileSize);
+            Player.Position = new Vector2(14 * Constants.TileSize, 19 * Constants.TileSize); // Spawn: Frederik
+            //Player.Position = new Vector2(39 * Constants.TileSize, 18 * Constants.TileSize); // Spawn: GruselUte
 
             _camera=new Camera2D(Player);
 
@@ -152,11 +153,7 @@ namespace WarTornLands
 
         private void FreezeGame()
         {
-            foreach (GameComponent comp in Components)
-            {
-                if (comp is WarTornLands.World.Layers.EntityLayer)
-                    comp.Enabled = false;
-            }
+            // TODO freeze game
         }
         /// <summary>
         /// Dies wird aufgerufen, wenn das Spiel selbst zeichnen soll.

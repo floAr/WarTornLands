@@ -20,6 +20,7 @@ using WarTornLands.Entities.Modules.Draw.ParticleSystem;
 using WarTornLands.Infrastructure.Systems.SkyLight;
 using WarTornLandsRefurbished.Entities.Modules.Think;
 using WarTornLands.PlayerClasses.Items;
+using WarTornLands.Entities.Modules.Hit;
 using WarTornLands.Infrastructure.Systems.DrawSystem;
 
 namespace WarTornLands.World
@@ -156,7 +157,7 @@ namespace WarTornLands.World
             EntityLayer layer3 = new EntityLayer(99);
             StaticDrawer sd = new StaticDrawer();
             sd.Texture = Game1.Instance.Content.Load<Texture2D>("Schatztruhe");
-            Entity staticTest = new Entity(Game1.Instance, new Vector2(50, 50), "loch");
+            Entity staticTest = new Entity(new Vector2(50, 50), "loch");
             staticTest.AddModule(sd);
             //staticTest.AddModule(new ExplodeAndLoot(Item.Potion));
             staticTest.Health = 100;
@@ -165,7 +166,7 @@ namespace WarTornLands.World
 
             StaticDrawer dialogTestDrawer = new StaticDrawer();
             dialogTestDrawer.Texture = Game1.Instance.Content.Load<Texture2D>("Schatztruhe");
-            Entity dialogTest = new Entity(Game1.Instance, new Vector2(-20, 150), "chest");
+            Entity dialogTest = new Entity(new Vector2(-20, 150), "chest");
             dialogTest.AddModule(dialogTestDrawer);
 
             List<Conversation> cons = new List<Conversation>();
@@ -189,7 +190,7 @@ namespace WarTornLands.World
             //torch
             List<Texture2D> pL = new List<Texture2D>();
             pL.Add(Game1.Instance.Content.Load<Texture2D>("flame3"));
-            Entity torch = new Entity(Game1.Instance, new Vector2(50, 150), "torch");
+            Entity torch = new Entity(new Vector2(50, 150), "torch");
             ParticleSystem pSystem = new ParticleSystem(
                 new EmitterSetting()
                 {
@@ -422,7 +423,7 @@ namespace WarTornLands.World
             EntityLayer entityLayer = new EntityLayer(90);
 
             // Normal door
-            Entity door1 = new Entity(Game1.Instance, new Vector2(31, 31) * Constants.TileSize);
+            Entity door1 = new Entity(new Vector2(31, 31) * Constants.TileSize);
             List<Conversation> doorConList = new List<Conversation>();
             Conversation doorCon = new Conversation("1");
            // doorCon.Add(new TextLine("Ich brauche einen kleinen Schluessel."));
@@ -432,7 +433,6 @@ namespace WarTornLands.World
                 points.Add(Game1.Instance.Player.Position);
                 points.Add(new Vector2(574, 500));
                 points.Add(new Vector2(574, 500));
-                points.Add(Game1.Instance.Player.Position);
                 Game1.Instance.Camera.PlayCinematic(points);
             })));
             doorConList.Add(doorCon);
@@ -445,7 +445,7 @@ namespace WarTornLands.World
             entityLayer.AddEntity(door1);
 
             // Boss door
-            Entity door2 = new Entity(Game1.Instance, new Vector2(39, 27) * Constants.TileSize);
+            Entity door2 = new Entity(new Vector2(39, 27) * Constants.TileSize);
             doorConList = new List<Conversation>();
             doorCon = new Conversation("1");
             //doorCon.Add(new TextLine("Ich brauche einen Riesenschluessel!"));
@@ -455,7 +455,6 @@ namespace WarTornLands.World
                 points.Add(Game1.Instance.Player.Position);
                 points.Add(new Vector2(994, 1099));
                 points.Add(new Vector2(994, 1099));
-                points.Add(Game1.Instance.Player.Position);
                 Game1.Instance.Camera.PlayCinematic(points);
             })));
             doorConList.Add(doorCon);
@@ -468,7 +467,7 @@ namespace WarTornLands.World
             entityLayer.AddEntity(door2);
 
             // Add chest
-            Entity chest = new Entity(Game1.Instance, new Vector2(31, 35) * Constants.TileSize);
+            Entity chest = new Entity(new Vector2(31, 35) * Constants.TileSize);
             chest.AddModule(new Obstacle());
             chest.AddModule(new ReplaceByStatic("sprite/treasureChestLooted"));
             StaticDrawer sd3 = new StaticDrawer();
@@ -486,7 +485,8 @@ namespace WarTornLands.World
             entityLayer.AddEntity(chest);
 
             // Add crazy dude
-            Entity crazyDude = new Entity(Game1.Instance, new Vector2(18 * Constants.TileSize, 15 * Constants.TileSize + 10));
+            Entity crazyDude = new Entity(new Vector2(18 * Constants.TileSize, 15 * Constants.TileSize + 10));
+            crazyDude.DropShadow = true;
             crazyDude.AddModule(new Obstacle());
             StaticDrawer sd4 = new StaticDrawer();
             sd4.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/frederik");
@@ -511,12 +511,13 @@ namespace WarTornLands.World
 
             crazyDude.AddModule(new Dialog(cons, crazyDude));
             entityLayer.AddEntity(crazyDude);
-
             cavernsArea.AddLayer(entityLayer);
 
             // Boss
-            Entity boss = new Entity(Game1.Instance, new Vector2(39, 15) * Constants.TileSize, "GruselUte");
+            Entity boss = new Entity(new Vector2(39, 15) * Constants.TileSize, "GruselUte");
+            boss.DropShadow = true;
             boss.AddModule(new ThinkRoamAround(new Vector2(39, 11) * Constants.TileSize, 170));
+            boss.AddModule(new DamageFlash());
             StaticDrawer bossDrawer = new StaticDrawer();
             bossDrawer.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/gruselute");
             boss.AddModule(bossDrawer);
@@ -539,7 +540,7 @@ namespace WarTornLands.World
                 light.AddAnimation(simpleflicker);
                 light.SetCurrentAnimation("flicker");
                 light.IsLight = true;
-                Entity newTorch = new Entity(Game1.Instance, new Vector2(24, 27) * Constants.TileSize + new Vector2(100 * i, 0), "torchi");
+                Entity newTorch = new Entity(new Vector2(24, 27) * Constants.TileSize + new Vector2(100 * i, 0), "torchi");
                 newTorch.AddModule(new DualDraw(body, light));
                 Lightmanager.Instance.AddLight(newTorch);
                 entityLayer.AddEntity(newTorch);
@@ -549,8 +550,8 @@ namespace WarTornLands.World
             //fire
             List<Texture2D> pL = new List<Texture2D>();
             pL.Add(Game1.Instance.Content.Load<Texture2D>("sprite/flame3"));
-            Entity torch = new Entity(Game1.Instance, new Vector2(29, 32) * Constants.TileSize, "torch");
-            Entity torch2 = new Entity(Game1.Instance, new Vector2(33, 32) * Constants.TileSize, "torch");
+            Entity torch = new Entity(new Vector2(29, 32) * Constants.TileSize, "torch");
+            Entity torch2 = new Entity(new Vector2(33, 32) * Constants.TileSize, "torch");
             ParticleSystem pSystem = new ParticleSystem(
                 new EmitterSetting()
                 {
@@ -588,7 +589,7 @@ namespace WarTornLands.World
 
             for (int i = 0; i < 3; ++i)
             {
-                Entity fungus = new Entity(Game1.Instance, new Vector2(13 + r.Next(9), 15 + r.Next(7)) * Constants.TileSize, "fungus");
+                Entity fungus = new Entity(new Vector2(13 + r.Next(9), 15 + r.Next(7)) * Constants.TileSize, "fungus");
                 AnimatedDrawer fungusGlow = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("sprite/fungus_light"));
                 Animation glow = new Animation("glow");
                 glow.AddFrame(new Rectangle(64, 0, 64, 64), r.Next(1000));
@@ -639,10 +640,32 @@ namespace WarTornLands.World
                 a.Update(gameTime);
         }
 
-        public void Draw(GameTime gameTime)
+        ////////////////////////////////
+        // TODO implement methods to get
+        // * low tile layers
+        // * high tile layers
+        // * low entities
+        // * middle entities
+        // * high entities
+        // for the gamestate to draw in any order, to distinct render targets, with effects etc.
+        /*internal void GetMiddleEntities(GameTime gameTime)
+        {
+            List<Entity> ents = new List<Entity>();
+            foreach (Area a in _areas.Values)
+                ents.AddRange(a.GetAllEntities());
+            ents.Add(Game1.Instance.Player);
+            ents.Sort();
+
+            foreach (Entity e in ents)
+                e.Draw(gameTime);
+        }*/
+
+        internal void Draw(GameTime gameTime)
         {
             foreach (Area a in _areas.Values)
                 a.Draw(gameTime);
+
+            Game1.Instance.Player.Draw(gameTime);
         }
     }
 }

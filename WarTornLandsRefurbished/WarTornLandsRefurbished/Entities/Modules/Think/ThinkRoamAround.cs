@@ -20,7 +20,7 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
             get { return _swing.Range; }
             set { _swing.Range = value; } 
         }
-        public float AttackDamage
+        public int AttackDamage
         {
             get { return _swing.Damage; }
             set { _swing.Damage = value; }
@@ -34,20 +34,20 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
 
         private GoToPosition _goTo;
         private SwingHitAbility _swing;
+        private JumpAbility _jump;
 
         private Vector2 _anchor;
         private float _radius;
         private Random _rand;
         private RoamState _state;
         private RoamState _lastState;
-        private bool _canBeAttacked;
 
-        public ThinkRoamAround(Vector2 anchor, float roamingRadius, float attackRange = 60, float sightRange = 110, float damage = 10f, bool canBeAttacked = true)
+        public ThinkRoamAround(Vector2 anchor, float roamingRadius, float attackRange = 60, float sightRange = 110, int damage = 10, bool canBeAttacked = true)
             : base()
         {
-            _canBeAttacked = canBeAttacked;
             _goTo = new GoToPosition(.5f);
             _swing = new SwingHitAbility(1500, 0f, attackRange, damage);
+            _jump = new JumpAbility();
             _rand = new Random();
             _anchor = anchor;
             _radius = roamingRadius;
@@ -60,13 +60,14 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
             base.SetOwner(owner);
             _goTo.SetOwner(owner);
             _swing.SetOwner(owner);
-            _owner.CanBeAttacked = _canBeAttacked;
+            _jump.SetOwner(owner);
         }
 
         public void Update(GameTime gameTime)
         {
             _goTo.Update(gameTime);
             _swing.Update(gameTime);
+            _jump.Update(gameTime);
 
             CheckForTarget();
 
@@ -112,6 +113,7 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
 
         private void AggroActions(GameTime gameTime)
         {
+
             if (_lastState != RoamState.Aggro)
                 _goTo.Reset();
 
@@ -131,6 +133,8 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
             }
             else
             {
+                // TODO remove
+                _jump.TryExecute();
                 Vector2 awayFromHome = _owner.Position - _anchor;
                 if (awayFromHome.LengthSquared() >= _radius * _radius)
                     _goTo.Freeze();

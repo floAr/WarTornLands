@@ -118,7 +118,7 @@ namespace WarTornLands.Infrastructure
             List<Entity> temp = new List<Entity>(curEntities);
             foreach (Entity ent in temp)
             {
-                if (ent.MColideModule == null || ent.Equals(source))
+                if (ent.CollideModule == null || ent.Equals(source))
                     curEntities.Remove(ent);
             }
 
@@ -138,7 +138,7 @@ namespace WarTornLands.Infrastructure
                 temp = new List<Entity>(curEntities);
                 foreach (Entity ent in temp)
                 {
-                    if (ent.MColideModule == null || ent.Equals(source))
+                    if (ent.CollideModule == null || ent.Equals(source))
                         curEntities.Remove(ent);
                 }
             }

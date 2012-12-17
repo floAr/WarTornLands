@@ -46,7 +46,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         /// <value>
         /// The damage.
         /// </value>
-        public float Damage { get; set; }
+        public int Damage { get; set; }
         /// <summary>
         /// Gets a value indicating whether this <see cref="SwingHitAbility" /> is executing a hit.
         /// </summary>
@@ -79,7 +79,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         /// <param name="owner">The owner.</param>
         /// <param name="duration">The duration of a swing.</param>
         /// <param name="angle">The angle of the swing cone.</param>
-        public SwingHitAbility(int duration = 700, float angle = 2, float range = 50, float damage = 1)
+        public SwingHitAbility(int duration = 700, float angle = 2, float range = 50, int damage = 1)
         {
             Duration = duration;
             Angle = angle;
@@ -101,6 +101,9 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         {
             if (this.Active)
                 return false;
+
+            // Lock owner direction while hitting
+            _owner.FaceLock = true;
 
             _cm.StartCounter(_cSwingHit, false);
 
@@ -139,7 +142,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             // Debug
             if (_owner.Name.Equals("Player"))
             {
-                WeaponMarkerA = hitPos - Player.Instance.Position + new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth * .5f, GraphicsDeviceManager.DefaultBackBufferHeight * .5f);
+                WeaponMarkerA = hitPos - (Player.Instance.Position - new Vector2(0, -Player.Instance.Altitude)) + new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth * .5f, GraphicsDeviceManager.DefaultBackBufferHeight * .5f);
             }
             if (_owner.Name.Equals("GruselUte"))
             {
@@ -147,12 +150,15 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             }
             //enddebug
 
+            // Assume weapon in the vertical center of the owner's body
+            float swingAltitude = _owner.BodyHeight / 2f + _owner.Altitude;
             if (_owner is PlayerClasses.Player)
             {
                 List<Entity> targets = (Game1.Instance.Level.GetEntitiesAt(hitPos));
                 foreach (Entity ent in targets)
                 {
-                    ent.Damage(this.Damage);
+                    if (ent.Altitude <= swingAltitude && ent.Altitude+ent.BodyHeight >= swingAltitude)
+                        ent.Damage(this.Damage);
                 }
             }
             else
@@ -163,7 +169,10 @@ namespace WarTornLands.Entities.Modules.Think.Parts
                 Vector2 toPlayer = Player.Instance.Position - hitPos;
                 if(toPlayer.LengthSquared() < 18 * 18)
                 {
-                    Player.Instance.Damage(Damage);
+                    Player p = Player.Instance;
+                    if (p.Altitude <= swingAltitude && p.Altitude + p.BodyHeight >= swingAltitude)
+                        p.Damage(this.Damage);
+                    
                 }
             }
         }
@@ -184,7 +193,8 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
         private void OnBang(object sender, BangEventArgs e)
         {
-            
+            // Unlock owner direction after hit
+            _owner.FaceLock = false;
         }
 
         #endregion

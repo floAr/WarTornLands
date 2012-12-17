@@ -13,6 +13,8 @@ using WarTornLands.Entities.Modules.Think;
 using WarTornLands.Infrastructure.Systems.DialogSystem;
 using WarTornLands.Entities.Modules.Die;
 using WarTornLands.Entities.Modules.Collide;
+using WarTornLands.Entities.Modules.Hit;
+using WarTornLands.PlayerClasses.Items;
 using WarTornLands.Infrastructure.Systems.DrawSystem;
 
 namespace WarTornLands.PlayerClasses
@@ -28,7 +30,7 @@ namespace WarTornLands.PlayerClasses
             get
             {
                 if (_instance == null)
-                    _instance = new Player(Game1.Instance);
+                    _instance = new Player();
 
                 return _instance;
             }
@@ -39,17 +41,18 @@ namespace WarTornLands.PlayerClasses
             get { return _inventory; }
         }
 
-        private Player(Game1 game)
-            : base(game, new Vector2(0, 0),  "Player")
+        private Player()
+            : base(new Vector2(0, 0),  "Player")
         {
             MaxHealth = 80;
             Health = MaxHealth;
+            DropShadow = true;
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
             _inventory = new Inventory();
           //  this.AddModule(new ThinkInputGuided());
+            this.AddModule(new DamageFlash());
             this.AddModule(new Obstacle());
             this.AddModule(new ExplodeAndLoot(null));
-            this.CanBeAttacked = true;
             LoadContent();
         }
 

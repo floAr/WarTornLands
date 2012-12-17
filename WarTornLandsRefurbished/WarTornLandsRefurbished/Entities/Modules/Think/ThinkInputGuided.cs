@@ -31,7 +31,7 @@ namespace WarTornLands.Entities.Modules.Think
             Speed = speed;
 
             _jump = new JumpAbility();
-            _swing = new SwingHitAbility(700, 1);
+            _swing = new SwingHitAbility(400, 1);
             _interact = new InteractAbility();
             _frozen = false;
 
@@ -42,9 +42,9 @@ namespace WarTornLands.Entities.Modules.Think
             _input.KInteract.Pressed += new EventHandler(OnInteract);
             _input.KJump.Pressed += new EventHandler(OnJump);*/
             (InputManager.Instance["UsePotion"] as Key).Pressed+=new EventHandler(OnUsePotion);
-             (InputManager.Instance["Hit"] as Key).FreshPressed += new EventHandler(OnExecuteHit);
-             (InputManager.Instance["Interact"] as Key).Pressed += new EventHandler(OnInteract);
-             (InputManager.Instance["Jump"] as Key).Pressed += new EventHandler(OnJump);
+            (InputManager.Instance["Hit"] as Key).FreshPressed += new EventHandler(OnExecuteHit);
+            (InputManager.Instance["Interact"] as Key).Pressed += new EventHandler(OnInteract);
+            (InputManager.Instance["Jump"] as Key).Pressed += new EventHandler(OnJump);
         }
 
         public void Update(GameTime gameTime)
@@ -62,6 +62,7 @@ namespace WarTornLands.Entities.Modules.Think
                     ) + _owner.Position;
 
                 _swing.Update(gameTime);
+                _jump.Update(gameTime);
                 CalcFacing(moveDirection);
             }
         }

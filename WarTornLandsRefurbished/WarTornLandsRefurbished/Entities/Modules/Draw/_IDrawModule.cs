@@ -41,13 +41,14 @@ namespace WarTornLands.Entities.Modules.Draw
         /// </value>
         public bool Centered { get; set; }
         /// <summary>
-        /// Gets or sets a value indicating whether this entity is drawn as invulnerable.
+        /// Gets or sets a value indicating whether this entity is drawn flashing, e.g. after a hit.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if invulnerable; otherwise, <c>false</c>.
+        ///   <c>true</c> if flashing; otherwise, <c>false</c>.
         /// </value>
-        public bool Invulnerable { get; set; }
-
+        public bool Flashing { get; set; }
+        public float Altitude { get; set; }
+        public bool Shadow { get; set; }
         public bool DrawLights { get; set; }
     }
     /// <summary>

@@ -53,7 +53,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         /// <param name="owner">The owner.</param>
         /// <param name="duration">The duration of a jump.</param>
         /// <param name="zenit">The zenit of a jump.</param>
-        public JumpAbility(int duration = 700, float zenit = 20)
+        public JumpAbility(int duration = 700, float zenit = 100)
         {
             Duration = duration;
             Zenit = zenit;
@@ -66,13 +66,12 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         /// <param name="gameTime">The game time.</param>
         public void Update(GameTime gameTime)
         {
-            _cm.Update(gameTime);
-
             float perc = _cm.GetPercentage(_cJump);
-            _owner.Height = 
+            /*_owner.Height = 
                 _owner.BaseHeight + 
                 perc < .5f ? 2 * perc : 2 * (1 - perc) 
-                * Zenit;
+                * Zenit;*/
+            _owner.Altitude = (float) (Math.Pow(_cm.GetPercentage(_cJump) * 2 - 1, 2) - 1) * -Zenit;
         }
 
         public void SetOwner(Entity owner)
