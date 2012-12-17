@@ -20,10 +20,11 @@ using WarTornLands.Entities.Modules.Draw.ParticleSystem;
 using WarTornLands.Infrastructure.Systems.SkyLight;
 using WarTornLandsRefurbished.Entities.Modules.Think;
 using WarTornLands.PlayerClasses.Items;
+using WarTornLands.Infrastructure.Systems.DrawSystem;
 
 namespace WarTornLands.World
 {
-    public class Level
+    public class Level:IDrawProvider
     {
         private Dictionary<string, Area> _areas;
         private Game _game;
@@ -213,7 +214,7 @@ namespace WarTornLands.World
             torch.AddModule(new DualDraw(torchlight, pSystem));
             //       torch.AddModule(pSystem);
             layer3.AddEntity(torch);
-            Lightmanager.AddLight(torch);
+            Lightmanager.Instance.AddLight(torch);
             //endtorch
 
             AddArea("Entenhausen", area1);
@@ -540,7 +541,7 @@ namespace WarTornLands.World
                 light.IsLight = true;
                 Entity newTorch = new Entity(Game1.Instance, new Vector2(24, 27) * Constants.TileSize + new Vector2(100 * i, 0), "torchi");
                 newTorch.AddModule(new DualDraw(body, light));
-                Lightmanager.AddLight(newTorch);
+                Lightmanager.Instance.AddLight(newTorch);
                 entityLayer.AddEntity(newTorch);
             }
 
@@ -575,9 +576,9 @@ namespace WarTornLands.World
             torch2.AddModule(new DualDraw(torchlight, pSystem));
             //       torch.AddModule(pSystem);
             entityLayer.AddEntity(torch);
-            Lightmanager.AddLight(torch);
+            Lightmanager.Instance.AddLight(torch);
             entityLayer.AddEntity(torch2);
-            Lightmanager.AddLight(torch2);
+            Lightmanager.Instance.AddLight(torch2);
             //endtorch
             //fungus
             StaticDrawer fungusS = new StaticDrawer();
@@ -602,7 +603,7 @@ namespace WarTornLands.World
                 fungusGlow.IsLight = true;
                 fungus.AddModule(new DualDraw(fungusS, fungusGlow));
                 entityLayer.AddEntity(fungus);
-                Lightmanager.AddLight(fungus);
+                Lightmanager.Instance.AddLight(fungus);
             }
 
        
@@ -638,7 +639,7 @@ namespace WarTornLands.World
                 a.Update(gameTime);
         }
 
-        internal void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             foreach (Area a in _areas.Values)
                 a.Draw(gameTime);

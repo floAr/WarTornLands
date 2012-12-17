@@ -13,6 +13,7 @@ using WarTornLands.Entities.Modules.Think;
 using WarTornLands.Infrastructure.Systems.DialogSystem;
 using WarTornLands.Entities.Modules.Die;
 using WarTornLands.Entities.Modules.Collide;
+using WarTornLands.Infrastructure.Systems.DrawSystem;
 
 namespace WarTornLands.PlayerClasses
 {

@@ -10,6 +10,7 @@ using WarTornLands.Entities.Modules.Interact;
 using WarTornLands.Entities.Modules.Think;
 using WarTornLands.Infrastructure;
 using WarTornLands.PlayerClasses;
+using WarTornLands.Infrastructure.Systems.DrawSystem;
 
 namespace WarTornLands.Entities
 {
@@ -22,7 +23,7 @@ namespace WarTornLands.Entities
     }
 
 
-    public class Entity
+    public class Entity :IDrawProvider
     {
         /* TODO
          * Interface als Events oder Methoden?

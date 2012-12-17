@@ -56,7 +56,11 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             Game1.Instance.SpriteBatch.Begin();
               Game1.Instance.SpriteBatch.Draw(_background, Vector2.Zero, Color.Tomato);
             Game1.Instance.SpriteBatch.End();/**/
-            _drawManager.Draw(_drawManager.B(_drawManager.B(Game1.Instance.Player.Inventory),_drawManager.B( _background,Game1.Instance.Content.Load<Effect>("effect/test"))), gameTime);
+            _drawManager.Draw(
+                _drawManager.B(
+                    _drawManager.B(Game1.Instance.Player.Inventory),
+                    _drawManager.B( _background,Game1.Instance.Content.Load<Effect>("effect/test")))
+                , gameTime);
         }
     }
 }

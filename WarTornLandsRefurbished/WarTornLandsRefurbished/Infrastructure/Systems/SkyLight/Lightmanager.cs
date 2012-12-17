@@ -5,13 +5,15 @@ using System.Text;
 using WarTornLands.Entities.Modules.Draw;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using WarTornLands.Infrastructure.Systems.DrawSystem;
 
 namespace WarTornLands.Infrastructure.Systems.SkyLight
 {
-    public static class Lightmanager
+    public class Lightmanager:IDrawProvider
     {
 
-
+        private static Lightmanager _instance = new Lightmanager();
+        public static Lightmanager Instance { get { return _instance; } }
 
         private static List<Entities.Entity> _groundLights = new List<Entities.Entity>();
         private static List<Entities.Entity> _upperLights = new List<Entities.Entity>(); 
@@ -27,13 +29,13 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
         private static int _currentColor;
         //endDaylight
 
-        public static void SetStaticColor(Color c)
+        public void SetStaticColor(Color c)
         {
             _skyColor = c;
             _dynamicLightCycle = false;
         }
 
-        public static void SetDayCycle(List<Color> gradient, int durationMS,bool pingPong=false)
+        public void SetDayCycle(List<Color> gradient, int durationMS,bool pingPong=false)
         {
             _dayLength = durationMS;
             _dayGradient = gradient;
@@ -45,7 +47,7 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
             _dynamicLightCycle = true;
         }
 
-        public static void AddLight(Entities.Entity light,bool isUpperLight=false)
+        public void AddLight(Entities.Entity light,bool isUpperLight=false)
         {
             if (isUpperLight)
                 _upperLights.Add(light);
@@ -54,7 +56,7 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
 
         }
 
-        public static void Draw(GameTime gameTime)
+        public  void Draw(GameTime gameTime)
         {
             if (_dynamicLightCycle)
             {
@@ -85,5 +87,7 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
                 e.Draw(gameTime);
             }
         }
+
+       
     }
 }
