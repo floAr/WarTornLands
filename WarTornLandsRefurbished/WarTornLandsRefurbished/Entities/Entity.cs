@@ -23,7 +23,7 @@ namespace WarTornLands.Entities
     }
 
 
-    public class Entity
+    public class Entity : IComparable<Entity>
     {
         /* TODO
          * Interface als Events oder Methoden?
@@ -338,6 +338,16 @@ namespace WarTornLands.Entities
             _dieModule = null;
             _drawModule = null;
             _hitModule = null;
+        }
+
+        public int CompareTo(Entity other)
+        {
+            if (this.Position.Y < other.Position.Y)
+                return -1;
+            else if (this.Position.Y == other.Position.Y)
+                return 0;
+            else
+                return 1;
         }
     }
 }

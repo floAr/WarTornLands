@@ -432,7 +432,6 @@ namespace WarTornLands.World
                 points.Add(Game1.Instance.Player.Position);
                 points.Add(new Vector2(574, 500));
                 points.Add(new Vector2(574, 500));
-                points.Add(Game1.Instance.Player.Position);
                 Game1.Instance.Camera.PlayCinematic(points);
             })));
             doorConList.Add(doorCon);
@@ -455,7 +454,6 @@ namespace WarTornLands.World
                 points.Add(Game1.Instance.Player.Position);
                 points.Add(new Vector2(994, 1099));
                 points.Add(new Vector2(994, 1099));
-                points.Add(Game1.Instance.Player.Position);
                 Game1.Instance.Camera.PlayCinematic(points);
             })));
             doorConList.Add(doorCon);
@@ -512,7 +510,6 @@ namespace WarTornLands.World
 
             crazyDude.AddModule(new Dialog(cons, crazyDude));
             entityLayer.AddEntity(crazyDude);
-
             cavernsArea.AddLayer(entityLayer);
 
             // Boss
@@ -642,10 +639,32 @@ namespace WarTornLands.World
                 a.Update(gameTime);
         }
 
+        ////////////////////////////////
+        // TODO implement methods to get
+        // * low tile layers
+        // * high tile layers
+        // * low entities
+        // * middle entities
+        // * high entities
+        // for the gamestate to draw in any order, to distinct render targets, with effects etc.
+        /*internal void GetMiddleEntities(GameTime gameTime)
+        {
+            List<Entity> ents = new List<Entity>();
+            foreach (Area a in _areas.Values)
+                ents.AddRange(a.GetAllEntities());
+            ents.Add(Game1.Instance.Player);
+            ents.Sort();
+
+            foreach (Entity e in ents)
+                e.Draw(gameTime);
+        }*/
+
         internal void Draw(GameTime gameTime)
         {
             foreach (Area a in _areas.Values)
                 a.Draw(gameTime);
+
+            Game1.Instance.Player.Draw(gameTime);
         }
     }
 }
