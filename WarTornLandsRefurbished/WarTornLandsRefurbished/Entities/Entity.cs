@@ -136,6 +136,9 @@ namespace WarTornLands.Entities
 
         public void AddModule(BaseModule module)
         {
+            if (module == null)
+                return;
+
             module.SetOwner(this);
             if (module is IThinkModule)
                 _thinkModule = module as IThinkModule;

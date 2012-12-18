@@ -34,7 +34,8 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
             Game1.Instance.Level = new Level(Game1.Instance);
             //Level.LoadTestLevel();
-            Game1.Instance.Level.LoadChristmasCaverns();
+            //Game1.Instance.Level.LoadChristmasCaverns();
+            XMLParser.Instance.ReadWorld();
             this._inputSheet.RegisterKey("Exit", Keys.Escape);
             this._inputSheet.RegisterKey("New", Keys.Enter);
             this._inputSheet.RegisterKey("Hit", Keys.Enter);
@@ -155,19 +156,19 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
                 Game1.Instance.SpriteBatch.End();
             }
 
-            if (Level.Ute.ToBeRemoved)
-            {
-                SpriteFont font = Game1.Instance.Content.Load<SpriteFont>("font/Test");
-                string line1 = "CONGRATURATION";
-                string line2 = "A WINRAR";
-                string line3 = "IS YOU";
-                Game1.Instance.SpriteBatch.Begin();
-                Game1.Instance.SpriteBatch.DrawString(font, line1, new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width / 2 - (font.MeasureString(line1).X / 2), Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line1).Y * .5f) - font.MeasureString(line1).Y), Color.OrangeRed);
-                Game1.Instance.SpriteBatch.DrawString(font, line2, new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width / 2 - (font.MeasureString(line2).X / 2), Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line2).Y / 2)), Color.OrangeRed);
-                Game1.Instance.SpriteBatch.DrawString(font, line3, new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width / 2 - (font.MeasureString(line3).X / 2), Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line3).Y / 2) + font.MeasureString(line1).Y), Color.OrangeRed);
-                Game1.Instance.SpriteBatch.End();
+            //if (Level.Ute.ToBeRemoved)
+            //{
+            //    SpriteFont font = Game1.Instance.Content.Load<SpriteFont>("font/Test");
+            //    string line1 = "CONGRATURATION";
+            //    string line2 = "A WINRAR";
+            //    string line3 = "IS YOU";
+            //    Game1.Instance.SpriteBatch.Begin();
+            //    Game1.Instance.SpriteBatch.DrawString(font, line1, new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width / 2 - (font.MeasureString(line1).X / 2), Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line1).Y * .5f) - font.MeasureString(line1).Y), Color.OrangeRed);
+            //    Game1.Instance.SpriteBatch.DrawString(font, line2, new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width / 2 - (font.MeasureString(line2).X / 2), Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line2).Y / 2)), Color.OrangeRed);
+            //    Game1.Instance.SpriteBatch.DrawString(font, line3, new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width / 2 - (font.MeasureString(line3).X / 2), Game1.Instance.GraphicsDevice.Viewport.Height / 2 - (font.MeasureString(line3).Y / 2) + font.MeasureString(line1).Y), Color.OrangeRed);
+            //    Game1.Instance.SpriteBatch.End();
 
-            }
+            //}
 
             Game1.Instance.SpriteBatch.Begin();
             float scale = .2f;

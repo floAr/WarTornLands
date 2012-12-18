@@ -9,7 +9,7 @@ namespace WarTornLands.World.Layers
 {
     public abstract class Layer
     {
-        public Layer(int depth)           
+        public Layer()           
         {
            
         }

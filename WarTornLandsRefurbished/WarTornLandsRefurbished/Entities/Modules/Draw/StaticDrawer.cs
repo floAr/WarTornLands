@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System.Data;
 
 namespace WarTornLands.Entities.Modules.Draw
 {
@@ -30,6 +31,15 @@ namespace WarTornLands.Entities.Modules.Draw
         private float _blinkTime = 0;
         // Total duration of a normal/highlighted blink duration (ms)
         private float _blinkDuration = 400;
+
+        public StaticDrawer()
+        { }
+
+        public StaticDrawer(DataRow data)
+            : this()
+        {
+            Texture = Game1.Instance.Content.Load<Texture2D>("sprite/" + data["Texture"].ToString());
+        }
 
         /// <summary>
         /// Draws the specified batch.

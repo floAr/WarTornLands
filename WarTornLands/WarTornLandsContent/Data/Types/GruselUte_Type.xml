@@ -1,0 +1,43 @@
+<BaseType>
+
+  <TypeInfo>
+    <ID>GruselUte</ID>
+  </TypeInfo>
+
+	<BaseInfo>
+		<Name>GruselUte</Name>
+		<Invuln>false</Invuln>
+		<Health>20</Health>
+		<BaseHeight>0</BaseHeight>
+	</BaseInfo>
+
+  <!--Collide-->
+  <Module>
+    <Type>Obstacle</Type>
+  </Module>
+
+  <!--Die-->
+	<Module>
+		<Type>ExplodeAndLoot</Type>
+	</Module>
+
+  <!--Draw-->
+	<Module>
+		<Type>StaticDrawer</Type>
+		<Texture>gruselute</Texture>
+	</Module>
+
+  <!--Interact-->
+	<Module>
+
+	</Module>
+
+  <!--Think-->
+	<Module>
+
+		<Damage>10</Damage>
+		<RoamingRadius>150</RoamingRadius>
+	</Module>
+
+
+</BaseType>

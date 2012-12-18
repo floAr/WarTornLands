@@ -51,7 +51,7 @@ namespace WarTornLands.PlayerClasses
           //  this.AddModule(new ThinkInputGuided());
             this.AddModule(new DamageFlash());
             this.AddModule(new Obstacle());
-            this.AddModule(new ExplodeAndLoot(null));
+            this.AddModule(new ExplodeAndLoot(new Item(0)));
             LoadContent();
         }
 

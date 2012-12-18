@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 
 namespace WarTornLands.Entities.Modules.Collide
 {
@@ -19,6 +20,12 @@ namespace WarTornLands.Entities.Modules.Collide
             _id = id;
             _locked = true;
         }
+        public OpenDoorOnCollide(DataRow data)
+        {
+            _id = int.Parse(data["KeyID"].ToString());
+            _locked = true;
+        }
+
         public bool OnCollide(CollideInformation info)
         {
             // TODO open only if player has key!

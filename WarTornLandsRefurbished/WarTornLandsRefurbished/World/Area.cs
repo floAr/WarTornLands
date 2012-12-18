@@ -6,25 +6,46 @@ using WarTornLands.World.Layers;
 using Microsoft.Xna.Framework;
 using WarTornLands.Entities;
 using WarTornLands.Infrastructure;
+using System.Data;
 
 namespace WarTornLands.World
 {
     public class Area
     {
         public Rectangle Bounds { get; private set; }
-        LinkedList<Layer> _layers;
+        public TileSetBox TileSets;
+
+        List<TileLayer> _lowTileLayers;
+        EntityLayer _entityLayer;
+        List<TileLayer> _highTileLayers;
 
         public Area(Rectangle bounds)
         {
             Bounds = bounds;
-            _layers = new LinkedList<Layer>();
+            _lowTileLayers = new List<TileLayer>();
+            _highTileLayers = new List<TileLayer>();
+
+            _entityLayer = new EntityLayer();
         }
 
-        public void AddLayer(Layer layer)
+
+
+        public void AddEntityLayer(EntityLayer layer)
         {
-            _layers.AddLast(layer);
+            _entityLayer = layer;
         }
 
+        public void AddLowLayer(TileLayer layer)
+        {
+            layer.SetTileSetBox(this.TileSets);
+
+            _lowTileLayers.Add(layer);
+        }
+
+        public void AddHighLayer(TileLayer layer)
+        {
+            _highTileLayers.Add(layer);
+        }
 
         private bool Contains(Vector2 position)
         {
@@ -50,7 +71,7 @@ namespace WarTornLands.World
             Vector2 localPos = new Vector2(position.X, position.Y);
 
             // Iterate through layers, check all TileLayers
-            foreach (Layer layer in _layers)
+            foreach (Layer layer in _lowTileLayers)
             {
                 if (layer is TileLayer && (layer as TileLayer).IsPositionAccessible(position) == false)
                     return false;
@@ -64,13 +85,7 @@ namespace WarTornLands.World
         {
             List<Entity> result = new List<Entity>();
 
-            foreach (Layer layer in _layers)
-            {
-                if (layer is EntityLayer)
-                {
-                    result.AddRange((layer as EntityLayer).GetEntitiesAt(position));
-                }
-            }
+            result.AddRange(_entityLayer.GetEntitiesAt(position));
 
             return result;
         }
@@ -79,20 +94,21 @@ namespace WarTornLands.World
         {
             List<Entity> result = new List<Entity>();
 
-            foreach (Layer layer in _layers)
-            {
-                if (layer is EntityLayer)
-                {
-                    result.AddRange((layer as EntityLayer).GetEntitiesAt(position, radius));
-                }
-            }
+            result.AddRange(_entityLayer.GetEntitiesAt(position, radius));
 
             return result;
         }
 
         internal void Update(GameTime gameTime)
         {
-            foreach (Layer layer in _layers)
+            foreach (Layer layer in _lowTileLayers)
+            {
+                layer.Update(gameTime);
+            }
+
+            _entityLayer.Update(gameTime);
+
+            foreach (Layer layer in _highTileLayers)
             {
                 layer.Update(gameTime);
             }
@@ -100,7 +116,15 @@ namespace WarTornLands.World
 
         internal void Draw(GameTime gameTime)
         {
-            foreach (Layer layer in _layers)
+            foreach (Layer layer in _lowTileLayers)
+            {
+                layer.Draw(gameTime);
+            }
+
+            // TODO: sort Entities
+            _entityLayer.Draw(gameTime);
+
+            foreach (Layer layer in _highTileLayers)
             {
                 layer.Draw(gameTime);
             }

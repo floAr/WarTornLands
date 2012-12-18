@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using WarTornLands.Infrastructure;
 using WarTornLands.Counter;
 using WarTornLands.Infrastructure.Systems.InputSystem;
+using System.Data;
+using System.IO;
 
 namespace WarTornLands.Entities.Modules.Interact
 {
@@ -74,6 +76,114 @@ namespace WarTornLands.Entities.Modules.Interact
                 con.SetOwner(owner);
             }
         }
+        public Dialog(DataRow data)
+        {
+            string dialogID = data["Dialog"].ToString() + "_Dialog.xml";
+            string path = Game1.Instance.Content.RootDirectory + "/Data";
+
+            IEnumerable<string> files = Directory.EnumerateFiles(path, dialogID, SearchOption.AllDirectories);
+
+            DataSet dialogData = null;
+            foreach (string file in files)
+            {
+                if (dialogData == null)
+                {
+                    dialogData = new DataSet();
+                    dialogData.ReadXml(file);
+                }
+                else
+                {
+                    throw new Exception("More than one dialog file found for ID " + data["Dialog"].ToString());
+                }
+            }
+
+            List<Conversation> conversations = ReadConversations(dialogData);
+
+            _enter = new EventHandler(OnEnter);
+
+            _conversations = new List<Conversation>();
+            foreach (Conversation con in conversations)
+            {
+                _conversations.Add(con.Clone());
+            }
+            _dm = DialogManager.Instance;
+
+            _currentCon = _conversations.First().GetIterator();
+
+            Cooldown = 2000;
+        }
+
+        public override void SetOwner(Entity owner)
+        {
+            base.SetOwner(owner);
+
+            foreach (Conversation con in _conversations)
+            {
+                con.SetOwner(owner);
+            }
+
+            _cm = owner.CM;
+            _cm.AddCounter(_cShutdown);
+            _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
+        }
+
+        private List<Conversation> ReadConversations(DataSet data)
+        {
+            List<Conversation> cons = new List<Conversation>();
+
+            foreach (DataRow conData in data.Tables["Conversation"].Rows)
+            {
+                Conversation con = new Conversation(conData["ID"].ToString());
+                foreach (DataRow lineData in conData.GetChildRows("Conversation_Line"))
+                {
+                    switch (lineData["Type"].ToString())
+                    {
+                        case "Text":
+                            con.Add(TextLineFromData(lineData));
+                            break;
+                        case "ItemContainer":
+                            con.Add(ItemContainerFromData(lineData));
+                            break;
+                        case "ComboBreaker":
+                            con.Add(ComboBreakerFromData(lineData));
+                            break;
+                        case "Event":
+                            con.Add(TextLineAndEventFromData(lineData));
+                            break;
+                    }
+                }
+                cons.Add(con);
+            }
+
+            return cons;
+        }
+
+        #region Linetypes
+
+        private TextLine TextLineFromData(DataRow data)
+        {
+            return new TextLine(data["Text"].ToString());
+        }
+        private ItemContainer ItemContainerFromData(DataRow data)
+        {
+            List<PlayerClasses.Items.Item> items = new List<PlayerClasses.Items.Item>();
+            foreach (DataRow itemData in data.GetChildRows("Line_Item"))
+            {
+                // TODO switch for item types
+                items.Add(new PlayerClasses.Items.Item(PlayerClasses.Items.ItemTypes.SmallKey));
+            }
+            return new ItemContainer(items);
+        }
+        private ComboBreaker ComboBreakerFromData(DataRow data)
+        {
+            return new ComboBreaker(data["NewCon"].ToString());
+        }
+        private TextLineAndEvent TextLineAndEventFromData(DataRow data)
+        {
+            return new TextLineAndEvent("", null);
+        }
+
+        #endregion
 
         public void Interact(Entity user)
         {

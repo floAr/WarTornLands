@@ -9,6 +9,7 @@ using WarTornLands.Entities;
 using WarTornLands.Entities.Modules.Think.Parts;
 using WarTornLands.Infrastructure;
 using WarTornLands.Infrastructure.Systems.InputSystem;
+using System.Data;
 
 namespace WarTornLands.Entities.Modules.Think
 {
@@ -46,7 +47,9 @@ namespace WarTornLands.Entities.Modules.Think
             (InputManager.Instance["Interact"] as Key).Pressed += new EventHandler(OnInteract);
             (InputManager.Instance["Jump"] as Key).Pressed += new EventHandler(OnJump);
         }
-
+        public ThinkInputGuided(DataRow data)
+            : this()
+        { }
         public void Update(GameTime gameTime)
         {
             if (!_frozen)

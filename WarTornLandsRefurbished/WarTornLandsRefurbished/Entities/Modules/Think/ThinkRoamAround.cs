@@ -9,8 +9,9 @@ using WarTornLands.Infrastructure;
 using WarTornLands.Entities.Modules;
 using WarTornLands.Entities.Modules.Think.Parts;
 using WarTornLands.PlayerClasses;
+using System.Data;
 
-namespace WarTornLandsRefurbished.Entities.Modules.Think
+namespace WarTornLands.Entities.Modules.Think
 {
     public class ThinkRoamAround : BaseModule, IThinkModule
     {
@@ -55,9 +56,16 @@ namespace WarTornLandsRefurbished.Entities.Modules.Think
             SightRange = sightRange;
         }
 
+        public ThinkRoamAround(DataRow data)
+            : this(Vector2.Zero, float.Parse(data["RoamingRadius"].ToString()))
+        {
+            //TODO: Read data
+        }
+
         public override void SetOwner(Entity owner)
         {
             base.SetOwner(owner);
+            _anchor = owner.Position;
             _goTo.SetOwner(owner);
             _swing.SetOwner(owner);
             _jump.SetOwner(owner);

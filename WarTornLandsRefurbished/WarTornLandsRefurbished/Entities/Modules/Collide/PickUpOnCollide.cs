@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WarTornLands.PlayerClasses;
+using System.Data;
 
 namespace WarTornLands.Entities.Modules.Collide
 {
@@ -29,6 +30,8 @@ namespace WarTornLands.Entities.Modules.Collide
             _pushItemCooldown.Bang += new EventHandler<Counter.BangEventArgs>(_pushItemCooldown_Bang);
             _loot = item;
         }
+        public PickUpOnCollide(DataRow data)
+        { }
 
         void _pushItemCooldown_Bang(object sender, Counter.BangEventArgs e)
         {

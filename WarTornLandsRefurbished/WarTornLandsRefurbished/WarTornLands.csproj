@@ -67,6 +67,7 @@
     <Reference Include="Microsoft.Xna.Framework.Storage, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -130,6 +131,7 @@
     <Compile Include="Infrastructure\Systems\InputSystem\Key.cs" />
     <Compile Include="Infrastructure\Systems\SkyLight\BlendStates.cs" />
     <Compile Include="Infrastructure\Systems\SkyLight\Lightmanager.cs" />
+    <Compile Include="Infrastructure\XMLParser.cs" />
     <Compile Include="PlayerClasses\Inventory.cs" />
     <Compile Include="PlayerClasses\Items\Item.cs" />
     <Compile Include="PlayerClasses\_Player.cs" />
@@ -141,6 +143,7 @@
     <Compile Include="World\Layers\TileLayer.cs" />
     <Compile Include="World\Layers\_Layer.cs" />
     <Compile Include="World\Level.cs" />
+    <Compile Include="World\Tiles.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

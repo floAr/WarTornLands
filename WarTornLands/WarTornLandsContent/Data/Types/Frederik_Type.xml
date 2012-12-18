@@ -1,0 +1,42 @@
+<BaseType>
+
+  <TypeInfo>
+    <ID>Frederik</ID>
+  </TypeInfo>
+
+	<BaseInfo>
+		<Name>Frederik</Name>
+		<Invuln>true</Invuln>
+		<Health></Health>
+		<BaseHeight>0</BaseHeight>
+	</BaseInfo>
+
+  <!--Collide-->
+  <Module>
+    <Type>Obstacle</Type>
+  </Module>
+
+  <!--Die-->
+	<Module>
+
+	</Module>
+
+  <!--Draw-->
+	<Module>
+		<Type>StaticDrawer</Type>
+		<Texture>frederik</Texture>
+	</Module>
+
+  <!--Interact-->
+	<Module>
+    <Type>Dialog</Type>
+    <Dialog>Frederik</Dialog>
+	</Module>
+
+  <!--Think-->
+	<Module>
+
+	</Module>
+
+
+</BaseType>

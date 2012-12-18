@@ -1,0 +1,40 @@
+<BaseType>
+
+  <TypeInfo>
+    <ID>BossDoor</ID>
+  </TypeInfo>
+
+	<BaseInfo>
+		<Name>BossDoor</Name>
+		<Invuln>true</Invuln>
+		<Health>0</Health>
+		<BaseHeight>0</BaseHeight>
+	</BaseInfo>
+
+  <!--Collide-->
+  <Module>
+    <Type>OpenDoorOnCollide</Type>
+    <KeyID>402</KeyID>
+  </Module>
+
+  <!--Die-->
+	<Module>
+	</Module>
+
+  <!--Draw-->
+	<Module>
+		<Type>StaticDrawer</Type>
+		<Texture>doorClosedBoss</Texture>
+	</Module>
+
+  <!--Interact-->
+	<Module>
+
+	</Module>
+
+  <!--Think-->
+	<Module>
+	</Module>
+
+
+</BaseType>
