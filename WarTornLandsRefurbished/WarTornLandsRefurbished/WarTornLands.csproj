@@ -128,11 +128,11 @@
     <Compile Include="Infrastructure\Systems\InputSystem\DirectionInput.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\InputKey.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\Key.cs" />
+    <Compile Include="Infrastructure\Systems\Pool.cs" />
     <Compile Include="Infrastructure\Systems\SkyLight\BlendStates.cs" />
     <Compile Include="Infrastructure\Systems\SkyLight\Lightmanager.cs" />
     <Compile Include="PlayerClasses\Inventory.cs" />
     <Compile Include="PlayerClasses\Items\Item.cs" />
-    <Compile Include="PlayerClasses\Items\SmallKey.cs" />
     <Compile Include="PlayerClasses\_Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

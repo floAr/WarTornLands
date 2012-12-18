@@ -48,7 +48,6 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
         bool  debugFirstPush=true;
         void NewGame(object sender, EventArgs e)
         {
-        //    if (debugFirstPush)
             {
                 Game1.Instance.PushState(RunningGameState.Instance);
                 debugFirstPush = false;
@@ -66,6 +65,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             Game1.Instance.SpriteBatch.Begin();
             Game1.Instance.SpriteBatch.DrawString(Game1.Instance.Content.Load<SpriteFont>("font/DialogFont"), "MAINMENUE\n\nPress {Enter} to start new Game or {ESC} to exit", new Vector2(50, 150), Color.CadetBlue);
             Game1.Instance.SpriteBatch.End();
+           
         }
     }
 }
