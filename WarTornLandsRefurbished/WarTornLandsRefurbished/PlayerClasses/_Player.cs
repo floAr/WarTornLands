@@ -15,6 +15,7 @@ using WarTornLands.Entities.Modules.Die;
 using WarTornLands.Entities.Modules.Collide;
 using WarTornLands.Entities.Modules.Hit;
 using WarTornLands.PlayerClasses.Items;
+using WarTornLands.Infrastructure.Systems.DrawSystem;
 
 namespace WarTornLands.PlayerClasses
 {

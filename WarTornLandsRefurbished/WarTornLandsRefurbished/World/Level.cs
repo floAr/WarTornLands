@@ -21,10 +21,11 @@ using WarTornLands.Infrastructure.Systems.SkyLight;
 using WarTornLandsRefurbished.Entities.Modules.Think;
 using WarTornLands.PlayerClasses.Items;
 using WarTornLands.Entities.Modules.Hit;
+using WarTornLands.Infrastructure.Systems.DrawSystem;
 
 namespace WarTornLands.World
 {
-    public class Level
+    public class Level:IDrawProvider
     {
         private Dictionary<string, Area> _areas;
         private Game _game;
@@ -214,7 +215,7 @@ namespace WarTornLands.World
             torch.AddModule(new DualDraw(torchlight, pSystem));
             //       torch.AddModule(pSystem);
             layer3.AddEntity(torch);
-            Lightmanager.AddLight(torch);
+            Lightmanager.Instance.AddLight(torch);
             //endtorch
 
             AddArea("Entenhausen", area1);
@@ -432,7 +433,6 @@ namespace WarTornLands.World
                 points.Add(Game1.Instance.Player.Position);
                 points.Add(new Vector2(574, 500));
                 points.Add(new Vector2(574, 500));
-                points.Add(Game1.Instance.Player.Position);
                 Game1.Instance.Camera.PlayCinematic(points);
             })));
             doorConList.Add(doorCon);
@@ -455,7 +455,6 @@ namespace WarTornLands.World
                 points.Add(Game1.Instance.Player.Position);
                 points.Add(new Vector2(994, 1099));
                 points.Add(new Vector2(994, 1099));
-                points.Add(Game1.Instance.Player.Position);
                 Game1.Instance.Camera.PlayCinematic(points);
             })));
             doorConList.Add(doorCon);
@@ -512,7 +511,6 @@ namespace WarTornLands.World
 
             crazyDude.AddModule(new Dialog(cons, crazyDude));
             entityLayer.AddEntity(crazyDude);
-
             cavernsArea.AddLayer(entityLayer);
 
             // Boss
@@ -544,7 +542,7 @@ namespace WarTornLands.World
                 light.IsLight = true;
                 Entity newTorch = new Entity(new Vector2(24, 27) * Constants.TileSize + new Vector2(100 * i, 0), "torchi");
                 newTorch.AddModule(new DualDraw(body, light));
-                Lightmanager.AddLight(newTorch);
+                Lightmanager.Instance.AddLight(newTorch);
                 entityLayer.AddEntity(newTorch);
             }
 
@@ -579,9 +577,9 @@ namespace WarTornLands.World
             torch2.AddModule(new DualDraw(torchlight, pSystem));
             //       torch.AddModule(pSystem);
             entityLayer.AddEntity(torch);
-            Lightmanager.AddLight(torch);
+            Lightmanager.Instance.AddLight(torch);
             entityLayer.AddEntity(torch2);
-            Lightmanager.AddLight(torch2);
+            Lightmanager.Instance.AddLight(torch2);
             //endtorch
             //fungus
             StaticDrawer fungusS = new StaticDrawer();
@@ -606,7 +604,7 @@ namespace WarTornLands.World
                 fungusGlow.IsLight = true;
                 fungus.AddModule(new DualDraw(fungusS, fungusGlow));
                 entityLayer.AddEntity(fungus);
-                Lightmanager.AddLight(fungus);
+                Lightmanager.Instance.AddLight(fungus);
             }
 
        
@@ -642,10 +640,32 @@ namespace WarTornLands.World
                 a.Update(gameTime);
         }
 
-        internal void Draw(GameTime gameTime)
+        ////////////////////////////////
+        // TODO implement methods to get
+        // * low tile layers
+        // * high tile layers
+        // * low entities
+        // * middle entities
+        // * high entities
+        // for the gamestate to draw in any order, to distinct render targets, with effects etc.
+        /*internal void GetMiddleEntities(GameTime gameTime)
+        {
+            List<Entity> ents = new List<Entity>();
+            foreach (Area a in _areas.Values)
+                ents.AddRange(a.GetAllEntities());
+            ents.Add(Game1.Instance.Player);
+            ents.Sort();
+
+            foreach (Entity e in ents)
+                e.Draw(gameTime);
+        }*/
+
+        public void Draw(GameTime gameTime)
         {
             foreach (Area a in _areas.Values)
                 a.Draw(gameTime);
+
+            Game1.Instance.Player.Draw(gameTime);
         }
     }
 }

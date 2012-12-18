@@ -71,7 +71,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             daylight.Add(new Color(25, 25, 80));
             daylight.Add(new Color(40, 30, 80));
 
-            Lightmanager.SetDayCycle(daylight, 18000);
+            Lightmanager.Instance.SetDayCycle(daylight, 18000);
 
             weaponMarker = Game1.Instance.Content.Load<Texture2D>("sprite/weapontest");
 
@@ -85,7 +85,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
         void OpenInventory(object sender, EventArgs e)
         {
-            Game1.Instance.PushState(new InventoryState(_BackBuffer.LastFrame));
+            Game1.Instance.PushState(new InventoryState(_drawManager.LastFrame));
         }
 
         public override void Pause()
@@ -102,48 +102,77 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
         {
             Game1.Instance.Level.Update(gameTime);
             Game1.Instance.Player.Update(gameTime);
+            _drawManager.Update(gameTime);
         }
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            Game1.Instance.GraphicsDevice.Clear(Color.CornflowerBlue);
+          
+             Game1.Instance.GraphicsDevice.Clear(Color.CornflowerBlue);
+             Game1.Instance.DrawingLights = true;
+             _drawManager.BeginBake(gameTime, SpriteSortMode.Deferred, CustomBlendState.Add);
+             _drawManager.BakeFill(new Color(150, 150, 150));
+             _drawManager.Bake(Lightmanager.Instance);
+             RenderTarget2D lights = _drawManager.EndBake();
 
-            Game1.Instance.DrawingLights = true;
-            // Set the render target
-            Game1.Instance.GraphicsDevice.SetRenderTarget(_BackBuffer.SourceMap);
+             _drawManager.BeginBake(gameTime, SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);
+             _drawManager.BakeFill(Color.White);
+             _drawManager.Bake(lights);
+             RenderTarget2D inverseLights = _drawManager.EndBake();
+           
+            Game1.Instance.DrawingLights=false;
 
-            Game1.Instance.GraphicsDevice.Clear(new Color(150, 150, 150)); //Set the Background of the SourceMap to Black (Important!)
+            _drawManager.BeginBake(gameTime);
+            _drawManager.Bake(Game1.Instance.Level);
+            _drawManager.Bake(Game1.Instance.Player);
+            RenderTarget2D main = _drawManager.EndBake();
 
-            Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.Add);
-            Lightmanager.Draw(gameTime);
-            Game1.Instance.SpriteBatch.End();
+            _drawManager.BeginBake(gameTime,main, SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);
+            _drawManager.Bake(inverseLights);
+            RenderTarget2D full = _drawManager.EndBake();
+            _drawManager.Draw(full, gameTime);
+           
+             #region old
+            /*
+             // Set the render target
+             Game1.Instance.GraphicsDevice.SetRenderTarget(_BackBuffer.SourceMap);
 
-            Game1.Instance.GraphicsDevice.SetRenderTarget(_BackBuffer.LowerLightMap); //Activate the LightMap-BackBuffer
-            Game1.Instance.GraphicsDevice.Clear(Color.White); //Set the Background of the LightMap
-            Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract); //The SoureMap as to be reverse substracted to the BackBuffer to invert the color values
-            Game1.Instance.SpriteBatch.Draw(_BackBuffer.SourceMap, new Vector2(0, 0), Color.White); //'Merge the SourceMap to the BackBuffer
-            Game1.Instance.SpriteBatch.End();
+             Game1.Instance.GraphicsDevice.Clear(new Color(150, 150, 150)); //Set the Background of the SourceMap to Black (Important!)
 
-            Game1.Instance.DrawingLights = false;
-            //set back normal target and draw game
-            Game1.Instance.GraphicsDevice.SetRenderTarget(_BackBuffer.LastFrame);
-            Game1.Instance.SpriteBatch.Begin();
-            Game1.Instance.Level.Draw(gameTime);
-            Game1.Instance.Player.Draw(gameTime);
-            //   Game1.Instance.SpriteBatch.DrawString(Content.Load<SpriteFont>("Test"), Player.Position.ToString(), Vector2.Zero, Color.White);
-            Game1.Instance.SpriteBatch.End();
+             Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.Add);
+             Lightmanager.Instance.Draw(gameTime);
+             Game1.Instance.SpriteBatch.End();
+            
+             Game1.Instance.GraphicsDevice.SetRenderTarget(_BackBuffer.LowerLightMap); //Activate the LightMap-BackBuffer
+             Game1.Instance.GraphicsDevice.Clear(Color.White); //Set the Background of the LightMap
+             Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract); //The SoureMap as to be reverse substracted to the BackBuffer to invert the color values
+             Game1.Instance.SpriteBatch.Draw(_BackBuffer.SourceMap, new Vector2(0, 0), Color.White); //'Merge the SourceMap to the BackBuffer
+             Game1.Instance.SpriteBatch.End();
+            
+             Game1.Instance.DrawingLights = false;
+             //set back normal target and draw game
+             Game1.Instance.GraphicsDevice.SetRenderTarget(_BackBuffer.LastFrame);
+             Game1.Instance.SpriteBatch.Begin();
+             Game1.Instance.Level.Draw(gameTime);
+             Game1.Instance.Player.Draw(gameTime);
+             //   Game1.Instance.SpriteBatch.DrawString(Content.Load<SpriteFont>("Test"), Player.Position.ToString(), Vector2.Zero, Color.White);
+             Game1.Instance.SpriteBatch.End();
 
 
-            //add lights
-            Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);
-            Game1.Instance.SpriteBatch.Draw(_BackBuffer.LowerLightMap, new Vector2(0, 0), new Color(255, 255, 255, 255));
-            Game1.Instance.SpriteBatch.End();
+             //add lights
+             Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);
+             Game1.Instance.SpriteBatch.Draw(_BackBuffer.LowerLightMap, new Vector2(0, 0), new Color(255, 255, 255, 255));
+             Game1.Instance.SpriteBatch.End();
 
 
-            Game1.Instance.GraphicsDevice.SetRenderTarget(null);
-            Game1.Instance.SpriteBatch.Begin();
-            Game1.Instance.SpriteBatch.Draw(_BackBuffer.LastFrame, Vector2.Zero, Color.White);
-            Game1.Instance.SpriteBatch.End();
+             Game1.Instance.GraphicsDevice.SetRenderTarget(null);
+             Game1.Instance.SpriteBatch.Begin();
+             Game1.Instance.SpriteBatch.Draw(_BackBuffer.LastFrame, Vector2.Zero, Color.White);
+             Game1.Instance.SpriteBatch.End();
+ //*/
+            #endregion
+          
+
 
 
             if (Game1.Instance.Player.ToBeRemoved)

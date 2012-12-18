@@ -105,5 +105,18 @@ namespace WarTornLands.World
                 layer.Draw(gameTime);
             }
         }
+
+        internal List<Entity> GetAllEntities()
+        {
+            List<Entity> result = new List<Entity>();
+            foreach (Layer layer in _layers)
+            {
+                if (layer is EntityLayer)
+                {
+                    result.AddRange((layer as EntityLayer).GetAllEntities());
+                }
+            }
+            return result;
+        }
     }
 }
