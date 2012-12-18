@@ -129,6 +129,7 @@
     <Compile Include="Infrastructure\Systems\InputSystem\DirectionInput.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\InputKey.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\Key.cs" />
+    <Compile Include="Infrastructure\Systems\Pool.cs" />
     <Compile Include="Infrastructure\Systems\SkyLight\BlendStates.cs" />
     <Compile Include="Infrastructure\Systems\SkyLight\Lightmanager.cs" />
     <Compile Include="Infrastructure\XMLParser.cs" />
