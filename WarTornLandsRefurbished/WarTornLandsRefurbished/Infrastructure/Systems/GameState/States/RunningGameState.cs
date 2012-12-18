@@ -85,7 +85,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
         void OpenInventory(object sender, EventArgs e)
         {
-            Game1.Instance.PushState(new InventoryState(_BackBuffer.LastFrame));
+            Game1.Instance.PushState(new InventoryState(_drawManager.LastFrame));
         }
 
         public override void Pause()

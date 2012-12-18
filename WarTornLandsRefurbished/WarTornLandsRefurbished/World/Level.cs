@@ -660,7 +660,7 @@ namespace WarTornLands.World
                 e.Draw(gameTime);
         }*/
 
-        internal void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             foreach (Area a in _areas.Values)
                 a.Draw(gameTime);

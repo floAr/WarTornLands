@@ -14,7 +14,20 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
         private GameTime _gameTime;
         private int _state = 0;
 
-        RenderTarget2D _temp;
+        private RenderTarget2D _temp;
+
+        private Effect _defaultEffect;
+
+       private RenderTarget2D _lastFrame;
+       public RenderTarget2D LastFrame { get { return _lastFrame; } }
+
+       SpriteSortMode _choosenSortMode;
+
+        public DrawManager()
+        {
+           _defaultEffect= Game1.Instance.Content.Load<Effect>("effect/reset");
+           _lastFrame = createRT();
+        }
 
         public void BeginBake(GameTime gameTime, SpriteSortMode customSortMode = SpriteSortMode.Deferred, BlendState customBlendState = null)
         {
@@ -22,6 +35,7 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             _temp = createRT();
             Game1.Instance.GraphicsDevice.SetRenderTarget(_temp);
             _state = 1;
+            _choosenSortMode = customSortMode;
             if (customBlendState == null)
                 Game1.Instance.SpriteBatch.Begin(customSortMode, BlendState.AlphaBlend);
             else
@@ -45,6 +59,24 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
                 if (_state == 0)
                     throw new Exception("BeginBake must be called before BakeFill");
             Game1.Instance.GraphicsDevice.Clear(c);
+        }
+
+        public void BakeBeginEffect(Effect effect)
+        {
+            if (_state != 1)
+                if (_state == 0)
+                    throw new Exception("BeginBake must be called before BakeBeginEffect");
+            if (_choosenSortMode != SpriteSortMode.Immediate)
+                throw new Exception("When using Effect stick to SpriteSortMode.Immediate.\nEffects won´t affect Sprite when deferred drawing is used");
+            effect.CurrentTechnique.Passes[0].Apply();
+        }
+
+        public void BakeEndEffect()
+        {
+            if (_state != 1)
+                if (_state == 0)
+                    throw new Exception("BeginBake must be called before BakeBeginEffect");
+            _defaultEffect.CurrentTechnique.Passes[0].Apply();
         }
 
         public void Bake(RenderTarget2D drawProvider)
@@ -83,7 +115,7 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
 
 
         #region craaaaap
-
+        /*
         public RenderTarget2D B(RenderTarget2D plate, RenderTarget2D bake, bool bakeFlag, BlendState customBlendState = null)
         {
             Game1.Instance.GraphicsDevice.SetRenderTarget(plate);
@@ -151,6 +183,7 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             Game1.Instance.GraphicsDevice.Clear(fill);
             return target;
         }
+        //*/
         #endregion
 
         private RenderTarget2D createRT()
@@ -165,6 +198,7 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             this._gameTime = gameTime;
             if (_gameTime == null)
                 return;
+            _lastFrame = source;
             Game1.Instance.GraphicsDevice.SetRenderTarget(null);
             Game1.Instance.SpriteBatch.Begin();
             Game1.Instance.SpriteBatch.Draw(source, Vector2.Zero, Color.White);
