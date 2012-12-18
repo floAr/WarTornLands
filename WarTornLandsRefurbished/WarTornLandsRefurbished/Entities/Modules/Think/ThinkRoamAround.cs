@@ -35,6 +35,7 @@ namespace WarTornLands.Entities.Modules.Think
 
         private GoToPosition _goTo;
         private SwingHitAbility _swing;
+        private ShooterAbility _shooter;
         private JumpAbility _jump;
 
         private Vector2 _anchor;
@@ -48,6 +49,7 @@ namespace WarTornLands.Entities.Modules.Think
         {
             _goTo = new GoToPosition(.5f);
             _swing = new SwingHitAbility(1500, 0f, attackRange, damage);
+            _shooter = new ShooterAbility();
             _jump = new JumpAbility();
             _rand = new Random();
             _anchor = anchor;
@@ -69,6 +71,7 @@ namespace WarTornLands.Entities.Modules.Think
             _goTo.SetOwner(owner);
             _swing.SetOwner(owner);
             _jump.SetOwner(owner);
+            _shooter.SetOwner(owner);
         }
 
         public void Update(GameTime gameTime)
@@ -76,6 +79,10 @@ namespace WarTornLands.Entities.Modules.Think
             _goTo.Update(gameTime);
             _swing.Update(gameTime);
             _jump.Update(gameTime);
+
+            // TODO fix shooter :)
+            _shooter.TryExecute();
+            _shooter.Update(gameTime);
 
             CheckForTarget();
 

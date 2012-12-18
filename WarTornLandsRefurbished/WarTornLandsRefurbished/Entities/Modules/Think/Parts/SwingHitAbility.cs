@@ -194,7 +194,8 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         private void OnBang(object sender, BangEventArgs e)
         {
             // Unlock owner direction after hit
-            _owner.FaceLock = false;
+            if (e.ID.Equals(_cSwingHit))
+                _owner.FaceLock = false;
         }
 
         #endregion

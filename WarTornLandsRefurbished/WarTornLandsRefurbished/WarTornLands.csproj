@@ -93,6 +93,7 @@
     <Compile Include="Entities\Modules\Think\Parts\GoToPosition.cs" />
     <Compile Include="Entities\Modules\Think\Parts\InteractAbility.cs" />
     <Compile Include="Entities\Modules\Think\Parts\JumpAbility.cs" />
+    <Compile Include="Entities\Modules\Think\Parts\ShooterAbility.cs" />
     <Compile Include="Entities\Modules\Think\Parts\SwingHitAbility.cs" />
     <Compile Include="Entities\Modules\Think\Parts\_BaseAbility.cs" />
     <Compile Include="Entities\Modules\Think\ThinkInputGuided.cs" />

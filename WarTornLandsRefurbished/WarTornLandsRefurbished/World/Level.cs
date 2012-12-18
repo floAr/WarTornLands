@@ -22,17 +22,21 @@ using WarTornLands.Infrastructure.Systems.DrawSystem;
 
 namespace WarTornLands.World
 {
-    public class Level:IDrawProvider
+    public class Level : IDrawProvider
     {
         private Dictionary<string, Area> _areas;
         private Game _game;
         public List<DataSet> EntityTypeData { get; set; }
 
+        public List<Entity> AreaIndependentEntities;
+
+
         private Random r = new Random();
-        public Level(Game game)
+        public Level()
         {
+            AreaIndependentEntities = new List<Entity>();
+            AreaIndependentEntities.Add(Game1.Instance.Player);
             _areas = new Dictionary<string, Area>();
-            _game = game;
         }
 
         public bool AddArea(string name, Area area)
@@ -653,6 +657,9 @@ namespace WarTornLands.World
         {
             foreach (Area a in _areas.Values)
                 a.Draw(gameTime);
+
+            foreach (Entity e in AreaIndependentEntities)
+                e.Draw(gameTime);
         }
     }
 }

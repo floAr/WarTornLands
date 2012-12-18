@@ -32,7 +32,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
         {
 
 
-            Game1.Instance.Level = new Level(Game1.Instance);
+            Game1.Instance.Level = new Level();
             //Level.LoadTestLevel();
             //Game1.Instance.Level.LoadChristmasCaverns();
             XMLParser.Instance.ReadWorld();
