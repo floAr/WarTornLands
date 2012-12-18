@@ -22,13 +22,20 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
        public RenderTarget2D LastFrame { get { return _lastFrame; } }
 
        SpriteSortMode _choosenSortMode;
-
+        /// <summary>
+        /// Manager who handles all the drawing and effect applying.
+        /// </summary>
         public DrawManager()
         {
            _defaultEffect= Game1.Instance.Content.Load<Effect>("effect/reset");
            _lastFrame = createRT();
         }
-
+        /// <summary>
+        /// Starts the bake process and prepares a fresh <c>RenderTarget2D</c>.
+        /// </summary>
+        /// <param name="gameTime">Time since last update</param>
+        /// <param name="customSortMode">If needed specify <c>SpriteSortMode</c> for this bake process</param>
+        /// <param name="customBlendState">If needed specify <c>BlendState</c> for this bake process</param>
         public void BeginBake(GameTime gameTime, SpriteSortMode customSortMode = SpriteSortMode.Deferred, BlendState customBlendState = null)
         {
             _gameTime = gameTime;
@@ -41,6 +48,13 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             else
                 Game1.Instance.SpriteBatch.Begin(customSortMode, customBlendState);
         }
+        /// <summary>
+        /// Starts the bake process and uses a predefined <c>RenderTarget2D</c>.
+        /// </summary>
+        /// <param name="gameTime">Time since last update</param>
+        /// <param name="plate">The <c>RenderTarget2D</c> which is used to bake on</param>
+        /// <param name="customSortMode">If needed specify <c>SpriteSortMode</c> for this bake process</param>
+        /// <param name="customBlendState">If needed specify <c>BlendState</c> for this bake process</param>
         public void BeginBake(GameTime gameTime,RenderTarget2D plate, SpriteSortMode customSortMode = SpriteSortMode.Deferred, BlendState customBlendState = null)
         {
             _gameTime = gameTime;
@@ -53,6 +67,10 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
                 Game1.Instance.SpriteBatch.Begin(customSortMode, customBlendState);
         }
 
+        /// <summary>
+        /// Fills the whole current <c>RenderTarget2D</c> with one color.
+        /// </summary>
+        /// <param name="c">Color to apply on the whole <c>RenderTarget2D</c></param>
         public void BakeFill(Color c)
         {
             if (_state != 1)
@@ -61,6 +79,13 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             Game1.Instance.GraphicsDevice.Clear(c);
         }
 
+        /// <summary>
+        /// Starts the excecution of a <c>Effect</c>.\n
+        /// Note that SpriteSortMode MUST be 'Immediate'.
+        /// </summary>
+        /// <param name="effect">Effect to be startet</param>
+        /// <exception cref="System.Exception">BeginBake must be called before BakeBeginEffect</exception>
+        /// <exception cref="System.Exception">When using Effect stick to SpriteSortMode.Immediate.\nEffects won´t affect Sprite when deferred drawing is used</exception>
         public void BakeBeginEffect(Effect effect)
         {
             if (_state != 1)
@@ -71,6 +96,10 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             effect.CurrentTechnique.Passes[0].Apply();
         }
 
+        /// <summary>
+        /// Removes an applied effect from the bake process.
+        /// </summary>
+        /// <exception cref="System.Exception">BeginBake must be called before BakeBeginEffect</exception>
         public void BakeEndEffect()
         {
             if (_state != 1)
@@ -79,6 +108,11 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             _defaultEffect.CurrentTechnique.Passes[0].Apply();
         }
 
+        /// <summary>
+        /// Bakes the specified <c>RenderTarget2D</c>.
+        /// </summary>
+        /// <param name="drawProvider">The RenderTarget to draw.</param>
+        /// <exception cref="System.Exception">BeginBake must be called before Bake</exception>
         public void Bake(RenderTarget2D drawProvider)
         {
             if (_state != 1)
@@ -87,6 +121,11 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             Game1.Instance.SpriteBatch.Draw(drawProvider, Vector2.Zero, Color.White);
         }
 
+        /// <summary>
+        /// Bakes the specified <c>IDrawProvider</c> by calling its Draw(GameTime).
+        /// </summary>
+        /// <param name="drawProvider">The draw provider implementing Draw(GameTime).</param>
+        /// <exception cref="System.Exception">BeginBake must be called before Bake</exception>
         public void Bake(IDrawProvider drawProvider)
         {
             if (_state != 1)
@@ -95,6 +134,11 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             drawProvider.Draw(_gameTime);
         }
 
+        /// <summary>
+        /// Bakes all of the specified <c>IDrawProvider</c>s by calling their Draw(GameTime).
+        /// </summary>
+        /// <param name="drawProviders">Array containing all the <c>IDrawProvider</c>s</param>
+        /// <exception cref="System.Exception">BeginBake must be called before Bake</exception>
         public void Bake(IDrawProvider[] drawProviders)
         {
             if (_state != 1)
@@ -104,6 +148,11 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             drawProviders[i].Draw(_gameTime);
         }
 
+        /// <summary>
+        /// Ends the baking process and return the well done <c>RenderTarget2D</c>.
+        /// </summary>
+        /// <returns>The finished <c>RenderTarget2D</c></returns>
+        /// <exception cref="System.Exception">BeginBake must be called before EndBake</exception>
         public RenderTarget2D EndBake()
         {
             if (_state != 1)
@@ -114,84 +163,21 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
         }
 
 
-        #region craaaaap
-        /*
-        public RenderTarget2D B(RenderTarget2D plate, RenderTarget2D bake, bool bakeFlag, BlendState customBlendState = null)
-        {
-            Game1.Instance.GraphicsDevice.SetRenderTarget(plate);
-            if (customBlendState == null)
-                Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            else
-                Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, customBlendState);
-            Game1.Instance.SpriteBatch.Draw(bake, Vector2.Zero, Color.White);
-            Game1.Instance.SpriteBatch.End();
-            Game1.Instance.GraphicsDevice.SetRenderTarget(null);
-            return plate;
-        }
-        public RenderTarget2D B(RenderTarget2D source, Effect effect, BlendState customBlendState = null)
-        {
-            RenderTarget2D target = createRT();
-            Game1.Instance.GraphicsDevice.SetRenderTarget(target);
-            Game1.Instance.GraphicsDevice.Clear(Color.Transparent);
-            //Game1.Instance.SpriteBatch.Begin();
-            if (customBlendState == null)
-                Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            else
-                Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, customBlendState);
-            effect.CurrentTechnique.Passes[0].Apply();
-            Game1.Instance.SpriteBatch.Draw(source, Vector2.Zero, Color.White);
-            Game1.Instance.SpriteBatch.End();
-            Game1.Instance.GraphicsDevice.SetRenderTarget(null);
-            return target;
-        }
-
-        public RenderTarget2D B(RenderTarget2D upper, RenderTarget2D lower, BlendState customBlendState = null)
-        {
-            RenderTarget2D target = createRT();
-            Game1.Instance.GraphicsDevice.SetRenderTarget(target);
-            Game1.Instance.GraphicsDevice.Clear(Color.Transparent);
-            if (customBlendState == null)
-                Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            else
-                Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, customBlendState);
-            Game1.Instance.SpriteBatch.Draw(lower, Vector2.Zero, Color.White);
-            Game1.Instance.SpriteBatch.Draw(upper, Vector2.Zero, Color.White);
-            Game1.Instance.SpriteBatch.End();
-            Game1.Instance.GraphicsDevice.SetRenderTarget(null);
-            return target;
-        }
-
-        public RenderTarget2D B(IDrawProvider source, BlendState customBlendState = null)
-        {
-            RenderTarget2D target = createRT();
-            Game1.Instance.GraphicsDevice.SetRenderTarget(target);
-            Game1.Instance.GraphicsDevice.Clear(Color.Transparent);
-            if (customBlendState == null)
-                Game1.Instance.SpriteBatch.Begin();
-            else
-                Game1.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, customBlendState);
-            source.Draw(_gameTime);
-            Game1.Instance.SpriteBatch.End();
-            Game1.Instance.GraphicsDevice.SetRenderTarget(null);
-            return target;
-        }
-
-        public RenderTarget2D B(Color fill)
-        {
-            RenderTarget2D target = createRT();
-            Game1.Instance.GraphicsDevice.SetRenderTarget(target);
-            Game1.Instance.GraphicsDevice.Clear(fill);
-            return target;
-        }
-        //*/
-        #endregion
-
+        /// <summary>
+        /// Creates a new <c>RenderTarget2D</c>.
+        /// </summary>
+        /// <returns>New <c>RenderTarget2D</c>.</returns>
         private RenderTarget2D createRT()
         {
 
             return new RenderTarget2D(Game1.Instance.GraphicsDevice, Game1.Instance.GraphicsDevice.Viewport.Width, Game1.Instance.GraphicsDevice.Viewport.Height, false, Game1.Instance.GraphicsDevice.DisplayMode.Format, DepthFormat.Depth24);
         }
 
+        /// <summary>
+        /// Draws the specified <c>RenderTarget2D</c>.
+        /// </summary>
+        /// <param name="source">The <c>RenderTarget2D</c> to put on the screen.</param>
+        /// <param name="gameTime">The game time since last Update.</param>
         public void Draw(RenderTarget2D source, GameTime gameTime)
         {
 
