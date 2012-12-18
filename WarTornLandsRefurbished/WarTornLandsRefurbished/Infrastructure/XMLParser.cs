@@ -108,7 +108,7 @@ namespace WarTornLands.Infrastructure
             } catch { errors.Add ("BaseHeight"); }
             #endregion
 
-            Entity ent = new Entity(Game1.Instance, Vector2.Zero, name);
+            Entity ent = new Entity(Vector2.Zero, name);
 
             #region Read Modules
 

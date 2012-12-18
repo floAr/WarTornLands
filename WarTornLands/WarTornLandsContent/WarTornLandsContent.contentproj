@@ -195,8 +195,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="effect\test.fx">
-      <Name>test</Name>
+    <Compile Include="effect\desaturateAndBlur.fx">
+      <Name>desaturateAndBlur</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>
@@ -206,6 +206,13 @@
       <Name>shadow</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="effect\reset.fx">
+      <Name>reset</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -26,7 +26,7 @@ namespace WarTornLands.PlayerClasses.Items
          * sonstiges
          * 501 - 600
          */
-
+         
         // Restore a fixed number of health points. TODO specify number
         Potion = 0,
 
@@ -49,7 +49,8 @@ namespace WarTornLands.PlayerClasses.Items
 
     public class Item
     {
-        public string Name { get; private set; }
+        public string Name { get; protected set; }
+
         private ItemTypes _itemType;
 
         public ItemTypes ItemType

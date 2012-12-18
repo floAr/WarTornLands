@@ -18,10 +18,11 @@ using WarTornLands.Entities.Modules.Think;
 using WarTornLands.PlayerClasses.Items;
 using WarTornLands.Entities.Modules.Hit;
 using System.Data;
+using WarTornLands.Infrastructure.Systems.DrawSystem;
 
 namespace WarTornLands.World
 {
-    public class Level
+    public class Level:IDrawProvider
     {
         private Dictionary<string, Area> _areas;
         private Game _game;
@@ -648,7 +649,7 @@ namespace WarTornLands.World
                 a.Update(gameTime);
         }
 
-        internal void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             foreach (Area a in _areas.Values)
                 a.Draw(gameTime);

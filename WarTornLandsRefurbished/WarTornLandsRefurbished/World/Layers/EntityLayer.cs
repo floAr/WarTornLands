@@ -155,7 +155,10 @@ namespace WarTornLands.World.Layers
             }
         }
 
-
+        internal List<Entity> GetAllEntities()
+        {
+            return _entities;
+        }
     }
 }
 

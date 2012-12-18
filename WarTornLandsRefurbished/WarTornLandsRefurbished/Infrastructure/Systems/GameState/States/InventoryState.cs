@@ -51,12 +51,13 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            /*base.Draw(gameTime);
-            //Own Draw logic here
-            Game1.Instance.SpriteBatch.Begin();
-              Game1.Instance.SpriteBatch.Draw(_background, Vector2.Zero, Color.Tomato);
-            Game1.Instance.SpriteBatch.End();/**/
-            _drawManager.Draw(_drawManager.B(_drawManager.B(Game1.Instance.Player.Inventory),_drawManager.B( _background,Game1.Instance.Content.Load<Effect>("effect/test"))), gameTime);
+            _drawManager.BeginBake(gameTime,SpriteSortMode.Immediate);
+            _drawManager.BakeBeginEffect(Game1.Instance.Content.Load<Effect>("effect/desaturateAndBlur"));
+            _drawManager.Bake(_background);
+            _drawManager.BakeEndEffect();
+            _drawManager.Bake(Game1.Instance.Player.Inventory);
+            RenderTarget2D result = _drawManager.EndBake();
+            _drawManager.Draw(result,gameTime);
         }
     }
 }
