@@ -75,7 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DEBUG\CuteFrametimeCounterComponent.cs" />
-    <Compile Include="DEBUG\FrametimeCounterComponent.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Modules\BaseModule.cs" />
     <Compile Include="Entities\Modules\Collide\Obstacle.cs" />
