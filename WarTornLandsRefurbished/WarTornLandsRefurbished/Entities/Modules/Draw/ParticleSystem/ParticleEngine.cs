@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using WarTornLands.Infrastructure.Systems;
 
 namespace WarTornLands.Entities.Modules.Draw.ParticleSystem
 {
@@ -51,6 +52,7 @@ namespace WarTornLands.Entities.Modules.Draw.ParticleSystem
     }
     public class ParticleSystem : BaseModule, IDrawExecuter
     {
+        private Pool<Particle> _particlePool;
         private EmitterSetting _setting;
         private Random _random = new Random();
         private List<Particle> _particles;
@@ -65,6 +67,8 @@ namespace WarTornLands.Entities.Modules.Draw.ParticleSystem
             this._particles = new List<Particle>();
             _setting = setting;
             _random = new Random();
+            _particlePool = new Pool<Particle>(GenerateNewParticle);
+
         }
 
         private Particle GenerateNewParticle()
@@ -100,12 +104,16 @@ namespace WarTornLands.Entities.Modules.Draw.ParticleSystem
             {
                 _particles[i].Update(gameTime);
                 if (_particles[i].TTL <= 0)
+                {
+                    _particlePool.GiveBackObject(_particles[i]);
                     _particles.RemoveAt(i);
+
+                }
             }
 
             for (int i = _particles.Count; i < _setting.MaxParticles.ValueInRange; i++)
             {
-                _particles.Add(GenerateNewParticle());
+                _particles.Add(_particlePool.AllocateObject());
             }
         }
 

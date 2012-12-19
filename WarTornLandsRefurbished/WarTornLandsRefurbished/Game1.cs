@@ -14,6 +14,9 @@ using WarTornLands.PlayerClasses;
 using WarTornLands.World;
 using WarTornLands.Infrastructure.Systems.GameState;
 using WarTornLands.Infrastructure.Systems.GameState.States;
+#if DEBUG
+using WarTornLands.DEBUG;
+#endif
 
 namespace WarTornLands
 {
@@ -96,6 +99,10 @@ namespace WarTornLands
             Interface = new Interface();
             this.Components.Add(Interface);
 
+#if DEBUG
+            this.Components.Add(new CuteFrametimeCounterComponent(this,true,false));
+#endif
+
             //InputManager.Instance.KQuit.Pressed += new EventHandler(OnQuit);
 
             base.Initialize();
@@ -131,21 +138,11 @@ namespace WarTornLands
             {
                 _camera.BreakCinematic();
 
-            }
-              
+            }              
             if (Player.ToBeRemoved)
             {
                 FreezeGame();
             }
-
-
-
-            // Ermöglicht ein Beenden des Spiels
-      //      if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-        //        this.Exit();
-
-
-
             _states.Peek().Update(gameTime);
      
             base.Update(gameTime);

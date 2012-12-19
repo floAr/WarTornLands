@@ -10,12 +10,13 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
 {
     public class DrawManager
     {
-        //    private Stack<RenderTarget2D> _chain;
+        
+
         private GameTime _gameTime;
         private int _state = 0;
 
         private RenderTarget2D _temp;
-
+        private Pool<RenderTarget2D> _targetPool;
         private Effect _defaultEffect;
 
        private RenderTarget2D _lastFrame;
@@ -28,7 +29,8 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
         public DrawManager()
         {
            _defaultEffect= Game1.Instance.Content.Load<Effect>("effect/reset");
-           _lastFrame = createRT();
+           _targetPool = new Pool<RenderTarget2D>(createRT);
+          _lastFrame= _targetPool.AllocateObject();
         }
         /// <summary>
         /// Starts the bake process and prepares a fresh <c>RenderTarget2D</c>.
@@ -39,7 +41,7 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
         public void BeginBake(GameTime gameTime, SpriteSortMode customSortMode = SpriteSortMode.Deferred, BlendState customBlendState = null)
         {
             _gameTime = gameTime;
-            _temp = createRT();
+            _temp = _targetPool.AllocateObject();
             Game1.Instance.GraphicsDevice.SetRenderTarget(_temp);
             _state = 1;
             _choosenSortMode = customSortMode;
@@ -180,7 +182,7 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
         /// <param name="gameTime">The game time since last Update.</param>
         public void Draw(RenderTarget2D source, GameTime gameTime)
         {
-
+            _targetPool.GiveBackObject(_temp);
             this._gameTime = gameTime;
             if (_gameTime == null)
                 return;
