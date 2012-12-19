@@ -54,9 +54,9 @@ namespace WarTornLands.DEBUG
         WeakReference GcDetectionReference;
         long TotalMemoryKB;
 
-        float RecentGarbageCollections;
+        Queue<DateTime> _recentCollects;
 
-        public CuteFrametimeCounterComponent(Game game, bool showFrametimeText,bool showIcons)
+        public CuteFrametimeCounterComponent(Game game, bool showFrametimeText, bool showIcons)
             : base(game)
         {
 
@@ -65,7 +65,7 @@ namespace WarTornLands.DEBUG
             FrametimeDisplayColor = Color.Green;
             FrametimeDangerDisplayColor = Color.Magenta;
             GcDetectionReference = new WeakReference(null);
-            RecentGarbageCollections = 0;
+            _recentCollects = new Queue<DateTime>();
             ShowFrametimeText = showFrametimeText;
             ShowIcons = showIcons;
         }
@@ -97,20 +97,20 @@ namespace WarTornLands.DEBUG
         {
             base.Update(gameTime);
         }
-
+        float deltaSeconds = 0;
         public override void Draw(GameTime gameTime)
         {
-            float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            deltaSeconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TimeSpan frameTime = FrametimeStopwatch.Elapsed;
             FrametimeStopwatch.Reset();
             FrametimeStopwatch.Start();
-
-            RecentGarbageCollections = MathHelper.Max(0.0f, RecentGarbageCollections - deltaSeconds * 0.1f);        //Subtract 1 RecentGC every 10 seconds
+            while (_recentCollects.Count > 0 && DateTime.Now.Subtract(_recentCollects.Peek()).Seconds >= 10)//Subtract 1 RecentGC every 10 seconds
+                _recentCollects.Dequeue();
             if (!GcDetectionReference.IsAlive)
             {
                 GcDetectionReference = new WeakReference(new Object());
                 TotalMemoryKB = GC.GetTotalMemory(false) / 1024;
-                RecentGarbageCollections += 1.0f;
+                _recentCollects.Enqueue(DateTime.Now);
             }
 
 
@@ -128,7 +128,7 @@ namespace WarTornLands.DEBUG
             {
                 FrametimeDisplayBatch.DrawString(FrametimeDisplayFont, "Frame Time: " + (ShowAveragedFrametime ? AveragedFrameTime : frameTime.TotalMilliseconds) + "ms", FrametimeDisplayPosition + Vector2.UnitY * (FrametimeDisplayFont.LineSpacing * displayItemCount++), DangerTimer > 0.0f ? FrametimeDangerDisplayColor : FrametimeDisplayColor);
                 FrametimeDisplayBatch.DrawString(FrametimeDisplayFont, "Total Memory: " + TotalMemoryKB + "KB", FrametimeDisplayPosition + Vector2.UnitY * (FrametimeDisplayFont.LineSpacing * displayItemCount++), FrametimeDisplayColor);
-                FrametimeDisplayBatch.DrawString(FrametimeDisplayFont, "Recent GCs: " + (int)RecentGarbageCollections, FrametimeDisplayPosition + Vector2.UnitY * (FrametimeDisplayFont.LineSpacing * displayItemCount++), FrametimeDisplayColor);
+                FrametimeDisplayBatch.DrawString(FrametimeDisplayFont, "Recent GCs: " + _recentCollects.Count, FrametimeDisplayPosition + Vector2.UnitY * (FrametimeDisplayFont.LineSpacing * displayItemCount++), FrametimeDisplayColor);
             }
             if (ShowIcons)
             {
@@ -138,7 +138,7 @@ namespace WarTornLands.DEBUG
 
                 int garbageX = 0;
                 int garbageY = 0;
-                for (int i = 0; i < (int)RecentGarbageCollections; ++i)
+                for (int i = 0; i < _recentCollects.Count; ++i)
                 {
                     DrawIcon(PerfIconType.GarbageBin, FrametimeDisplayPosition + Vector2.UnitX * PERF_ICON_WIDTH * garbageX + Vector2.UnitY * (FrametimeDisplayFont.LineSpacing * displayItemCount) + Vector2.UnitY * (FrametimeDisplayFont.LineSpacing * garbageY));
                     garbageX++;

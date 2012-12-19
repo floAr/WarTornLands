@@ -3,13 +3,8 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using WarTornLands.Entities;
-using WarTornLands.Entities.Modules.Die;
-using WarTornLands.Entities.Modules.Draw;
-using WarTornLands.Entities.Modules.Draw.ParticleSystem;
 using WarTornLands.Infrastructure;
 using WarTornLands.Infrastructure.Systems.Camera2D;
-using WarTornLands.Infrastructure.Systems.SkyLight;
 using WarTornLands.PlayerClasses;
 using WarTornLands.World;
 using WarTornLands.Infrastructure.Systems.GameState;
@@ -25,6 +20,9 @@ namespace WarTornLands
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+#if DEBUG
+        public static ScreenLogComponent GlobalLog;
+#endif
         GraphicsDeviceManager _graphics;
 
         public SpriteBatch SpriteBatch { get; private set; }
@@ -61,6 +59,10 @@ namespace WarTornLands
             }
         }
 
+        private Vector2 _clientBounds;
+        public Vector2 ClientBounds { get { return _clientBounds; } }
+        public Vector2 ClientBoundsHalf { get { return _clientBounds/2; } }
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -78,6 +80,9 @@ namespace WarTornLands
 
             // TODO: Fügen Sie Ihre Initialisierungslogik hier hinzu
             SpriteBatch = new SpriteBatch(GraphicsDevice);
+
+            _clientBounds = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+
             _states = new Stack<BaseGameState>();
 
 
@@ -100,7 +105,10 @@ namespace WarTornLands
             this.Components.Add(Interface);
 
 #if DEBUG
+            GlobalLog = new ScreenLogComponent(this);
+            this.Components.Add(GlobalLog);
             this.Components.Add(new CuteFrametimeCounterComponent(this,true,false));
+
 #endif
 
             //InputManager.Instance.KQuit.Pressed += new EventHandler(OnQuit);
@@ -133,6 +141,7 @@ namespace WarTornLands
         /// <param name="gameTime">Bietet einen Schnappschuss der Timing-Werte.</param>
         protected override void Update(GameTime gameTime)
         {
+
             _camera.Update(gameTime);
             if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
@@ -178,6 +187,7 @@ namespace WarTornLands
 
         internal void PushState(BaseGameState newState)
         {
+
             if (_states.Count>0&&newState == _states.Peek())
                 return;
             if(_states.Count>0)

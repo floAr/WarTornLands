@@ -7,55 +7,91 @@ namespace WarTornLands.Infrastructure.Systems
 {
     public class Pool<T>
     {
-        private Queue<T> _deadObjects;
+        private readonly List<T> _allItems = new List<T>();
+        private readonly Queue<T> _freeItems = new Queue<T>();
 
-        private Func<T> _factory = null;
+        private readonly Func<T> _itemFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Pool{T}" /> class.
+        /// Initializes a new instance of the <see cref="Pool{T}" /> class, for objects with default constructor.
         /// </summary>
         public Pool()
         {
-            _deadObjects = new Queue<T>();
+            this._itemFactory = null;
         }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Pool{T}" /> class.
         /// </summary>
-        /// <param name="factory">Parameterless factory method, which returns a new instance of type T</param>
-        public Pool(Func<T> factory)
+        /// <param name="createItemAction">Function returning T to initialize a new object.</param>
+        public Pool(Func<T> createItemAction)
         {
-            _deadObjects = new Queue<T>();
-            _factory = factory;
+            this._itemFactory = createItemAction;
         }
-       
 
         /// <summary>
-        /// Pull a new object of type T from the pool
+        /// Preallocates the specified item count.
         /// </summary>
-        /// <returns>Reused or new T</returns>
-        public T AllocateObject()
+        /// <param name="itemCount">How many items should be allocated.</param>
+        public void Preallocate(int itemCount)
         {
-            if (_deadObjects.Count > 0)
+            T[] items = new T[itemCount];
+            for (int i = 0; i < itemCount; ++i)
             {
-                return _deadObjects.Dequeue();
+                items[i] = GetFreeItem();
             }
-            else
+
+            for (int i = 0; i < itemCount; ++i)
             {
-                if (_factory != null)
-                    return _factory.Invoke();
+                FlagFreeItem(items[i]);
+            }
+        }
+
+        /// <summary>
+        /// Flags the item as free.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        public void FlagFreeItem(T item)
+        {
+            _freeItems.Enqueue(item);
+        }
+
+        /// <summary>
+        /// Gets a free item.
+        /// </summary>
+        /// <returns>A new or reused item of type T</returns>
+        public T GetFreeItem()
+        {
+            if (_freeItems.Count == 0)
+            {
+                T item;
+                if (_itemFactory != null)
+                    item = _itemFactory();
                 else
-                    return default(T);
+                    item = default(T);
+                _allItems.Add(item);
+                return item;
             }
+            return _freeItems.Dequeue();
         }
 
         /// <summary>
-        /// Returns object of type T into the pool
+        /// Gets all managed items.
         /// </summary>
-        /// <param name="deadObject">The object which will be thown back into the pool</param>
-        public void GiveBackObject(T deadObject)
+        /// <value>
+        /// The items currently in the pool.
+        /// </value>
+        public List<T> Items
         {
-            _deadObjects.Enqueue(deadObject);
+            get { return _allItems; }
+        }
+
+        /// <summary>
+        /// REset the pool.
+        /// </summary>
+        public void Clear()
+        {
+            _allItems.Clear();
+            _freeItems.Clear();
         }
     }
 }
