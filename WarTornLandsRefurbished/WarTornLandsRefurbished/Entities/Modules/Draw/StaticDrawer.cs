@@ -58,8 +58,7 @@ namespace WarTornLands.Entities.Modules.Draw
                 drawLocation = information.Position;
 
             Vector2 center = Game1.Instance.Camera.Center;
-            Rectangle bounds = Game1.Instance.Window.ClientBounds;
-
+            Vector2 bounds = Game1.Instance.ClientBoundsHalf;
             // Invulnerable counter configuration
             if (_flashing != information.Flashing)
             {
@@ -79,11 +78,11 @@ namespace WarTornLands.Entities.Modules.Draw
             if (information.Shadow)
             {
                 Texture2D tex = Game1.Instance.Content.Load<Texture2D>("sprite/shadow");
-
+               
                 batch.Draw(tex,
                     new Rectangle(
-                        (int)drawLocation.X - (int)center.X + (int)Math.Round(bounds.Width / 2f) - (int)(_size.X / 2f),
-                        (int)drawLocation.Y - (int)center.Y + (int)Math.Round(bounds.Height / 2f) + (int)(_size.Y / 2f) - (int)(tex.Bounds.Height / 2f) - 24,
+                        (int)drawLocation.X - (int)center.X + (int)bounds.X - (int)(_size.X / 2f),
+                        (int)drawLocation.Y - (int)center.Y + (int)bounds.Y + (int)(_size.Y / 2f) - (int)(tex.Bounds.Height / 2f) - 24,
                         tex.Bounds.Width, tex.Bounds.Height),
                     Color.White);
             }
@@ -91,8 +90,8 @@ namespace WarTornLands.Entities.Modules.Draw
             // Consider entity altitude
             drawLocation.Y -= information.Altitude;
 
-            batch.Draw(Texture, new Rectangle((int)drawLocation.X - (int)center.X + (int)Math.Round(bounds.Width / 2.0f),
-                (int)drawLocation.Y - (int)center.Y + (int)Math.Round(bounds.Height / 2.0f), (int)_size.X, (int)_size.Y),
+            batch.Draw(Texture, new Rectangle((int)drawLocation.X - (int)center.X + (int)bounds.X,
+                (int)drawLocation.Y - (int)center.Y + (int)bounds.Y, (int)_size.X, (int)_size.Y),
                 new Rectangle(0, 0, (int)_size.X, (int)_size.Y), color, information.Rotation, _size / 2, SpriteEffects.None, 0.5f);
         }
 

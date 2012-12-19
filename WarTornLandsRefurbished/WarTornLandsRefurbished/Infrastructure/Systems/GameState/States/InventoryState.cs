@@ -11,12 +11,15 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 {
     public class InventoryState:BaseOverlayGameState
     {
+        private Effect _backgroundEffekt;
+
         public InventoryState(RenderTarget2D background) : base(background) { }
+
 
         public override void Initialize()
         {
             this._inputSheet.RegisterKey("Exit", Keys.I);
-
+            _backgroundEffekt = Game1.Instance.Content.Load<Effect>("effect/desaturateAndBlur");
             base.Initialize();
           
         }
@@ -52,7 +55,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             _drawManager.BeginBake(gameTime,SpriteSortMode.Immediate);
-            _drawManager.BakeBeginEffect(Game1.Instance.Content.Load<Effect>("effect/desaturateAndBlur"));
+            _drawManager.BakeBeginEffect(_backgroundEffekt);
             _drawManager.Bake(_background);
             _drawManager.BakeEndEffect();
             _drawManager.Bake(Game1.Instance.Player.Inventory);

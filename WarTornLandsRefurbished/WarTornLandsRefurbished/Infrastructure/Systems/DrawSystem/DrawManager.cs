@@ -5,32 +5,37 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using WarTornLands.Infrastructure.Systems.SkyLight;
+#if DEBUG
+using WarTornLands.DEBUG;
+#endif
 
 namespace WarTornLands.Infrastructure.Systems.DrawSystem
 {
     public class DrawManager
     {
-        
+
 
         private GameTime _gameTime;
         private int _state = 0;
 
         private RenderTarget2D _temp;
         private Pool<RenderTarget2D> _targetPool;
+        private Pool<int> testPo;
         private Effect _defaultEffect;
 
-       private RenderTarget2D _lastFrame;
-       public RenderTarget2D LastFrame { get { return _lastFrame; } }
+        private RenderTarget2D _lastFrame;
+        public RenderTarget2D LastFrame { get { return _lastFrame; } }
 
-       SpriteSortMode _choosenSortMode;
+        SpriteSortMode _choosenSortMode;
         /// <summary>
         /// Manager who handles all the drawing and effect applying.
         /// </summary>
         public DrawManager()
         {
-           _defaultEffect= Game1.Instance.Content.Load<Effect>("effect/reset");
-           _targetPool = new Pool<RenderTarget2D>(createRT);
-          _lastFrame= _targetPool.AllocateObject();
+            _defaultEffect = Game1.Instance.Content.Load<Effect>("effect/reset");
+            _targetPool = new Pool<RenderTarget2D>(createRT);
+            _targetPool.Preallocate(2);
+            //_lastFrame = _targetPool.GetFreeItem();
         }
         /// <summary>
         /// Starts the bake process and prepares a fresh <c>RenderTarget2D</c>.
@@ -41,7 +46,7 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
         public void BeginBake(GameTime gameTime, SpriteSortMode customSortMode = SpriteSortMode.Deferred, BlendState customBlendState = null)
         {
             _gameTime = gameTime;
-            _temp = _targetPool.AllocateObject();
+            _temp = _targetPool.GetFreeItem();
             Game1.Instance.GraphicsDevice.SetRenderTarget(_temp);
             _state = 1;
             _choosenSortMode = customSortMode;
@@ -57,7 +62,7 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
         /// <param name="plate">The <c>RenderTarget2D</c> which is used to bake on</param>
         /// <param name="customSortMode">If needed specify <c>SpriteSortMode</c> for this bake process</param>
         /// <param name="customBlendState">If needed specify <c>BlendState</c> for this bake process</param>
-        public void BeginBake(GameTime gameTime,RenderTarget2D plate, SpriteSortMode customSortMode = SpriteSortMode.Deferred, BlendState customBlendState = null)
+        public void BeginBake(GameTime gameTime, RenderTarget2D plate, SpriteSortMode customSortMode = SpriteSortMode.Deferred, BlendState customBlendState = null)
         {
             _gameTime = gameTime;
             _temp = plate;
@@ -146,8 +151,8 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             if (_state != 1)
                 if (_state == 0)
                     throw new Exception("BeginBake must be called before Bake");
-            for(int i=0;i<drawProviders.Length;++i)
-            drawProviders[i].Draw(_gameTime);
+            for (int i = 0; i < drawProviders.Length; ++i)
+                drawProviders[i].Draw(_gameTime);
         }
 
         /// <summary>
@@ -182,7 +187,7 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
         /// <param name="gameTime">The game time since last Update.</param>
         public void Draw(RenderTarget2D source, GameTime gameTime)
         {
-            _targetPool.GiveBackObject(_temp);
+            
             this._gameTime = gameTime;
             if (_gameTime == null)
                 return;
@@ -191,6 +196,10 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             Game1.Instance.SpriteBatch.Begin();
             Game1.Instance.SpriteBatch.Draw(source, Vector2.Zero, Color.White);
             Game1.Instance.SpriteBatch.End();
+            foreach (RenderTarget2D item in _targetPool.Items)
+            {
+                _targetPool.FlagFreeItem(item);
+            }
         }
 
         public void Update(GameTime gameTime)

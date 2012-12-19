@@ -45,12 +45,10 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             (InputManager.Instance["New"] as Key).FreshPressed += new EventHandler(NewGame);
         }
 
-        bool  debugFirstPush=true;
         void NewGame(object sender, EventArgs e)
         {
             {
                 Game1.Instance.PushState(RunningGameState.Instance);
-                debugFirstPush = false;
             }
 
         }

@@ -105,7 +105,7 @@ namespace WarTornLands.Entities.Modules.Draw.ParticleSystem
                 _particles[i].Update(gameTime);
                 if (_particles[i].TTL <= 0)
                 {
-                    _particlePool.GiveBackObject(_particles[i]);
+                    _particlePool.FlagFreeItem(_particles[i]);
                     _particles.RemoveAt(i);
 
                 }
@@ -113,7 +113,7 @@ namespace WarTornLands.Entities.Modules.Draw.ParticleSystem
 
             for (int i = _particles.Count; i < _setting.MaxParticles.ValueInRange; i++)
             {
-                _particles.Add(_particlePool.AllocateObject());
+                _particles.Add(_particlePool.GetFreeItem());
             }
         }
 

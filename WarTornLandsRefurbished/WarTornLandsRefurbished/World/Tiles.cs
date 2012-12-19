@@ -171,25 +171,25 @@ namespace WarTornLands.World
             throw new Exception();
         }
 
+
         public Texture2D GetTextureAndSourceRec(int gid, out Rectangle sourceRec)
         {
-            List<TileSet> setsReversed = new List<TileSet>(_sets);
-            setsReversed.Reverse();
+           // List<TileSet> setsReversed = new List<TileSet>(_sets);
+           // setsReversed.Reverse();
 
-            foreach (TileSet set in setsReversed)
+            for (int i=_sets.Count-1;i>=0;i--)
             {
-                if (set.FirstID <= gid + 1)
+                if (_sets[i].FirstID <= gid + 1)
                 {
-                    Texture2D ret = set.Image;
-                    int lid = gid - set.FirstID + 1;
+                    int lid = gid - _sets[i].FirstID + 1;
 
                     sourceRec = new Rectangle(
-                            (lid % set.RowsColls.Y ) * set.TileDimensions.X,
-                            (lid / set.RowsColls.Y) * set.TileDimensions.Y,
-                            set.TileDimensions.X,
-                            set.TileDimensions.Y);
+                            (lid % _sets[i].RowsColls.Y) * _sets[i].TileDimensions.X,
+                            (lid / _sets[i].RowsColls.Y) * _sets[i].TileDimensions.Y,
+                            _sets[i].TileDimensions.X,
+                            _sets[i].TileDimensions.Y);
 
-                    return ret;
+                    return _sets[i].Image;
                 }
             }
 

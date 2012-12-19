@@ -8,6 +8,7 @@ using WarTornLands.Counter;
 using Microsoft.Xna.Framework.Graphics;
 using WarTornLands.Entities;
 using WarTornLands.Infrastructure;
+using WarTornLands.Infrastructure.Systems;
 
 namespace WarTornLands.World.Layers
 {
@@ -24,6 +25,9 @@ namespace WarTornLands.World.Layers
             _grid = grid;
         }
 
+        Rectangle sourceRec;
+        Texture2D texture;
+
         public override void Draw(GameTime gameTime)
         {
             Game1 game = Game1.Instance;
@@ -39,13 +43,13 @@ namespace WarTornLands.World.Layers
                     {
                         int gid = _grid[x, y] - 1;
 
-                        Rectangle sourceRec;
-                        Texture2D texture = _tileSets.GetTextureAndSourceRec(gid, out sourceRec);
+                       
+                        texture = _tileSets.GetTextureAndSourceRec(gid, out sourceRec);
 
                         game.SpriteBatch.Draw(
                             texture,
-                            new Rectangle(x * Constants.TileSize - (int)center.X + (int)Math.Round(game.Window.ClientBounds.Width / 2.0f),
-                                y * Constants.TileSize - (int)center.Y + (int)Math.Round(game.Window.ClientBounds.Height / 2.0f),
+                            new Rectangle(x * Constants.TileSize - (int)center.X + (int)game.ClientBoundsHalf.X,
+                                y * Constants.TileSize - (int)center.Y + (int)game.ClientBoundsHalf.Y,
                                 Constants.TileSize, Constants.TileSize),
                             sourceRec,
                             Color.White);

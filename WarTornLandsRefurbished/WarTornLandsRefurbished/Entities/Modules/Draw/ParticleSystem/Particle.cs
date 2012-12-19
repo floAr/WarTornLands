@@ -55,13 +55,12 @@ namespace WarTornLands.Entities.Modules.Draw.ParticleSystem
             _loc = information.Position - (_size / 2);
 
             Vector2 center = Game1.Instance.Camera.Center;
-            Rectangle bounds = Game1.Instance.Window.ClientBounds;
 
            // spriteBatch.Draw(Texture, new Rectangle((int)_loc.X - (int)center.X + (int)Math.Round(bounds.Width / 2.0f),
            //     (int)_loc.Y - (int)center.Y + (int)Math.Round(bounds.Height / 2.0f), (int)_size.X, (int)_size.Y),
            //     new Rectangle(0, 0, (int)_size.X, (int)_size.Y), Color.White, information.Rotation, _size / 2, SpriteEffects.None, 0.5f);
 
-            spriteBatch.Draw(Texture, information.Position-center+PositionOffset+new Vector2((float)Math.Round(bounds.Width / 2.0f),(float)Math.Round(bounds.Height / 2.0f)), sourceRectangle, Color*Alpha,
+            spriteBatch.Draw(Texture, information.Position-center+PositionOffset+Game1.Instance.ClientBoundsHalf, sourceRectangle, Color*Alpha,
                 Angle, origin, Size, SpriteEffects.None, 0f);
         }
     }
