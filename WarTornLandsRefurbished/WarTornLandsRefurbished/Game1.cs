@@ -77,7 +77,8 @@ namespace WarTornLands
         /// </summary>
         protected override void Initialize()
         {
-
+            IsFixedTimeStep = false;
+            _graphics.SynchronizeWithVerticalRetrace = false;
             // TODO: Fügen Sie Ihre Initialisierungslogik hier hinzu
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 

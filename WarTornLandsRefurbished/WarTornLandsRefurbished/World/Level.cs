@@ -103,7 +103,7 @@ namespace WarTornLands.World
             return result;
         }
 
-        public List<Entity> GetEntitiesAt(Vector2 position, float radius)
+        public List<Entity> GetEntitiesAt(Vector2 position, int radius)
         {
             List<Entity> result = new List<Entity>();
 

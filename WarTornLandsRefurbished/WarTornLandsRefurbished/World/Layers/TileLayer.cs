@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WarTornLands.World.Layers;
-using Microsoft.Xna.Framework;
-using WarTornLands.Counter;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using WarTornLands.Entities;
+using WarTornLands.Counter;
 using WarTornLands.Infrastructure;
-using WarTornLands.Infrastructure.Systems;
 
 namespace WarTornLands.World.Layers
 {
@@ -30,6 +23,7 @@ namespace WarTornLands.World.Layers
 
         public override void Draw(GameTime gameTime)
         {
+            int tileCount = 0;
             Game1 game = Game1.Instance;
             Vector2 center = game.Camera.Center;
 
@@ -37,8 +31,16 @@ namespace WarTornLands.World.Layers
             // Check whether Tiles are visible and just draw them if they are
             for (int y = 0; y < _grid.GetLength(1); ++y)
             {
+                int yPos = y * Constants.TileSize;
+                if (yPos < Game1.Instance.Camera.Center.Y - Game1.Instance.ClientBoundsHalf.Y - Constants.TileSize ||
+                    yPos > Game1.Instance.Camera.Center.Y + Game1.Instance.ClientBoundsHalf.Y + Constants.TileSize)
+                    continue;
                 for (int x = 0; x < _grid.GetLength(0); ++x)
                 {
+                    int xPos = x * Constants.TileSize;
+                    if (xPos < Game1.Instance.Camera.Center.X - Game1.Instance.ClientBoundsHalf.X - Constants.TileSize ||
+                        xPos > Game1.Instance.Camera.Center.X + Game1.Instance.ClientBoundsHalf.X + Constants.TileSize)
+                        continue;
                     if (_grid[x, y] != 0)
                     {
                         int gid = _grid[x, y] - 1;
@@ -48,16 +50,16 @@ namespace WarTornLands.World.Layers
 
                         game.SpriteBatch.Draw(
                             texture,
-                            new Rectangle(x * Constants.TileSize - (int)center.X + (int)game.ClientBoundsHalf.X,
-                                y * Constants.TileSize - (int)center.Y + (int)game.ClientBoundsHalf.Y,
+                            new Rectangle(xPos - (int)center.X + (int)game.ClientBoundsHalf.X,
+                                yPos - (int)center.Y + (int)game.ClientBoundsHalf.Y,
                                 Constants.TileSize, Constants.TileSize),
                             sourceRec,
                             Color.White);
+                        tileCount++;
                     }
                 }
             }
-
-        }
+          }
 
         public override void Update(GameTime gameTime)
         {

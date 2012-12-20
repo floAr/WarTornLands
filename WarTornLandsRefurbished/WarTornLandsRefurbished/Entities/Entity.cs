@@ -12,6 +12,7 @@ using WarTornLands.Infrastructure;
 using WarTornLands.PlayerClasses;
 using WarTornLands.Infrastructure.Systems.DrawSystem;
 using WarTornLands.Entities.Modules.Hit;
+using WarTornLands.Infrastructure.Systems.Camera2D;
 
 namespace WarTornLands.Entities
 {
@@ -24,7 +25,7 @@ namespace WarTornLands.Entities
     }
 
 
-    public class Entity : IComparable<Entity>, IDrawProvider
+    public class Entity : IComparable<Entity>, IDrawProvider, ISpatial
     {
         /* TODO
          * Interface als Events oder Methoden?
@@ -63,6 +64,15 @@ namespace WarTornLands.Entities
                 _position = value;
             }
         }
+
+        public Rectangle BoundingRect
+        {
+            get
+            {
+                return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
+            }
+        }
+
         public Vector2 InitialPosition { get; internal set; }
         public Point TilePosition { get; set; }
         public float Altitude { get; internal set; }
@@ -353,5 +363,8 @@ namespace WarTornLands.Entities
             else
                 return 1;
         }
+
+
+     
     }
 }
