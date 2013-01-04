@@ -46,7 +46,7 @@ namespace WarTornLands.Entities.Modules.Interact
 
         private readonly string _cShutdown = "shutdownCounter";
 
-        public Dialog(List<Conversation> conversations, Entity owner, int cooldown = 2000)
+        public Dialog(List<Conversation> conversations, int cooldown = 2000)
             : base() 
         {
             _enter = new EventHandler(OnEnter);
@@ -57,24 +57,8 @@ namespace WarTornLands.Entities.Modules.Interact
                 _conversations.Add(con.Clone());
             }
             _dm = DialogManager.Instance;
-            _cm = owner.CM;
-            _cm.AddCounter(_cShutdown);
-            _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
-            _currentCon = _conversations.First().GetIterator();
-            this._owner = owner;
+
             Cooldown = cooldown;
-
-            foreach (Conversation con in _conversations)
-            {
-                try
-                {
-                    con.Add(new ComboBreaker());
-                }
-                catch (ConversationAlreadyFinalisedException e)
-                { }
-
-                con.SetOwner(owner);
-            }
         }
         public Dialog(DataRow data)
         {
@@ -115,16 +99,23 @@ namespace WarTornLands.Entities.Modules.Interact
 
         public override void SetOwner(Entity owner)
         {
-            base.SetOwner(owner);
-
-            foreach (Conversation con in _conversations)
-            {
-                con.SetOwner(owner);
-            }
-
             _cm = owner.CM;
             _cm.AddCounter(_cShutdown);
             _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
+            _currentCon = _conversations.First().GetIterator();
+            this._owner = owner;
+
+            foreach (Conversation con in _conversations)
+            {
+                try
+                {
+                    con.Add(new ComboBreaker());
+                }
+                catch (ConversationAlreadyFinalisedException e)
+                { }
+
+                con.SetOwner(owner);
+            }
         }
 
         private List<Conversation> ReadConversations(DataSet data)

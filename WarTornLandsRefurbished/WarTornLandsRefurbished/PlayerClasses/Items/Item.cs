@@ -79,6 +79,23 @@ namespace WarTornLands.PlayerClasses.Items
             _itemType = itemtyp;
             Name = name;
         }
+
+        public Item(string name)
+        {
+            switch (name)
+            {
+                case "SmallKey":
+                    _itemType = ItemTypes.SmallKey;
+                    Name = "Kleiner Schluessel";
+                    return;
+                case "MasterKey":
+                    _itemType = ItemTypes.MasterKey;
+                    Name = "Master Schluessel";
+                    return;
+            }
+
+            throw new Exception("ItemType "+ name +" not found.");
+        }
     }
 
 }

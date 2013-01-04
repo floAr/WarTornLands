@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="DEBUG\ScreenLogComponent.cs" />
     <Compile Include="DEBUG\CuteFrametimeCounterComponent.cs" />
+    <Compile Include="Entities\AI\Zones.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Modules\BaseModule.cs" />
     <Compile Include="Entities\Modules\Collide\Obstacle.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Infrastructure\CollisionManager.cs" />
     <Compile Include="Infrastructure\Constants.cs" />
     <Compile Include="Infrastructure\DialogManager.cs" />
+    <Compile Include="Infrastructure\EntityBuilder.cs" />
     <Compile Include="Infrastructure\InputManager.cs" />
     <Compile Include="Entities\Modules\Draw\_IDrawModule.cs" />
     <Compile Include="Entities\Modules\Draw\StaticDrawer.cs" />

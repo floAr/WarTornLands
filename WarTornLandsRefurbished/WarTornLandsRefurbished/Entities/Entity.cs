@@ -56,6 +56,8 @@ namespace WarTornLands.Entities
         public readonly string _cHit = "HitCounter";
         ///////////////
 
+        public string Categorie;
+
         public Vector2 Position {
             get { return _position; }
             set

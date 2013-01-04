@@ -36,6 +36,8 @@ namespace WarTornLands.Entities.Modules
                     return new Think.ThinkInputGuided(data);
                 case "Roam":
                     return new Think.ThinkRoamAround(data);
+                case "ReplaceByStatic":
+                    return new Die.ReplaceByStatic(data);
             }
 
             return null;

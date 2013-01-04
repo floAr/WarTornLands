@@ -19,6 +19,13 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
             _items = items;
         }
 
+        public ItemContainer(Item item)
+            : base(ComposeDescription(item))
+        {
+            _items = new List<Item>();
+            _items.Add(item);
+        }
+
         private static string ComposeDescription(List<Item> items)
         {
             string message = "Item";
@@ -31,6 +38,14 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
                 message += items[i].Name;
                 message += i < items.Count - 1 ? ", " : ".";
             }
+
+            return message;
+        }
+
+        private static string ComposeDescription(Item item)
+        {
+            string message = "Item erhalten: ";
+            message += item.Name;
 
             return message;
         }

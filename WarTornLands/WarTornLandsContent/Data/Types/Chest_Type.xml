@@ -1,31 +1,32 @@
 <BaseType>
 
   <TypeInfo>
-    <ID>BossDoor</ID>
-    <Categorie>Door</Categorie>
+    <ID>Chest</ID>
+    <Categorie>Chest</Categorie>
   </TypeInfo>
 
 	<BaseInfo>
-		<Name>BossDoor</Name>
+		<Name>Chest</Name>
 		<Invuln>true</Invuln>
-		<Health>0</Health>
+		<Health></Health>
 		<BaseHeight>0</BaseHeight>
 	</BaseInfo>
 
   <!--Collide-->
   <Module>
-    <Type>OpenDoorOnCollide</Type>
-    <KeyID>402</KeyID>
+    <Type>Obstacle</Type>
   </Module>
 
   <!--Die-->
 	<Module>
+    <Type>ReplaceByStatic</Type>
+    <Texture>treasureChestLooted</Texture>
 	</Module>
 
   <!--Draw-->
 	<Module>
 		<Type>StaticDrawer</Type>
-		<Texture>doorClosedBoss</Texture>
+		<Texture>treasureChest</Texture>
 	</Module>
 
   <!--Interact-->
@@ -35,6 +36,7 @@
 
   <!--Think-->
 	<Module>
+
 	</Module>
 
 

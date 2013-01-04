@@ -77,68 +77,6 @@ namespace WarTornLands.Infrastructure
         }
 
         /// <summary>
-        /// Creates an Entity from a given XML DataSet.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <returns></returns>
-        private Entity CreateEntity(DataSet data)
-        {
-            string typeID = data.Tables["TypeInfo"].Rows[0]["ID"].ToString();
-
-            List<string> errors = new List<string>();
-
-            #region Read BaseInfo
-            DataRow row = data.Tables["BaseInfo"].Rows[0];
-
-            String name = row["Name"].ToString();
-            name.Trim();
-            if(name.Equals(""))
-                errors.Add("Name");
-            
-            try {
-            bool invuln = bool.Parse(row["Invuln"].ToString()); }
-            catch { errors.Add("Invuln"); }
-
-            try {
-            float Health = float.Parse(row["Health"].ToString());
-            } catch { errors.Add("Health"); }
-            
-            try {
-            int Height = int.Parse(row["BaseHeight"].ToString());
-            } catch { errors.Add ("BaseHeight"); }
-            #endregion
-
-            Entity ent = new Entity(Vector2.Zero, name);
-
-            #region Read Modules
-
-            foreach(DataRow r in data.Tables["Module"].Rows)
-            {
-                ent.AddModule(BaseModule.GetModule(r));
-            }
-
-            #endregion
-
-            return ent;
-        }
-        /// <summary>
-        /// Creates an Entity of the given Type.
-        /// </summary>
-        /// <param name="area">The area.</param>
-        /// <param name="entityType">The EntityType.</param>
-        /// <returns></returns>
-        /// <exception cref="System.Exception">EntityType +entityType+ not found.</exception>
-        private Entity CreateEntity(string entityType)
-        {
-            foreach (DataSet r in Game1.Instance.Level.EntityTypeData)
-            {
-                if (r.Tables["TypeInfo"].Rows[0]["ID"].ToString().Equals(entityType))
-                    return CreateEntity(r);
-            }
-            throw new Exception("EntityType " + entityType + " not found.");
-        }
-
-        /// <summary>
         /// Creates an Area from a given XML DataSet.
         /// </summary>
         /// <param name="areaMeta">The data.</param>
@@ -262,6 +200,8 @@ namespace WarTornLands.Infrastructure
 
             #region Read Objectgroups
 
+            EntityBuilder.Begin();
+
             foreach (DataRow groupData in data.Tables["objectgroup"].Rows)
             {
                 try
@@ -275,19 +215,13 @@ namespace WarTornLands.Infrastructure
 
                 foreach (DataRow objectData in groupData.GetChildRows("objectgroup_object"))
                 {
-                    Entity ent = CreateEntity(
-                                    area.TileSets.TypeOf(
-                                        int.Parse(
-                                            objectData["gid"].ToString()
-                                               )));
-
-                    ent.Position = new Vector2(int.Parse(objectData["x"].ToString()) + area.TileSets.DimensionsOf(int.Parse(objectData["gid"].ToString())).X * .5f,
-                                               int.Parse(objectData["y"].ToString()) - area.TileSets.DimensionsOf(int.Parse(objectData["gid"].ToString())).Y * .5f);
-                    entLayer.AddEntity(ent);
+                    entLayer.AddEntity(EntityBuilder.Instance.CreateEntity(area.TileSets, objectData));
                 }
 
                 area.AddEntityLayer(entLayer);
             }
+
+            EntityBuilder.End();
 
             #endregion
         }
@@ -317,6 +251,23 @@ namespace WarTornLands.Infrastructure
             }
 
             return dataCollection;
+        }
+
+        /// <summary>
+        /// Searches a propertie structure for a specified propertie.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
+        public static string ValueOfProperty(DataRow data, string propertyName)
+        {
+            foreach (DataRow property in data.GetChildRows("properties_property"))
+            {
+                if (property["name"].ToString().Equals(propertyName))
+                    return property["value"].ToString();
+            }
+
+            throw new Exception("Property "+ propertyName + " not found.");
         }
     }
 

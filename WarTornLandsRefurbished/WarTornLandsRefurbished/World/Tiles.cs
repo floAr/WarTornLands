@@ -53,6 +53,12 @@ namespace WarTornLands.World
         private string _name;
         private List<TileType> _types;
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TileSet" /> class.
+        /// </summary>
+        /// <param name="data">Data referes to a 'tilest' row atop of a .tmx file.</param>
+        /// <exception cref="System.Exception">Faulty property in tiletype with ID  + type.ID + .</exception>
         public TileSet(DataRow data)
         {
             _firstID = int.Parse(data["firstgid"].ToString());
