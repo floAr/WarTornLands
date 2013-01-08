@@ -38,6 +38,8 @@ namespace WarTornLands.Entities.Modules
                     return new Think.ThinkRoamAround(data);
                 case "ReplaceByStatic":
                     return new Die.ReplaceByStatic(data);
+                case "DamageFlash":
+                    return new Hit.DamageFlash(data);
             }
 
             return null;
