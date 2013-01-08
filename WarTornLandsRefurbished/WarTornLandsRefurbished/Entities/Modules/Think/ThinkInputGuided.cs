@@ -25,6 +25,7 @@ namespace WarTornLands.Entities.Modules.Think
         // Parts
         private JumpAbility _jump;
         private SwingHitAbility _swing;
+        private ShooterAbility _shooter;
         private InteractAbility _interact;
         private bool _frozen;
 
@@ -34,6 +35,7 @@ namespace WarTornLands.Entities.Modules.Think
 
             _jump = new JumpAbility();
             _swing = new SwingHitAbility(400, 1);
+            _shooter = new ShooterAbility();
             _interact = new InteractAbility();
             _frozen = false;
 
@@ -66,6 +68,7 @@ namespace WarTornLands.Entities.Modules.Think
                     ) + _owner.Position;
 
                 _swing.Update(gameTime);
+                _shooter.Update(gameTime);
                 _jump.Update(gameTime);
                 CalcFacing(moveDirection);
             }
@@ -91,6 +94,7 @@ namespace WarTornLands.Entities.Modules.Think
             base.SetOwner(owner);
             _jump.SetOwner(owner);
             _swing.SetOwner(owner);
+            _shooter.SetOwner(owner);
             _interact.SetOwner(owner);
 
             _cm = owner.CM;
@@ -120,7 +124,7 @@ namespace WarTornLands.Entities.Modules.Think
 
         private void OnUsePotion(object sender, EventArgs e)
         {
-
+            _shooter.TryExecute();
         }
 
         private void OnExecuteHit(object sender, EventArgs e)
