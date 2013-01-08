@@ -10,7 +10,7 @@ namespace WarTornLands.Infrastructure
 {
     public class CollisionManager
     {
-      
+
 
         #region Singleton Stuff
         private static CollisionManager _instance;
@@ -153,6 +153,28 @@ namespace WarTornLands.Infrastructure
                 return move.X;
             else
                 return move.Y;
+        }
+
+        public List<Entity> CollidePoint(Vector2 point, int radius = 1)
+        {
+            return Game1.Instance.Level.GetEntitiesAt(point, radius);
+        }
+
+        public List<Entity> CollideLine(Vector2 start, Vector2 end)
+        {
+            HashSet<Entity> value = new HashSet<Entity>();
+            float distance = Vector2.Distance(start, end);
+            Vector2 step = new Vector2(Math.Abs(start.X - end.X) / distance, Math.Abs(start.Y - end.Y) / distance);
+
+            for (int i = 0; i < distance; i++)
+            {
+                foreach (Entity e in Game1.Instance.Level.GetEntitiesAt(start + step))
+                {
+                    value.Add(e);
+                }
+                step += step;
+            }
+            return value.ToList();
         }
     }
 }
