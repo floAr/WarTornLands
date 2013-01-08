@@ -102,7 +102,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             Game1.Instance.Level.Update(gameTime);
-            Game1.Instance.Player.Update(gameTime);
+            //Game1.Instance.Player.Update(gameTime); // player is AreaIndependentEntity in level
             _drawManager.Update(gameTime);
         }
 

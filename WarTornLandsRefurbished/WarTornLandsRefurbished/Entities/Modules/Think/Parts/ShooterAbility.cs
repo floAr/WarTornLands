@@ -43,11 +43,17 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
             // Create projectile entity
             Entity p = new Entity(_owner.Position);
+            p.Face = _owner.Face;
+
+            // Add texture
             StaticDrawer sd = new StaticDrawer();
             sd.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/deadtree");
             p.AddModule(sd);
-            p.Face = _owner.Face;
-            _projectiles.Add(p);
+            
+            // Add flying behaviour
+            p.AddModule(new ThinkProjectileFly());
+
+            //_projectiles.Add(p); // fire and forget?
             Game1.Instance.Level.AreaIndependentEntities.Add(p);
 
             return true;
@@ -62,23 +68,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         {
             foreach (Entity p in _projectiles)
             {
-                switch (p.Face)
-                {
-                    case Facing.DOWN:
-                        p.Position += new Vector2(0, Speed * gameTime.ElapsedGameTime.Milliseconds);
-                        break;
-                    case Facing.UP:
-                        p.Position -= new Vector2(0, Speed * gameTime.ElapsedGameTime.Milliseconds);
-                        break;
-                    case Facing.LEFT:
-                        p.Position -= new Vector2(Speed * gameTime.ElapsedGameTime.Milliseconds, 0);
-                        break;
-                    case Facing.RIGHT:
-                        p.Position += new Vector2(Speed * gameTime.ElapsedGameTime.Milliseconds, 0);
-                        break;
-                }
-
-                // TODO remove entities that are too far away from THEIR starting point
+                // do i have to update entities??
             }
         }
 
