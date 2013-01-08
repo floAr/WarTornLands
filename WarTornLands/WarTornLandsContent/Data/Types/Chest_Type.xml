@@ -14,30 +14,30 @@
 
   <!--Collide-->
   <Module>
-    <Type>Obstacle</Type>
+	<Type>Obstacle</Type>
   </Module>
 
   <!--Die-->
-	<Module>
-    <Type>ReplaceByStatic</Type>
-    <Texture>treasureChestLooted</Texture>
-	</Module>
+  <Module>
+	<Type>ReplaceByStatic</Type>
+	<Texture>treasureChestLooted</Texture>
+  </Module>
 
   <!--Draw-->
-	<Module>
-		<Type>StaticDrawer</Type>
-		<Texture>treasureChest</Texture>
-	</Module>
+  <Module>
+	<Type>StaticDrawer</Type>
+	<Texture>treasureChest</Texture>
+  </Module>
 
   <!--Interact-->
-	<Module>
+  <Module>
 
-	</Module>
+  </Module>
 
   <!--Think-->
-	<Module>
+  <Module>
 
-	</Module>
+  </Module>
 
 
 </BaseType>

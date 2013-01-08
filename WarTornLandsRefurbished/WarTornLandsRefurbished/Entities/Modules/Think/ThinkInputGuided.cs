@@ -10,6 +10,7 @@ using WarTornLands.Entities.Modules.Think.Parts;
 using WarTornLands.Infrastructure;
 using WarTornLands.Infrastructure.Systems.InputSystem;
 using System.Data;
+using WarTornLands.Entities.AI;
 
 namespace WarTornLands.Entities.Modules.Think
 {
@@ -68,6 +69,11 @@ namespace WarTornLands.Entities.Modules.Think
                 _jump.Update(gameTime);
                 CalcFacing(moveDirection);
             }
+        }
+
+        public void SetZone(Zone zone)
+        {
+            throw new Exception("What the fuck man, InputGuided Entity with a roamzone is bullshit.");
         }
 
         public void Freeze()

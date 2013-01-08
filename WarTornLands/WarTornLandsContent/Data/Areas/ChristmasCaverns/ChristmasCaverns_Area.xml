@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<XnaContent xmlns:Generic="System.Collections.Generic">
-  <Asset Type="cakemonster">
+
     <Area>
       <AreaInfo>
         <ID>ChristmasCaverns</ID>
@@ -15,5 +13,4 @@
         <Evil>ChristmasCaverns_Evil.tmx</Evil>
       </BaseInfo>
     </Area>
-  </Asset>
-</XnaContent>
+

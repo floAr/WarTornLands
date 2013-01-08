@@ -10,6 +10,8 @@ using WarTornLands.Entities.Modules.Interact;
 using WarTornLands.Infrastructure.Systems.DialogSystem;
 using WarTornLands.PlayerClasses.Items;
 using WarTornLands.Entities.Modules;
+using WarTornLands.Entities.AI;
+using WarTornLands.Entities.Modules.Collide;
 
 namespace WarTornLands.Infrastructure
 {
@@ -38,10 +40,12 @@ namespace WarTornLands.Infrastructure
         /// All Entities created are kept reference of until end is called.
         /// This is done to be able to link RoamingRectangles and such items to the Entities.
         /// </summary>
-        private List<Entity> _entityRef;
+        private List<ZoneVeil> _zoneContainer;
 
         private EntityBuilder()
-        { }
+        {
+            _zoneContainer = new List<ZoneVeil>();
+        }
 
         public static void Begin()
         {
@@ -139,7 +143,6 @@ namespace WarTornLands.Infrastructure
             #region Chest
             //Creates a standard Dialog providing the item specified in the Tiled editor
 
-
             if (entity.Categorie.Equals("Chest"))
             {
                 Conversation con = new Conversation("default");
@@ -158,11 +161,53 @@ namespace WarTornLands.Infrastructure
 
                 entity.AddModule(new Dialog(cons));
             }
-
-
             #endregion
+            #region Door
+            if (entity.Categorie.Equals("Door"))
+            {
+                entity.AddModule(
+                    new OpenDoorOnCollide(
+                        int.Parse(XMLParser.ValueOfProperty(data.GetChildRows("object_properties")[0], "KeyID"))));
+            }
+            #endregion
+            try
+            {
+                string zoneID = XMLParser.ValueOfProperty(data.GetChildRows("object_properties")[0], "ZoneID");
+                // Check if the entity relates to a Zone
+                if (zoneID != null)
+                {
+                    entity.SetZone(FindMatch(int.Parse(zoneID)));
+                }
+            }
+            catch (IndexOutOfRangeException e) { }
 
             return entity;
         }
+
+        public void DepositZone(int id, Zone zone)
+        {
+            ZoneVeil veil = new ZoneVeil();
+            veil.ID = id;
+            veil.Zone = zone;
+
+            _zoneContainer.Add(veil);
+        }
+
+        private Zone FindMatch(int id)
+        {
+            foreach (ZoneVeil veil in _zoneContainer)
+            {
+                if (id == veil.ID)
+                    return veil.Zone;
+            }
+
+            throw new Exception("No Zone with ID "+id+" found.");
+        }
+    }
+
+    struct ZoneVeil
+    {
+        public int ID;
+        public Zone Zone;
     }
 }

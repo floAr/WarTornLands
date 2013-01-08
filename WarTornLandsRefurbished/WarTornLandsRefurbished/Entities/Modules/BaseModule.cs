@@ -34,7 +34,7 @@ namespace WarTornLands.Entities.Modules
                     return new Interact.Dialog(data);
                 case "ThinkInputGuided":
                     return new Think.ThinkInputGuided(data);
-                case "Roam":
+                case "ThinkRoamAround":
                     return new Think.ThinkRoamAround(data);
                 case "ReplaceByStatic":
                     return new Die.ReplaceByStatic(data);

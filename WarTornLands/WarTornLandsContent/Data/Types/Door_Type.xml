@@ -14,8 +14,7 @@
 
   <!--Collide-->
   <Module>
-    <Type>OpenDoorOnCollide</Type>
-    <KeyID>401</KeyID>
+
   </Module>
 
   <!--Die-->
@@ -23,10 +22,10 @@
 	</Module>
 
   <!--Draw-->
-	<Module>
-		<Type>StaticDrawer</Type>
-		<Texture>doorClosed</Texture>
-	</Module>
+  <Module>
+    <Type>StaticDrawer</Type>
+    <Texture>doorClosed</Texture>
+  </Module>
 
   <!--Interact-->
 	<Module>
