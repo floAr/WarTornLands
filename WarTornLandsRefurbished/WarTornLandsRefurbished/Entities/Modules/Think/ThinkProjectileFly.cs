@@ -4,16 +4,21 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using WarTornLands.Entities.AI;
+using WarTornLands.Infrastructure;
 
 namespace WarTornLands.Entities.Modules.Think
 {
     class ThinkProjectileFly : BaseModule, IThinkModule
     {
+        public int Damage { get; set; }
+        public int RangeSquared { get; set; }
         public float Speed { get; set; }
         private Vector2 _startPos;
 
-        public ThinkProjectileFly(float speed = 1.0f) : base()
+        public ThinkProjectileFly(int damage, int range, float speed) : base()
         {
+            Damage = damage;
+            RangeSquared = range * range;
             Speed = speed;
         }
 
@@ -29,6 +34,10 @@ namespace WarTornLands.Entities.Modules.Think
 
         public void Update(GameTime gameTime)
         {
+            // Backup position
+            Vector2 oldPos = _owner.Position;
+
+            // Move projectile
             switch (_owner.Face)
             {
                 case Facing.DOWN:
@@ -44,6 +53,31 @@ namespace WarTornLands.Entities.Modules.Think
                     _owner.Position += new Vector2(Speed * gameTime.ElapsedGameTime.Milliseconds, 0);
                     break;
             }
+
+            // Check range
+            if ((_startPos - _owner.Position).LengthSquared() > RangeSquared)
+            {
+                // Remove projectile, don't do any damage
+                _owner.ToBeRemoved = true;
+                return;
+            }
+
+
+            // Damage
+            // TODO altitude / height check - in collision manager or here??
+            List<Entity> hit = CollisionManager.Instance.CollideLine(oldPos, _owner.Position);
+            if (hit.Count > 0)
+            {
+                // Do damage to ALL entites
+                // TODO sort and only do damage to nearest entity
+                foreach (Entity e in hit)
+                {
+                    // TODO check is buggy, why? Oo
+                    if (!e.Equals(_owner))
+                        e.Damage(Damage);
+                }
+            }
+            
         }
     }
 }
