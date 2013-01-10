@@ -14,21 +14,20 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         private Entity _owner;
         private bool _cooldown;
         public int CooldownTime;
+        public int Damage;
         public int Range;
         public float Speed;
-
-        private List<Entity> _projectiles;
 
         // Counters
         private CounterManager _cm;
         private readonly string _cShooter = "ShooterCooldownCounter";
 
-        public ShooterAbility(int cooldownTime = 1000, int range = 100, float speed = 1f)
+        public ShooterAbility(int cooldownTime = 1000, int damage = 1, int range = 100, float speed = 1f)
         {
-            _projectiles = new List<Entity>();
             CooldownTime = cooldownTime;
             Range = range;
             Speed = speed;
+            Damage = damage;
             _cooldown = false;
         }
 
@@ -51,9 +50,9 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             p.AddModule(sd);
             
             // Add flying behaviour
-          //  p.AddModule(new ThinkProjectileFly());
+            p.AddModule(new ThinkProjectileFly(Damage, Range, Speed));
 
-            //_projectiles.Add(p); // fire and forget?
+            // Add projectile to level
             Game1.Instance.Level.AreaIndependentEntities.Add(p);
 
             return true;
@@ -66,18 +65,12 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
         public void Update(GameTime gameTime)
         {
-            foreach (Entity p in _projectiles)
-            {
-                // do i have to update entities??
-            }
+            // do nothing
         }
 
         public void Draw(GameTime gameTime)
         {
-            foreach (Entity p in _projectiles)
-            {
-                p.Draw(gameTime);
-            }
+            // do nothing
         }
 
         public void SetOwner(Entity owner)
