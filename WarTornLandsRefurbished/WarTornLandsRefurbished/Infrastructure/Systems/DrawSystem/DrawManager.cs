@@ -127,6 +127,13 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
                     throw new Exception("BeginBake must be called before Bake");
             Game1.Instance.SpriteBatch.Draw(drawProvider, Vector2.Zero, Color.White);
         }
+        public void Bake(Texture2D drawProvider)
+        {
+            if (_state != 1)
+                if (_state == 0)
+                    throw new Exception("BeginBake must be called before Bake");
+            Game1.Instance.SpriteBatch.Draw(drawProvider, Vector2.Zero, Color.White);
+        }
 
         /// <summary>
         /// Bakes the specified <c>IDrawProvider</c> by calling its Draw(GameTime).
@@ -206,8 +213,5 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
         {
             _gameTime = gameTime;
         }
-
-
-
     }
 }

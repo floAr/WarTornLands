@@ -51,7 +51,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             p.AddModule(sd);
             
             // Add flying behaviour
-            p.AddModule(new ThinkProjectileFly());
+          //  p.AddModule(new ThinkProjectileFly());
 
             //_projectiles.Add(p); // fire and forget?
             Game1.Instance.Level.AreaIndependentEntities.Add(p);
