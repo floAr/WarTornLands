@@ -130,7 +130,9 @@
     <Compile Include="Infrastructure\Systems\DrawSystem\IDrawProvider.cs" />
     <Compile Include="Infrastructure\Systems\GameState\BaseGameState.cs" />
     <Compile Include="Infrastructure\Systems\GameState\BaseOverlayGameState.cs" />
+    <Compile Include="Infrastructure\Systems\GameState\States\GameSessionState.cs" />
     <Compile Include="Infrastructure\Systems\GameState\States\InventoryState.cs" />
+    <Compile Include="Infrastructure\Systems\GameState\States\LevelState.cs" />
     <Compile Include="Infrastructure\Systems\GameState\States\MainMenueState.cs" />
     <Compile Include="Infrastructure\Systems\GameState\States\RunningGameState.cs" />
     <Compile Include="Infrastructure\Systems\GameState\States\ShaderTestStage.cs" />
@@ -139,6 +141,8 @@
     <Compile Include="Infrastructure\Systems\InputSystem\InputKey.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\Key.cs" />
     <Compile Include="Infrastructure\Systems\Pool.cs" />
+    <Compile Include="Infrastructure\Systems\SaveLoad\SaveGameData.cs" />
+    <Compile Include="Infrastructure\Systems\SaveLoad\SmartStorage.cs" />
     <Compile Include="Infrastructure\Systems\SkyLight\BlendStates.cs" />
     <Compile Include="Infrastructure\Systems\SkyLight\Lightmanager.cs" />
     <Compile Include="Infrastructure\XMLParser.cs" />
