@@ -628,29 +628,13 @@ namespace WarTornLands.World
            // AddArea("ChristmasCaverns", cavernsArea);
         }
 
-        public void LoadLevel(string fileName)
-        {
-            // TODO TODO TODO TODO TODO TODO TODO TODO
-            // TODO use XDocument because XmlTextReader sucks balls
-
-            XmlTextReader reader = new XmlTextReader(fileName);
-            reader.ReadToFollowing("world");
-            reader = (XmlTextReader)reader.ReadSubtree();
-
-            while (reader.Read())
-            {
-                if (reader.NodeType == XmlNodeType.Element &&
-                    reader.Name == "area")
-                {
-                    string isbn = reader.GetAttribute("ISBN");
-                }
-            }
-        }
-
         internal void Update(GameTime gameTime)
         {
             foreach (Area a in _areas.Values)
                 a.Update(gameTime);
+
+            foreach (Entity e in AreaIndependentEntities)
+                e.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime)

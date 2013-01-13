@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using WarTornLands.Counter;
 using Microsoft.Xna.Framework;
+using System.Data;
 
 namespace WarTornLands.Entities.Modules.Hit
 {
@@ -16,6 +17,16 @@ namespace WarTornLands.Entities.Modules.Hit
         protected readonly string _cInvulnerable = "InvulnerableCounter";
         protected readonly int _invulnerableDuration = 1000;
         //////////////
+
+        public DamageFlash()
+        {
+
+        }
+
+        public DamageFlash(DataRow data)
+        {
+ 
+        }
 
         public override void SetOwner(Entity owner)
         {

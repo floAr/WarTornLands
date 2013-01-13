@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using WarTornLands.Entities.Modules;
 using WarTornLands.World;
 using WarTornLands.World.Layers;
+using WarTornLands.Entities.AI;
 
 namespace WarTornLands.Infrastructure
 {
@@ -126,6 +127,12 @@ namespace WarTornLands.Infrastructure
             return area;
         }
 
+        /// <summary>
+        /// Reads the TMX file related to an Area.
+        /// </summary>
+        /// <param name="area">The area.</param>
+        /// <param name="data">The data.</param>
+        /// <exception cref="System.Exception">No or faulty 'Type' property set for tileLayer. Accepted values are 'Low' and 'High'.</exception>
         private void ReadTMX(ref Area area, DataSet data)
         {
             TileSetBox tileSets = new TileSetBox();
@@ -210,20 +217,45 @@ namespace WarTornLands.Infrastructure
                         continue;
                 }
                 catch { }
-
-                EntityLayer entLayer = new EntityLayer();
-
-                foreach (DataRow objectData in groupData.GetChildRows("objectgroup_object"))
+                
+                switch (XMLParser.ValueOfProperty(
+                    groupData.GetChildRows("objectgroup_properties")[0],
+                    "Type"))
                 {
-                    entLayer.AddEntity(EntityBuilder.Instance.CreateEntity(area.TileSets, objectData));
+                    case "Entities":
+                        ReadEntityLayer(ref area, groupData);
+                        break;
+                    case "RoamZones":
+                        ReadRoamZones(groupData);
+                        break;
                 }
-
-                area.AddEntityLayer(entLayer);
             }
 
             EntityBuilder.End();
 
             #endregion
+        }
+
+        private void ReadEntityLayer(ref Area area, DataRow data)
+        {
+            EntityLayer entLayer = new EntityLayer();
+
+            foreach (DataRow objectData in data.GetChildRows("objectgroup_object"))
+            {
+                entLayer.AddEntity(EntityBuilder.Instance.CreateEntity(area.TileSets, objectData));
+            }
+
+            area.AddEntityLayer(entLayer);
+        }
+
+        private void ReadRoamZones(DataRow data)
+        {
+            foreach (DataRow objectData in data.GetChildRows("objectgroup_object"))
+            {
+                EntityBuilder.Instance.DepositZone(
+                    int.Parse(XMLParser.ValueOfProperty(objectData.GetChildRows("object_properties")[0], "ID")),
+                    ZoneFactory.ProduceZone(objectData));
+            }
         }
 
         /// <summary>
@@ -236,7 +268,7 @@ namespace WarTornLands.Infrastructure
         /// <exception cref="System.Exception">More than one directory for area  + areaID +  found.</exception>
         private List<DataSet> ReadEntityTypes()
         {
-            string path = _game.Content.RootDirectory + "/Data/Types";
+            string path = _game.Content.RootDirectory + "/Data";
 
             IEnumerable<string> files = Directory.EnumerateFiles( path, "*_Type.xml", SearchOption.AllDirectories);
 
@@ -267,7 +299,7 @@ namespace WarTornLands.Infrastructure
                     return property["value"].ToString();
             }
 
-            throw new Exception("Property "+ propertyName + " not found.");
+            return null;
         }
     }
 

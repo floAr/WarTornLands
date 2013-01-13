@@ -14,21 +14,20 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         private Entity _owner;
         private bool _cooldown;
         public int CooldownTime;
+        public int Damage;
         public int Range;
         public float Speed;
-
-        private List<Entity> _projectiles;
 
         // Counters
         private CounterManager _cm;
         private readonly string _cShooter = "ShooterCooldownCounter";
 
-        public ShooterAbility(int cooldownTime = 1000, int range = 100, float speed = 1f)
+        public ShooterAbility(int cooldownTime = 1000, int damage = 1, int range = 100, float speed = 1f)
         {
-            _projectiles = new List<Entity>();
             CooldownTime = cooldownTime;
             Range = range;
             Speed = speed;
+            Damage = damage;
             _cooldown = false;
         }
 
@@ -43,11 +42,17 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
             // Create projectile entity
             Entity p = new Entity(_owner.Position);
+            p.Face = _owner.Face;
+
+            // Add texture
             StaticDrawer sd = new StaticDrawer();
             sd.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/deadtree");
             p.AddModule(sd);
-            p.Face = _owner.Face;
-            _projectiles.Add(p);
+            
+            // Add flying behaviour
+            p.AddModule(new ThinkProjectileFly(Damage, Range, Speed));
+
+            // Add projectile to level
             Game1.Instance.Level.AreaIndependentEntities.Add(p);
 
             return true;
@@ -60,34 +65,12 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
         public void Update(GameTime gameTime)
         {
-            foreach (Entity p in _projectiles)
-            {
-                switch (p.Face)
-                {
-                    case Facing.DOWN:
-                        p.Position += new Vector2(0, Speed * gameTime.ElapsedGameTime.Milliseconds);
-                        break;
-                    case Facing.UP:
-                        p.Position -= new Vector2(0, Speed * gameTime.ElapsedGameTime.Milliseconds);
-                        break;
-                    case Facing.LEFT:
-                        p.Position -= new Vector2(Speed * gameTime.ElapsedGameTime.Milliseconds, 0);
-                        break;
-                    case Facing.RIGHT:
-                        p.Position += new Vector2(Speed * gameTime.ElapsedGameTime.Milliseconds, 0);
-                        break;
-                }
-
-                // TODO remove entities that are too far away from THEIR starting point
-            }
+            // do nothing
         }
 
         public void Draw(GameTime gameTime)
         {
-            foreach (Entity p in _projectiles)
-            {
-                p.Draw(gameTime);
-            }
+            // do nothing
         }
 
         public void SetOwner(Entity owner)

@@ -13,6 +13,7 @@ using WarTornLands.PlayerClasses;
 using WarTornLands.Infrastructure.Systems.DrawSystem;
 using WarTornLands.Entities.Modules.Hit;
 using WarTornLands.Infrastructure.Systems.Camera2D;
+using WarTornLands.Entities.AI;
 
 namespace WarTornLands.Entities
 {
@@ -165,6 +166,14 @@ namespace WarTornLands.Entities
                 _collideModule = module as ICollideModule;
             if (module is IHitModule)
                 _hitModule = module as IHitModule;
+        }
+
+        public void SetZone(Zone zone)
+        {
+            if (_thinkModule != null)
+                _thinkModule.SetZone(zone);
+            else
+                throw new Exception("Tried to provide an Entity without a ThinkModule with a roamzone.");
         }
 
         public IInteractModule InteractModule

@@ -44,6 +44,8 @@ namespace WarTornLands.World
 
         public void AddHighLayer(TileLayer layer)
         {
+            layer.SetTileSetBox(this.TileSets);
+
             _highTileLayers.Add(layer);
         }
 

@@ -32,7 +32,10 @@
 
   <Conversation>
     <ID>2</ID>
-    <Line>Die alte Gruselute schaffst du mit links!</Line>
+    <Line>
+	<Type>Text</Type>
+	<Text>Die alte Gruselute schaffst du mit links!</Text>
+    </Line>
   </Conversation>
 
 

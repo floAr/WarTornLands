@@ -100,6 +100,7 @@
     <Compile Include="Entities\Modules\Think\Parts\SwingHitAbility.cs" />
     <Compile Include="Entities\Modules\Think\Parts\_BaseAbility.cs" />
     <Compile Include="Entities\Modules\Think\ThinkInputGuided.cs" />
+    <Compile Include="Entities\Modules\Think\ThinkProjectileFly.cs" />
     <Compile Include="Entities\Modules\Think\ThinkRoamAround.cs" />
     <Compile Include="Entities\Modules\Think\_IThinkModule.cs" />
     <Compile Include="Infrastructure\Catalog.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Infrastructure\Systems\GameState\States\LevelState.cs" />
     <Compile Include="Infrastructure\Systems\GameState\States\MainMenueState.cs" />
     <Compile Include="Infrastructure\Systems\GameState\States\RunningGameState.cs" />
+    <Compile Include="Infrastructure\Systems\GameState\States\ShaderTestStage.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\ControlSheet.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\DirectionInput.cs" />
     <Compile Include="Infrastructure\Systems\InputSystem\InputKey.cs" />

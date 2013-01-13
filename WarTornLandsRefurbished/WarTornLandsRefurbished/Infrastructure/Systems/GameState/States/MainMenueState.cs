@@ -18,12 +18,15 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
         {
             this._inputSheet.RegisterKey("Exit", Keys.Escape);
             this._inputSheet.RegisterKey("New", Keys.Enter);
+            this._inputSheet.RegisterKey("Shader", Keys.S);
             base.Initialize();
         }
 
         public override void LoadContent()
         {
-        
+            (InputManager.Instance["Exit"] as Key).Pressed += new EventHandler(ExitGame);
+            (InputManager.Instance["New"] as Key).FreshPressed += new EventHandler(NewGame);
+            (InputManager.Instance["Shader"] as Key).Pressed += new EventHandler(MainMenueState_Pressed);
             base.LoadContent();
         }
 
@@ -41,8 +44,12 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            (InputManager.Instance["Exit"] as Key).Pressed += new EventHandler(ExitGame);
-            (InputManager.Instance["New"] as Key).FreshPressed += new EventHandler(NewGame);
+           
+        }
+
+        void MainMenueState_Pressed(object sender, EventArgs e)
+        {
+            Game1.Instance.PushState(new ShaderTestStage());
         }
 
         void NewGame(object sender, EventArgs e)

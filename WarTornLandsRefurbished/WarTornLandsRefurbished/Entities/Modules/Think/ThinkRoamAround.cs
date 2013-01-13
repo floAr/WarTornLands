@@ -10,6 +10,7 @@ using WarTornLands.Entities.Modules;
 using WarTornLands.Entities.Modules.Think.Parts;
 using WarTornLands.PlayerClasses;
 using System.Data;
+using WarTornLands.Entities.AI;
 
 namespace WarTornLands.Entities.Modules.Think
 {
@@ -43,6 +44,7 @@ namespace WarTornLands.Entities.Modules.Think
         private Random _rand;
         private RoamState _state;
         private RoamState _lastState;
+        private Zone _zone;
 
         public ThinkRoamAround(Vector2 anchor, float roamingRadius, float attackRange = 60, float sightRange = 110, int damage = 10, bool canBeAttacked = true)
             : base()
@@ -62,6 +64,11 @@ namespace WarTornLands.Entities.Modules.Think
             : this(Vector2.Zero, float.Parse(data["RoamingRadius"].ToString()))
         {
             //TODO: Read data
+        }
+
+        public void SetZone(Zone zone)
+        {
+            _zone = zone;
         }
 
         public override void SetOwner(Entity owner)
