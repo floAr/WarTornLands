@@ -173,6 +173,7 @@ namespace WarTornLands
             _states.Peek().Draw(gameTime);
             SpriteBatch.Begin();
             base.Draw(gameTime);
+            RectangleDrawer.Draw();
             SpriteBatch.End();
         }
 
@@ -219,6 +220,7 @@ namespace WarTornLands
 
         internal void DebugDraw(GameTime gameTime)
         {
+
             base.Draw(gameTime);
         }
     }

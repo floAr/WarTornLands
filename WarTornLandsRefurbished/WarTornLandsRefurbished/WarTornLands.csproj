@@ -74,6 +74,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DEBUG\RectangleDrawer.cs" />
     <Compile Include="DEBUG\ScreenLogComponent.cs" />
     <Compile Include="DEBUG\CuteFrametimeCounterComponent.cs" />
     <Compile Include="Entities\AI\Zones.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="World\Area.cs" />
+    <Compile Include="World\GlobalState.cs" />
     <Compile Include="World\Layers\EntityLayer.cs" />
     <Compile Include="World\Layers\TileLayer.cs" />
     <Compile Include="World\Layers\_Layer.cs" />
