@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WarTornLands.Infrastructure.Systems.SaveLoad
 {
-    struct SaveGameData
+   public struct SaveGameData
     {
 
     }
