@@ -100,7 +100,6 @@
     <Compile Include="Entities\Modules\Think\Parts\SwingHitAbility.cs" />
     <Compile Include="Entities\Modules\Think\Parts\_BaseAbility.cs" />
     <Compile Include="Entities\Modules\Think\ThinkInputGuided.cs" />
-    <Compile Include="Entities\Modules\Think\ThinkProjectileFly.cs" />
     <Compile Include="Entities\Modules\Think\ThinkRoamAround.cs" />
     <Compile Include="Entities\Modules\Think\_IThinkModule.cs" />
     <Compile Include="Infrastructure\Catalog.cs" />

@@ -221,6 +221,7 @@
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Data\Types\GruselUte_Type.xml">
       <Name>GruselUte_Type</Name>
