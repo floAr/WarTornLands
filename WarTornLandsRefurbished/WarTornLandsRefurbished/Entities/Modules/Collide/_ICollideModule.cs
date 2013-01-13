@@ -13,8 +13,9 @@ namespace WarTornLands.Entities.Modules.Collide
     }
     public interface ICollideModule
     {
+         void OnCollide(CollideInformation info);
+         bool IsPassable(CollideInformation info);
          Rectangle BodyShape { get; set; }
          Rectangle MovingShape { get; set; }
-         bool OnCollide(CollideInformation info);
     }
 }

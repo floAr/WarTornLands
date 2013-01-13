@@ -97,7 +97,8 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
             move.Normalize();
             move *= Speed;
-            Vector2 actualMove = CollisionManager.Instance.TryMove(_owner.Position, move, 0, _owner);
+            //Vector2 actualMove = CollisionManager.Instance.TryMove(_owner.Position, move, 0, _owner, _owner.Altitude, _owner.BodyHeight);
+            Vector2 actualMove = CollisionManager.Instance.TryMove(_owner, move);
             _owner.Position = actualMove + _owner.Position;
 
             if (actualMove.Length() != move.Length())

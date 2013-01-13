@@ -5,6 +5,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using WarTornLands.Entities;
 using WarTornLands.World;
+using WarTornLands.Entities.Modules.Collide;
+using WarTornLands.PlayerClasses;
 
 namespace WarTornLands.Infrastructure
 {
@@ -30,7 +32,25 @@ namespace WarTornLands.Infrastructure
 
         private CollisionManager()
         {
-            Game1.Instance.Level = Game1.Instance.Level;
+        }
+
+
+        public Vector2 TryMove(Entity source, Vector2 moveVector)
+        {
+            if (source.DrawModule == null)
+                return source.Position + moveVector;
+
+            List<Entity> entities;
+            Vector2 move = CollideRectangle(source, moveVector, true, true, out entities);
+
+            // Call Collide methods
+            foreach (Entity ent in entities)
+            {
+                ent.Collide(source);
+                source.Collide(ent);
+            }
+
+            return move;
         }
 
         /// <summary>
@@ -42,10 +62,13 @@ namespace WarTornLands.Infrastructure
         /// <param name="toGoal">To goal.</param>
         /// <param name="radius">The radius.</param>
         /// <param name="source">The source.</param>
+        /// <param name="altitude">Altitude of the colliding body.</param>
+        /// <param name="bodyHeight">Height of the colliding body.</param>
         /// <returns></returns>
-        public Vector2 TryMove(Vector2 start, Vector2 toGoal, float radius, Entity source)
+        /*public Vector2 TryMove(Vector2 start, Vector2 toGoal, float radius, Entity source,
+            float altitude, float bodyHeight)
         {
-            float range = 20;  //Get Entity radius from whereever
+            float range = 20;  // TODO Get Entity radius from whereever
 
             Vector2 move = toGoal;
 
@@ -57,17 +80,17 @@ namespace WarTornLands.Infrastructure
             List<Vector2> checkpoints = new List<Vector2>() { topRight, bottomRight, bottomLeft, topLeft };
 
             if (toGoal.Y < 0)
-                move.Y = ComputeMoveDirection(start, toGoal, topLeft, topRight, false, source);
+                move.Y = ComputeMoveDirection(start, toGoal, topLeft, topRight, false, source, altitude, bodyHeight);
             if (toGoal.Y > 0)
-                move.Y = ComputeMoveDirection(start, toGoal, bottomLeft, bottomRight, false, source);
+                move.Y = ComputeMoveDirection(start, toGoal, bottomLeft, bottomRight, false, source, altitude, bodyHeight);
 
             if (toGoal.X < 0)
-                move.X = ComputeMoveDirection(start, toGoal, topLeft, bottomLeft, true, source);
+                move.X = ComputeMoveDirection(start, toGoal, topLeft, bottomLeft, true, source, altitude, bodyHeight);
             if (toGoal.X > 0)
-                move.X = ComputeMoveDirection(start, toGoal, topRight, bottomRight, true, source);
+                move.X = ComputeMoveDirection(start, toGoal, topRight, bottomRight, true, source, altitude, bodyHeight);
 
             return move;
-        }
+        }*/
 
         /// <summary>
         /// Computes the move direction.
@@ -78,17 +101,17 @@ namespace WarTornLands.Infrastructure
         /// <param name="pointTwo">The collision test point two.</param>
         /// <param name="xDir">If set to <c>true</c> X direction is computed. If false Y direction.</param>
         /// <param name="source">The entity executing the move.</param>
+        /// <param name="altitude">Altitude of the colliding body.</param>
+        /// <param name="bodyHeight">Height of the colliding body.</param>
         /// <returns>Returns the X or Y value (see xDir) of the position the move ends at (relative to the start) in respect to collisions with Tiles and entities.</returns>
-        private float ComputeMoveDirection(Vector2 start, Vector2 toGoal, Vector2 pointOne, Vector2 pointTwo, bool xDir, Entity source)
+        /*private float ComputeMoveDirection(Vector2 start, Vector2 toGoal, Vector2 pointOne, Vector2 pointTwo, bool xDir, Entity source,
+            float altitude, float bodyHeight)
         {
             Vector2 move = toGoal;
             if (xDir)
                 move.Y = 0;
             else
                 move.X = 0;
-
-            if (!source.Name.Equals("GruselUte"))
-                move = move;
 
             Vector2 direction = Vector2.Normalize(toGoal);
             float sensor = (float)toGoal.Length();
@@ -122,8 +145,7 @@ namespace WarTornLands.Infrastructure
                     curEntities.Remove(ent);
             }
 
-            while (curEntities.Count > 0 &&
-                   sensor > 0)
+            while (curEntities.Count > 0 && sensor > 0)
             {
                 lastEntities.Clear();
                 lastEntities.AddRange(curEntities);
@@ -143,38 +165,157 @@ namespace WarTornLands.Infrastructure
                 }
             }
 
-            foreach (Entity ent in lastEntities)
+            // Get list of colliding entities
+            // TODO not use center, but points and use union of entity lists
+            List<Entity> entities1, entities2;
+            Vector2 move1 = CollideLine(start + pointOne, start + pointOne + toGoal, source, true, altitude, bodyHeight, out entities1) - (start + pointOne);
+            Vector2 move2 = CollideLine(start + pointTwo, start + pointTwo + toGoal, source, true, altitude, bodyHeight, out entities2) - (start + pointTwo);
+
+            List<Entity> entities = entities1.Union<Entity>(entities2).ToList();
+
+            foreach (Entity ent in entities)
             {
                 ent.Collide(source);
                 source.Collide(ent);
             }
 
             if (xDir)
-                return move.X;
+                return Math.Min(move1.X, move2.X);
             else
-                return move.Y;
-        }
+                return Math.Min(move1.Y, move2.Y);
+        }*/
 
+        /// <summary>
+        /// Test an entity collision at a point.
+        /// </summary>
+        /// <param name="point">Position of the point.</param>
+        /// <param name="radius">Radius of the check.</param>
+        /// <returns>List of entities at the point.</returns>
+        /// TODO altitude & height check!
+        /// TODO add tile check!
         public List<Entity> CollidePoint(Vector2 point, int radius = 1)
         {
             return Game1.Instance.Level.GetEntitiesAt(point, radius);
         }
 
-        public List<Entity> CollideLine(Vector2 start, Vector2 end)
+        /// <summary>
+        /// Test a collision on a line. Does not call any Collide events.
+        /// </summary>
+        /// <param name="start">Start point.</param>
+        /// <param name="end">Absolute end point.</param>
+        /// <param name="source">The entity executing the move.</param>
+        /// <param name="testTiles">Set true if tile collision should be checked.</param>
+        /// <param name="altitude">Altitude of the colliding body.</param>
+        /// <param name="bodyHeight">Height of the colliding body.</param>
+        /// <param name="list">Out param for a list of entities, sorted by distance.</param>
+        /// <returns>Absolute end position of the collision.</returns>
+        public Vector2 CollideLine(Vector2 start, Vector2 end, Entity source, bool testTiles,
+            float altitude, float bodyHeight, out List<Entity> list)
         {
-            HashSet<Entity> value = new HashSet<Entity>();
-            float distance = Vector2.Distance(start, end);
-            Vector2 step = new Vector2(Math.Abs(start.X - end.X) / distance, Math.Abs(start.Y - end.Y) / distance);
+            // TODO add tile check!
 
-            for (int i = 0; i < distance; i++)
+            list = new List<Entity>();
+
+            float distance = Vector2.Distance(start, end);
+            Vector2 pos = start;
+            Vector2 step = new Vector2((end.X - start.X) / distance, (end.Y - start.Y) / distance);
+
+            for (int i = 0; Math.Abs(i) < distance; i++)
             {
-                foreach (Entity e in Game1.Instance.Level.GetEntitiesAt(start + step))
+                foreach (Entity e in CollidePoint(pos))
                 {
-                    value.Add(e);
+                    // Add entity, if it's not in list
+                    if (!list.Contains(e))
+                        list.Add(e);
+
+                    // Break if entity blocks way
+                    if (e.CollideModule != null &&
+                        !e.CollideModule.IsPassable(new CollideInformation() { Collider = source,
+                        IsPlayer = source is Player }))
+                    {
+                        return pos;
+                    }
                 }
-                step += step;
+
+                pos += step;
             }
-            return value.ToList();
+
+            return pos;
+        }
+
+        /// <summary>
+        /// Test an entity collision on a moving rectangle. Does not call any Collide events.
+        /// </summary>
+        /// <param name="source">The entity executing the move.</param>
+        /// <param name="toEnd">Movement vector to the end position.</param>
+        /// <param name="testTile">Set true if tile collision should be checked.</param>
+        /// <param name="slide">Set true if you want to slide on walls.</param>
+        /// <param name="list">Out param for a list of entities, sorted by distance.</param>
+        /// <returns>Relative end position of the collision.</returns>
+        public Vector2 CollideRectangle(Entity source, Vector2 toEnd, bool testTile, bool slide, out List<Entity> list)
+        {
+            list = new List<Entity>();
+
+            float distance = toEnd.Length();
+            Vector2 pos = new Vector2();
+            Vector2 step = toEnd / distance;
+
+            for (int i = 0; Math.Abs(i) < distance; i++)
+            {
+                // Pre-calculate next step's rectangle
+                Rectangle newRect = source.BoundingRect;
+                newRect.Offset((int)Math.Round(pos.X + step.X), (int)Math.Round(pos.Y + step.Y));
+
+                // Test next step's rectangle
+                foreach (Entity e in Game1.Instance.Level.GetEntitiesAt(newRect))
+                {
+                    // Add entity, if it's not in list
+                    if (!list.Contains(e))
+                        list.Add(e);
+
+                    // Break if entity blocks way
+                    if (e.CollideModule != null &&
+                        !e.CollideModule.IsPassable(new CollideInformation() { Collider = source,
+                        IsPlayer = source is Player }))
+                    {
+                        // Return this step's position
+                        return pos;
+                    }
+                }
+
+                // Break if tiles block way
+                if (testTile && !Game1.Instance.Level.IsRectAccessible(newRect))
+                {
+                    // Collide'n'slide, yeah!
+                    if (slide)
+                    {
+                        // Try only X
+                        newRect = source.BoundingRect;
+                        newRect.Offset((int)Math.Round(pos.X + step.X), (int)Math.Round(pos.Y));
+                        if (Game1.Instance.Level.IsRectAccessible(newRect))
+                        {
+                            pos.X += step.X;
+                        }
+                        else
+                        {
+                            newRect = source.BoundingRect;
+                            newRect.Offset((int)Math.Round(pos.X), (int)Math.Round(pos.Y + step.Y));
+                            if (Game1.Instance.Level.IsRectAccessible(newRect))
+                            {
+                                pos.Y += step.Y;
+                            }
+                        }
+                    }
+
+                    // Return this step's position
+                    return pos;
+                }
+
+                // Step current position and move rect
+                pos += step;
+            }
+
+            return pos;
         }
     }
 }

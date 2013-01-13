@@ -88,5 +88,28 @@ namespace WarTornLands.World.Layers
 
             return true;
         }
+
+        public bool IsRectAccessible(Rectangle rect)
+        {
+            // Get corner points
+            int x0 = (int)rect.Location.X / Constants.TileSize;
+            int y0 = (int)rect.Location.Y / Constants.TileSize;
+            int x1 = (int)(rect.Location.X + rect.Width) / Constants.TileSize;
+            int y1 = (int)(rect.Location.Y + rect.Height) / Constants.TileSize;
+
+            // Loop through all tiles in rectangle
+            for (int x = x0; x <= x1; x++)
+            {
+                for (int y = y0; y <= y1; y++)
+                {
+                    // Return false if tile is set and not accesible
+                    if (_grid[x, y] != 0 && _tileSets.ModifierOf(_grid[x, y] - 1) == 0)
+                        return false;
+                }
+            }
+
+            // Return true if all tiles are accessible
+            return true;
+        }
     }
 }

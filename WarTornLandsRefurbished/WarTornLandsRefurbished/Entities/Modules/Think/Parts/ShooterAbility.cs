@@ -22,7 +22,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         private CounterManager _cm;
         private readonly string _cShooter = "ShooterCooldownCounter";
 
-        public ShooterAbility(int cooldownTime = 1000, int damage = 1, int range = 100, float speed = 1f)
+        public ShooterAbility(int cooldownTime = 800, int damage = 1, int range = 400, float speed = 400f)
         {
             CooldownTime = cooldownTime;
             Range = range;
@@ -41,6 +41,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             _cm.StartCounter(_cShooter);
 
             // Create projectile entity
+            // TODO use pool allocat0r
             Entity p = new Entity(_owner.Position);
             p.Face = _owner.Face;
 
@@ -50,7 +51,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             p.AddModule(sd);
             
             // Add flying behaviour
-            p.AddModule(new ThinkProjectileFly(Damage, Range, Speed));
+            p.AddModule(new ThinkProjectileFly(_owner, Damage, Range, Speed));
 
             // Add projectile to level
             Game1.Instance.Level.AreaIndependentEntities.Add(p);
