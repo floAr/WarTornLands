@@ -15,8 +15,8 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
         private static Lightmanager _instance = new Lightmanager();
         public static Lightmanager Instance { get { return _instance; } }
 
-        private static List<Entities.Entity> _groundLights = new List<Entities.Entity>();
-        private static List<Entities.Entity> _upperLights = new List<Entities.Entity>(); 
+        private static List<IDrawExecuter> _groundLights = new List<IDrawExecuter>();
+        private static List<IDrawExecuter> _upperLights = new List<IDrawExecuter>(); 
         
         //Daylight
         private static Color _skyColor = Color.White;
@@ -47,7 +47,7 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
             _dynamicLightCycle = true;
         }
 
-        public void AddLight(Entities.Entity light,bool isUpperLight=false)
+        public void AddLight(IDrawExecuter light, bool isUpperLight = false)
         {
             if (isUpperLight)
                 _upperLights.Add(light);
