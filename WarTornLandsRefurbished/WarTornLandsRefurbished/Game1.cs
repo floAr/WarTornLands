@@ -11,6 +11,7 @@ using WarTornLands.Infrastructure.Systems.GameState;
 using WarTornLands.Infrastructure.Systems.GameState.States;
 #if DEBUG
 using WarTornLands.DEBUG;
+using WarTornLands.Infrastructure.Systems.SaveLoad;
 #endif
 
 namespace WarTornLands
@@ -88,9 +89,9 @@ namespace WarTornLands
 
 
             this.Components.Add(InputManager.Instance);
-        
 
 
+            SmartStorage<SaveGameData>.Init();
             
             Player = Player.Instance;
             Player.Position = new Vector2(14 * Constants.TileSize, 19 * Constants.TileSize); // Spawn: Frederik

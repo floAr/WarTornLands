@@ -49,5 +49,17 @@ namespace WarTornLands.Entities.Modules.Collide
                 return true;
             }
         }
+
+        public Microsoft.Xna.Framework.Rectangle BodyShape
+        {
+            get;
+            set;
+        }
+
+        public Microsoft.Xna.Framework.Rectangle MovingShape
+        {
+            get;
+            set;
+        }
     }
 }

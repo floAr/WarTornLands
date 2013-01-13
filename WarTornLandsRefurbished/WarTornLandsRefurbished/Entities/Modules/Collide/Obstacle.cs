@@ -19,5 +19,17 @@ namespace WarTornLands.Entities.Modules.Collide
         public Obstacle(DataRow data)
             : this()
         { }
+
+        public Microsoft.Xna.Framework.Rectangle BodyShape
+        {
+            get;
+            set;
+        }
+
+        public Microsoft.Xna.Framework.Rectangle MovingShape
+        {
+            get;
+            set;
+        }
     }
 }

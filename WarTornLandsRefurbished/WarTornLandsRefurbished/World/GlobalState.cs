@@ -42,5 +42,9 @@ namespace WarTornLands.World
         {
             return _triggers.Contains(trigger);
         }
+
+        public static List<string> Triggers { get{return _triggers;} }
+
+        public static Dictionary<string, object> Values { get { return _values; } }
     }
 }

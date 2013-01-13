@@ -11,36 +11,34 @@ namespace WarTornLands.Infrastructure.Systems.SaveLoad
 {
     public class SmartStorage<SaveGameStructure>
     {
-        StorageDevice device;
-        StorageContainer container;
+         static StorageDevice device;
+         static StorageContainer container;
 
-        public SmartStorage()
+        public static void Init()
         {
             StorageDevice.DeviceChanged += new EventHandler<EventArgs>(StorageDevice_DeviceChanged);
         }
-        private void initDevice()
+        private static void initDevice()
         {
-            AsyncCallback ac = new AsyncCallback(this.GetDevice);
+            AsyncCallback ac = new AsyncCallback(GetDevice);
             Object stateobj = (Object)"GetDevice for Player One";
             StorageDevice.BeginShowSelector(PlayerIndex.One, ac, stateobj);
         }
 
-        void GetDevice(IAsyncResult result)
+       static   void   GetDevice(IAsyncResult result)
         {
-
             device = StorageDevice.EndShowSelector(result);
         }
 
-        void StorageDevice_DeviceChanged(object sender, EventArgs e)
+       static   void   StorageDevice_DeviceChanged(object sender, EventArgs e)
         {
             device = null;
         }
         // If a save is pending, save as soon as the
         // storage device is chosen
 
-        private Stream openStorage(int slot,bool load=false)
+        private  static Stream openStorage(int slot,bool load=false)
         {
-            if (device == null)
                 initDevice();
             while (device == null)
             {
@@ -75,34 +73,62 @@ namespace WarTornLands.Infrastructure.Systems.SaveLoad
                 }
             }
             // Open the file.
-            return container.OpenFile(filename, FileMode.Open);
+            return container.OpenFile(filename, FileMode.Open,FileAccess.ReadWrite);
         }
 
-        public void Save(int slot, SaveGameStructure data)
+        public static void Save(int slot, SaveGameStructure data)
         {
-            Stream stream = openStorage(slot);
-            if (stream == null)
-                throw new Exception("Stream to storage was not found");
-            XmlSerializer serializer = new XmlSerializer(typeof(SaveGameStructure));
-            serializer.Serialize(stream, data);
-            // Close the file.
-            stream.Close();
-            // Dispose the container, to commit changes.
-            container.Dispose();
+            try
+            {
+                Stream stream = openStorage(slot);
+                if (stream == null)
+                    throw new Exception("Stream to storage was not found");
+                try
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(SaveGameStructure));
+                    serializer.Serialize(stream, data);
+                }
+                finally
+                {
+                    stream.Close();
+                    stream.Dispose();
+                }
+                // Close the file.
+            }
+            finally
+            {
+                // Dispose the container, to commit changes.
+                container.Dispose();
+            }
         }
 
 
-        public SaveGameStructure Load(int slot)
+        public static  SaveGameStructure Load(int slot)
         {
-            Stream stream = openStorage(slot,true);
-            if (stream == null)
-                throw new Exception("Stream to storage was not found");
-            XmlSerializer serializer = new XmlSerializer(typeof(SaveGameStructure));
-            SaveGameStructure data = (SaveGameStructure)serializer.Deserialize(stream);
-            // Close the file.
-            stream.Close();
-            // Dispose the container.
-            container.Dispose();
+            SaveGameStructure data = default(SaveGameStructure);
+            try
+            {
+           
+                Stream stream = openStorage(slot, true);
+                if (stream == null)
+                    throw new Exception("Stream to storage was not found");
+                try
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(SaveGameStructure));
+                    data = (SaveGameStructure)serializer.Deserialize(stream);
+                }
+                finally
+                {
+                    // Close the file.
+                    stream.Close();
+                    stream.Dispose();
+                }
+            }
+            finally
+            {
+                // Dispose the container.
+                container.Dispose();
+            }
             return data;
         }
     }
