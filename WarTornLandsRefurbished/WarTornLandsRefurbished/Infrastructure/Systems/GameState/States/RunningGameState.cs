@@ -113,7 +113,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
              Game1.Instance.DrawingLights = true;
              _drawManager.BeginBake(gameTime, SpriteSortMode.Deferred, CustomBlendState.Add);
              _drawManager.BakeFill(new Color(150, 150, 150));
-             _drawManager.Bake(Lightmanager.Instance);
+             _drawManager.Bake(Lightmanager.Instance.Sky);
              RenderTarget2D lights = _drawManager.EndBake();
 
              _drawManager.BeginBake(gameTime, SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);
