@@ -6,10 +6,24 @@ using System.Data;
 
 namespace WarTornLands.Entities.Modules.Collide
 {
-    class Obstacle:BaseModule, ICollideModule
+    class Obstacle : BaseModule, ICollideModule
     {
-        public bool OnCollide(CollideInformation info)
+        public void OnCollide(CollideInformation info)
         {
+            // Do nothing
+        }
+
+        public bool IsPassable(CollideInformation info)
+        {
+            // Source check
+            if (info.Collider == _owner)
+                return true;
+
+            // Altitude / height check
+            if (info.Collider.Altitude + info.Collider.BodyHeight < _owner.Altitude ||
+                info.Collider.Altitude > _owner.Altitude + _owner.BodyHeight)
+                return true;
+            
             return false;
         }
 

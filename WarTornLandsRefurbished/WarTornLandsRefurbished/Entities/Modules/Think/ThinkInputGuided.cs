@@ -59,13 +59,8 @@ namespace WarTornLands.Entities.Modules.Think
             {
                 Vector2 oldPos = _owner.Position;
                 Vector2 moveDirection = ((DirectionInput)InputManager.Instance["Move"]).Value;
-                _owner.Position =
-                    CollisionManager.Instance.TryMove(
-                    _owner.Position,
-                    moveDirection * Speed * gameTime.ElapsedGameTime.Milliseconds,
-                    Radius,
-                    _owner
-                    ) + _owner.Position;
+                Vector2 moveVector = moveDirection * Speed * gameTime.ElapsedGameTime.Milliseconds;
+                _owner.Position += CollisionManager.Instance.TryMove(_owner, moveVector);
 
                 _swing.Update(gameTime);
                 _shooter.Update(gameTime);

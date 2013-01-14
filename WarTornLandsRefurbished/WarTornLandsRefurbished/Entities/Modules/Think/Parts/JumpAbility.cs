@@ -51,9 +51,9 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         /// Initializes a new instance of the <see cref="JumpAbility" /> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        /// <param name="duration">The duration of a jump.</param>
-        /// <param name="zenit">The zenit of a jump.</param>
-        public JumpAbility(int duration = 700, float zenit = 100)
+        /// <param name="duration">The duration of a jump in ms.</param>
+        /// <param name="zenit">The zenit of a jump in meter.</param>
+        public JumpAbility(int duration = 700, float zenit = 3.0f)
         {
             Duration = duration;
             Zenit = zenit;

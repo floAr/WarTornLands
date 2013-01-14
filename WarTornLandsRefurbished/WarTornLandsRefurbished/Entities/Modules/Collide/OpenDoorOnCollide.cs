@@ -26,28 +26,26 @@ namespace WarTornLands.Entities.Modules.Collide
             _locked = true;
         }
 
-        public bool OnCollide(CollideInformation info)
+        public void OnCollide(CollideInformation info)
         {
             // TODO open only if player has key!
             if (_locked)
             {
                 if (Game1.Instance.Player.Inventory.HasKey(_id))
-                {
                     _owner.ToBeRemoved = true;
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-
-
             }
             else
             {
                 _owner.ToBeRemoved = true;
-                return true;
             }
+        }
+
+        public bool IsPassable(CollideInformation info)
+        {
+            if (!_locked || _owner.ToBeRemoved)
+                return true;
+
+            return false;
         }
 
         public Microsoft.Xna.Framework.Rectangle BodyShape
