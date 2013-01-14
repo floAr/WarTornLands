@@ -68,15 +68,18 @@ namespace WarTornLands.Entities.Modules.Think
             // Damage
             List<Entity> hit;
             CollisionManager.Instance.CollideRectangle(_owner, _owner.Position - oldPos, false, false, out hit);
+
+            hit.RemoveAll(delegate(Entity ent) { return ent.Equals(_shooter) || ent.HitModule == null; });
+
             if (hit.Count > 0)
             {
                 // Do damage to all entites but the shooter
                 // TODO sort and only do damage to nearest entity
                 foreach (Entity e in hit)
                 {
-                    if (!e.Equals(_shooter))
-                        e.Damage(Damage);
+                    e.Damage(Damage);
                 }
+                _owner.ToBeRemoved = true;
             }
             
         }
