@@ -58,14 +58,14 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             (InputManager.Instance["Inventory"] as Key).Pressed += new EventHandler(OpenInventory);
             (InputManager.Instance["Quit"] as Key).Pressed += new EventHandler(QuitRunningGame);
             (InputManager.Instance["Test"] as Key).Pressed += new EventHandler(TestPressed);
-            try
+            /*try
             {
                 SaveLoad.SaveGameData saveGame = SaveLoad.SmartStorage<SaveLoad.SaveGameData>.Load(0);
                 foreach (String s in saveGame.Triggers)
                     GlobalState.SetTrigger(s);
             }
             catch (Exception e) { }
-
+            */
             Catalog.Instance.SetupTestCatalog();
 
             Game1.Instance.Player.AddModule(new ThinkInputGuided());
@@ -104,7 +104,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
                 ValuesO = GlobalState.Values.Values.ToList()
             };
 
-            SaveLoad.SmartStorage<SaveLoad.SaveGameData>.Save(0, saveGame);                
+           // SaveLoad.SmartStorage<SaveLoad.SaveGameData>.Save(0, saveGame);                
             Game1.Instance.PopState();
         }
 
