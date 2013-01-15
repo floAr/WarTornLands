@@ -1,0 +1,67 @@
+<BaseType>
+
+  <TypeInfo>
+    <ID>Torch</ID>
+    <Categorie>Unique</Categorie>
+  </TypeInfo>
+
+	<BaseInfo>
+		<Name>Torch</Name>
+		<Invuln>true</Invuln>
+		<Health>0</Health>
+		<BaseHeight>0</BaseHeight>
+	</BaseInfo>
+
+  <!--Collide-->
+  <Module>
+
+  </Module>
+
+  <!--Die-->
+	<Module>
+    
+	</Module>
+
+  <!--Draw-->
+	<Module>
+		<Type>DualDraw</Type>
+    <Module>
+      <Type>AnimatedDrawer</Type>
+      <Texture>torch_model</Texture>
+      <Animation>
+        <Name>flicker</Name>
+        <Frame>
+          <Rectangle X="0" Y="0" width="32" height="32" />
+        </Frame>
+        <Frame>
+          <Rectangle X="32" Y="0" width="32" height="32" />
+        </Frame>
+      </Animation>
+    </Module>
+    <Module>
+      <Type>AnimatedDrawer</Type>
+      <IsLight>true</IsLight>
+      <Texture>torch_light</Texture>
+      <Animation>
+        <Name>flicker</Name>
+        <Frame>
+          <Rectangle X="0" Y="0" width="32" height="32" />
+        </Frame>
+        <Frame>
+          <Rectangle X="32" Y="0" width="32" height="32" />
+        </Frame>
+      </Animation>
+    </Module>
+  </Module>
+
+  <!--Interact-->
+	<Module>
+
+	</Module>
+
+  <!--Think-->
+	<Module>
+	</Module>
+
+
+</BaseType>

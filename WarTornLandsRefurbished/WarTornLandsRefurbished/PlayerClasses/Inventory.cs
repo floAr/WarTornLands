@@ -10,8 +10,6 @@ using WarTornLands.Infrastructure.Systems.DrawSystem;
 
 namespace WarTornLands.PlayerClasses
 {
-
-
     public class Inventory : IDrawProvider
     {
         #region Drawvariablen
@@ -52,7 +50,7 @@ namespace WarTornLands.PlayerClasses
         private bool _hasWoodenShield;
         private bool _useWoodenShield;
 
-        private List<Item> _normalkeys;
+        private KeyStash _keys;
 
         #endregion
 
@@ -123,43 +121,28 @@ namespace WarTornLands.PlayerClasses
             _maxKeys = 2;
             _previouskeystate = false;
             _inventoryIsOpen = false;
-            _normalkeys = new List<Item>();
-
+            _keys = new KeyStash();
         }
 
 
-        public bool Insert(Items.Item item)
+        public bool Insert(Item item)
         {
-            switch (item.ItemType)
+            #region Key
+            if (item is DoorKey)
             {
-                case Items.ItemTypes.Potion:
-                    if (_countPotions < _maxPotions)
-                    {
-                        _countPotions++;
-                        return true;
-                    }
-                    else return false;
-                case Items.ItemTypes.Hammer:
-                    _hasNormalHammer = true;
-                    return true;
-                case Items.ItemTypes.ChainHammer:
-                    _hasChainHammer = true;
-                    return true;
-                case Items.ItemTypes.WoodenShield:
-                    _hasWoodenShield = true;
-                    return true;
-                case Items.ItemTypes.SmallKey:
-                    _countKeys++;
-                    _normalkeys.Add(item);
-                    return true;
-                case Items.ItemTypes.MasterKey:
-                    _countKeys++;
-                    _normalkeys.Add(item);
-                    return true;
-                default:
-                    return false;
+                _keys.AddKey((item as DoorKey).AreaID);
+                return true;
             }
+            #endregion
+            #region MasterKey
+            if (item is MasterKey)
+            {
+                _keys.AddKey((item as MasterKey).AreaID);
+                return true;
+            }
+            #endregion
 
+            return false;
         }
 
 
@@ -175,26 +158,6 @@ namespace WarTornLands.PlayerClasses
                         if (_countPotions > 0)
                         {
                             _itemPicture = _potionPicture;
-                        }
-                        else
-                        {
-                            _itemPicture = _chestPicture;
-                        }
-                        break;
-                    case 1:
-                        if (HasKey(401))
-                        {
-                            _itemPicture = _keyPicture;
-                        }
-                        else
-                        {
-                            _itemPicture = _chestPicture;
-                        }
-                        break;
-                    case 2:
-                        if (HasKey(402))
-                        {
-                            _itemPicture = _bosskeyPicture;
                         }
                         else
                         {
@@ -220,20 +183,16 @@ namespace WarTornLands.PlayerClasses
 
                 }
             }
-
         }
 
-        internal bool HasKey(int _id)
+        public bool HasKey(string areaID)
         {
-            // TODO change :-)
+            return _keys.UseKey(areaID);
+        }
 
-            foreach (Item i in _normalkeys)
-            {
-                if ((int)i.ItemType == _id)
-                    return true;
-            }
-
-            return false;
+        public bool HasMasterKey(string areaID)
+        {
+            return _keys.UseMaster(areaID);
         }
     }
 }

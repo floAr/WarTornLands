@@ -101,6 +101,7 @@ namespace WarTornLands.Infrastructure
             int width = int.Parse(info["Width"].ToString());
             int height = int.Parse(info["Height"].ToString());
             Rectangle bounds = new Rectangle(int.Parse(posData["X"].ToString()) * Constants.TileSize, int.Parse(posData["Y"].ToString()) * Constants.TileSize, width, height);
+            string name = info["Name"].ToString();
 
             #endregion
 
@@ -116,7 +117,7 @@ namespace WarTornLands.Infrastructure
                 data.ReadXml(file);
             }
 
-            Area area = new Area(bounds);
+            Area area = new Area(bounds, name, areaID);
 
             List<DataSet> dataCollection = ReadEntityTypes();
             Game1.Instance.Level.EntityTypeData = dataCollection;
@@ -207,7 +208,7 @@ namespace WarTornLands.Infrastructure
 
             #region Read Objectgroups
 
-            EntityBuilder.Begin();
+            EntityBuilder.Begin(area);
 
             foreach (DataRow groupData in data.Tables["objectgroup"].Rows)
             {
@@ -299,7 +300,7 @@ namespace WarTornLands.Infrastructure
                     return property["value"].ToString();
             }
 
-            return null;
+            throw new PropertyNotFoundException(propertyName);
         }
     }
 
@@ -314,5 +315,10 @@ namespace WarTornLands.Infrastructure
             ID = id;
             Attribute = attribute;
         }
+    }
+    public class PropertyNotFoundException : Exception
+    {
+        public PropertyNotFoundException(string propertyName)
+            : base("Property " + propertyName + " not found.") { }
     }
 }

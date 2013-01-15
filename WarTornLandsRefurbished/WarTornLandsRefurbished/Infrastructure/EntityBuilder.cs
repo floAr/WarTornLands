@@ -41,15 +41,17 @@ namespace WarTornLands.Infrastructure
         /// This is done to be able to link RoamingRectangles and such items to the Entities.
         /// </summary>
         private List<ZoneVeil> _zoneContainer;
+        public Area CurrentArea { get; private set; }
 
-        private EntityBuilder()
+        private EntityBuilder(Area area)
         {
             _zoneContainer = new List<ZoneVeil>();
+            CurrentArea = area;
         }
 
-        public static void Begin()
+        public static void Begin(Area area)
         {
-            _instance = new EntityBuilder();
+            _instance = new EntityBuilder(area);
         }
 
         public static void End()
@@ -135,8 +137,8 @@ namespace WarTornLands.Infrastructure
                             data["gid"].ToString()
                                )));
 
-            entity.Position = new Vector2(int.Parse(data["x"].ToString()) + tilesetBox.DimensionsOf(int.Parse(data["gid"].ToString())).X * .5f,
-                                       int.Parse(data["y"].ToString()) - tilesetBox.DimensionsOf(int.Parse(data["gid"].ToString())).Y * .5f);
+            entity.Position = new Vector2(int.Parse(data["x"].ToString()) + tilesetBox.DimensionsOf(int.Parse(data["gid"].ToString())).X,
+                                       int.Parse(data["y"].ToString()) - tilesetBox.DimensionsOf(int.Parse(data["gid"].ToString())).Y);
 
 
             // Handle special types
@@ -150,8 +152,7 @@ namespace WarTornLands.Infrastructure
                 //try
                 //{
                     con.Add(new ItemContainer(
-                        new Item(
-                            XMLParser.ValueOfProperty(data.GetChildRows("object_properties")[0], "Item"))));
+                        SwitchItemType(data.GetChildRows("object_properties")[0])));
                 //}
                 //catch { throw new Exception("A Chest is missing an Item."); }
                 con.Add(new KillSpeaker());
@@ -165,11 +166,10 @@ namespace WarTornLands.Infrastructure
             #region Door
             if (entity.Categorie.Equals("Door"))
             {
-                entity.AddModule(
-                    new OpenDoorOnCollide(
-                        int.Parse(XMLParser.ValueOfProperty(data.GetChildRows("object_properties")[0], "KeyID"))));
+                entity.AddModule(new OpenDoorOnCollide());
             }
             #endregion
+            #region Check for zone demande
             try
             {
                 string zoneID = XMLParser.ValueOfProperty(data.GetChildRows("object_properties")[0], "ZoneID");
@@ -179,9 +179,24 @@ namespace WarTornLands.Infrastructure
                     entity.SetZone(FindMatch(int.Parse(zoneID)));
                 }
             }
-            catch (IndexOutOfRangeException e) { }
+            catch { }
+            #endregion
 
             return entity;
+        }
+
+        private Item SwitchItemType(DataRow data)
+        {
+            // Register new Itemtypes here
+            switch(XMLParser.ValueOfProperty(data, "Item"))
+            {
+                case "DoorKey":
+                    return new DoorKey(CurrentArea.AreaID);
+                case "MasterKey":
+                    return new MasterKey(CurrentArea.AreaID);
+            }
+
+            return Item.Nothing;
         }
 
         public void DepositZone(int id, Zone zone)

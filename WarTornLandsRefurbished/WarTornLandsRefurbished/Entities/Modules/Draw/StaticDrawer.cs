@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Data;
+using WarTornLands.Infrastructure.Systems.SkyLight;
 
 namespace WarTornLands.Entities.Modules.Draw
 {
@@ -23,7 +24,17 @@ namespace WarTornLands.Entities.Modules.Draw
         /// The texture.
         /// </value>
         public Texture2D Texture { get { return _tex; } set { _tex = value; _size = new Vector2(_tex.Width, _tex.Height); } }
-        public bool IsLight { get { return _isLight; } set { _isLight = value; } }
+        public bool IsLight
+        {
+            get
+            {
+                return _isLight;
+            }
+            set
+            {
+                _isLight = value;
+            }
+        }
 
         // Whether the last draw call was invulnerable
         private bool _flashing = false;
@@ -39,6 +50,12 @@ namespace WarTornLands.Entities.Modules.Draw
             : this()
         {
             Texture = Game1.Instance.Content.Load<Texture2D>("sprite/" + data["Texture"].ToString());
+
+            try
+            {
+                this.IsLight = bool.Parse(data["IsLight"].ToString());
+            }
+            catch { }
         }
 
         /// <summary>

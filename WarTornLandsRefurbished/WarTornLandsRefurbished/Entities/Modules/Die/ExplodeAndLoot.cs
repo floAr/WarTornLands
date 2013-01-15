@@ -21,7 +21,7 @@ namespace WarTornLands.Entities.Modules.Die
             _explosion = AnimatedDrawer.Explosion;
         }
         public ExplodeAndLoot(DataRow data)
-            : this(new Item(ItemTypes.Hammer))
+            : this(Item.Nothing)
         { }
 
         public void Die()

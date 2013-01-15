@@ -3,27 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
+using WarTornLands.Infrastructure;
 
 namespace WarTornLands.Entities.Modules.Collide
 {
     class OpenDoorOnCollide : BaseModule, ICollideModule
     {
         private bool _locked;
-        private int _id;
+        private string _areaID;
 
         public OpenDoorOnCollide()
         {
             _locked=false;
         }
-        public OpenDoorOnCollide(int id)
+        public OpenDoorOnCollide(string areaID)
         {
-            _id = id;
+            _areaID = areaID;
             _locked = true;
         }
         public OpenDoorOnCollide(DataRow data)
+            : this(EntityBuilder.Instance.CurrentArea.AreaID)
         {
-            _id = int.Parse(data["KeyID"].ToString());
-            _locked = true;
         }
 
         public bool OnCollide(CollideInformation info)
@@ -31,7 +31,7 @@ namespace WarTornLands.Entities.Modules.Collide
             // TODO open only if player has key!
             if (_locked)
             {
-                if (Game1.Instance.Player.Inventory.HasKey(_id))
+                if (Game1.Instance.Player.Inventory.HasKey(_areaID))
                 {
                     _owner.ToBeRemoved = true;
                     return true;
@@ -40,8 +40,6 @@ namespace WarTornLands.Entities.Modules.Collide
                 {
                     return false;
                 }
-
-
             }
             else
             {

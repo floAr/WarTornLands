@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using System.Data;
 
 namespace WarTornLands.Entities.Modules.Draw
 {
@@ -15,6 +16,13 @@ namespace WarTornLands.Entities.Modules.Draw
         {
             _lower = lower;
             _upper = upper;
+        }
+        public DualDraw(DataRow data)
+        {
+            DataRow[] parts = data.GetChildRows("Module_Module");
+
+            _lower = (IDrawExecuter)BaseModule.GetModule(parts[0]);
+            _upper = (IDrawExecuter)BaseModule.GetModule(parts[1]);
         }
         public void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch batch, DrawInformation information)
         {

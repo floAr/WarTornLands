@@ -78,14 +78,14 @@ namespace WarTornLands.Infrastructure.Systems.SkyLight
             }
 
             Game1.Instance.SpriteBatch.Draw(Game1.Instance.Content.Load<Texture2D>("sprite/light"), new Rectangle(-20, -20, Game1.Instance.GraphicsDevice.DisplayMode.Width + 40, Game1.Instance.GraphicsDevice.DisplayMode.Height + 20), _skyColor);
-            foreach (Entities.Entity e in _groundLights)
+           /* foreach (IDrawExecuter e in _groundLights)
             {
-                e.Draw(gameTime);
+                e.Draw(
             }
             foreach (Entities.Entity e in _upperLights)
             {
                 e.Draw(gameTime);
-            }
+            }*/
         }
 
        

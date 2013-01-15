@@ -45,7 +45,6 @@ namespace WarTornLands.World.Layers
                     {
                         int gid = _grid[x, y] - 1;
 
-                       
                         texture = _tileSets.GetTextureAndSourceRec(gid, out sourceRec);
 
                         game.SpriteBatch.Draw(

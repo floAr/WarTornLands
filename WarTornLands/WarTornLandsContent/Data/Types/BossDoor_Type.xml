@@ -14,8 +14,7 @@
 
   <!--Collide-->
   <Module>
-    <Type>OpenDoorOnCollide</Type>
-    <KeyID>402</KeyID>
+    
   </Module>
 
   <!--Die-->

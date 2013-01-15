@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using WarTornLands.Infrastructure.Systems.SkyLight;
+using System.Data;
 
 namespace WarTornLands.Entities.Modules.Draw
 {
 
-    public class AnimatedDrawer :BaseModule, IDrawExecuter
+    public class AnimatedDrawer : BaseModule, IDrawExecuter
     {
         private Dictionary<string, Animation> _animations;
         private Texture2D _spriteSheet;
@@ -20,17 +22,64 @@ namespace WarTornLands.Entities.Modules.Draw
         private bool _flashing = false;
         // Counts the time in the current "blink" state when invulnerable (ms)
         private float _blinkTime = 0;
-        // Total duration of a normal/highlighted blink duration (ms)
+        // Total duration of a normal/highlighted blink duration (ms)D:\Dropbox\mine\GameDev2012-13\WarTornLands\WarTornLandsRefurbished\WarTornLandsRefurbished\Entities\Modules\Think\ThinkProjectileFly.cs
         private float _blinkDuration = 400;
 
         private bool _isLight = false;
         public bool HasEnded { get { return _animations[_currentAnimation].HasEnded; } }
-        public bool IsLight { get { return _isLight; } set { _isLight = value; } }
+        public bool IsLight 
+        { 
+            get 
+            { 
+                return _isLight; 
+            } 
+            set 
+            {
+                _isLight = value; 
+            } 
+        }
         public AnimatedDrawer(Texture2D spriteSheet)
         {
             _spriteSheet = spriteSheet;
             _animations = new Dictionary<string, Animation>();
+        }
+        public AnimatedDrawer(DataRow data)
+            : this(Game1.Instance.Content.Load<Texture2D>("sprite/"+data["Texture"].ToString()))
+        {
+            foreach (DataRow animData in data.GetChildRows("Module_Animation"))
+            {
+                this.AddAnimation(ReadAnimation(animData));
+            }
 
+            try
+            {
+                this.IsLight = bool.Parse(data["IsLight"].ToString());
+            }
+            catch { }
+        }
+
+        private Animation ReadAnimation(DataRow data)
+        {
+            Animation res = new Animation(data["Name"].ToString());
+
+            foreach (DataRow frameData in data.GetChildRows("Animation_Frame"))
+            {
+                DataRow recData = frameData.GetChildRows("Frame_Rectangle")[0];
+                res.AddFrame(new Rectangle(
+                    int.Parse(recData["X"].ToString()),
+                    int.Parse(recData["Y"].ToString()),
+                    int.Parse(recData["width"].ToString()),
+                    int.Parse(recData["height"].ToString())));
+            }
+
+            return res;
+        }
+
+        public override void SetOwner(Entity owner)
+        {
+            base.SetOwner(owner);
+
+            //Lightmanager.Instance.AddLight(owner);
         }
 
         public void SetCurrentAnimation(string name)

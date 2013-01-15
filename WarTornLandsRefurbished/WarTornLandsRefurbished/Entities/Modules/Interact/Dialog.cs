@@ -10,6 +10,7 @@ using WarTornLands.Counter;
 using WarTornLands.Infrastructure.Systems.InputSystem;
 using System.Data;
 using System.IO;
+using WarTornLands.PlayerClasses.Items;
 
 namespace WarTornLands.Entities.Modules.Interact
 {
@@ -161,7 +162,7 @@ namespace WarTornLands.Entities.Modules.Interact
             foreach (DataRow itemData in data.GetChildRows("Line_Item"))
             {
                 // TODO switch for item types
-                items.Add(new PlayerClasses.Items.Item(PlayerClasses.Items.ItemTypes.SmallKey));
+                items.Add(new DoorKey(""));
             }
             return new ItemContainer(items);
         }

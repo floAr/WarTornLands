@@ -31,6 +31,11 @@
     <property name="Modifier" value="0"/>
    </properties>
   </tile>
+  <tile id="33">
+   <properties>
+    <property name="Type" value="Torch"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="262" name="Chars" tilewidth="64" tileheight="128">
   <properties>
@@ -7104,18 +7109,6 @@
     <property name="ID" value="1"/>
    </properties>
   </object>
-  <object x="960" y="224">
-   <properties>
-    <property name="ID" value="2"/>
-   </properties>
-   <polygon points="0,0 96,-64 224,-64 288,0 160,64 32,96"/>
-  </object>
-  <object x="960" y="416">
-   <properties>
-    <property name="ID" value="3"/>
-   </properties>
-   <polyline points="0,0 128,64"/>
-  </object>
  </objectgroup>
  <objectgroup name="Entities0" width="70" height="50">
   <properties>
@@ -7142,5 +7135,9 @@
     <property name="Item" value="MasterKey"/>
    </properties>
   </object>
+  <object gid="124" x="736" y="768"/>
+  <object gid="124" x="864" y="768"/>
+  <object gid="124" x="992" y="768"/>
+  <object gid="124" x="1120" y="768"/>
  </objectgroup>
 </map>

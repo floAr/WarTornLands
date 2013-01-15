@@ -87,7 +87,7 @@ namespace WarTornLands.Entities.Modules.Draw
         /// <param name="parent">The parent.</param>
         /// <param name="name">The name.</param>
         /// <param name="followUp">The follow up animation.</param>
-        public Animation(string name,Animation followUp)
+        public Animation(string name, Animation followUp)
         {
             _frames = new List<Frame>();
             this.Name = name;

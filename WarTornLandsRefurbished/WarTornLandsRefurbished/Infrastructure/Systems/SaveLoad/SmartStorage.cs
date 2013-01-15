@@ -10,8 +10,10 @@ namespace WarTornLands.Infrastructure.Systems.SaveLoad
 {
    public class SmartStorage<SaveGameStructure>
     {
-       StorageDevice device = new StorageDevice();
+       //StorageDevice device = new StorageDevice();
+       StorageDevice device = null;
        StorageContainer container;
+
        private Stream openStorage(int slot)
        {
            // Open a storage container.

@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using System.Data;
+using System;
 namespace WarTornLands.Entities.Modules
 {
     public abstract class BaseModule
@@ -16,7 +17,14 @@ namespace WarTornLands.Entities.Modules
 
         public static BaseModule GetModule(DataRow data)
         {
-            string type = data["Type"].ToString();
+            string type = "";
+
+            try
+            {
+                type = data["Type"].ToString();
+            }
+            catch { return null; }
+
 
             switch (type)
             {
@@ -30,6 +38,10 @@ namespace WarTornLands.Entities.Modules
                     return new Die.ExplodeAndLoot(data);
                 case "StaticDrawer":
                     return new Draw.StaticDrawer(data);
+                case "DualDraw":
+                    return new Draw.DualDraw(data);
+                case "AnimatedDrawer":
+                    return new Draw.AnimatedDrawer(data);
                 case "Dialog":
                     return new Interact.Dialog(data);
                 case "ThinkInputGuided":
@@ -41,6 +53,9 @@ namespace WarTornLands.Entities.Modules
                 case "DamageFlash":
                     return new Hit.DamageFlash(data);
             }
+
+            if (!type.Equals(""))
+                throw new Exception("Module type "+type+" not recognised.");
 
             return null;
         }

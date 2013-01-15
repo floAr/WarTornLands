@@ -14,21 +14,23 @@ namespace WarTornLands.World
     {
         public Rectangle Bounds { get; private set; }
         public TileSetBox TileSets;
+        public string Name { get; private set; }
+        public string AreaID { get; private set; }
 
         List<TileLayer> _lowTileLayers;
         EntityLayer _entityLayer;
         List<TileLayer> _highTileLayers;
 
-        public Area(Rectangle bounds)
+        public Area(Rectangle bounds, string name, string id)
         {
             Bounds = bounds;
             _lowTileLayers = new List<TileLayer>();
             _highTileLayers = new List<TileLayer>();
+            Name = name;
+            AreaID = id;
 
             _entityLayer = new EntityLayer();
         }
-
-
 
         public void AddEntityLayer(EntityLayer layer)
         {
