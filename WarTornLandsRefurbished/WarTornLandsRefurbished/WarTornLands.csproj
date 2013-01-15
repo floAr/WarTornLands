@@ -132,7 +132,9 @@
     <Compile Include="Infrastructure\Systems\DialogSystem\Obama.cs" />
     <Compile Include="Infrastructure\Systems\DialogSystem\Options.cs" />
     <Compile Include="Infrastructure\Systems\DialogSystem\TextLineAndEvent.cs" />
+    <Compile Include="Infrastructure\Systems\DrawSystem\BaseEffect.cs" />
     <Compile Include="Infrastructure\Systems\DrawSystem\DrawManager.cs" />
+    <Compile Include="Infrastructure\Systems\DrawSystem\Effects\ShockwaveEffect.cs" />
     <Compile Include="Infrastructure\Systems\DrawSystem\IDrawProvider.cs" />
     <Compile Include="Infrastructure\Systems\GameState\BaseGameState.cs" />
     <Compile Include="Infrastructure\Systems\GameState\BaseOverlayGameState.cs" />
