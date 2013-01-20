@@ -117,11 +117,11 @@ namespace WarTornLands.World
             return result;
         }
 
-        public List<Entity> GetEntitiesAt(Rectangle rect)
+        public HashSet<Entity> GetEntitiesAt(Rectangle rect)
         {
-            List<Entity> result = new List<Entity>();
+            HashSet<Entity> result = new HashSet<Entity>();
 
-            result.AddRange(_entityLayer.GetEntitiesAt(rect));
+            result.UnionWith(_entityLayer.GetEntitiesAt(rect));
 
             return result;
         }

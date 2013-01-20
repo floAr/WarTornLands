@@ -35,14 +35,103 @@ namespace WarTornLands.Infrastructure
         {
         }
 
-
-        public Vector2 TryMove(Entity source, Vector2 moveVector)
+        /// <summary>
+        /// Tries to move an entity by a given move vector. Calls Entity.Collide functions of both
+        /// the source and the entities it collides with along the way. The resulting move vector needs
+        /// to be applied manually by the calling function!
+        /// </summary>
+        /// <param name="source">Entity that is to be moved.</param>
+        /// <param name="moveVector">Vector by which the entity is to be moved.</param>
+        /// <returns>A possibly corrected move vector along which it is safe to move the entity.</returns>
+        public Vector2 TryMove(Entity source, Vector2 moveVector, bool slide = true)
         {
-            if (source.DrawModule == null)
-                return source.Position + moveVector;
+            // Don't do anything for a Vector2.Zero move vector
+            if (moveVector.LengthSquared() == 0)
+                return moveVector;
 
-            List<Entity> entities;
-            Vector2 move = CollideRectangle(source, moveVector, true, true, out entities);
+            // Save squared length of move vector
+            float distance = moveVector.Length();
+
+            // List of entities that the source collides with
+            HashSet<Entity> entities = new HashSet<Entity>();
+
+            // Calculate step vector for continuous collision detection
+            Vector2 step = moveVector / moveVector.Length();
+
+            // Loop for stepwise collision detection
+            Vector2 pos = new Vector2();
+            Vector2 newPos = new Vector2();
+            bool blocked = false;
+            while (!blocked && distance > 0)
+            {
+                // Step the position
+                if (distance >= 1)
+                {
+                    // Do a full step of length 1
+                    newPos += step;
+                    distance--;
+                }
+                else
+                {
+                    // Do a partial step for the remaining length
+                    newPos += step * distance;
+                    distance = 0;
+                }
+                
+                // Check whether the rectangle at newPos collides
+                Rectangle rect = source.BoundingRect; // TODO change to move collision shape!
+                if (!IsAccessible(OffsetRectangle(rect, newPos), true, source))
+                {
+                    // Add entities to collision list
+                    entities.UnionWith(Game1.Instance.Level.GetEntitiesAt(OffsetRectangle(rect, newPos)));
+
+                    if (slide)
+                    {
+                        // Get possibly capped vector for this step
+                        Vector2 thisStep = newPos - pos;
+
+                        // Check in X direction
+                        rect = source.BoundingRect; // TODO change to move collision shape!
+                        Vector2 newPosSlide = pos + new Vector2(thisStep.X, 0);
+                        if (IsAccessible(OffsetRectangle(rect, newPosSlide), true, source))
+                        {
+                            // X successful
+                            entities.Union(Game1.Instance.Level.GetEntitiesAt(rect));
+                            newPos = newPosSlide;
+                        }
+                        else
+                        {
+                            // Check in Y direction
+                            rect = source.BoundingRect; // TODO change to move collision shape!
+                            newPosSlide = pos + new Vector2(0, thisStep.Y);
+                            if (IsAccessible(OffsetRectangle(rect, newPosSlide), true, source))
+                            {
+                                // Y successful
+                                newPos = newPosSlide;
+                            }
+                            else
+                            {
+                                // Both X and Y blocked
+                                blocked = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Path is blocked
+                        blocked = true;
+                    }
+                }
+                
+                // Update position if check was successful
+                if (!blocked)
+                {
+                    pos = newPos;
+                }
+            }
+            
+            // Remove source so it doesn't collide with itself
+            entities.Remove(source);
 
             // Call Collide methods
             foreach (Entity ent in entities)
@@ -51,146 +140,52 @@ namespace WarTornLands.Infrastructure
                 source.Collide(ent);
             }
 
-            return move;
-        }
-        /// <summary>
-        /// Test an entity collision at a point.
-        /// </summary>
-        /// <param name="point">Position of the point.</param>
-        /// <param name="radius">Radius of the check.</param>
-        /// <returns>List of entities at the point.</returns>
-        /// TODO altitude & height check!
-        /// TODO add tile check!
-        public List<Entity> CollidePoint(Vector2 point, int radius = 1)
-        {
-            return Game1.Instance.Level.GetEntitiesAt(point, radius);
+            return pos; // TODO!
         }
 
         /// <summary>
-        /// Test a collision on a line. Does not call any Collide events.
+        /// Offset a rectangle by a given vector using the ceiling of the absolute vector values.
+        /// The original rectangle is not modified, since the rect is passed by value.
         /// </summary>
-        /// <param name="start">Start point.</param>
-        /// <param name="end">Absolute end point.</param>
-        /// <param name="source">The entity executing the move.</param>
-        /// <param name="testTiles">Set true if tile collision should be checked.</param>
-        /// <param name="altitude">Altitude of the colliding body.</param>
-        /// <param name="bodyHeight">Height of the colliding body.</param>
-        /// <param name="list">Out param for a list of entities, sorted by distance.</param>
-        /// <returns>Absolute end position of the collision.</returns>
-        public Vector2 CollideLine(Vector2 start, Vector2 end, Entity source, bool testTiles,
-            float altitude, float bodyHeight, out List<Entity> list)
+        /// <param name="rect">Rectangle to be modified.</param>
+        /// <param name="offset">Offset vector, absolute value rounded up.</param>
+        /// <returns>Offset rectangle.</returns>
+        public Rectangle OffsetRectangle(Rectangle rect, Vector2 offset)
         {
-            // TODO add tile check!
+            rect.Offset(offset.X == 0 ? 0 : (offset.X > 0 ? (int)offset.X + 1 : (int)offset.X - 1),
+                offset.Y == 0 ? 0 : (offset.Y > 0 ? (int)offset.Y + 1 : (int)offset.Y - 1));
+            return rect;
+        }
 
-            list = new List<Entity>();
-
-            float distance = Vector2.Distance(start, end);
-            Vector2 pos = start;
-            Vector2 step = new Vector2((end.X - start.X) / distance, (end.Y - start.Y) / distance);
-
-            for (int i = 0; Math.Abs(i) < distance; i++)
+        /// <summary>
+        /// Check whether a rectangle is accessible or not.
+        /// </summary>
+        /// <param name="rect">Rectangle to be tested.</param>
+        /// <param name="testTiles">Whether tile collision should be tested.</param>
+        /// <param name="source">Entity that's colliding, e.g. if some thing's collide only with the player.</param>
+        /// <returns>True if rectangle is accesible, false otherwise.</returns>
+        public bool IsAccessible(Rectangle rect, bool testTiles, Entity source = null)
+        {
+            foreach (Entity e in Game1.Instance.Level.GetEntitiesAt(rect))
             {
-                foreach (Entity e in CollidePoint(pos))
-                {
-                    // Add entity, if it's not in list
-                    if (!list.Contains(e))
-                        list.Add(e);
-
-                    // Break if entity blocks way
-                    if (e.CollideModule != null &&
-                        !e.CollideModule.IsPassable(new CollideInformation()
-                        {
-                            Collider = source,
-                            IsPlayer = source is Player
-                        }))
+                // Break if entity blocks way
+                if (e.CollideModule != null &&
+                    !e.CollideModule.IsPassable(new CollideInformation()
                     {
-                        return pos;
-                    }
+                        Collider = source,
+                        IsPlayer = source is Player
+                    }))
+                {
+                    return false;
                 }
-
-                pos += step;
             }
 
-            return pos;
+            // Return result of tile collision or true if we don't want to check
+            return testTiles? Game1.Instance.Level.IsRectAccessible(rect) : true;
         }
 
-        /// <summary>
-        /// Test an entity collision on a moving rectangle. Does not call any Collide events.
-        /// </summary>
-        /// <param name="source">The entity executing the move.</param>
-        /// <param name="toEnd">Movement vector to the end position.</param>
-        /// <param name="testTile">Set true if tile collision should be checked.</param>
-        /// <param name="slide">Set true if you want to slide on walls.</param>
-        /// <param name="list">Out param for a list of entities, sorted by distance.</param>
-        /// <returns>Relative end position of the collision.</returns>
-        public Vector2 CollideRectangle(Entity source, Vector2 toEnd, bool testTile, bool slide, out List<Entity> list)
-        {
-            list = new List<Entity>();
+        // TODO IsAccessible for point+radius, maybe lines and stuff...
 
-            float distance = toEnd.Length();
-            Vector2 pos = new Vector2();
-            Vector2 step = toEnd / distance;
-
-            for (int i = 0; Math.Abs(i) < distance; i++)
-            {
-                // Pre-calculate next step's rectangle
-                Rectangle newRect = source.BoundingRect;
-                newRect.Offset((int)Math.Round(pos.X + step.X), (int)Math.Round(pos.Y + step.Y));
-
-                // Test next step's rectangle
-                foreach (Entity e in Game1.Instance.Level.GetEntitiesAt(newRect))
-                {
-                    // Add entity, if it's not in list
-                    if (!list.Contains(e))
-                        list.Add(e);
-
-                    // Break if entity blocks way
-                    if (e.CollideModule != null &&
-                        !e.CollideModule.IsPassable(new CollideInformation()
-                        {
-                            Collider = source,
-                            IsPlayer = source is Player
-                        }))
-                    {
-                        // Return this step's position
-                        return pos;
-                    }
-                }
-
-                // Break if tiles block way
-                if (testTile && !Game1.Instance.Level.IsRectAccessible(newRect))
-                {
-                    // Collide'n'slide, yeah!
-                    if (slide)
-                    {
-                        // Try only X
-                        newRect = source.BoundingRect;
-                        newRect.Offset((int)Math.Round(pos.X + step.X), (int)Math.Round(pos.Y));
-                        if (Game1.Instance.Level.IsRectAccessible(newRect))
-                        {
-                            pos.X += step.X;
-                        }
-                        else
-                        {
-                            newRect = source.BoundingRect;
-                            newRect.Offset((int)Math.Round(pos.X), (int)Math.Round(pos.Y + step.Y));
-                            if (Game1.Instance.Level.IsRectAccessible(newRect))
-                            {
-                                pos.Y += step.Y;
-                            }
-                        }
-                    }
-
-                    // Return this step's position
-                    return pos;
-                }
-
-                // Step current position and move rect
-                pos += step;
-            }
-
-            return pos;
-        }
         #region COLLISION SHAPE CODE
         public static bool Collide(ICollisionShape s1, ICollisionShape s2)
         {
@@ -226,10 +221,12 @@ namespace WarTornLands.Infrastructure
         }
 
         #region DEEP COLLISION SHAPE CODE
+
         public static bool Collide(RectangleCollisionShape s1, RectangleCollisionShape s2)
         {
             return s1.Shape.Intersects(s2.Shape);
         }
+
         public static bool Collide(RectangleCollisionShape s1, CircleCollisionShape s2)
         {
 
@@ -247,6 +244,7 @@ namespace WarTornLands.Infrastructure
 
             return cornerDistance_sq < Math.Pow(s2.Radius, 2);
         }
+
         public static bool Collide(CircleCollisionShape s1, CircleCollisionShape s2)
         {
             return Vector2.Distance(s1.Center, s2.Center) > s1.Radius + s2.Radius;
@@ -274,6 +272,7 @@ namespace WarTornLands.Infrastructure
             }
             return false;
         }
+
         public static bool Collide(CircleCollisionShape s1, CompoundCollisionShape s2)
         {
             foreach (ICollisionShape c2 in s2.Shapes)
@@ -283,6 +282,7 @@ namespace WarTornLands.Infrastructure
             }
             return false;
         }
+
         #endregion
         #endregion
     }
