@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using WarTornLands.Counter;
 using WarTornLands.Entities.Modules.Draw;
 using Microsoft.Xna.Framework.Graphics;
+using WarTornLands.Infrastructure.Systems;
 
 namespace WarTornLands.Entities.Modules.Think.Parts
 {
@@ -22,6 +23,8 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         private CounterManager _cm;
         private readonly string _cShooter = "ShooterCooldownCounter";
 
+        static Pool<Entity> projectilePool = new Pool<Entity>(delegate() { return new Entity(Vector2.Zero); });
+
         public ShooterAbility(int cooldownTime = 800, int damage = 1, int range = 400, float speed = 400f)
         {
             CooldownTime = cooldownTime;
@@ -29,6 +32,8 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             Speed = speed;
             Damage = damage;
             _cooldown = false;
+
+            // TODO preallocate projectile pool?
         }
 
         public bool TryExecute()
@@ -41,9 +46,10 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             _cm.StartCounter(_cShooter);
 
             // Create projectile entity
-            // TODO use pool allocat0r
-            Entity p = new Entity(_owner.Position);
+            Entity p = projectilePool.GetFreeItem();
+            p.Position = _owner.Position;
             p.Face = _owner.Face;
+            p.RemoveAllModules();
 
             // Add texture
             StaticDrawer sd = new StaticDrawer();

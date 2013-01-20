@@ -128,14 +128,14 @@ namespace WarTornLands.World
             return result;
         }
 
-        public List<Entity> GetEntitiesAt(Rectangle rect)
+        public HashSet<Entity> GetEntitiesAt(Rectangle rect)
         {
-            List<Entity> result = new List<Entity>();
+            HashSet<Entity> result = new HashSet<Entity>();
 
             // TODO only check areas near the player
             foreach (KeyValuePair<string, Area> pair in _areas)
             {
-                result.AddRange(pair.Value.GetEntitiesAt(rect));
+                result.UnionWith(pair.Value.GetEntitiesAt(rect));
             }
 
             return result;

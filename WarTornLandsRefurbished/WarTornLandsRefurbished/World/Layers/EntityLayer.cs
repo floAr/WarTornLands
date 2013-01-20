@@ -163,9 +163,9 @@ namespace WarTornLands.World.Layers
             return result;
         }
 
-        public List<Entity> GetEntitiesAt(Rectangle rect)
+        public HashSet<Entity> GetEntitiesAt(Rectangle rect)
         {
-            List<Entity> result = new List<Entity>();
+            HashSet<Entity> result = new HashSet<Entity>();
 
             foreach (Entity ent in _entities)
             {

@@ -66,10 +66,9 @@ namespace WarTornLands.Entities.Modules.Think
 
 
             // Damage
-            List<Entity> hit;
-            CollisionManager.Instance.CollideRectangle(_owner, _owner.Position - oldPos, false, false, out hit);
+            HashSet<Entity> hit = Game1.Instance.Level.GetEntitiesAt(_owner.BoundingRect); // TODO use some other rect?
 
-            hit.RemoveAll(delegate(Entity ent) { return ent.Equals(_shooter) || ent.HitModule == null; });
+            hit.RemoveWhere(delegate(Entity ent) { return ent.Equals(_shooter) || ent.HitModule == null; });
 
             if (hit.Count > 0)
             {
