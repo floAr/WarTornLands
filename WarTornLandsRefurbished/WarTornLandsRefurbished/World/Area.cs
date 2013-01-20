@@ -53,31 +53,45 @@ namespace WarTornLands.World
 
         private bool Contains(Vector2 position)
         {
-            if (Bounds.Left * Constants.TileSize < position.X &&
-                Bounds.Top * Constants.TileSize < position.Y &&
-                Bounds.Right * Constants.TileSize > position.X &&
-                Bounds.Bottom * Constants.TileSize > position.Y)
-            {
-                return true;
-            }
+            Rectangle pxBounds = new Rectangle(Bounds.Location.X * Constants.TileSize, Bounds.Location.Y * Constants.TileSize,
+                Bounds.Width * Constants.TileSize, Bounds.Height * Constants.TileSize);
+            return pxBounds.Contains(new Point((int)Math.Round(position.X), (int)Math.Round(position.Y)));
+        }
 
-            return false;
+        private bool Contains(Rectangle rect)
+        {
+            Rectangle pxBounds = new Rectangle(Bounds.Location.X * Constants.TileSize, Bounds.Location.Y * Constants.TileSize,
+               Bounds.Width * Constants.TileSize, Bounds.Height * Constants.TileSize);
+            return pxBounds.Contains(rect);
         }
 
         internal bool IsPositionAccessible(Vector2 position)
         {
             // Check whether the area even contains the pixel position
             if (!Contains(position))
-            {
                 return true;
-            }
-
-            Vector2 localPos = new Vector2(position.X, position.Y);
-
+            
             // Iterate through layers, check all TileLayers
             foreach (Layer layer in _lowTileLayers)
             {
                 if (layer is TileLayer && (layer as TileLayer).IsPositionAccessible(position) == false)
+                    return false;
+            }
+
+            // Accessible if all TileLayers had empty tiles
+            return true;
+        }
+
+        public bool IsRectAccessible(Rectangle rect)
+        {
+            // Check whether the area even contains the pixel position
+            if (!Contains(rect))
+                return true;
+
+            // Iterate through layers, check all TileLayers
+            foreach (Layer layer in _lowTileLayers)
+            {
+                if (layer is TileLayer && (layer as TileLayer).IsRectAccessible(rect) == false)
                     return false;
             }
 
@@ -99,6 +113,15 @@ namespace WarTornLands.World
             List<Entity> result = new List<Entity>();
 
             result.AddRange(_entityLayer.GetEntitiesAt(position, radius));
+
+            return result;
+        }
+
+        public List<Entity> GetEntitiesAt(Rectangle rect)
+        {
+            List<Entity> result = new List<Entity>();
+
+            result.AddRange(_entityLayer.GetEntitiesAt(rect));
 
             return result;
         }

@@ -86,6 +86,7 @@ namespace WarTornLands.World.Layers
             List<Entity> result = new List<Entity>();
 
             // TODO fails if entity is not centered. We need a convention here!!!
+            // TODO and it's a big fucking TODO because entities aren't centered anymore!
 
             foreach (Entity ent in _entities)
             {
@@ -161,6 +162,19 @@ namespace WarTornLands.World.Layers
 
             return result;
         }
+
+        public List<Entity> GetEntitiesAt(Rectangle rect)
+        {
+            List<Entity> result = new List<Entity>();
+
+            foreach (Entity ent in _entities)
+            {
+                if (ent.DrawModule != null && rect.Intersects(ent.BoundingRect))
+                    result.Add(ent);
+            }
+
+            return result;
+        }
 #endif
         public override void Update(GameTime gameTime)
         {
@@ -183,9 +197,9 @@ namespace WarTornLands.World.Layers
             List<Entity> buffer = new List<Entity>(_entities);
             foreach (Entity ent in buffer)
             {
-                ent.Update(gameTime);
                 if (ent.ToBeRemoved)
                     _entities.Remove(ent);
+                ent.Update(gameTime);
             }
             //}
             //catch { }

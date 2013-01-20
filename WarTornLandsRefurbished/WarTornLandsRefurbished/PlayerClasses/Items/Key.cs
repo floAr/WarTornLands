@@ -112,40 +112,40 @@ namespace WarTornLands.PlayerClasses.Items
 
             throw new Exception("There is no MasterShelf for area " + areaID + ". However that happened.");
         }
+    }
 
-        /// <summary>
-        /// Contains the amount of Keys for a specific dungeon.
-        /// </summary>
-        private struct KeyShelf
+    /// <summary>
+    /// Contains the amount of Keys for a specific dungeon.
+    /// </summary>
+    class KeyShelf
+    {
+        public string AreaID;
+        public short Count;
+
+        public void Add()
         {
-            public string AreaID;
-            public short Count;
-
-            public void Add()
-            {
-                Count++;
-            }
-
-            public void Remove()
-            {
-                Count--;
-            }
+            Count += 1;
         }
 
-        private struct MasterShelf
+        public void Remove()
         {
-            public string AreaID;
-            public bool Owned;
+            Count--;
+        }
+    }
 
-            public void Place()
-            {
-                Owned = true;
-            }
+    class MasterShelf
+    {
+        public string AreaID;
+        public bool Owned;
 
-            public void Remove()
-            {
-                Owned = false;
-            }
+        public void Place()
+        {
+            Owned = true;
+        }
+
+        public void Remove()
+        {
+            Owned = false;
         }
     }
 
@@ -154,7 +154,7 @@ namespace WarTornLands.PlayerClasses.Items
         public string AreaID { get; private set; }
 
         public DoorKey(string areaID)
-            : base("Kleiner Schlüssel")
+            : base("Kleiner Schluessel")
         {
             AreaID = areaID;
         }
@@ -165,7 +165,7 @@ namespace WarTornLands.PlayerClasses.Items
         public string AreaID { get; private set; }
 
         public MasterKey(string areaID)
-            : base("Boss Schlüssel")
+            : base("Boss Schluessel")
         {
             AreaID = areaID;
         }

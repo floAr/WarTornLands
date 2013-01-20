@@ -20,6 +20,11 @@
   <!--Die-->
 	<Module>
 	</Module>
+	
+  <!--Hit-->
+  <Module>
+    <Type>BlockHit</Type>
+  </Module>
 
   <!--Draw-->
 	<Module>

@@ -24,17 +24,19 @@ namespace WarTornLands.Infrastructure.Systems.Camera2D
         public Camera2D(Entities.Entity target)
         {
             _target = target;
-            _center = target.Position;
+            _center = target.BoundingRectCenter;
         }
 
         public void SetTarget(Entities.Entity anchor)
         {
             _target = anchor;
         }
+
         internal void PlayCinematic(List<Vector2> points)
         {
             PlayCinematic(points, points.Count * 1000);
         }
+
         public void PlayCinematic(List<Vector2> points, int durationMS)
         {
             splineX = new Curve();
@@ -61,9 +63,9 @@ namespace WarTornLands.Infrastructure.Systems.Camera2D
             {
                 // Check whether camera position equals target position
                 if (_lerpBack == 0)
-                    _center = Vector2.Lerp(_center, _target.Position, 1);
+                    _center = Vector2.Lerp(_center, _target.BoundingRectCenter, 1);
                 else
-                    _center = Vector2.Lerp(_center, _target.Position, Math.Min(_counter/_lerpBack, 1));
+                    _center = Vector2.Lerp(_center, _target.BoundingRectCenter, Math.Min(_counter / _lerpBack, 1));
             }
             else
             {
@@ -75,7 +77,7 @@ namespace WarTornLands.Infrastructure.Systems.Camera2D
                 {
                     _counter = 0;
                     _cinematics = false;
-                    _lerpBack = Math.Abs(Vector2.Distance(_target.Position, _center)) * 10;
+                    _lerpBack = Math.Abs(Vector2.Distance(_target.BoundingRectCenter, _center)) * 10;
                 }
 
             }
@@ -87,7 +89,21 @@ namespace WarTornLands.Infrastructure.Systems.Camera2D
         {
             _counter = 0;
             _cinematics = false;
-            _lerpBack = Math.Abs(Vector2.Distance(_target.Position, _center)) * 10;
+            _lerpBack = Math.Abs(Vector2.Distance(_target.BoundingRectCenter, _center)) * 10;
+        }
+
+        /// <summary>
+        /// Get drawing rectangle on screen from logical entity boundings.
+        /// </summary>
+        /// <param name="rect">Logical entity boundings in the world.</param>
+        /// <param name="altitude">Optional altitude of the entity to draw jumping, flying etc.</param>
+        /// <returns>A rectangle that can be used for drawing directly on the screen.</returns>
+        internal Rectangle GetDrawRectangle(Rectangle rect, float altitude = 0.0f)
+        {
+            int boundsWidth = Game1.Instance.Window.ClientBounds.Width / 2;
+            int boundsHeight = Game1.Instance.Window.ClientBounds.Height / 2;
+            rect.Offset((int)-_center.X + boundsWidth + rect.Width / 2, (int)-_center.Y + boundsHeight + rect.Height / 2 - (int)(altitude * 50));
+            return rect;
         }
     }
 }

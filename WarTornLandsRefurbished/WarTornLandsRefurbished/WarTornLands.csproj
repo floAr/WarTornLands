@@ -74,11 +74,16 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DEBUG\RectangleDrawer.cs" />
     <Compile Include="DEBUG\ScreenLogComponent.cs" />
     <Compile Include="DEBUG\CuteFrametimeCounterComponent.cs" />
     <Compile Include="Entities\AI\Zones.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Modules\BaseModule.cs" />
+    <Compile Include="Entities\Modules\Collide\CollisionShape\CircleCollisionShape.cs" />
+    <Compile Include="Entities\Modules\Collide\CollisionShape\CompoundCollisionShape.cs" />
+    <Compile Include="Entities\Modules\Collide\CollisionShape\ICollisionShape.cs" />
+    <Compile Include="Entities\Modules\Collide\CollisionShape\RectangleCollisionShape.cs" />
     <Compile Include="Entities\Modules\Collide\Obstacle.cs" />
     <Compile Include="Entities\Modules\Collide\OpenDoorOnCollide.cs" />
     <Compile Include="Entities\Modules\Collide\PickUpOnCollide.cs" />
@@ -89,6 +94,7 @@
     <Compile Include="Entities\Modules\Draw\DualDraw.cs" />
     <Compile Include="Entities\Modules\Draw\ParticleSystem\Particle.cs" />
     <Compile Include="Entities\Modules\Draw\ParticleSystem\ParticleEngine.cs" />
+    <Compile Include="Entities\Modules\Hit\BlockHit.cs" />
     <Compile Include="Entities\Modules\Hit\DamageFlash.cs" />
     <Compile Include="Entities\Modules\Hit\_IHitModule.cs" />
     <Compile Include="Entities\Modules\Interact\Dialog.cs" />
@@ -126,7 +132,9 @@
     <Compile Include="Infrastructure\Systems\DialogSystem\Obama.cs" />
     <Compile Include="Infrastructure\Systems\DialogSystem\Options.cs" />
     <Compile Include="Infrastructure\Systems\DialogSystem\TextLineAndEvent.cs" />
+    <Compile Include="Infrastructure\Systems\DrawSystem\BaseEffect.cs" />
     <Compile Include="Infrastructure\Systems\DrawSystem\DrawManager.cs" />
+    <Compile Include="Infrastructure\Systems\DrawSystem\Effects\ShockwaveEffect.cs" />
     <Compile Include="Infrastructure\Systems\DrawSystem\IDrawProvider.cs" />
     <Compile Include="Infrastructure\Systems\GameState\BaseGameState.cs" />
     <Compile Include="Infrastructure\Systems\GameState\BaseOverlayGameState.cs" />
@@ -154,6 +162,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="World\Area.cs" />
+    <Compile Include="World\GlobalState.cs" />
     <Compile Include="World\Layers\EntityLayer.cs" />
     <Compile Include="World\Layers\TileLayer.cs" />
     <Compile Include="World\Layers\_Layer.cs" />

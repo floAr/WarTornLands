@@ -5,8 +5,14 @@ using System.Text;
 
 namespace WarTornLands.Infrastructure.Systems.SaveLoad
 {
-    struct SaveGameData
+   public struct SaveGameData
     {
+       //Player
 
+       //GlobalState
+       public List<String> Triggers;
+       public List<string> ValuesS;
+       public List<object> ValuesO;
     }
+
 }

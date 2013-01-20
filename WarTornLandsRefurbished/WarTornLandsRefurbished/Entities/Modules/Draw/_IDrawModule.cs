@@ -34,13 +34,6 @@ namespace WarTornLands.Entities.Modules.Draw
         /// </value>
         public float Rotation { get; set; }
         /// <summary>
-        /// Gets or sets a value indicating whether this sprite is drawn at its center.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if centered; otherwise, <c>false</c>.
-        /// </value>
-        public bool Centered { get; set; }
-        /// <summary>
         /// Gets or sets a value indicating whether this entity is drawn flashing, e.g. after a hit.
         /// </summary>
         /// <value>

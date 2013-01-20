@@ -88,8 +88,8 @@ namespace WarTornLands.Entities.Modules.Think
             _jump.Update(gameTime);
 
             // TODO fix shooter :)
-            _shooter.TryExecute();
-            _shooter.Update(gameTime);
+            /*_shooter.TryExecute();
+            _shooter.Update(gameTime);*/
 
             CheckForTarget();
 

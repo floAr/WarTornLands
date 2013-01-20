@@ -145,6 +145,11 @@ namespace WarTornLands.PlayerClasses
             return false;
         }
 
+        public void AddKeyShelf(string areaID)
+        {
+            _keys.AddShelf(areaID);
+            _keys.AddMasterShelf(areaID);
+        }
 
         public void Draw(GameTime gameTime)
         {

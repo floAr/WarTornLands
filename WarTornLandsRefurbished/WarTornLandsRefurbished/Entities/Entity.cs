@@ -72,15 +72,33 @@ namespace WarTornLands.Entities
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
+                // TODO new every time?
+                return new Rectangle((int)(Position.X - Size.X / 2.0f), (int)(Position.Y - Size.Y), (int)Size.X, (int)Size.Y);
+            }
+        }
+
+        public Vector2 BoundingRectCenter
+        {
+            get
+            {
+                // TODO new every time?
+                return new Vector2(BoundingRect.Center.X, BoundingRect.Center.Y);
             }
         }
 
         public Vector2 InitialPosition { get; internal set; }
         public Point TilePosition { get; set; }
+
+        /// <summary>
+        /// Current altitude of the entity, e.g. 0 while standing or greater than 0 while jumping or flying.
+        /// Value in meter.
+        /// </summary>
         public float Altitude { get; internal set; }
-        public float BaseAltitude { get; internal set; }
+        /// <summary>
+        /// Body height of the entity. Value in meter.
+        /// </summary>
         public float BodyHeight { get; internal set; }
+
         public int Health { get; internal set; }
         public int MaxHealth { get; internal set; }
         public string Name { get; internal set; }
@@ -137,7 +155,7 @@ namespace WarTornLands.Entities
         {
             Position = position;
             Health = 5;
-            BodyHeight = 40;
+            BodyHeight = 1.7f;
             Name = name;
             Face = Facing.DOWN;
             FaceLock = false;
@@ -346,6 +364,11 @@ namespace WarTornLands.Entities
                 _interactModule.Interact(user);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns>True if entity is passable, false otherwise.</returns>
         public void Collide(Entity source)
         {
             if (_collideModule != null)
@@ -353,6 +376,17 @@ namespace WarTornLands.Entities
                 CollideInformation info = new CollideInformation() { Collider = source, IsPlayer = source is Player };
                 _collideModule.OnCollide(info);
             }
+        }
+
+        public bool IsPassable(Entity source, float altitude, float bodyHeight)
+        {
+            if (_collideModule != null)
+            {
+                CollideInformation info = new CollideInformation() { Collider = source, IsPlayer = source is Player };
+                return _collideModule.IsPassable(info);
+            }
+
+            return true;
         }
 
         internal void RemoveAllModules()
@@ -374,8 +408,5 @@ namespace WarTornLands.Entities
             else
                 return 1;
         }
-
-
-     
     }
 }

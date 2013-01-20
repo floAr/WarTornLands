@@ -9,8 +9,11 @@ using WarTornLands.PlayerClasses;
 using WarTornLands.World;
 using WarTornLands.Infrastructure.Systems.GameState;
 using WarTornLands.Infrastructure.Systems.GameState.States;
+using WarTornLands.DEBUG;
+using WarTornLands.Infrastructure.Systems.SaveLoad;
 #if DEBUG
 using WarTornLands.DEBUG;
+using WarTornLands.Infrastructure.Systems.SaveLoad;
 #endif
 
 namespace WarTornLands
@@ -88,9 +91,9 @@ namespace WarTornLands
 
 
             this.Components.Add(InputManager.Instance);
-        
 
 
+            SmartStorage<SaveGameData>.Init();
             
             Player = Player.Instance;
             Player.Position = new Vector2(14 * Constants.TileSize, 19 * Constants.TileSize); // Spawn: Frederik
@@ -173,6 +176,7 @@ namespace WarTornLands
             _states.Peek().Draw(gameTime);
             SpriteBatch.Begin();
             base.Draw(gameTime);
+            RectangleDrawer.Draw();
             SpriteBatch.End();
         }
 
@@ -219,6 +223,7 @@ namespace WarTornLands
 
         internal void DebugDraw(GameTime gameTime)
         {
+
             base.Draw(gameTime);
         }
     }

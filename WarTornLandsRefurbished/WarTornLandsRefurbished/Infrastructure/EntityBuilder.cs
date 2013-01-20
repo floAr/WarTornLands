@@ -137,8 +137,8 @@ namespace WarTornLands.Infrastructure
                             data["gid"].ToString()
                                )));
 
-            entity.Position = new Vector2(int.Parse(data["x"].ToString()) + tilesetBox.DimensionsOf(int.Parse(data["gid"].ToString())).X,
-                                       int.Parse(data["y"].ToString()) - tilesetBox.DimensionsOf(int.Parse(data["gid"].ToString())).Y);
+            entity.Position = new Vector2(int.Parse(data["x"].ToString()) + tilesetBox.DimensionsOf(int.Parse(data["gid"].ToString())).X * .5f,
+                                       int.Parse(data["y"].ToString()));
 
 
             // Handle special types
@@ -166,7 +166,7 @@ namespace WarTornLands.Infrastructure
             #region Door
             if (entity.Categorie.Equals("Door"))
             {
-                entity.AddModule(new OpenDoorOnCollide());
+                entity.AddModule(new OpenDoorOnCollide(CurrentArea.AreaID));
             }
             #endregion
             #region Check for zone demande

@@ -58,7 +58,7 @@ namespace WarTornLands.PlayerClasses
 
         protected void LoadContent()
         {
-            AnimatedDrawer animS = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("sprite/character_64x128"));
+            /*AnimatedDrawer animS = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("sprite/character_64x128"));
             
             Animation anim = new Animation("walkDown");
             anim.AddFrame(new Rectangle(64 * 1, 0, 64, 128));
@@ -105,7 +105,11 @@ namespace WarTornLands.PlayerClasses
             anim.AddFrame(new Rectangle(4*64, 128, 64, 128));
             animS.AddAnimation(anim);
 
-            this.AddModule(animS);
+            this.AddModule(animS);*/
+
+            StaticDrawer sd = new StaticDrawer();
+            sd.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/potion");
+            this.AddModule(sd);
         }
 
         #region Subscribed events

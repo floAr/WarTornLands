@@ -5,6 +5,9 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using WarTornLands.Entities;
 using WarTornLands.World;
+using WarTornLands.Entities.Modules.Collide;
+using WarTornLands.PlayerClasses;
+using WarTornLands.Entities.Modules.Collide.CollisionShape;
 
 namespace WarTornLands.Infrastructure
 {
@@ -30,151 +33,257 @@ namespace WarTornLands.Infrastructure
 
         private CollisionManager()
         {
-            Game1.Instance.Level = Game1.Instance.Level;
         }
 
-        /// <summary>
-        /// Tries to execute a move from 'start' 'toGoal'.
-        /// ToGoal is relative to the start position.
-        /// Returns the actually possible move vector in respect to collisions
-        /// </summary>
-        /// <param name="start">The start.</param>
-        /// <param name="toGoal">To goal.</param>
-        /// <param name="radius">The radius.</param>
-        /// <param name="source">The source.</param>
-        /// <returns></returns>
-        public Vector2 TryMove(Vector2 start, Vector2 toGoal, float radius, Entity source)
+
+        public Vector2 TryMove(Entity source, Vector2 moveVector)
         {
-            float range = 20;  //Get Entity radius from whereever
+            if (source.DrawModule == null)
+                return source.Position + moveVector;
 
-            Vector2 move = toGoal;
+            List<Entity> entities;
+            Vector2 move = CollideRectangle(source, moveVector, true, true, out entities);
 
-            Vector2 topRight = new Vector2(1f, -.5f) * range;
-            Vector2 topLeft = new Vector2(-1f, -.5f) * range;
-            Vector2 bottomRight = new Vector2(1f, 2.1f) * range;
-            Vector2 bottomLeft = new Vector2(-1f, 2.1f) * range;
-
-            List<Vector2> checkpoints = new List<Vector2>() { topRight, bottomRight, bottomLeft, topLeft };
-
-            if (toGoal.Y < 0)
-                move.Y = ComputeMoveDirection(start, toGoal, topLeft, topRight, false, source);
-            if (toGoal.Y > 0)
-                move.Y = ComputeMoveDirection(start, toGoal, bottomLeft, bottomRight, false, source);
-
-            if (toGoal.X < 0)
-                move.X = ComputeMoveDirection(start, toGoal, topLeft, bottomLeft, true, source);
-            if (toGoal.X > 0)
-                move.X = ComputeMoveDirection(start, toGoal, topRight, bottomRight, true, source);
-
-            return move;
-        }
-
-        /// <summary>
-        /// Computes the move direction.
-        /// </summary>
-        /// <param name="start">The start position of the move.</param>
-        /// <param name="toGoal">The goal position relative to the start.</param>
-        /// <param name="pointOne">The collision test point one.</param>
-        /// <param name="pointTwo">The collision test point two.</param>
-        /// <param name="xDir">If set to <c>true</c> X direction is computed. If false Y direction.</param>
-        /// <param name="source">The entity executing the move.</param>
-        /// <returns>Returns the X or Y value (see xDir) of the position the move ends at (relative to the start) in respect to collisions with Tiles and entities.</returns>
-        private float ComputeMoveDirection(Vector2 start, Vector2 toGoal, Vector2 pointOne, Vector2 pointTwo, bool xDir, Entity source)
-        {
-            Vector2 move = toGoal;
-            if (xDir)
-                move.Y = 0;
-            else
-                move.X = 0;
-
-            if (!source.Name.Equals("GruselUte"))
-                move = move;
-
-            Vector2 direction = Vector2.Normalize(toGoal);
-            float sensor = (float)toGoal.Length();
-
-
-            // Tile collision
-            while ((!Game1.Instance.Level.IsPositionAccessible(start + pointOne + move) ||
-                   !Game1.Instance.Level.IsPositionAccessible(start + pointTwo + move)) &&
-                    sensor > 0)
-            {
-                move = direction * sensor;
-                if (xDir)
-                    move.Y = 0;
-                else
-                    move.X = 0;
-                if (sensor > 1)
-                    sensor--;
-                else
-                    return 0;
-            }
-
-            // Entity collision
-            List<Entity> lastEntities = new List<Entity>();
-            List<Entity> curEntities = Game1.Instance.Level.GetEntitiesAt(start + pointOne + move);
-            curEntities.AddRange(Game1.Instance.Level.GetEntitiesAt(start + pointTwo + move));
-
-            List<Entity> temp = new List<Entity>(curEntities);
-            foreach (Entity ent in temp)
-            {
-                if (ent.CollideModule == null || ent.Equals(source))
-                    curEntities.Remove(ent);
-            }
-
-            while (curEntities.Count > 0 &&
-                   sensor > 0)
-            {
-                lastEntities.Clear();
-                lastEntities.AddRange(curEntities);
-                if (sensor >= 1)
-                    sensor--;
-                else
-                    sensor = 0;
-                move = direction * sensor;
-                curEntities = Game1.Instance.Level.GetEntitiesAt(start + pointOne + move);
-                curEntities.AddRange(Game1.Instance.Level.GetEntitiesAt(start + pointTwo + move));
-
-                temp = new List<Entity>(curEntities);
-                foreach (Entity ent in temp)
-                {
-                    if (ent.CollideModule == null || ent.Equals(source))
-                        curEntities.Remove(ent);
-                }
-            }
-
-            foreach (Entity ent in lastEntities)
+            // Call Collide methods
+            foreach (Entity ent in entities)
             {
                 ent.Collide(source);
                 source.Collide(ent);
             }
 
-            if (xDir)
-                return move.X;
-            else
-                return move.Y;
+            return move;
         }
-
+        /// <summary>
+        /// Test an entity collision at a point.
+        /// </summary>
+        /// <param name="point">Position of the point.</param>
+        /// <param name="radius">Radius of the check.</param>
+        /// <returns>List of entities at the point.</returns>
+        /// TODO altitude & height check!
+        /// TODO add tile check!
         public List<Entity> CollidePoint(Vector2 point, int radius = 1)
         {
             return Game1.Instance.Level.GetEntitiesAt(point, radius);
         }
 
-        public List<Entity> CollideLine(Vector2 start, Vector2 end)
+        /// <summary>
+        /// Test a collision on a line. Does not call any Collide events.
+        /// </summary>
+        /// <param name="start">Start point.</param>
+        /// <param name="end">Absolute end point.</param>
+        /// <param name="source">The entity executing the move.</param>
+        /// <param name="testTiles">Set true if tile collision should be checked.</param>
+        /// <param name="altitude">Altitude of the colliding body.</param>
+        /// <param name="bodyHeight">Height of the colliding body.</param>
+        /// <param name="list">Out param for a list of entities, sorted by distance.</param>
+        /// <returns>Absolute end position of the collision.</returns>
+        public Vector2 CollideLine(Vector2 start, Vector2 end, Entity source, bool testTiles,
+            float altitude, float bodyHeight, out List<Entity> list)
         {
-            HashSet<Entity> value = new HashSet<Entity>();
-            float distance = Vector2.Distance(start, end);
-            Vector2 step = new Vector2(Math.Abs(start.X - end.X) / distance, Math.Abs(start.Y - end.Y) / distance);
+            // TODO add tile check!
 
-            for (int i = 0; i < distance; i++)
+            list = new List<Entity>();
+
+            float distance = Vector2.Distance(start, end);
+            Vector2 pos = start;
+            Vector2 step = new Vector2((end.X - start.X) / distance, (end.Y - start.Y) / distance);
+
+            for (int i = 0; Math.Abs(i) < distance; i++)
             {
-                foreach (Entity e in Game1.Instance.Level.GetEntitiesAt(start + step))
+                foreach (Entity e in CollidePoint(pos))
                 {
-                    value.Add(e);
+                    // Add entity, if it's not in list
+                    if (!list.Contains(e))
+                        list.Add(e);
+
+                    // Break if entity blocks way
+                    if (e.CollideModule != null &&
+                        !e.CollideModule.IsPassable(new CollideInformation()
+                        {
+                            Collider = source,
+                            IsPlayer = source is Player
+                        }))
+                    {
+                        return pos;
+                    }
                 }
-                step += step;
+
+                pos += step;
             }
-            return value.ToList();
+
+            return pos;
         }
+
+        /// <summary>
+        /// Test an entity collision on a moving rectangle. Does not call any Collide events.
+        /// </summary>
+        /// <param name="source">The entity executing the move.</param>
+        /// <param name="toEnd">Movement vector to the end position.</param>
+        /// <param name="testTile">Set true if tile collision should be checked.</param>
+        /// <param name="slide">Set true if you want to slide on walls.</param>
+        /// <param name="list">Out param for a list of entities, sorted by distance.</param>
+        /// <returns>Relative end position of the collision.</returns>
+        public Vector2 CollideRectangle(Entity source, Vector2 toEnd, bool testTile, bool slide, out List<Entity> list)
+        {
+            list = new List<Entity>();
+
+            float distance = toEnd.Length();
+            Vector2 pos = new Vector2();
+            Vector2 step = toEnd / distance;
+
+            for (int i = 0; Math.Abs(i) < distance; i++)
+            {
+                // Pre-calculate next step's rectangle
+                Rectangle newRect = source.BoundingRect;
+                newRect.Offset((int)Math.Round(pos.X + step.X), (int)Math.Round(pos.Y + step.Y));
+
+                // Test next step's rectangle
+                foreach (Entity e in Game1.Instance.Level.GetEntitiesAt(newRect))
+                {
+                    // Add entity, if it's not in list
+                    if (!list.Contains(e))
+                        list.Add(e);
+
+                    // Break if entity blocks way
+                    if (e.CollideModule != null &&
+                        !e.CollideModule.IsPassable(new CollideInformation()
+                        {
+                            Collider = source,
+                            IsPlayer = source is Player
+                        }))
+                    {
+                        // Return this step's position
+                        return pos;
+                    }
+                }
+
+                // Break if tiles block way
+                if (testTile && !Game1.Instance.Level.IsRectAccessible(newRect))
+                {
+                    // Collide'n'slide, yeah!
+                    if (slide)
+                    {
+                        // Try only X
+                        newRect = source.BoundingRect;
+                        newRect.Offset((int)Math.Round(pos.X + step.X), (int)Math.Round(pos.Y));
+                        if (Game1.Instance.Level.IsRectAccessible(newRect))
+                        {
+                            pos.X += step.X;
+                        }
+                        else
+                        {
+                            newRect = source.BoundingRect;
+                            newRect.Offset((int)Math.Round(pos.X), (int)Math.Round(pos.Y + step.Y));
+                            if (Game1.Instance.Level.IsRectAccessible(newRect))
+                            {
+                                pos.Y += step.Y;
+                            }
+                        }
+                    }
+
+                    // Return this step's position
+                    return pos;
+                }
+
+                // Step current position and move rect
+                pos += step;
+            }
+
+            return pos;
+        }
+        #region COLLISION SHAPE CODE
+        public static bool Collide(ICollisionShape s1, ICollisionShape s2)
+        {
+            if (s1 is CompoundCollisionShape)
+            {
+                if (s2 is CompoundCollisionShape)
+                    return Collide(s1 as CompoundCollisionShape, s2 as CompoundCollisionShape);
+                if (s2 is RectangleCollisionShape)
+                    return Collide(s2 as RectangleCollisionShape, s1 as CompoundCollisionShape);
+                if (s2 is CircleCollisionShape)
+                    return Collide(s2 as CircleCollisionShape, s1 as CompoundCollisionShape);
+            }
+            if (s1 is RectangleCollisionShape)
+            {
+                if (s2 is CompoundCollisionShape)
+                    return Collide(s1 as RectangleCollisionShape, s2 as CompoundCollisionShape);
+                if (s2 is RectangleCollisionShape)
+                    return Collide(s1 as RectangleCollisionShape, s2 as RectangleCollisionShape);
+                if (s2 is CircleCollisionShape)
+                    return Collide(s1 as RectangleCollisionShape, s2 as CircleCollisionShape);
+            }
+            if (s1 is CircleCollisionShape)
+            {
+                if (s2 is CompoundCollisionShape)
+                    return Collide(s1 as CircleCollisionShape, s2 as CompoundCollisionShape);
+                if (s2 is RectangleCollisionShape)
+                    return Collide(s2 as RectangleCollisionShape, s1 as CircleCollisionShape);
+                if (s2 is CircleCollisionShape)
+                    return Collide(s1 as CircleCollisionShape, s2 as CircleCollisionShape);
+            }
+            throw new Exception("Collision Shape unknown");
+
+        }
+
+        #region DEEP COLLISION SHAPE CODE
+        public static bool Collide(RectangleCollisionShape s1, RectangleCollisionShape s2)
+        {
+            return s1.Shape.Intersects(s2.Shape);
+        }
+        public static bool Collide(RectangleCollisionShape s1, CircleCollisionShape s2)
+        {
+
+            float circleDistanceX = Math.Abs(s2.Center.X - s1.Shape.X);
+            float circleDistanceY = Math.Abs(s2.Center.Y - s1.Shape.Y);
+
+            if (circleDistanceX > (s1.Shape.Width / 2 + s2.Radius)) { return false; }
+            if (circleDistanceY > (s1.Shape.Height / 2 + s2.Radius)) { return false; }
+
+            if (circleDistanceX <= (s1.Shape.Width / 2)) { return true; }
+            if (circleDistanceY <= (s1.Shape.Height / 2)) { return true; }
+
+            double cornerDistance_sq = Math.Pow((circleDistanceX - s1.Shape.Width / 2), 2) +
+                                 Math.Pow((circleDistanceY - s1.Shape.Height / 2), 2);
+
+            return cornerDistance_sq < Math.Pow(s2.Radius, 2);
+        }
+        public static bool Collide(CircleCollisionShape s1, CircleCollisionShape s2)
+        {
+            return Vector2.Distance(s1.Center, s2.Center) > s1.Radius + s2.Radius;
+        }
+
+        public static bool Collide(CompoundCollisionShape s1, CompoundCollisionShape s2)
+        {
+            foreach (ICollisionShape c1 in s1.Shapes)
+            {
+                foreach (ICollisionShape c2 in s2.Shapes)
+                {
+                    if (Collide(c1, c2))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool Collide(RectangleCollisionShape s1, CompoundCollisionShape s2)
+        {
+            foreach (ICollisionShape c2 in s2.Shapes)
+            {
+                if (Collide(s1, c2))
+                    return true;
+            }
+            return false;
+        }
+        public static bool Collide(CircleCollisionShape s1, CompoundCollisionShape s2)
+        {
+            foreach (ICollisionShape c2 in s2.Shapes)
+            {
+                if (Collide(s1, c2))
+                    return true;
+            }
+            return false;
+        }
+        #endregion
+        #endregion
     }
 }

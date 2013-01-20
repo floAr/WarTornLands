@@ -29,7 +29,7 @@
       <Type>AnimatedDrawer</Type>
       <Texture>torch_model</Texture>
       <Animation>
-        <Name>flicker</Name>
+        <Name>default</Name>
         <Frame>
           <Rectangle X="0" Y="0" width="32" height="32" />
         </Frame>
@@ -43,7 +43,7 @@
       <IsLight>true</IsLight>
       <Texture>torch_light</Texture>
       <Animation>
-        <Name>flicker</Name>
+        <Name>default</Name>
         <Frame>
           <Rectangle X="0" Y="0" width="32" height="32" />
         </Frame>

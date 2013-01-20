@@ -10,6 +10,7 @@ using WarTornLands.Entities.Modules;
 using WarTornLands.World;
 using WarTornLands.World.Layers;
 using WarTornLands.Entities.AI;
+using WarTornLands.PlayerClasses;
 
 namespace WarTornLands.Infrastructure
 {
@@ -85,6 +86,8 @@ namespace WarTornLands.Infrastructure
         public Area CreateArea(DataSet areaMeta, AreaVersion version)
         {
             string areaID = areaMeta.Tables["AreaInfo"].Rows[0]["ID"].ToString();
+            Player.Instance.Inventory.AddKeyShelf(areaID);
+
             string versionFile = "";
 
             if(version == AreaVersion.GOOD)

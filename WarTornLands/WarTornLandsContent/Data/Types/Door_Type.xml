@@ -21,6 +21,11 @@
 	<Module>
 	</Module>
 
+  <!--Hit-->
+  <Module>
+    <Type>BlockHit</Type>
+  </Module>
+	
   <!--Draw-->
   <Module>
     <Type>StaticDrawer</Type>

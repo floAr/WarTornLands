@@ -39,15 +39,10 @@ namespace WarTornLands.Entities.Modules.Collide
                 _isOnCD = false;
         }
 
-        public bool OnCollide(CollideInformation info)
+        public void OnCollide(CollideInformation info)
         {
             if (_charges == 0)
-            {
                 _owner.ToBeRemoved = true;
-                return true;
-            }
-            if (!info.IsPlayer || _isOnCD || _owner.ToBeRemoved)
-                return true;
 
             ((Player)info.Collider).GiveItem(_loot);
 
@@ -61,9 +56,24 @@ namespace WarTornLands.Entities.Modules.Collide
                 _pushItemCooldown.StartCounter("cdDrop");
                 _isOnCD = true;
             }
+        }
+
+        public bool IsPassable(CollideInformation info)
+        {
+            // Pickup item will never block
             return true;
+        }
 
+        public Microsoft.Xna.Framework.Rectangle BodyShape
+        {
+            get;
+            set;
+        }
 
+        public Microsoft.Xna.Framework.Rectangle MovingShape
+        {
+            get;
+            set;
         }
     }
 }

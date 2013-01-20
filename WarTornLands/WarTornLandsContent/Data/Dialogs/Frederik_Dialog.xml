@@ -18,15 +18,12 @@
       <Type>Text</Type>
       <Text>Hier, nimm diesen Schluessel und hau ihr eins vor'n Koffer!</Text>
     </Line>
-    <!--
     <Line>
       <Type>ItemContainer</Type>
-
       <Item>
         <Type>DoorKey</Type>
-        <KeyID>1</KeyID>
       </Item>
-    </Line>-->
+    </Line>
     <Line>
       <Type>ComboBreaker</Type>
       <NewCon>2</NewCon>

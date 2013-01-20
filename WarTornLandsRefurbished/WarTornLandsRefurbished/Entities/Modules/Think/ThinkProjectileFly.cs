@@ -10,16 +10,18 @@ namespace WarTornLands.Entities.Modules.Think
 {
     class ThinkProjectileFly : BaseModule, IThinkModule
     {
+        private Entity _shooter;
         public int Damage { get; set; }
         public int RangeSquared { get; set; }
         public float Speed { get; set; }
         private Vector2 _startPos;
 
-        public ThinkProjectileFly(int damage, int range, float speed) : base()
+        public ThinkProjectileFly(Entity shooter, int damage, int range, float speed) : base()
         {
+            _shooter = shooter;
             Damage = damage;
             RangeSquared = range * range;
-            Speed = speed;
+            Speed = speed / 1000.0f;
         }
 
         public void SetZone(Zone zone)
@@ -64,18 +66,20 @@ namespace WarTornLands.Entities.Modules.Think
 
 
             // Damage
-            // TODO altitude / height check - in collision manager or here??
-            List<Entity> hit = CollisionManager.Instance.CollideLine(oldPos, _owner.Position);
+            List<Entity> hit;
+            CollisionManager.Instance.CollideRectangle(_owner, _owner.Position - oldPos, false, false, out hit);
+
+            hit.RemoveAll(delegate(Entity ent) { return ent.Equals(_shooter) || ent.HitModule == null; });
+
             if (hit.Count > 0)
             {
-                // Do damage to ALL entites
+                // Do damage to all entites but the shooter
                 // TODO sort and only do damage to nearest entity
                 foreach (Entity e in hit)
                 {
-                    // TODO check is buggy, why? Oo
-                    if (!e.Equals(_owner))
-                        e.Damage(Damage);
+                    e.Damage(Damage);
                 }
+                _owner.ToBeRemoved = true;
             }
             
         }

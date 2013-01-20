@@ -46,6 +46,8 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             this._inputSheet.RegisterKey("Quit", Keys.Escape);
             this._inputSheet.RegisterKey("Move", new Keys[] { Keys.W, Keys.A, Keys.S, Keys.D });
 
+            this._inputSheet.RegisterKey("Test", Keys.M);
+
 
 
             base.Initialize();
@@ -55,9 +57,15 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
         {
             (InputManager.Instance["Inventory"] as Key).Pressed += new EventHandler(OpenInventory);
             (InputManager.Instance["Quit"] as Key).Pressed += new EventHandler(QuitRunningGame);
-
-
-
+            (InputManager.Instance["Test"] as Key).Pressed += new EventHandler(TestPressed);
+            /*try
+            {
+                SaveLoad.SaveGameData saveGame = SaveLoad.SmartStorage<SaveLoad.SaveGameData>.Load(0);
+                foreach (String s in saveGame.Triggers)
+                    GlobalState.SetTrigger(s);
+            }
+            catch (Exception e) { }
+            */
             Catalog.Instance.SetupTestCatalog();
 
             Game1.Instance.Player.AddModule(new ThinkInputGuided());
@@ -79,8 +87,24 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             base.LoadContent();
         }
 
+        void TestPressed(object sender, EventArgs e)
+        {
+            if(GlobalState.IsTriggered("testi"))
+                OpenInventory(sender,e);
+            else
+               GlobalState.SetTrigger("testi");
+        }
+
         void QuitRunningGame(object sender, EventArgs e)
         {
+            SaveLoad.SaveGameData saveGame = new SaveLoad.SaveGameData()
+            {
+                Triggers = GlobalState.Triggers,
+                ValuesS = GlobalState.Values.Keys.ToList(),
+                ValuesO = GlobalState.Values.Values.ToList()
+            };
+
+           // SaveLoad.SmartStorage<SaveLoad.SaveGameData>.Save(0, saveGame);                
             Game1.Instance.PopState();
         }
 
@@ -113,7 +137,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
              Game1.Instance.DrawingLights = true;
              _drawManager.BeginBake(gameTime, SpriteSortMode.Deferred, CustomBlendState.Add);
              _drawManager.BakeFill(new Color(150, 150, 150));
-             _drawManager.Bake(Lightmanager.Instance);
+             _drawManager.Bake(Lightmanager.Instance.Sky);
              RenderTarget2D lights = _drawManager.EndBake();
 
              _drawManager.BeginBake(gameTime, SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);

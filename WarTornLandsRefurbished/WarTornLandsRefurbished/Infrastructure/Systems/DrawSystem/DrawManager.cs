@@ -103,6 +103,15 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             effect.CurrentTechnique.Passes[0].Apply();
         }
 
+        public void BakeBeginEffect(BaseEffect effect)
+        {
+            if (_state != 1)
+                if (_state == 0)
+                    throw new Exception("BeginBake must be called before BakeBeginEffect");
+            if (_choosenSortMode != SpriteSortMode.Immediate)
+                throw new Exception("When using Effect stick to SpriteSortMode.Immediate.\nEffects won´t affect Sprite when deferred drawing is used");
+            effect.Apply();
+        }
         /// <summary>
         /// Removes an applied effect from the bake process.
         /// </summary>

@@ -51,6 +51,8 @@ namespace WarTornLands.Entities.Modules.Draw
                 this.AddAnimation(ReadAnimation(animData));
             }
 
+            this.SetCurrentAnimation("default");
+
             try
             {
                 this.IsLight = bool.Parse(data["IsLight"].ToString());
@@ -105,16 +107,14 @@ namespace WarTornLands.Entities.Modules.Draw
 
         public void Draw(SpriteBatch batch, DrawInformation information)
         {
+            // TODO That's 90% the same code as in StaticDrawer.Draw!!
+
             if (_isLight != information.DrawLights)
                 return;
             Animation _current = _animations[_currentAnimation];
             _size = new Vector2(_current.CurrentFrame.Width, _current.CurrentFrame.Height);
 
-            Vector2 drawLocation;
-            if (information.Centered)
-                drawLocation = information.Position - (_size / 2);
-            else
-                drawLocation = information.Position;
+            Vector2 drawLocation = information.Position;
 
             Vector2 center = Game1.Instance.Camera.Center;
             Rectangle bounds = Game1.Instance.Window.ClientBounds;
@@ -147,12 +147,8 @@ namespace WarTornLands.Entities.Modules.Draw
                     Color.White);
             }
 
-            // Consider entity altitude
-            drawLocation.Y -= information.Altitude;
-
             // Draw entity
-            batch.Draw(_spriteSheet, new Rectangle((int)drawLocation.X - (int)center.X + (int)Math.Round(bounds.Width / 2.0f),
-                (int)drawLocation.Y - (int)center.Y + (int)Math.Round(bounds.Height / 2.0f), (int)_size.X, (int)_size.Y), _current.CurrentFrame, color, information.Rotation, _size / 2, SpriteEffects.None, 0.5f);
+            batch.Draw(_spriteSheet, Game1.Instance.Camera.GetDrawRectangle(_owner.BoundingRect, information.Altitude), _current.CurrentFrame, color, information.Rotation, _size / 2, SpriteEffects.None, 0.5f);
         }
 
         internal void AddAnimation(Animation anim)
@@ -167,10 +163,6 @@ namespace WarTornLands.Entities.Modules.Draw
             anim.AddOffset(offsetMS);
             _animations.Add(anim.Name, anim);
         }
-
-
-
-
 
         public Vector2 Size
         {

@@ -162,7 +162,7 @@ namespace WarTornLands.Entities.Modules.Interact
             foreach (DataRow itemData in data.GetChildRows("Line_Item"))
             {
                 // TODO switch for item types
-                items.Add(new DoorKey(""));
+                items.Add(new DoorKey(EntityBuilder.Instance.CurrentArea.AreaID));
             }
             return new ItemContainer(items);
         }

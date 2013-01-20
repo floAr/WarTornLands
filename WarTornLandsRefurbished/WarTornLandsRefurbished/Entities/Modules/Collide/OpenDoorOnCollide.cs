@@ -12,10 +12,7 @@ namespace WarTornLands.Entities.Modules.Collide
         private bool _locked;
         private string _areaID;
 
-        public OpenDoorOnCollide()
-        {
-            _locked=false;
-        }
+
         public OpenDoorOnCollide(string areaID)
         {
             _areaID = areaID;
@@ -26,7 +23,7 @@ namespace WarTornLands.Entities.Modules.Collide
         {
         }
 
-        public bool OnCollide(CollideInformation info)
+        public void OnCollide(CollideInformation info)
         {
             // TODO open only if player has key!
             if (_locked)
@@ -34,18 +31,37 @@ namespace WarTornLands.Entities.Modules.Collide
                 if (Game1.Instance.Player.Inventory.HasKey(_areaID))
                 {
                     _owner.ToBeRemoved = true;
-                    return true;
+                    return;
                 }
                 else
                 {
-                    return false;
+                    return;
                 }
             }
             else
             {
                 _owner.ToBeRemoved = true;
-                return true;
             }
+        }
+
+        public bool IsPassable(CollideInformation info)
+        {
+            if (!_locked || _owner.ToBeRemoved)
+                return true;
+
+            return false;
+        }
+
+        public Microsoft.Xna.Framework.Rectangle BodyShape
+        {
+            get;
+            set;
+        }
+
+        public Microsoft.Xna.Framework.Rectangle MovingShape
+        {
+            get;
+            set;
         }
     }
 }

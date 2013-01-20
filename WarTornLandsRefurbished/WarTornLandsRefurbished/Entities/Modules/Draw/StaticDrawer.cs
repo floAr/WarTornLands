@@ -65,14 +65,12 @@ namespace WarTornLands.Entities.Modules.Draw
         /// <param name="information">The information.</param>
         public void Draw(SpriteBatch batch, DrawInformation information)
         {
+            // TODO That's 90% the same code as in AnimatedDrawer.Draw!!
+
             if (_isLight != information.DrawLights)
                 return;
 
-            Vector2 drawLocation;
-            if (information.Centered)
-                drawLocation = information.Position - (_size / 2);
-            else
-                drawLocation = information.Position;
+            Vector2 drawLocation = information.Position;
 
             Vector2 center = Game1.Instance.Camera.Center;
             Vector2 bounds = Game1.Instance.ClientBoundsHalf;
@@ -105,10 +103,9 @@ namespace WarTornLands.Entities.Modules.Draw
             }
 
             // Consider entity altitude
-            drawLocation.Y -= information.Altitude;
+            drawLocation.Y -= information.Altitude * 50;
 
-            batch.Draw(Texture, new Rectangle((int)drawLocation.X - (int)center.X + (int)bounds.X,
-                (int)drawLocation.Y - (int)center.Y + (int)bounds.Y, (int)_size.X, (int)_size.Y),
+            batch.Draw(Texture, Game1.Instance.Camera.GetDrawRectangle(_owner.BoundingRect, information.Altitude),
                 new Rectangle(0, 0, (int)_size.X, (int)_size.Y), color, information.Rotation, _size / 2, SpriteEffects.None, 0.5f);
         }
 
