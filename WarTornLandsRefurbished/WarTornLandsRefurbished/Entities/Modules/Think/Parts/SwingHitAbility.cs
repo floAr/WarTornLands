@@ -10,7 +10,7 @@ using WarTornLands.PlayerClasses;
 
 namespace WarTornLands.Entities.Modules.Think.Parts
 {
-    class SwingHitAbility : BaseAbility
+    public class SwingHitAbility : BaseAbility
     {
         /// <summary>
         /// Gets or sets the duration of a swing.
@@ -62,7 +62,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         public static Vector2 WeaponMarkerA = new Vector2(-500); 
         public static Vector2 WeaponMarkerB = new Vector2(-500);
 
-
+        public event EventHandler Use;
 
         private CounterManager _cm;
         private Entity _owner;
@@ -99,6 +99,11 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
         public bool TryExecute()
         {
+            if (_owner is Player && Player.Instance.Inventory.Hammer.HasNone)
+            {
+                return false;
+            }
+
             if (this.Active)
                 return false;
 
@@ -106,6 +111,9 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             _owner.FaceLock = true;
 
             _cm.StartCounter(_cSwingHit, false);
+
+            if (Use != null)
+                Use(null, EventArgs.Empty);
 
             return true;
         }

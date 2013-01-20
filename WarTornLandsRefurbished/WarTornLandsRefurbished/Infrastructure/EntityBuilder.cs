@@ -79,26 +79,11 @@ namespace WarTornLands.Infrastructure
             if (name.Equals(""))
                 errors.Add("Name");
 
-            try
-            {
-                bool invuln = bool.Parse(row["Invuln"].ToString());
-            }
-            catch { errors.Add("Invuln"); }
-
-            try
-            {
-                float Health = float.Parse(row["Health"].ToString());
-            }
-            catch { errors.Add("Health"); }
-
-            try
-            {
-                int Height = int.Parse(row["BaseHeight"].ToString());
-            }
-            catch { errors.Add("BaseHeight"); }
+            int Health = int.Parse(row["Health"].ToString());
+            int Height = int.Parse(row["BaseHeight"].ToString());
             #endregion
 
-            Entity ent = new Entity(Vector2.Zero, name);
+            Entity ent = new Entity(Vector2.Zero, name, Health);
             ent.Categorie = typeCategorie;
 
             #region Read Modules

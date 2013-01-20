@@ -23,20 +23,20 @@ namespace WarTornLands.Entities.Modules.Think
         private InputManager _input;
 
         // Parts
-        private JumpAbility _jump;
-        private SwingHitAbility _swing;
-        private ShooterAbility _shooter;
-        private InteractAbility _interact;
+        public JumpAbility Jump { get; private set; }
+        public SwingHitAbility Swing { get; private set; }
+        public ShooterAbility Shooter { get; private set; }
+        public InteractAbility Interact { get; private set; }
         private bool _frozen;
 
         public ThinkInputGuided(float speed = .125f)
         {
             Speed = speed;
 
-            _jump = new JumpAbility();
-            _swing = new SwingHitAbility(400, 1);
-            _shooter = new ShooterAbility();
-            _interact = new InteractAbility();
+            Jump = new JumpAbility();
+            Swing = new SwingHitAbility(400, 1);
+            Shooter = new ShooterAbility();
+            Interact = new InteractAbility();
             _frozen = false;
 
           /*  // Subscribe to Input events
@@ -45,14 +45,11 @@ namespace WarTornLands.Entities.Modules.Think
             _input.KHit.Pressed += new EventHandler(OnExecuteHit);
             _input.KInteract.Pressed += new EventHandler(OnInteract);
             _input.KJump.Pressed += new EventHandler(OnJump);*/
-            (InputManager.Instance["UsePotion"] as Key).Pressed+=new EventHandler(OnUsePotion);
-            (InputManager.Instance["Hit"] as Key).FreshPressed += new EventHandler(OnExecuteHit);
-            (InputManager.Instance["Interact"] as Key).Pressed += new EventHandler(OnInteract);
-            (InputManager.Instance["Jump"] as Key).Pressed += new EventHandler(OnJump);
         }
         public ThinkInputGuided(DataRow data)
             : this()
         { }
+
         public void Update(GameTime gameTime)
         {
             if (!_frozen)
@@ -62,11 +59,27 @@ namespace WarTornLands.Entities.Modules.Think
                 Vector2 moveVector = moveDirection * Speed * gameTime.ElapsedGameTime.Milliseconds;
                 _owner.Position += CollisionManager.Instance.TryMove(_owner, moveVector);
 
-                _swing.Update(gameTime);
-                _shooter.Update(gameTime);
-                _jump.Update(gameTime);
+                Swing.Update(gameTime);
+                Shooter.Update(gameTime);
+                Jump.Update(gameTime);
                 CalcFacing(moveDirection);
             }
+        }
+
+        public void SubscribeInput()
+        {
+            (InputManager.Instance["UsePotion"] as Key).Pressed += new EventHandler(OnUsePotion);
+            (InputManager.Instance["Hit"] as Key).FreshPressed += new EventHandler(OnExecuteHit);
+            (InputManager.Instance["Interact"] as Key).Pressed += new EventHandler(OnInteract);
+            (InputManager.Instance["Jump"] as Key).Pressed += new EventHandler(OnJump);
+        }
+
+        public void DesubscribeInput()
+        {
+            (InputManager.Instance["UsePotion"] as Key).Pressed -= new EventHandler(OnUsePotion);
+            (InputManager.Instance["Hit"] as Key).FreshPressed -= new EventHandler(OnExecuteHit);
+            (InputManager.Instance["Interact"] as Key).Pressed -= new EventHandler(OnInteract);
+            (InputManager.Instance["Jump"] as Key).Pressed -= new EventHandler(OnJump);
         }
 
         public void SetZone(Zone zone)
@@ -87,10 +100,10 @@ namespace WarTornLands.Entities.Modules.Think
         public override void SetOwner(Entity owner)
         {
             base.SetOwner(owner);
-            _jump.SetOwner(owner);
-            _swing.SetOwner(owner);
-            _shooter.SetOwner(owner);
-            _interact.SetOwner(owner);
+            Jump.SetOwner(owner);
+            Swing.SetOwner(owner);
+            Shooter.SetOwner(owner);
+            Interact.SetOwner(owner);
 
             _cm = owner.CM;
             _cm.Bang += new EventHandler<BangEventArgs>(OnBang);
@@ -119,22 +132,22 @@ namespace WarTornLands.Entities.Modules.Think
 
         private void OnUsePotion(object sender, EventArgs e)
         {
-            _shooter.TryExecute();
+            Shooter.TryExecute();
         }
 
         private void OnExecuteHit(object sender, EventArgs e)
         {
-            _swing.TryExecute();
+            Swing.TryExecute();
         }
 
         private void OnInteract(object sender, EventArgs e)
         {
-            _interact.TryExecute();   
+            Interact.TryExecute();   
         }
 
         private void OnJump(object sender, EventArgs e)
         {
-            _jump.TryExecute();
+            Jump.TryExecute();
         }
 
         #endregion

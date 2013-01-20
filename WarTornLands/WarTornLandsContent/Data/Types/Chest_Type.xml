@@ -8,7 +8,7 @@
 	<BaseInfo>
 		<Name>Chest</Name>
 		<Invuln>true</Invuln>
-		<Health></Health>
+		<Health>1</Health>
 		<BaseHeight>0</BaseHeight>
 	</BaseInfo>
 

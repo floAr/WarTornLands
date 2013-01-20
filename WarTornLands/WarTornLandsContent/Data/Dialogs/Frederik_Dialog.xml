@@ -25,6 +25,12 @@
       </Item>
     </Line>
     <Line>
+      <Type>ItemContainer</Type>
+      <Item>
+        <Type>NormalHammer</Type>
+      </Item>
+    </Line>
+    <Line>
       <Type>ComboBreaker</Type>
       <NewCon>2</NewCon>
     </Line>
@@ -35,6 +41,12 @@
     <Line>
 	<Type>Text</Type>
 	<Text>Die alte Gruselute schaffst du mit links!</Text>
+    </Line>
+    <Line>
+      <Type>ItemContainer</Type>
+      <Item>
+        <Type>NoneHammer</Type>
+      </Item>
     </Line>
   </Conversation>
 

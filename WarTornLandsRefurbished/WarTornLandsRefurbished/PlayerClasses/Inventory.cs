@@ -51,6 +51,7 @@ namespace WarTornLands.PlayerClasses
         private bool _useWoodenShield;
 
         private KeyStash _keys;
+        public HammerStash Hammer { get; private set; }
 
         #endregion
 
@@ -106,7 +107,7 @@ namespace WarTornLands.PlayerClasses
 
         #endregion
 
-        public Inventory()
+        public Inventory(WarTornLands.Entities.Modules.Think.Parts.SwingHitAbility swing)
         {
             _deltaWidth = (Game1.Instance.Window.ClientBounds.Width / _standardWidth);
             _deltaHeight = (Game1.Instance.Window.ClientBounds.Height / _standardHeight);
@@ -122,8 +123,8 @@ namespace WarTornLands.PlayerClasses
             _previouskeystate = false;
             _inventoryIsOpen = false;
             _keys = new KeyStash();
+            Hammer = new HammerStash(swing);
         }
-
 
         public bool Insert(Item item)
         {
@@ -141,7 +142,19 @@ namespace WarTornLands.PlayerClasses
                 return true;
             }
             #endregion
-
+            #region NoneHammer
+            if (item is NoneHammer)
+                return Hammer.SetNone();
+            #endregion
+            #region NormalHammer
+            if(item is NormalHammer)
+                return Hammer.SetNormal();
+            #endregion
+            #region ChainHammer
+            if(item is ChainHammer)
+                return Hammer.SetChain();
+            #endregion
+            
             return false;
         }
 

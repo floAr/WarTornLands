@@ -68,7 +68,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             */
             Catalog.Instance.SetupTestCatalog();
 
-            Game1.Instance.Player.AddModule(new ThinkInputGuided());
+            (Player.Instance.ThinkModule as ThinkInputGuided).SubscribeInput();
 
             _BackBuffer = new BackBuffer(Game1.Instance.GraphicsDevice, new Rectangle(0, 0, Game1.Instance.GraphicsDevice.Viewport.Width, Game1.Instance.GraphicsDevice.Viewport.Height));
 

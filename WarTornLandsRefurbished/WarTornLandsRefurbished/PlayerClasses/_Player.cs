@@ -48,12 +48,12 @@ namespace WarTornLands.PlayerClasses
             Health = MaxHealth;
             DropShadow = true;
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
-            _inventory = new Inventory();
-          //  this.AddModule(new ThinkInputGuided());
+            this.AddModule(new ThinkInputGuided());
             this.AddModule(new DamageFlash());
             this.AddModule(new Obstacle());
             this.AddModule(new ExplodeAndLoot(Item.Nothing));
             LoadContent();
+            _inventory = new Inventory((base._thinkModule as ThinkInputGuided).Swing);
         }
 
         protected void LoadContent()

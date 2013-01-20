@@ -28,6 +28,9 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
 
         private static string ComposeDescription(List<Item> items)
         {
+            if(items.Count == 1 && items[0] is NoneHammer)
+                    return "Dein Hammer wurde geklaut!";
+
             string message = "Item";
             if (items.Count > 1)
                 message += 's';
@@ -44,6 +47,9 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
 
         private static string ComposeDescription(Item item)
         {
+            if (item is NoneHammer)
+                return "Dein Hammer wurde geklaut!";
+
             string message = "Item erhalten: ";
             message += item.Name;
 

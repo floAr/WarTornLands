@@ -8,7 +8,7 @@
 	<BaseInfo>
 		<Name>Torch</Name>
 		<Invuln>true</Invuln>
-		<Health>0</Health>
+		<Health>1</Health>
 		<BaseHeight>0</BaseHeight>
 	</BaseInfo>
 

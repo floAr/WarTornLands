@@ -155,6 +155,7 @@
     <Compile Include="Infrastructure\Systems\SkyLight\Lightmanager.cs" />
     <Compile Include="Infrastructure\XMLParser.cs" />
     <Compile Include="PlayerClasses\Inventory.cs" />
+    <Compile Include="PlayerClasses\Items\Hammer.cs" />
     <Compile Include="PlayerClasses\Items\Key.cs" />
     <Compile Include="PlayerClasses\Items\_Item.cs" />
     <Compile Include="PlayerClasses\_Player.cs" />

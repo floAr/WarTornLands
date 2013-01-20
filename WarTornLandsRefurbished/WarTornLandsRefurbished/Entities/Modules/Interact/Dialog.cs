@@ -161,8 +161,21 @@ namespace WarTornLands.Entities.Modules.Interact
             List<PlayerClasses.Items.Item> items = new List<PlayerClasses.Items.Item>();
             foreach (DataRow itemData in data.GetChildRows("Line_Item"))
             {
-                // TODO switch for item types
-                items.Add(new DoorKey(EntityBuilder.Instance.CurrentArea.AreaID));
+                switch(itemData["Type"].ToString())
+                {
+                    case "DoorKey" :
+                        items.Add(new DoorKey(EntityBuilder.Instance.CurrentArea.AreaID));
+                        break;
+                    case "NormalHammer":
+                        items.Add(new NormalHammer());
+                        break;
+                    case "ChainHammer":
+                        items.Add(new ChainHammer());
+                        break;
+                    case "NoneHammer":
+                        items.Add(new NoneHammer());
+                        break;
+            }
             }
             return new ItemContainer(items);
         }
