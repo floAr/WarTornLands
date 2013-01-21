@@ -93,8 +93,8 @@ namespace WarTornLands.World.Layers
             // Get corner points
             int x0 = (int)rect.Location.X / Constants.TileSize;
             int y0 = (int)rect.Location.Y / Constants.TileSize;
-            int x1 = (int)(rect.Location.X + rect.Width) / Constants.TileSize;
-            int y1 = (int)(rect.Location.Y + rect.Height) / Constants.TileSize;
+            int x1 = (int)(rect.Location.X + rect.Width - 1) / Constants.TileSize;
+            int y1 = (int)(rect.Location.Y + rect.Height - 1) / Constants.TileSize;
 
             // Loop through all tiles in rectangle
             for (int x = x0; x <= x1; x++)
