@@ -21,7 +21,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
         {
             tex = Game1.Instance.Content.Load<Texture2D>("sprite/grid");
             this._inputSheet.RegisterKey("Exit", Keys.Escape);
-            effect = new ShockwaveEffect(new Vector2(0.5f, 0.5f),1f, TimeSpan.FromSeconds(0.5f),4,0.1f);
+            effect = new ShockwaveEffect(new Vector2(0.5f, 0.5f),1f, TimeSpan.FromSeconds(30f),3,0.1f);
            base.Initialize();
           
         }

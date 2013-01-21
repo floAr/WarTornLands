@@ -29,7 +29,7 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem.Effects
 
         public override void Apply()
         {
-            if (_time >= 1)
+            if (Finished)
                 return;
             _effect.Parameters["width"].SetValue(_width);
             _effect.Parameters["radius"].SetValue((float)_time * _radius);
@@ -40,7 +40,11 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem.Effects
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            if (Finished)
+                return;
             _time += _factor * gameTime.ElapsedGameTime.Milliseconds;
+            if (_time >= 1)
+                Finished = true;
             // _distortion=   ms += gameTime.ElapsedGameTime.Milliseconds;
            
         }

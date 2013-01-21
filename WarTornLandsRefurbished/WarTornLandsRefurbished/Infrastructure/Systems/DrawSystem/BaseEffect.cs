@@ -10,6 +10,7 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
    public abstract class BaseEffect
     {
        protected Effect _effect;
+       public bool Finished=false;
 
        public virtual void Apply()
        {
