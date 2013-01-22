@@ -59,7 +59,8 @@ namespace WarTornLands.Entities
 
         public string Categorie;
 
-        public Vector2 Position {
+        public Vector2 Position
+        {
             get { return _position; }
             set
             {
@@ -83,6 +84,40 @@ namespace WarTornLands.Entities
             {
                 // TODO new every time?
                 return new Vector2(BoundingRect.Center.X, BoundingRect.Center.Y);
+            }
+        }
+
+        public Rectangle BodyRect
+        {
+            get
+            {
+                if (CollideModule != null && CollideModule.BodyShape != null)
+                {
+                    Rectangle result = CollideModule.BodyShape;
+                    result.Offset((int)Position.X, (int)Position.Y);
+                    return result;
+                }
+                else
+                {
+                    return BoundingRect;
+                }
+            }
+        }
+
+        public Rectangle MovingRect
+        {
+            get
+            {
+                if (CollideModule != null && CollideModule.MovingShape != null)
+                {
+                    Rectangle result = CollideModule.MovingShape;
+                    result.Offset((int)Position.X, (int)Position.Y);
+                    return result;
+                }
+                else
+                {
+                    return BoundingRect;
+                }
             }
         }
 
@@ -131,8 +166,8 @@ namespace WarTornLands.Entities
         #region DrawModule
         protected IDrawExecuter _drawModule;
 
-        private float _rotation;
-        private float _scale;
+        public float Rotation { get; set; }
+        public float Scale { get; set; }
         #endregion
 
         #region InteractModule
@@ -346,7 +381,7 @@ namespace WarTornLands.Entities
             DrawInformation information = new DrawInformation()
             {
                 Position = this.Position,
-                Rotation = _rotation,
+                Rotation = Rotation,
                 Scale = this.Size,
                 Altitude = this.Altitude,
                 Shadow = DropShadow,

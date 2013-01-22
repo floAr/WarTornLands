@@ -58,7 +58,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             if (p.DrawModule == null)
             {
                 StaticDrawer sd = new StaticDrawer();
-                sd.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/deadtree");
+                sd.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/deadtree"); // TODO add custom textures
                 p.AddModule(sd);
             }
 

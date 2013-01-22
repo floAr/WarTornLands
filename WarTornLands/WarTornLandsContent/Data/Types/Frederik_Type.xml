@@ -8,7 +8,7 @@
 	<BaseInfo>
 		<Name>Frederik</Name>
 		<Invuln>true</Invuln>
-		<Health>10</Health>
+		<Health>3</Health>
 		<BodyHeight>1</BodyHeight>
 	</BaseInfo>
 
@@ -24,7 +24,7 @@
   
   <!--Die-->
 	<Module>
-
+		<Type>SimplyRemove</Type>
 	</Module>
 
   <!--Draw-->

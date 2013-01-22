@@ -46,11 +46,12 @@ namespace WarTornLands.PlayerClasses
         {
             MaxHealth = 80;
             Health = MaxHealth;
-            DropShadow = true;
+            //DropShadow = true;
             CM.Bang += new EventHandler<BangEventArgs>(OnBang);
             this.AddModule(new ThinkInputGuided());
             this.AddModule(new DamageFlash());
             this.AddModule(new Obstacle());
+            this.CollideModule.MovingShape = new Rectangle(-16, -48, 32, 32);
             this.AddModule(new ExplodeAndLoot(Item.Nothing));
             LoadContent();
             _inventory = new Inventory((base._thinkModule as ThinkInputGuided).Swing);
@@ -58,7 +59,7 @@ namespace WarTornLands.PlayerClasses
 
         protected void LoadContent()
         {
-            /*AnimatedDrawer animS = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("sprite/character_64x128"));
+            AnimatedDrawer animS = new AnimatedDrawer(Game1.Instance.Content.Load<Texture2D>("sprite/character_64x128"));
             
             Animation anim = new Animation("walkDown");
             anim.AddFrame(new Rectangle(64 * 1, 0, 64, 128));
@@ -105,11 +106,11 @@ namespace WarTornLands.PlayerClasses
             anim.AddFrame(new Rectangle(4*64, 128, 64, 128));
             animS.AddAnimation(anim);
 
-            this.AddModule(animS);*/
+            this.AddModule(animS); /**/
 
-            StaticDrawer sd = new StaticDrawer();
+            /*StaticDrawer sd = new StaticDrawer();
             sd.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/potion");
-            this.AddModule(sd);
+            this.AddModule(sd);/**/
         }
 
         #region Subscribed events

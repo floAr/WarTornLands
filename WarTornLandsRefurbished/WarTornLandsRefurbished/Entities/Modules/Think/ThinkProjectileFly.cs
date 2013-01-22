@@ -39,6 +39,9 @@ namespace WarTornLands.Entities.Modules.Think
             // Backup position
             Vector2 oldPos = _owner.Position;
 
+            // Rotate projectile
+            _owner.Rotation += gameTime.ElapsedGameTime.Milliseconds / 100.0f;
+
             // Move projectile
             switch (_owner.Face)
             {
