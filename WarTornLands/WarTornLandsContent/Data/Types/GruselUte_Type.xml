@@ -9,7 +9,7 @@
 		<Name>GruselUte</Name>
 		<Invuln>false</Invuln>
 		<Health>20</Health>
-		<BaseHeight>0</BaseHeight>
+		<BodyHeight>1</BodyHeight>
 	</BaseInfo>
 
   <!--Collide-->

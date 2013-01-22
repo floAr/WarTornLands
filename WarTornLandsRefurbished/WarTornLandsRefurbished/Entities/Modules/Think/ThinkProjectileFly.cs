@@ -68,7 +68,13 @@ namespace WarTornLands.Entities.Modules.Think
             // Damage
             HashSet<Entity> hit = Game1.Instance.Level.GetEntitiesAt(_owner.BoundingRect); // TODO use some other rect?
 
-            hit.RemoveWhere(delegate(Entity ent) { return ent.Equals(_shooter) || ent.HitModule == null; });
+            hit.RemoveWhere(delegate(Entity ent)
+            {
+                return ent.Equals(_shooter) // don't hit yourself!
+                    || ent.HitModule == null // don't hit non-hittable things
+                    || ent.Altitude > _owner.Altitude + _owner.BodyHeight // don't hit something over you
+                    || ent.Altitude + ent.BodyHeight < _owner.Altitude; // don't hit something under you
+            });
 
             if (hit.Count > 0)
             {

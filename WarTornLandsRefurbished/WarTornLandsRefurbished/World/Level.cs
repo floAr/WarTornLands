@@ -25,7 +25,6 @@ namespace WarTornLands.World
     public class Level : IDrawProvider
     {
         private Dictionary<string, Area> _areas;
-        private Game _game;
         public List<DataSet> EntityTypeData { get; set; }
 
         public List<Entity> AreaIndependentEntities;

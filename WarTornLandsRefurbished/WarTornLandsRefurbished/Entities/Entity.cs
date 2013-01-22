@@ -151,11 +151,11 @@ namespace WarTornLands.Entities
         protected IHitModule _hitModule;
         #endregion
 
-        public Entity(Vector2 position, String name = "Entity", int health = 1)
+        public Entity(Vector2 position, String name = "Entity", int health = 1, float bodyHeight = 1.0f)
         {
             Position = position;
             Health = health;
-            BodyHeight = 1.7f;
+            BodyHeight = bodyHeight;
             Name = name;
             Face = Facing.DOWN;
             FaceLock = false;
