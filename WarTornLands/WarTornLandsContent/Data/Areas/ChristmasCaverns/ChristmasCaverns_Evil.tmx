@@ -7144,7 +7144,7 @@
   <object gid="124" x="864" y="768"/>
   <object gid="124" x="992" y="768"/>
   <object gid="124" x="1120" y="768"/>
-  <object gid="275" x="1248" y="416">
+  <object gid="275" x="1088" y="320">
    <properties>
     <property name="ID" value="CCboss"/>
     <property name="Target" value="CCentrance"/>

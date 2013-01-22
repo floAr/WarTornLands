@@ -9,7 +9,7 @@
 		<Name>JumpPoint</Name>
 		<Invuln>true</Invuln>
 		<Health>1</Health>
-		<BaseHeight>0</BaseHeight>
+		<BodyHeight>0</BodyHeight>
 	</BaseInfo>
 
   <!--Collide-->
