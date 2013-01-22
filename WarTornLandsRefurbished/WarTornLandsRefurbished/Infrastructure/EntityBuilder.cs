@@ -41,21 +41,35 @@ namespace WarTornLands.Infrastructure
         /// This is done to be able to link RoamingRectangles and such items to the Entities.
         /// </summary>
         private List<ZoneVeil> _zoneContainer;
+        private List<Entity> _jumpPoints;
         public Area CurrentArea { get; private set; }
 
-        private EntityBuilder(Area area)
+        private EntityBuilder()
         {
             _zoneContainer = new List<ZoneVeil>();
-            CurrentArea = area;
+            _jumpPoints = new List<Entity>();
         }
 
-        public static void Begin(Area area)
+        public static void Begin()
         {
-            _instance = new EntityBuilder(area);
+            _instance = new EntityBuilder();
+        }
+
+        public static void BeginArea(Area area)
+        {
+            _instance.CurrentArea = area;
+        }
+
+        public static void EndArea()
+        {
+            _instance.CurrentArea = null;
+            _instance._zoneContainer.Clear();
         }
 
         public static void End()
         {
+            _instance.ConnectJumpPoints();
+
             _instance = null;
         }
 
@@ -154,7 +168,19 @@ namespace WarTornLands.Infrastructure
                 entity.AddModule(new OpenDoorOnCollide(CurrentArea.AreaID));
             }
             #endregion
-            #region Check for zone demande
+            #region JumpPoint
+            if (entity.Categorie.Equals("JumpPoint"))
+            {
+                DataRow jumpProps = data.GetChildRows("object_properties")[0];
+
+                entity.AddModule(new JumpPoint(
+                    XMLParser.ValueOfProperty(jumpProps, "ID"),
+                    XMLParser.ValueOfProperty(jumpProps, "Target")));
+
+                _jumpPoints.Add(entity);
+            }
+            #endregion
+            #region Check for demanded zone
             try
             {
                 string zoneID = XMLParser.ValueOfProperty(data.GetChildRows("object_properties")[0], "ZoneID");
@@ -168,6 +194,21 @@ namespace WarTornLands.Infrastructure
             #endregion
 
             return entity;
+        }
+
+        private void ConnectJumpPoints()
+        {
+            foreach (Entity j in _jumpPoints)
+            {
+                foreach(Entity t in _jumpPoints)
+                {
+                    if ((t.CollideModule as JumpPoint).JumpID.Equals(
+                        (j.CollideModule as JumpPoint).TargetID))
+                    {
+                        (j.CollideModule as JumpPoint).Connect(t);
+                    }
+                }
+            }
         }
 
         private Item SwitchItemType(DataRow data)

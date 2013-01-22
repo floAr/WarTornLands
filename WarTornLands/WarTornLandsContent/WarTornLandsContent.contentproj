@@ -241,6 +241,7 @@
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -332,13 +333,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="tileset\EntitySet.png">
-      <Name>EntitySet</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="sprite\character_64x128s.png">
       <Name>character_64x128s</Name>
       <Importer>TextureImporter</Importer>
@@ -364,6 +358,22 @@
   <ItemGroup>
     <Compile Include="sprite\grid.png">
       <Name>grid</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Types\JumpPoint_Type.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>JumpPoint_Type</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="tileset\EntitySet.png">
+      <Name>EntitySet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

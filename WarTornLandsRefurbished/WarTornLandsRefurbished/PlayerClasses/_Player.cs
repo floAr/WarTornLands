@@ -23,7 +23,6 @@ namespace WarTornLands.PlayerClasses
     {
         private static Player _instance;
         private Inventory _inventory;
-
        
         public static Player Instance
         {

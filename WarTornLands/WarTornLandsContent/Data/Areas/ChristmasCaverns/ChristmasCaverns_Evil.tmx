@@ -85,6 +85,11 @@
     <property name="Type" value="Chest"/>
    </properties>
   </tile>
+  <tile id="1">
+   <properties>
+    <property name="Type" value="JumpPoint"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Level" width="70" height="50">
   <properties>
@@ -7139,5 +7144,17 @@
   <object gid="124" x="864" y="768"/>
   <object gid="124" x="992" y="768"/>
   <object gid="124" x="1120" y="768"/>
+  <object gid="275" x="1248" y="416">
+   <properties>
+    <property name="ID" value="CCboss"/>
+    <property name="Target" value="CCentrance"/>
+   </properties>
+  </object>
+  <object gid="275" x="384" y="576">
+   <properties>
+    <property name="ID" value="CCentrance"/>
+    <property name="Target" value="CCboss"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

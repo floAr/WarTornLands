@@ -61,6 +61,8 @@ namespace WarTornLands.Infrastructure
         /// </summary>
         public void ReadWorld()
         {
+            EntityBuilder.Begin();
+
             string path = _game.Content.RootDirectory + "/Data";
 
             IEnumerable<string> files = Directory.EnumerateFiles(path, "*_Area.xml", SearchOption.AllDirectories);
@@ -76,6 +78,8 @@ namespace WarTornLands.Infrastructure
 
                 Game1.Instance.Level.AddArea(id, area);
             }
+
+            EntityBuilder.End();
         }
 
         /// <summary>
@@ -211,7 +215,7 @@ namespace WarTornLands.Infrastructure
 
             #region Read Objectgroups
 
-            EntityBuilder.Begin(area);
+            EntityBuilder.BeginArea(area);
 
             foreach (DataRow groupData in data.Tables["objectgroup"].Rows)
             {
@@ -235,7 +239,7 @@ namespace WarTornLands.Infrastructure
                 }
             }
 
-            EntityBuilder.End();
+            EntityBuilder.EndArea();
 
             #endregion
         }

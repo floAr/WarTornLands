@@ -84,6 +84,7 @@
     <Compile Include="Entities\Modules\Collide\CollisionShape\CompoundCollisionShape.cs" />
     <Compile Include="Entities\Modules\Collide\CollisionShape\ICollisionShape.cs" />
     <Compile Include="Entities\Modules\Collide\CollisionShape\RectangleCollisionShape.cs" />
+    <Compile Include="Entities\Modules\Collide\JumpPoint.cs" />
     <Compile Include="Entities\Modules\Collide\Obstacle.cs" />
     <Compile Include="Entities\Modules\Collide\OpenDoorOnCollide.cs" />
     <Compile Include="Entities\Modules\Collide\PickUpOnCollide.cs" />
