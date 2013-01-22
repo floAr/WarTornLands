@@ -9,7 +9,7 @@
 		<Name>BossDoor</Name>
 		<Invuln>true</Invuln>
 		<Health>1</Health>
-		<BaseHeight>0</BaseHeight>
+		<BodyHeight>1000</BodyHeight>
 	</BaseInfo>
 
   <!--Collide-->

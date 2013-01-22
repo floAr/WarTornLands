@@ -20,7 +20,8 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
 
         private RenderTarget2D _temp;
         private Pool<RenderTarget2D> _targetPool;
-        private Pool<int> testPo;
+        private List<BaseEffect> _fireAndForgetEffects;
+
         private Effect _defaultEffect;
 
         private RenderTarget2D _lastFrame;
@@ -35,6 +36,7 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             _defaultEffect = Game1.Instance.Content.Load<Effect>("effect/reset");
             _targetPool = new Pool<RenderTarget2D>(createRT);
             _targetPool.Preallocate(2);
+            _fireAndForgetEffects = new List<BaseEffect>();
             //_lastFrame = _targetPool.GetFreeItem();
         }
         /// <summary>
@@ -208,8 +210,18 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
             if (_gameTime == null)
                 return;
             _lastFrame = source;
+            foreach (BaseEffect effect in _fireAndForgetEffects)
+            {
+                this.BeginBake(gameTime,SpriteSortMode.Immediate);
+                this.BakeBeginEffect(effect);
+                this.Bake(source);
+                this.BakeEndEffect();
+                source = this.EndBake();            
+            }
+            
             Game1.Instance.GraphicsDevice.SetRenderTarget(null);
             Game1.Instance.SpriteBatch.Begin();
+            _defaultEffect.CurrentTechnique.Passes[0].Apply();
             Game1.Instance.SpriteBatch.Draw(source, Vector2.Zero, Color.White);
             Game1.Instance.SpriteBatch.End();
             foreach (RenderTarget2D item in _targetPool.Items)
@@ -221,6 +233,18 @@ namespace WarTornLands.Infrastructure.Systems.DrawSystem
         public void Update(GameTime gameTime)
         {
             _gameTime = gameTime;
+            for(int i=_fireAndForgetEffects.Count-1;i>=0;i--)
+            {
+               _fireAndForgetEffects[i].Update(gameTime);
+               if (_fireAndForgetEffects[i].Finished)
+                   _fireAndForgetEffects.RemoveAt(i);
+            }
+           // ScreenLogComponent.AddLog(String.Format("Currently hosting {0} effects", _fireAndForgetEffects.Count));
+        }
+
+        public void FireAndForget(BaseEffect effect)
+        {
+            _fireAndForgetEffects.Add(effect);
         }
     }
 }

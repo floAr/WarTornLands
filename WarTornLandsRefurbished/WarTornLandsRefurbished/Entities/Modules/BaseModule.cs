@@ -41,6 +41,8 @@ namespace WarTornLands.Entities.Modules
                     return new Die.ExplodeAndLoot(data);
                 case "ReplaceByStatic":
                     return new Die.ReplaceByStatic(data);
+                case "SimplyRemove":
+                    return new Die.SimplyRemove(data);
 
                 // Draw modules
                 case "StaticDrawer":

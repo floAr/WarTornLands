@@ -79,7 +79,7 @@ namespace WarTornLands.Infrastructure
                 }
                 
                 // Check whether the rectangle at newPos collides
-                Rectangle rect = source.BoundingRect; // TODO change to move collision shape!
+                Rectangle rect = source.MovingRect;
                 if (!IsAccessible(OffsetRectangle(rect, newPos), true, source))
                 {
                     // Add entities to collision list
@@ -91,7 +91,7 @@ namespace WarTornLands.Infrastructure
                         Vector2 thisStep = newPos - pos;
 
                         // Check in X direction
-                        rect = source.BoundingRect; // TODO change to move collision shape!
+                        rect = source.MovingRect;
                         Vector2 newPosSlide = pos + new Vector2(thisStep.X, 0);
                         if (IsAccessible(OffsetRectangle(rect, newPosSlide), true, source))
                         {
@@ -102,7 +102,7 @@ namespace WarTornLands.Infrastructure
                         else
                         {
                             // Check in Y direction
-                            rect = source.BoundingRect; // TODO change to move collision shape!
+                            rect = source.MovingRect;
                             newPosSlide = pos + new Vector2(0, thisStep.Y);
                             if (IsAccessible(OffsetRectangle(rect, newPosSlide), true, source))
                             {
@@ -140,7 +140,7 @@ namespace WarTornLands.Infrastructure
                 source.Collide(ent);
             }
 
-            return pos; // TODO!
+            return pos;
         }
 
         /// <summary>

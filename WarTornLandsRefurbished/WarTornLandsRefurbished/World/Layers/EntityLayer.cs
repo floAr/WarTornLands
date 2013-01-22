@@ -169,7 +169,7 @@ namespace WarTornLands.World.Layers
 
             foreach (Entity ent in _entities)
             {
-                if (ent.DrawModule != null && rect.Intersects(ent.BoundingRect))
+                if (ent.DrawModule != null && rect.Intersects(ent.BoundingRect)) // TODO use some collision shape, not boundingrect!
                     result.Add(ent);
             }
 

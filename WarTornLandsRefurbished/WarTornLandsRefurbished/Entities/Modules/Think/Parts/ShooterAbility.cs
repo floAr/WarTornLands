@@ -23,7 +23,8 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         private CounterManager _cm;
         private readonly string _cShooter = "ShooterCooldownCounter";
 
-        static Pool<Entity> projectilePool = new Pool<Entity>(delegate() { return new Entity(Vector2.Zero); });
+        // Projectile pool
+        Pool<Entity> _projectilePool;
 
         public ShooterAbility(int cooldownTime = 800, int damage = 1, int range = 400, float speed = 400f)
         {
@@ -32,8 +33,7 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             Speed = speed;
             Damage = damage;
             _cooldown = false;
-
-            // TODO preallocate projectile pool?
+            _projectilePool = new Pool<Entity>(delegate() { return new Entity(Vector2.Zero); });
         }
 
         public bool TryExecute()
@@ -46,18 +46,28 @@ namespace WarTornLands.Entities.Modules.Think.Parts
             _cm.StartCounter(_cShooter);
 
             // Create projectile entity
-            Entity p = projectilePool.GetFreeItem();
+            Entity p = _projectilePool.GetFreeItem();
+
+            // Projectile specific setting
             p.Position = _owner.Position;
             p.Face = _owner.Face;
-            p.RemoveAllModules();
+            p.Altitude = _owner.Altitude + _owner.BodyHeight * 0.5f; // place entity in center of the shooting weapon or guy
+            p.BodyHeight = 0.03f; // 3 cm projectile height
 
-            // Add texture
-            StaticDrawer sd = new StaticDrawer();
-            sd.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/deadtree");
-            p.AddModule(sd);
-            
-            // Add flying behaviour
-            p.AddModule(new ThinkProjectileFly(_owner, Damage, Range, Speed));
+            // Create draw module if it has none
+            if (p.DrawModule == null)
+            {
+                StaticDrawer sd = new StaticDrawer();
+                sd.Texture = Game1.Instance.Content.Load<Texture2D>("sprite/deadtree"); // TODO add custom textures
+                p.AddModule(sd);
+            }
+
+            // Create think module if it has none
+            if (p.ThinkModule == null)
+            {
+                // Add flying behaviour
+                p.AddModule(new ThinkProjectileFly(_owner, Damage, Range, Speed));
+            }
 
             // Add projectile to level
             Game1.Instance.Level.AreaIndependentEntities.Add(p);

@@ -93,11 +93,11 @@ namespace WarTornLands.Infrastructure
             if (name.Equals(""))
                 errors.Add("Name");
 
-            int Health = int.Parse(row["Health"].ToString());
-            int Height = int.Parse(row["BaseHeight"].ToString());
+            int health = int.Parse(row["Health"].ToString());
+            int bodyHeight = int.Parse(row["BodyHeight"].ToString());
             #endregion
 
-            Entity ent = new Entity(Vector2.Zero, name, Health);
+            Entity ent = new Entity(Vector2.Zero, name, health, bodyHeight);
             ent.Categorie = typeCategorie;
 
             #region Read Modules

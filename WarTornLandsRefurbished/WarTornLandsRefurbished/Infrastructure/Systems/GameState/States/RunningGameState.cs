@@ -12,6 +12,7 @@ using WarTornLands.Entities.Modules.Draw;
 using Microsoft.Xna.Framework.Input;
 using WarTornLands.Entities.Modules.Think;
 using WarTornLands.Infrastructure.Systems.InputSystem;
+using WarTornLands.Infrastructure.Systems.DrawSystem.Effects;
 
 namespace WarTornLands.Infrastructure.Systems.GameState.States
 {
@@ -37,6 +38,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             //Game1.Instance.Level.LoadChristmasCaverns();
             XMLParser.Instance.ReadWorld();
             this._inputSheet.RegisterKey("Exit", Keys.Escape);
+            this._inputSheet.RegisterKey("Boom", Keys.B);
             this._inputSheet.RegisterKey("New", Keys.Enter);
             this._inputSheet.RegisterKey("Hit", Keys.Enter);
             this._inputSheet.RegisterKey("Jump", Keys.Space);
@@ -58,6 +60,8 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             (InputManager.Instance["Inventory"] as Key).Pressed += new EventHandler(OpenInventory);
             (InputManager.Instance["Quit"] as Key).Pressed += new EventHandler(QuitRunningGame);
             (InputManager.Instance["Test"] as Key).Pressed += new EventHandler(TestPressed);
+            (InputManager.Instance["Boom"] as Key).Pressed += new EventHandler(BoomPressed);
+
             /*try
             {
                 SaveLoad.SaveGameData saveGame = SaveLoad.SmartStorage<SaveLoad.SaveGameData>.Load(0);
@@ -89,10 +93,15 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
 
         void TestPressed(object sender, EventArgs e)
         {
-            if(GlobalState.IsTriggered("testi"))
-                OpenInventory(sender,e);
+            if (GlobalState.IsTriggered("testi"))
+                OpenInventory(sender, e);
             else
-               GlobalState.SetTrigger("testi");
+                GlobalState.SetTrigger("testi");
+        }
+
+        void BoomPressed(object sender, EventArgs e)
+        {
+            _drawManager.FireAndForget(new ShockwaveEffect(new Vector2(0.5f, 0.5f), 0.4f, TimeSpan.FromSeconds(0.3f), 3, 0.1f));
         }
 
         void QuitRunningGame(object sender, EventArgs e)
@@ -148,6 +157,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             Game1.Instance.DrawingLights=false;
 
             _drawManager.BeginBake(gameTime);
+            
             _drawManager.Bake(Game1.Instance.Level);
             _drawManager.Bake(Game1.Instance.Player);
             RenderTarget2D main = _drawManager.EndBake();

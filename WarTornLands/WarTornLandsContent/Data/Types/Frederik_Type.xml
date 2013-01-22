@@ -8,8 +8,8 @@
 	<BaseInfo>
 		<Name>Frederik</Name>
 		<Invuln>true</Invuln>
-		<Health>1</Health>
-		<BaseHeight>0</BaseHeight>
+		<Health>3</Health>
+		<BodyHeight>1</BodyHeight>
 	</BaseInfo>
 
   <!--Collide-->
@@ -17,9 +17,14 @@
     <Type>Obstacle</Type>
   </Module>
 
+  <!--Hit-->
+  <Module>
+    <Type>DamageFlash</Type>
+  </Module>
+  
   <!--Die-->
 	<Module>
-
+		<Type>SimplyRemove</Type>
 	</Module>
 
   <!--Draw-->

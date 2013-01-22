@@ -91,6 +91,7 @@
     <Compile Include="Entities\Modules\Collide\_ICollideModule.cs" />
     <Compile Include="Entities\Modules\Die\ExplodeAndLoot.cs" />
     <Compile Include="Entities\Modules\Die\ReplaceByStatic.cs" />
+    <Compile Include="Entities\Modules\Die\SimplyRemove.cs" />
     <Compile Include="Entities\Modules\Die\_IDieModule.cs" />
     <Compile Include="Entities\Modules\Draw\DualDraw.cs" />
     <Compile Include="Entities\Modules\Draw\ParticleSystem\Particle.cs" />

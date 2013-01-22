@@ -37,6 +37,8 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
         public bool TryExecute()
         {
+            // TODO clean up :)
+
             Vector2 testPos = _owner.Position;
             float rangeModifier = 1.2f;
 
