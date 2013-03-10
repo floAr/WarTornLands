@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using WarTornLands.PlayerClasses;
 using System.Data;
+using WarTornLands.Infrastructure.Systems.SaveLoad;
+using System.Runtime.Serialization;
 
 namespace WarTornLands.Entities.Modules.Collide
 {
@@ -74,6 +76,35 @@ namespace WarTornLands.Entities.Modules.Collide
         {
             get;
             set;
+        }
+
+         public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+             /*private WarTornLands.PlayerClasses.Items.Item _loot;
+
+        private bool _oneTime = true;
+
+        private Counter.CounterManager _pushItemCooldown;
+        private int _charges;
+        private bool _isOnCD;*/
+            info.AddValue("itemCooldown", _pushItemCooldown);
+            info.AddValue("loot", _loot);
+            info.AddValue("charges", _charges);
+            info.AddValue("isOnCD", _isOnCD);
+            SaveLoadHelper.SaveRectangle(ref info, BodyShape, "bodyShape");
+            SaveLoadHelper.SaveRectangle(ref info, MovingShape, "movingShape");
+
+        }
+
+        public PickUpOnCollide(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            _pushItemCooldown = (Counter.CounterManager)info.GetValue("itemCooldown", typeof(Counter.CounterManager));
+            _loot = (WarTornLands.PlayerClasses.Items.Item)info.GetValue("loot", typeof(WarTornLands.PlayerClasses.Items.Item));
+            _charges = info.GetInt32("charges");
+            _isOnCD = info.GetBoolean("areaID");
+            BodyShape = SaveLoadHelper.LoadRectangle(ref info, "bodyShape");
+            MovingShape = SaveLoadHelper.LoadRectangle(ref info, "movingShape");
         }
     }
 }

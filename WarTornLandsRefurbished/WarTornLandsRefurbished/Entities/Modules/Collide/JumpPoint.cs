@@ -6,10 +6,14 @@ using System.Data;
 using WarTornLands.Infrastructure;
 using Microsoft.Xna.Framework;
 using WarTornLands.Counter;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
+using WarTornLands.Infrastructure.Systems.SaveLoad;
 
 namespace WarTornLands.Entities.Modules.Collide
 {
-    class JumpPoint : BaseModule, ICollideModule
+    [Serializable]
+    class JumpPoint : BaseModule, ICollideModule, ISerializable
     {
         public string JumpID { get; private set; }
         public string TargetID { get; private set; }
@@ -54,8 +58,8 @@ namespace WarTornLands.Entities.Modules.Collide
         public void OnCollide(CollideInformation info)
         {
             // If you want that only the Player may use JumpPoint uncomment these 2 lines
-            if(!info.IsPlayer)
-              return;
+            if (!info.IsPlayer)
+                return;
 
             if (_locked && Owner.CM.GetPercentage(_cUpdater) > 0)
             {
@@ -105,7 +109,7 @@ namespace WarTornLands.Entities.Modules.Collide
                     _collider.Position = _target.Position;
                     return;
                 }
-                else 
+                else
                 {
                     _locked = false;
                     Owner.CM.CancelCounter(_cUpdater);
@@ -115,5 +119,32 @@ namespace WarTornLands.Entities.Modules.Collide
         }
 
         #endregion
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            info.AddValue("jumpID", JumpID);
+            info.AddValue("targetID", TargetID);
+            info.AddValue("target", Entity.Global(_target));
+            info.AddValue("collider", Entity.Global(_collider));
+            info.AddValue("locked", _locked);
+            info.AddValue("collided", _collided);
+            SaveLoadHelper.SaveRectangle(ref info, BodyShape, "bodyShape");
+            SaveLoadHelper.SaveRectangle(ref info, MovingShape, "movingShape");
+
+        }
+
+        public JumpPoint(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            JumpID = info.GetString("jumpID");
+            TargetID = info.GetString("targetID");
+            _target = Entity.Global(info.GetInt16("target"));
+            _collider = Entity.Global(info.GetInt16("collider"));
+            _locked = info.GetBoolean("locked");
+            _collided = info.GetBoolean("collided");
+            BodyShape = SaveLoadHelper.LoadRectangle(ref info, "bodyShape");
+            MovingShape = SaveLoadHelper.LoadRectangle(ref info, "movingShape");
+        }
     }
 }

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
+using System.Runtime.Serialization;
+using WarTornLands.Infrastructure.Systems.SaveLoad;
 
 namespace WarTornLands.Entities.Modules.Collide
 {
-    class Obstacle : BaseModule, ICollideModule
+      [Serializable]
+    class Obstacle : BaseModule, ICollideModule, ISerializable
     {
         public void OnCollide(CollideInformation info)
         {
@@ -44,6 +47,20 @@ namespace WarTornLands.Entities.Modules.Collide
         {
             get;
             set;
+        }
+
+                public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            SaveLoadHelper.SaveRectangle(ref info, BodyShape, "bodyShape");
+            SaveLoadHelper.SaveRectangle(ref info, MovingShape, "movingShape");
+
+        }
+
+        public Obstacle(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            BodyShape = SaveLoadHelper.LoadRectangle(ref info, "bodyShape");
+            MovingShape = SaveLoadHelper.LoadRectangle(ref info, "movingShape");
         }
     }
 }

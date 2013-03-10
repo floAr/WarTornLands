@@ -68,6 +68,7 @@
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -152,6 +153,7 @@
     <Compile Include="Infrastructure\Systems\InputSystem\Key.cs" />
     <Compile Include="Infrastructure\Systems\Pool.cs" />
     <Compile Include="Infrastructure\Systems\SaveLoad\SaveGameData.cs" />
+    <Compile Include="Infrastructure\Systems\SaveLoad\SaveLoadHelper.cs" />
     <Compile Include="Infrastructure\Systems\SaveLoad\SmartStorage.cs" />
     <Compile Include="Infrastructure\Systems\SkyLight\BlendStates.cs" />
     <Compile Include="Infrastructure\Systems\SkyLight\Lightmanager.cs" />

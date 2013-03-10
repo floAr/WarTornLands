@@ -2,17 +2,23 @@
 using Microsoft.Xna.Framework;
 using System.Data;
 using System;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
 namespace WarTornLands.Entities.Modules
 {
-    public abstract class BaseModule
+    [Serializable]
+    public abstract class BaseModule : ISerializable
     {
-        public Entity Owner { get { return _owner; } }
 
+        public Entity Owner { get { return _owner; } }
         protected Entity _owner = null;
+
+        public BaseModule()
+        {}
 
         public virtual void SetOwner(Entity owner)
         {
-            _owner = owner; 
+            _owner = owner;
         }
 
         public static BaseModule GetModule(DataRow data)
@@ -70,9 +76,21 @@ namespace WarTornLands.Entities.Modules
             }
 
             if (!type.Equals(""))
-                throw new Exception("Module type "+type+" not recognised.");
+                throw new Exception("Module type " + type + " not recognised.");
 
             return null;
+        }
+
+           [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("owner", Entity.Global(_owner));
+        }
+
+     
+        protected BaseModule(SerializationInfo info, StreamingContext context)
+        {
+            _owner = Entity.Global(info.GetInt16("owner"));
         }
     }
 }
