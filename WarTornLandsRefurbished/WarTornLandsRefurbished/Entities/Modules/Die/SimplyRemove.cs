@@ -6,6 +6,7 @@ using System.Data;
 
 namespace WarTornLands.Entities.Modules.Die
 {
+    [Serializable]
     class SimplyRemove : BaseModule, IDieModule
     {
         public SimplyRemove()
