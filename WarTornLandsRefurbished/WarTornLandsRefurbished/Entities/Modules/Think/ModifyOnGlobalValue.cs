@@ -12,6 +12,10 @@ namespace WarTornLands.Entities.Modules.Think
         private String _counter;
         private T _targetValue;
 
+        public void AddModule(BaseModule module)
+        {
+            _newModules.Add(module);
+        }
         public ModifyOnGlobalValue(String targetCounter, T targetValue,List<BaseModule> newModules=null)
         {
             _counter = targetCounter;
