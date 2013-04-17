@@ -90,7 +90,6 @@ namespace WarTornLands.Infrastructure
         public Area CreateArea(DataSet areaMeta, AreaVersion version)
         {
             string areaID = areaMeta.Tables["AreaInfo"].Rows[0]["ID"].ToString();
-            Player.Instance.Inventory.AddKeyShelf(areaID);
 
             string versionFile = "";
 
@@ -109,8 +108,12 @@ namespace WarTornLands.Infrastructure
             int height = int.Parse(info["Height"].ToString());
             Rectangle bounds = new Rectangle(int.Parse(posData["X"].ToString()) * Constants.TileSize, int.Parse(posData["Y"].ToString()) * Constants.TileSize, width, height);
             string name = info["Name"].ToString();
+            bool isDungeon = (info["IsDungeon"].ToString() == "1") ? true : false;
 
             #endregion
+
+            if(isDungeon)
+                Player.Instance.Inventory.AddKeyShelf(areaID);
 
             #region Read TMX
 
@@ -124,7 +127,7 @@ namespace WarTornLands.Infrastructure
                 data.ReadXml(file);
             }
 
-            Area area = new Area(bounds, name, areaID);
+            Area area = new Area(bounds, name, areaID, isDungeon);
 
             List<DataSet> dataCollection = ReadEntityTypes();
             Game1.Instance.Level.EntityTypeData = dataCollection;

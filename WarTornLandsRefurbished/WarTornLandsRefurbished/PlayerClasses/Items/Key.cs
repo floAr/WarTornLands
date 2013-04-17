@@ -34,6 +34,28 @@ namespace WarTornLands.PlayerClasses.Items
             _masters.Add(master);
         }
 
+        public int NormalCount(string areaID)
+        {
+            foreach (KeyShelf s in _shelfes)
+            {
+                if (s.AreaID == areaID)
+                    return s.Count;
+            }
+
+            throw new Exception("No keyshelf with ID "+ areaID +".");
+        }
+
+        public int MasterCount(string areaID)
+        {
+            foreach (MasterShelf s in _masters)
+            {
+                if (s.AreaID == areaID)
+                    return s.Owned ? 1 : 0;
+            }
+
+            throw new Exception("No keyshelf with ID " + areaID + ".");
+        }
+
         /// <summary>
         /// Removes a key for the current area from its respective shelf.
         /// Returns true if there is a key available.

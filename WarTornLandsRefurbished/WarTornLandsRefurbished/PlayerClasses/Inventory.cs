@@ -7,15 +7,15 @@ using WarTornLands.Infrastructure;
 using Microsoft.Xna.Framework;
 using WarTornLands.PlayerClasses.Items;
 using WarTornLands.Infrastructure.Systems.DrawSystem;
+using WarTornLands.World;
 
 namespace WarTornLands.PlayerClasses
 {
-    public class Inventory : IDrawProvider
+    public class Inventory
     {
         #region Drawvariablen
 
         private bool _inventoryIsOpen;
-        private bool _previouskeystate;
         private double _standardHeight = 480;
         private double _standardWidth = 800;
         private double _deltaHeight;
@@ -29,83 +29,100 @@ namespace WarTornLands.PlayerClasses
         private Texture2D _bosskeyPicture;
         private Texture2D _itemPicture;
 
-        private short _totalItemCount;
+
+
 
         #endregion
 
-        #region Itemvariablen
+        #region Itemvariables
 
-        private short _countPotions;
-        private short _maxPotions;
-
-        private short _countKeys;
-        private short _maxKeys;
-
-        private bool _hasNormalHammer;
-        private bool _useNormalHammer;
-
-        private bool _hasChainHammer;
-        private bool _useChainHammer;
-
-        private bool _hasWoodenShield;
-        private bool _useWoodenShield;
-
+        private PotionBag _potionBag;
+        private IceHammer _iceHammer;
+        private Gun _gun;
+        private Telekinesis _telekinesis;
+        
         private KeyStash _keys;
         public HammerStash Hammer { get; private set; }
 
         #endregion
 
-        #region GetterundSetter
+        private Item _activeSlot = null;
 
-        public short GetPotions
+        public IDrawProvider Drawer
         {
-            get { return _countPotions; }
-            set { _countPotions = value; }
+            get;
+            private set;
         }
 
-        public short GetSchluessel
+        public short GetNormalKeys
         {
-            get { return _countKeys; }
-            set { _countKeys = value; }
+            get
+            {
+                bool dungeonFound = false;
+                int count = 0;
+
+                foreach (Area a in Game1.Instance.Level.GetCurrentAreas())
+                {
+                    if (a.IsDungeon)
+                    {
+                        if (dungeonFound)
+                            throw new Exception("Two Dungeons should not be overlapping.");
+                        
+                        count = _keys.NormalCount(a.AreaID);
+                        dungeonFound = true;
+                    }
+                }
+
+                return (short)count;
+            }
         }
 
-        public bool GetNormalhammer
+        public short GetMasterKeys
         {
-            get { return _hasNormalHammer; }
-            set { _hasNormalHammer = value; }
+            get
+            {
+                bool dungeonFound = false;
+                int count = 0;
+
+                foreach (Area a in Game1.Instance.Level.GetCurrentAreas())
+                {
+                    if (a.IsDungeon)
+                    {
+                        if (dungeonFound)
+                            throw new Exception("Two Dungeons should not be overlapping.");
+
+                        count = _keys.NormalCount(a.AreaID);
+                        dungeonFound = true;
+                    }
+                }
+
+                return (short)count;
+            }
         }
 
-        public bool GetHolzschild
+        public bool HasPotionbag
         {
-            get { return _hasWoodenShield; }
-            set { _hasWoodenShield = value; }
+            get;
+            set;
         }
 
-        public bool UseHolzschild
+        public bool HasTelekinesis
         {
-            get { return _useWoodenShield; }
-            set { _useWoodenShield = value; }
+            get;
+            set;
         }
 
-        public bool UseNormalhammer
+        public bool HasIceHammer
         {
-            get { return _useNormalHammer; }
-            set { _useNormalHammer = value; }
+            get;
+            set;
         }
 
-        public bool UseKettenhammer
+        public bool HasGun
         {
-            get { return _useChainHammer; }
-            set { _useChainHammer = value; }
+            get;
+            set;
         }
-
-        public bool GetKettenhammer
-        {
-            get { return _hasChainHammer; }
-            set { _hasChainHammer = value; }
-        }
-
-        #endregion
 
         public Inventory(WarTornLands.Entities.Modules.Think.Parts.SwingHitAbility swing)
         {
@@ -116,14 +133,12 @@ namespace WarTornLands.PlayerClasses
             _keyPicture = Game1.Instance.Content.Load<Texture2D>("sprite/key");
             _bosskeyPicture = Game1.Instance.Content.Load<Texture2D>("sprite/bosskey");
             _radius = 100;
-            _totalItemCount = 8;
             _inventoryIsOpen = false;
-            _maxPotions = 5;
-            _maxKeys = 2;
-            _previouskeystate = false;
             _inventoryIsOpen = false;
             _keys = new KeyStash();
             Hammer = new HammerStash(swing);
+
+            Drawer = new InventoryDrawer(this);
         }
 
         public bool Insert(Item item)
@@ -147,60 +162,35 @@ namespace WarTornLands.PlayerClasses
                 return Hammer.SetNone();
             #endregion
             #region NormalHammer
-            if(item is NormalHammer)
-                return Hammer.SetNormal();
+            if (item is NormalHammer)
+            {
+                Hammer.Add(item as NormalHammer);
+                return true;
+            }
             #endregion
             #region ChainHammer
-            if(item is ChainHammer)
-                return Hammer.SetChain();
+            if (item is ChainHammer)
+            {
+                Hammer.Add(item as ChainHammer);
+                return true;
+            }
             #endregion
             
             return false;
+        }
+
+        public void UseItem()
+        {
+            if (_activeSlot != null)
+            {
+                _activeSlot.Use();
+            }
         }
 
         public void AddKeyShelf(string areaID)
         {
             _keys.AddShelf(areaID);
             _keys.AddMasterShelf(areaID);
-        }
-
-        public void Draw(GameTime gameTime)
-        {
-            double currentangle = MathHelper.PiOver2;
-            double incrementangle = MathHelper.TwoPi / _totalItemCount;
-            for (double i = 0; i < _totalItemCount; i++)
-            {
-                switch ((int)i)
-                {
-                    case 0:
-                        if (_countPotions > 0)
-                        {
-                            _itemPicture = _potionPicture;
-                        }
-                        else
-                        {
-                            _itemPicture = _chestPicture;
-                        }
-                        break;
-                    default:
-                        _itemPicture = _chestPicture;
-                        break;
-                }
-
-                Game1.Instance.SpriteBatch.Draw(_itemPicture, new Microsoft.Xna.Framework.Rectangle((int)(((Game1.Instance.Window.ClientBounds.Width * 0.5f) - (Game1.Instance.Player.DrawModule.Size.X * 0.5f)) + _radius * Math.Cos(currentangle)), (int)(((Game1.Instance.Window.ClientBounds.Height * 0.5f) - (Game1.Instance.Player.DrawModule.Size.Y * 0.25f)) + _radius * Math.Sin(currentangle)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
-                currentangle -= incrementangle;
-
-                if (i == 0 || i == _totalItemCount - 1)
-                {
-
-                }
-                else
-                {
-                    Game1.Instance.SpriteBatch.Draw(_chestPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * 0.125), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
-                    Game1.Instance.SpriteBatch.Draw(_chestPicture, new Microsoft.Xna.Framework.Rectangle((int)(Game1.Instance.Window.ClientBounds.Width * (2 * 0.125)), (int)(Game1.Instance.Window.ClientBounds.Height * (i / _totalItemCount)), (int)(60 * _deltaWidth), (int)(60 * _deltaHeight)), Color.White);
-
-                }
-            }
         }
 
         public bool HasKey(string areaID)

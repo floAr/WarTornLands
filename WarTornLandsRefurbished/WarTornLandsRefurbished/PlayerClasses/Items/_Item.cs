@@ -20,6 +20,9 @@ namespace WarTornLands.PlayerClasses.Items
             Name = name;
         }
 
+        public virtual void Use()
+        { }
+
         public static Item Nothing
         { get { return null; } }
     }

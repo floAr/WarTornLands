@@ -31,7 +31,7 @@ namespace WarTornLands
         public SpriteBatch SpriteBatch { get; private set; }
 
        
-         private Stack<BaseGameState> _states;
+        private Stack<BaseGameState> _states;
         public Player Player { get; private set; }
         //test für draw
         public Inventory Inventory { get; private set; }
@@ -49,8 +49,6 @@ namespace WarTornLands
         }
 
         public bool DrawingLights { get; set; }
-       
-
 
         private static Game1 _instance = new Game1();
 
@@ -85,7 +83,7 @@ namespace WarTornLands
             // TODO: Fügen Sie Ihre Initialisierungslogik hier hinzu
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _clientBounds = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+            UpdateRes();
 
             _states = new Stack<BaseGameState>();
 
@@ -189,6 +187,14 @@ namespace WarTornLands
 
         #endregion
 
+        /// <summary>
+        /// Sets a vector indicating the screen resolution.
+        /// Call this whenever the ApplyChanges for the graphics device is called.
+        /// </summary>
+        private void UpdateRes()
+        {
+            _clientBounds = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+        }
 
         internal void PushState(BaseGameState newState)
         {

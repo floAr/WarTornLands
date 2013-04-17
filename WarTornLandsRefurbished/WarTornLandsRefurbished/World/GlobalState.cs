@@ -10,6 +10,7 @@ namespace WarTornLands.World
         private static List<String> _triggers = new List<string>();
         private static Dictionary<string, object> _values = new Dictionary<string, object>();
 
+
         public static void RegisterValue<T>(string id, T defaultValue = default(T))
         {
             if (_values.ContainsKey(id))
