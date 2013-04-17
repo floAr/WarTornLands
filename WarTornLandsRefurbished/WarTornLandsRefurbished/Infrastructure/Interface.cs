@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using WarTornLands.PlayerClasses;
 using WarTornLands.Infrastructure.ResolutionIndependence;
 
 namespace WarTornLands.Infrastructure
@@ -45,7 +46,7 @@ namespace WarTornLands.Infrastructure
             Game1 g = Game1.Instance;
             int border = 2;
             int maxWidth = 150;
-            int width = (int)(g.Player.Health / (float)g.Player.MaxHealth * maxWidth);
+            int width = (int)(Player.Instance.Health / (float)Player.Instance.MaxHealth * maxWidth);
             Vector2 start = new Vector2(g.Window.ClientBounds.Width - 10 - maxWidth, 10);
             g.SpriteBatch.Draw(_dummyTexture, new Rectangle((int)start.X - border, (int)start.Y - border, maxWidth + 2 * border, 25 + 2 * border), Color.DarkRed);
             g.SpriteBatch.Draw(_dummyTexture, new Rectangle((int)start.X, (int)start.Y, width, 25), Color.Red);

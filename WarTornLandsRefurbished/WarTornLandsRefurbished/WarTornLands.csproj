@@ -68,6 +68,7 @@
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -90,6 +91,7 @@
     <Compile Include="Entities\Modules\Collide\PickUpOnCollide.cs" />
     <Compile Include="Entities\Modules\Collide\_ICollideModule.cs" />
     <Compile Include="Entities\Modules\Die\ExplodeAndLoot.cs" />
+    <Compile Include="Entities\Modules\Die\IncreaseCounterOnDeath.cs" />
     <Compile Include="Entities\Modules\Die\ReplaceByStatic.cs" />
     <Compile Include="Entities\Modules\Die\SimplyRemove.cs" />
     <Compile Include="Entities\Modules\Die\_IDieModule.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="Entities\Modules\Hit\BlockHit.cs" />
     <Compile Include="Entities\Modules\Hit\DamageFlash.cs" />
     <Compile Include="Entities\Modules\Hit\_IHitModule.cs" />
+    <Compile Include="Entities\Modules\Interact\Checkpoint.cs" />
     <Compile Include="Entities\Modules\Interact\Dialog.cs" />
     <Compile Include="Entities\Modules\Interact\_IInteractModule.cs" />
     <Compile Include="Entities\Modules\Think\Parts\GoToPosition.cs" />
@@ -154,6 +157,7 @@
     <Compile Include="Infrastructure\Systems\InputSystem\Key.cs" />
     <Compile Include="Infrastructure\Systems\Pool.cs" />
     <Compile Include="Infrastructure\Systems\SaveLoad\SaveGameData.cs" />
+    <Compile Include="Infrastructure\Systems\SaveLoad\SaveLoadHelper.cs" />
     <Compile Include="Infrastructure\Systems\SaveLoad\SmartStorage.cs" />
     <Compile Include="Infrastructure\Systems\SkyLight\BlendStates.cs" />
     <Compile Include="Infrastructure\Systems\SkyLight\Lightmanager.cs" />

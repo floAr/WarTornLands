@@ -7,9 +7,11 @@ using WarTornLands.Entities.Modules.Interact;
 using WarTornLands.Entities.Modules.Collide;
 using System.Data;
 using WarTornLands.PlayerClasses.Items;
+using System.Runtime.Serialization;
 
 namespace WarTornLands.Entities.Modules.Die
 {
+    [Serializable]
     public class ExplodeAndLoot : BaseModule, IDieModule
     {
         private PickUpOnCollide _pick;
@@ -29,6 +31,17 @@ namespace WarTornLands.Entities.Modules.Die
             _owner.RemoveAllModules();
             _owner.AddModule(_explosion);
             _owner.AddModule(_pick);
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+
+
+        }
+
+        public ExplodeAndLoot(SerializationInfo info, StreamingContext context)
+        {
+
         }
     }
 }

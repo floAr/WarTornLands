@@ -14,6 +14,8 @@ using WarTornLands.Infrastructure.Systems.DrawSystem;
 using WarTornLands.Entities.Modules.Hit;
 using WarTornLands.Infrastructure.Systems.Camera2D;
 using WarTornLands.Entities.AI;
+using System.Runtime.Serialization;
+using System.Collections.Generic;
 
 namespace WarTornLands.Entities
 {
@@ -25,7 +27,7 @@ namespace WarTornLands.Entities
         DOWN
     }
 
-
+    [DataContract]
     public class Entity : IComparable<Entity>, IDrawProvider, ISpatial
     {
         /* TODO
@@ -45,9 +47,13 @@ namespace WarTornLands.Entities
 
 
         // Flags ////////
+        [DataMember]
         public bool ToBeRemoved { get; set; }
+        [DataMember]
         public bool IsEnabled { get; set; }
+        [DataMember]
         public bool IsStatic { get; set; } // set to true if entity can not move or change altitude for performance
+        [DataMember]
         public bool DropShadow { get; set; }
         /////////////////
 
@@ -56,9 +62,9 @@ namespace WarTornLands.Entities
         protected readonly int _invulnerableDuration = 1000;
         public readonly string _cHit = "HitCounter";
         ///////////////
-
+        [DataMember]
         public string Categorie;
-
+        [DataMember]
         public Vector2 Position
         {
             get { return _position; }
@@ -68,7 +74,6 @@ namespace WarTornLands.Entities
                 _position = value;
             }
         }
-
         public Rectangle BoundingRect
         {
             get
@@ -120,22 +125,27 @@ namespace WarTornLands.Entities
                 }
             }
         }
-
+        [DataMember]
         public Vector2 InitialPosition { get; internal set; }
+        [DataMember]
         public Point TilePosition { get; set; }
 
         /// <summary>
         /// Current altitude of the entity, e.g. 0 while standing or greater than 0 while jumping or flying.
         /// Value in meter.
         /// </summary>
+        ///  [DataMember]
         public float Altitude { get; internal set; }
         /// <summary>
         /// Body height of the entity. Value in meter.
         /// </summary>
+        ///  [DataMember]
         public float BodyHeight { get; internal set; }
-
+        [DataMember]
         public int Health { get; internal set; }
+        [DataMember]
         public int MaxHealth { get; internal set; }
+        [DataMember]
         public string Name { get; internal set; }
 
         private Vector2 _prevPosition = Vector2.Zero;
@@ -153,13 +163,17 @@ namespace WarTornLands.Entities
                 }
             }
         }
+        [DataMember]
         private Facing _face;
+        [DataMember]
         private Facing _prevFace;
+        [DataMember]
         public bool FaceLock; // set to true if player Facing should not change
 
         internal CounterManager CM;
 
         #region CollideModule
+        [DataMember]
         protected ICollideModule _collideModule;
         #endregion
 
@@ -198,6 +212,9 @@ namespace WarTornLands.Entities
             IsStatic = false;
             DropShadow = false;
 
+            //register on static list
+            _entities.Add(this);
+
             CM = new CounterManager();
         }
 
@@ -231,27 +248,27 @@ namespace WarTornLands.Entities
 
         public IInteractModule InteractModule
         {
-            get{return  _interactModule;}
+            get { return _interactModule; }
         }
 
         public IDrawExecuter DrawModule
         {
-            get{return  _drawModule;}
+            get { return _drawModule; }
         }
 
         public IDieModule DieModule
         {
-            get{return  _dieModule;}
+            get { return _dieModule; }
         }
 
         public IThinkModule ThinkModule
         {
-            get{return  _thinkModule;}
+            get { return _thinkModule; }
         }
 
         public ICollideModule CollideModule
         {
-            get{return  _collideModule;}
+            get { return _collideModule; }
         }
 
         public IHitModule HitModule
@@ -269,11 +286,11 @@ namespace WarTornLands.Entities
             return dmgDone;
         }
 
-     /*   public void SetPosition(Vector2 position)
-        {
-            _prevPosition = Position;
-            Position = position;
-        }*/
+        /*   public void SetPosition(Vector2 position)
+           {
+               _prevPosition = Position;
+               Position = position;
+           }*/
 
         public void Reset(int health)
         {
@@ -386,7 +403,7 @@ namespace WarTornLands.Entities
                 Altitude = this.Altitude,
                 Shadow = DropShadow,
                 Flashing = _hitModule != null ? _hitModule.IsFlashing() : false,
-                DrawLights=Game1.Instance.DrawingLights
+                DrawLights = Game1.Instance.DrawingLights
             };
 
             if (_drawModule != null)
@@ -395,7 +412,7 @@ namespace WarTornLands.Entities
 
         public void Interact(Entity user)
         {
-            if(_interactModule != null)
+            if (_interactModule != null)
                 _interactModule.Interact(user);
         }
 
@@ -443,5 +460,24 @@ namespace WarTornLands.Entities
             else
                 return 1;
         }
+
+        #region Serialisierung
+        private static List<Entity> _entities = new List<Entity>();
+
+
+        public static int Global(Entity e)
+        {
+            return _entities.IndexOf(e);
+        }
+        public static Entity Global(int index)
+        {
+            if (index >= 0)
+                return _entities[index];
+            else
+                return null;
+        }
+
+        #endregion
+
     }
 }

@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using WarTornLands.Infrastructure;
+using System.Runtime.Serialization;
+using WarTornLands.Infrastructure.Systems.SaveLoad;
+using WarTornLands.PlayerClasses;
 
 namespace WarTornLands.Entities.Modules.Collide
 {
-    class OpenDoorOnCollide : BaseModule, ICollideModule
+    [Serializable]
+    class OpenDoorOnCollide : BaseModule, ICollideModule, ISerializable
     {
         private bool _locked;
         private string _areaID;
@@ -28,7 +32,7 @@ namespace WarTornLands.Entities.Modules.Collide
             // TODO open only if player has key!
             if (_locked)
             {
-                if (Game1.Instance.Player.Inventory.HasKey(_areaID))
+                if (Player.Instance.Inventory.HasKey(_areaID))
                 {
                     _owner.ToBeRemoved = true;
                     return;
@@ -62,6 +66,25 @@ namespace WarTornLands.Entities.Modules.Collide
         {
             get;
             set;
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+
+            info.AddValue("locked", _locked);
+            info.AddValue("areaID", _areaID);
+            SaveLoadHelper.SaveRectangle(ref info, BodyShape, "bodyShape");
+            SaveLoadHelper.SaveRectangle(ref info, MovingShape, "movingShape");
+
+        }
+
+        public OpenDoorOnCollide(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            _locked = info.GetBoolean("locked");
+            _areaID = info.GetString("areaID");
+            BodyShape = SaveLoadHelper.LoadRectangle(ref info, "bodyShape");
+            MovingShape = SaveLoadHelper.LoadRectangle(ref info, "movingShape");
         }
     }
 }
