@@ -104,6 +104,7 @@
     <Compile Include="Entities\Modules\Interact\Checkpoint.cs" />
     <Compile Include="Entities\Modules\Interact\Dialog.cs" />
     <Compile Include="Entities\Modules\Interact\_IInteractModule.cs" />
+    <Compile Include="Entities\Modules\Think\ModifyOnGlobalValue.cs" />
     <Compile Include="Entities\Modules\Think\Parts\GoToPosition.cs" />
     <Compile Include="Entities\Modules\Think\Parts\InteractAbility.cs" />
     <Compile Include="Entities\Modules\Think\Parts\JumpAbility.cs" />
