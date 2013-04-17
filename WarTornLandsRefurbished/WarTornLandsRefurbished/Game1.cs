@@ -32,7 +32,7 @@ namespace WarTornLands
 
        
          private Stack<BaseGameState> _states;
-        public Player Player { get; private set; }
+     //   public Player Player { get; private set; }
         //test für draw
         public Inventory Inventory { get; private set; }
 
@@ -95,11 +95,11 @@ namespace WarTornLands
 
             SmartStorage<SaveGameData>.Init();
             
-            Player = Player.Instance;
-            Player.Position = new Vector2(14 * Constants.TileSize, 19 * Constants.TileSize); // Spawn: Frederik
+           // Player = Player.Instance;
+            Player.Instance.Position = new Vector2(14 * Constants.TileSize, 19 * Constants.TileSize); // Spawn: Frederik
             //Player.Position = new Vector2(39 * Constants.TileSize, 18 * Constants.TileSize); // Spawn: GruselUte
 
-            _camera=new Camera2D(Player);
+            _camera=new Camera2D(Player.Instance);
 
             //Inventory = Player.Inventory;
 
@@ -152,7 +152,7 @@ namespace WarTornLands
                 _camera.BreakCinematic();
 
             }              
-            if (Player.ToBeRemoved)
+            if (Player.Instance.ToBeRemoved)
             {
                 FreezeGame();
             }

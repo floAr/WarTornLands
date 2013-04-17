@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WarTornLands.PlayerClasses.Items;
+using WarTornLands.PlayerClasses;
 
 namespace WarTornLands.Infrastructure.Systems.DialogSystem
 {
@@ -60,7 +61,7 @@ namespace WarTornLands.Infrastructure.Systems.DialogSystem
         {
             foreach (Item i in _items)
             {
-                Game1.Instance.Player.GiveItem(i);
+                Player.Instance.GiveItem(i);
             }
 
             // Show message

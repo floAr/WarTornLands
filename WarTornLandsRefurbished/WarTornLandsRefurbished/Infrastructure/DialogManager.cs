@@ -41,7 +41,7 @@ namespace WarTornLands.Infrastructure
             {
                 if (_instance == null)
                 {
-                    _instance = new DialogManager(Game1.Instance.Player);
+                    _instance = new DialogManager(Player.Instance);
                 }
                 return _instance;
             }

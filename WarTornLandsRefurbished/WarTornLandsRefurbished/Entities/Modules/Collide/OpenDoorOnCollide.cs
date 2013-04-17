@@ -6,6 +6,7 @@ using System.Data;
 using WarTornLands.Infrastructure;
 using System.Runtime.Serialization;
 using WarTornLands.Infrastructure.Systems.SaveLoad;
+using WarTornLands.PlayerClasses;
 
 namespace WarTornLands.Entities.Modules.Collide
 {
@@ -31,7 +32,7 @@ namespace WarTornLands.Entities.Modules.Collide
             // TODO open only if player has key!
             if (_locked)
             {
-                if (Game1.Instance.Player.Inventory.HasKey(_areaID))
+                if (Player.Instance.Inventory.HasKey(_areaID))
                 {
                     _owner.ToBeRemoved = true;
                     return;

@@ -34,7 +34,7 @@ namespace WarTornLands.World
         public Level()
         {
             AreaIndependentEntities = new List<Entity>();
-            AreaIndependentEntities.Add(Game1.Instance.Player);
+            AreaIndependentEntities.Add(Player.Instance);
             _areas = new Dictionary<string, Area>();
         }
 

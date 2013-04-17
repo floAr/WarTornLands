@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using WarTornLands.Infrastructure.Systems.InputSystem;
+using WarTornLands.PlayerClasses;
 
 namespace WarTornLands.Infrastructure.Systems.GameState.States
 {
@@ -58,7 +59,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             _drawManager.BakeBeginEffect(_backgroundEffekt);
             _drawManager.Bake(_background);
             _drawManager.BakeEndEffect();
-            _drawManager.Bake(Game1.Instance.Player.Inventory);
+            _drawManager.Bake(Player.Instance.Inventory);
             RenderTarget2D result = _drawManager.EndBake();
             _drawManager.Draw(result,gameTime);
         }

@@ -159,7 +159,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             _drawManager.BeginBake(gameTime);
             
             _drawManager.Bake(Game1.Instance.Level);
-            _drawManager.Bake(Game1.Instance.Player);
+            _drawManager.Bake(Player.Instance);
             RenderTarget2D main = _drawManager.EndBake();
 
             _drawManager.BeginBake(gameTime,main, SpriteSortMode.Deferred, CustomBlendState.ReverseSubtract);
@@ -206,11 +206,11 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
              Game1.Instance.SpriteBatch.End();
  //*/
             #endregion
-          
 
 
 
-            if (Game1.Instance.Player.ToBeRemoved)
+
+            if (Player.Instance.ToBeRemoved)
             {
                 SpriteFont font = Game1.Instance.Content.Load<SpriteFont>("font/Test");
                 string go = "Game Over :(";
