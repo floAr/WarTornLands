@@ -60,6 +60,20 @@ namespace WarTornLands.World
             return false;
         }
 
+        public List<Area> GetCurrentAreas()
+        {
+            List<Area> current = new List<Area>();
+            Vector2 position = Player.Instance.Position;
+
+            foreach(Area a in _areas.Values)
+            {
+                if (a.Contains(position))
+                    current.Add(a);
+            }
+
+            return current;                
+        }
+
         public void Clear()
         {
             _areas.Clear();

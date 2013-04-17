@@ -16,18 +16,20 @@ namespace WarTornLands.World
         public TileSetBox TileSets;
         public string Name { get; private set; }
         public string AreaID { get; private set; }
+        public bool IsDungeon { get; private set; }
 
         List<TileLayer> _lowTileLayers;
         EntityLayer _entityLayer;
         List<TileLayer> _highTileLayers;
 
-        public Area(Rectangle bounds, string name, string id)
+        public Area(Rectangle bounds, string name, string id, bool isDungeon)
         {
             Bounds = bounds;
             _lowTileLayers = new List<TileLayer>();
             _highTileLayers = new List<TileLayer>();
             Name = name;
             AreaID = id;
+            IsDungeon = isDungeon;
 
             _entityLayer = new EntityLayer();
         }
@@ -51,14 +53,14 @@ namespace WarTornLands.World
             _highTileLayers.Add(layer);
         }
 
-        private bool Contains(Vector2 position)
+        public bool Contains(Vector2 position)
         {
             Rectangle pxBounds = new Rectangle(Bounds.Location.X * Constants.TileSize, Bounds.Location.Y * Constants.TileSize,
                 Bounds.Width * Constants.TileSize, Bounds.Height * Constants.TileSize);
             return pxBounds.Contains(new Point((int)Math.Round(position.X), (int)Math.Round(position.Y)));
         }
 
-        private bool Contains(Rectangle rect)
+        public bool Contains(Rectangle rect)
         {
             Rectangle pxBounds = new Rectangle(Bounds.Location.X * Constants.TileSize, Bounds.Location.Y * Constants.TileSize,
                Bounds.Width * Constants.TileSize, Bounds.Height * Constants.TileSize);

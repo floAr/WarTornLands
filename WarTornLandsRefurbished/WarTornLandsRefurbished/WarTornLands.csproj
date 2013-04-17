@@ -124,6 +124,8 @@
     <Compile Include="Entities\Modules\Draw\_IDrawModule.cs" />
     <Compile Include="Entities\Modules\Draw\StaticDrawer.cs" />
     <Compile Include="Infrastructure\Interface.cs" />
+    <Compile Include="Infrastructure\InventoryDrawer.cs" />
+    <Compile Include="Infrastructure\Systems\ResolutionIndependence\MagicSprite.cs" />
     <Compile Include="Infrastructure\SoundManager.cs" />
     <Compile Include="Entities\Modules\Draw\AnimationSystem\Animation.cs" />
     <Compile Include="Entities\Modules\Draw\AnimationSystem\AnimationSystem.cs" />
@@ -162,8 +164,12 @@
     <Compile Include="Infrastructure\Systems\SkyLight\Lightmanager.cs" />
     <Compile Include="Infrastructure\XMLParser.cs" />
     <Compile Include="PlayerClasses\Inventory.cs" />
+    <Compile Include="PlayerClasses\Items\Gun.cs" />
     <Compile Include="PlayerClasses\Items\Hammer.cs" />
+    <Compile Include="PlayerClasses\Items\IceHammer.cs" />
     <Compile Include="PlayerClasses\Items\Key.cs" />
+    <Compile Include="PlayerClasses\Items\PotionBag.cs" />
+    <Compile Include="PlayerClasses\Items\Telekinesis.cs" />
     <Compile Include="PlayerClasses\Items\_Item.cs" />
     <Compile Include="PlayerClasses\_Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -59,7 +59,7 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             _drawManager.BakeBeginEffect(_backgroundEffekt);
             _drawManager.Bake(_background);
             _drawManager.BakeEndEffect();
-            _drawManager.Bake(Player.Instance.Inventory);
+            _drawManager.Bake(Player.Instance.Inventory.Drawer);
             RenderTarget2D result = _drawManager.EndBake();
             _drawManager.Draw(result,gameTime);
         }

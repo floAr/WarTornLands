@@ -39,18 +39,15 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
             XMLParser.Instance.ReadWorld();
             this._inputSheet.RegisterKey("Exit", Keys.Escape);
             this._inputSheet.RegisterKey("Boom", Keys.B);
-            this._inputSheet.RegisterKey("New", Keys.Enter);
+            //this._inputSheet.RegisterKey("New", Keys.Enter);
             this._inputSheet.RegisterKey("Hit", Keys.Enter);
             this._inputSheet.RegisterKey("Jump", Keys.Space);
             this._inputSheet.RegisterKey("Interact", Keys.T);
-            this._inputSheet.RegisterKey("UsePotion", Keys.P);
+            this._inputSheet.RegisterKey("UseItem", Keys.P);
             this._inputSheet.RegisterKey("Inventory", Keys.I);
             this._inputSheet.RegisterKey("Quit", Keys.Escape);
+            this._inputSheet.RegisterKey("UsePotion", Keys.O);
             this._inputSheet.RegisterKey("Move", new Keys[] { Keys.W, Keys.A, Keys.S, Keys.D });
-
-            this._inputSheet.RegisterKey("Test", Keys.M);
-
-
 
             base.Initialize();
         }
@@ -59,8 +56,8 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
         {
             (InputManager.Instance["Inventory"] as Key).Pressed += new EventHandler(OpenInventory);
             (InputManager.Instance["Quit"] as Key).Pressed += new EventHandler(QuitRunningGame);
-            (InputManager.Instance["Test"] as Key).Pressed += new EventHandler(TestPressed);
             (InputManager.Instance["Boom"] as Key).Pressed += new EventHandler(BoomPressed);
+            (InputManager.Instance["UseItem"] as Key).Pressed += new EventHandler(UseItemPressed);
 
             /*try
             {
@@ -120,6 +117,11 @@ namespace WarTornLands.Infrastructure.Systems.GameState.States
         void OpenInventory(object sender, EventArgs e)
         {
             Game1.Instance.PushState(new InventoryState(_drawManager.LastFrame));
+        }
+
+        private void UseItemPressed(object sender, EventArgs e)
+        {
+            Player.Instance.Inventory.UseItem();
         }
 
         public override void Pause()
