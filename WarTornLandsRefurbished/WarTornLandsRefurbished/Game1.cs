@@ -94,7 +94,7 @@ namespace WarTornLands
             SmartStorage<SaveGameData>.Init();
             
            // Player = Player.Instance;
-            Player.Instance.Position = new Vector2(14 * Constants.TileSize, 19 * Constants.TileSize); // Spawn: Frederik
+            Player.Instance.Position = new Vector2(14 * Constants.TileSize, 20 * Constants.TileSize); // Spawn: Frederik
             //Player.Position = new Vector2(39 * Constants.TileSize, 18 * Constants.TileSize); // Spawn: GruselUte
 
             _camera=new Camera2D(Player.Instance);
