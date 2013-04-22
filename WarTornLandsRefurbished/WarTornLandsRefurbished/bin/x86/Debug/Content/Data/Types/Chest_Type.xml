@@ -1,0 +1,43 @@
+<BaseType>
+
+  <TypeInfo>
+    <ID>Chest</ID>
+    <Categorie>Chest</Categorie>
+  </TypeInfo>
+
+	<BaseInfo>
+		<Name>Chest</Name>
+		<Invuln>true</Invuln>
+		<Health>1</Health>
+		<BodyHeight>0</BodyHeight>
+	</BaseInfo>
+
+  <!--Collide-->
+  <Module>
+	<Type>Obstacle</Type>
+  </Module>
+
+  <!--Die-->
+  <Module>
+	<Type>ReplaceByStatic</Type>
+	<Texture>treasureChestLooted</Texture>
+  </Module>
+
+  <!--Draw-->
+  <Module>
+	<Type>StaticDrawer</Type>
+	<Texture>treasureChest</Texture>
+  </Module>
+
+  <!--Interact-->
+  <Module>
+
+  </Module>
+
+  <!--Think-->
+  <Module>
+
+  </Module>
+
+
+</BaseType>

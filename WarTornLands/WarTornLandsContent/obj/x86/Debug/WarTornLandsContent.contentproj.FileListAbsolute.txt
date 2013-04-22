@@ -1,0 +1,2 @@
+D:\Dropbox\mine\GameDev2012-13\dfgt\WarTornLands\WarTornLands\WarTornLandsContent\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Dropbox\mine\GameDev2012-13\WarTornLands\WarTornLands\WarTornLandsContent\obj\x86\Debug\ResolveAssemblyReference.cache

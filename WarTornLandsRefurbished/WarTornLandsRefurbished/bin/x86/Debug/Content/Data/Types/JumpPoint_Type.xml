@@ -1,0 +1,41 @@
+<BaseType>
+
+  <TypeInfo>
+    <ID>JumpPoint</ID>
+    <Categorie>JumpPoint</Categorie>
+  </TypeInfo>
+
+	<BaseInfo>
+		<Name>JumpPoint</Name>
+		<Invuln>true</Invuln>
+		<Health>1</Health>
+		<BodyHeight>0</BodyHeight>
+	</BaseInfo>
+
+  <!--Collide-->
+  <Module>
+
+  </Module>
+
+  <!--Die-->
+	<Module>
+    
+	</Module>
+
+  <!--Draw-->
+	<Module>
+		<Type>StaticDrawer</Type>
+    <Texture>blackhole</Texture>
+  </Module>
+
+  <!--Interact-->
+	<Module>
+
+	</Module>
+
+  <!--Think-->
+	<Module>
+	</Module>
+
+
+</BaseType>

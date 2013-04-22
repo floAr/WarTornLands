@@ -1,0 +1,17 @@
+
+    <Area>
+      <AreaInfo>
+        <ID>ChristmasCaverns</ID>
+      </AreaInfo>
+
+      <BaseInfo>
+        <Name>Christmas Caverns</Name>
+        <Position X ="0" Y ="0" />
+        <Width>50</Width>
+        <Height>50</Height>
+        <IsDungeon>1</IsDungeon>
+        <Good>ChristmasCaverns_Good.tmx</Good>
+        <Evil>ChristmasCaverns_Evil.tmx</Evil>
+      </BaseInfo>
+    </Area>
+

@@ -1,0 +1,54 @@
+<Dialog>
+  <DialogInfo>
+    <ID>Frederik</ID>
+    <Default>1</Default>
+  </DialogInfo>
+
+	<Conversation>
+    <ID>1</ID>
+    <Line>
+      <Type>Text</Type>
+      <Text>Piep Piep!! Hast du Kaese?</Text>
+    </Line>
+    <Line>
+      <Type>Text</Type>
+      <Text>Ich bin's, Frederik! Piep! Die boese Gruselute hat mich verhext.</Text>
+    </Line>
+    <Line>
+      <Type>Text</Type>
+      <Text>Hier, nimm diesen Schluessel und hau ihr eins vor'n Koffer!</Text>
+    </Line>
+    <Line>
+      <Type>ItemContainer</Type>
+      <Item>
+        <Type>DoorKey</Type>
+      </Item>
+    </Line>
+    <Line>
+      <Type>ItemContainer</Type>
+      <Item>
+        <Type>NormalHammer</Type>
+      </Item>
+    </Line>
+    <Line>
+      <Type>ComboBreaker</Type>
+      <NewCon>2</NewCon>
+    </Line>
+	</Conversation>
+
+  <Conversation>
+    <ID>2</ID>
+    <Line>
+	<Type>Text</Type>
+	<Text>Die alte Gruselute schaffst du mit links!</Text>
+    </Line>
+    <Line>
+      <Type>ItemContainer</Type>
+      <Item>
+        <Type>NoneHammer</Type>
+      </Item>
+    </Line>
+  </Conversation>
+
+
+</Dialog>
