@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using WarTornLands.World;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace WarTornLands.Entities.Modules.Think.Parts
 {
@@ -15,12 +16,12 @@ namespace WarTornLands.Entities.Modules.Think.Parts
         /// <value>
         /// The range in roughly pixels.
         /// </value>
-        public float Range { get; set; }
+        public int Range { get; set; }
 
 
         private Entity _owner;
 
-        public InteractAbility(float range = 50)
+        public InteractAbility(int range = 50)
         {
             Range = range;
         }
@@ -37,45 +38,43 @@ namespace WarTornLands.Entities.Modules.Think.Parts
 
         public bool TryExecute()
         {
-            // TODO clean up :)
+            // Get owner's boundings as a starting point
+            // TODO Tweak - should we take the BoundingRect here?
+            Rectangle rect = _owner.MovingRect;
 
-            Vector2 testPos = _owner.Position;
-            float rangeModifier = 1.2f;
-
+            // Stretch rectangle in face direction
             switch (_owner.Face)
             {
                 case Facing.UP:
-                    testPos += new Vector2(0, -1) * Range * rangeModifier;
+                    rect.Y -= Range;
+                    rect.Height += Range;
                     break;
                 case Facing.DOWN:
-                    testPos += new Vector2(0, 1) * Range * rangeModifier;
+                    rect.Y += Range;
+                    rect.Height += Range;
                     break;
                 case Facing.LEFT:
-                    testPos += new Vector2(-1, 0) * Range * rangeModifier;
+                    rect.X -= Range;
+                    rect.Width += Range;
                     break;
                 case Facing.RIGHT:
-                    testPos += new Vector2(1, 0) * Range * rangeModifier;
+                    rect.X += Range;
+                    rect.Width += Range;
                     break;
             }
 
-            List<Entity> targets = Game1.Instance.Level.GetEntitiesAt(testPos);
+            HashSet<Entity> targets = Game1.Instance.Level.GetEntitiesAt(rect);
 
             if (targets.Count == 0 || (targets.Count == 1 && targets.First().Equals(_owner)))
                 return false;
 
             Entity closest = targets.First();
-            float closestDistSquared = float.PositiveInfinity;
             SortedList<float, Entity> resultList = new SortedList<float, Entity>();
             foreach (Entity ent in targets)
             {
                 if (!ent.Equals(_owner))
                 {
                     Vector2 distance = _owner.Position - ent.Position;
-                  /*  if (distance.LengthSquared() < closestDistSquared)
-                    {
-                        closest = ent;
-                        closestDistSquared = distance.LengthSquared();
-                    }*/
                     float key = distance.LengthSquared();
                     while (resultList.ContainsKey(key))
                         key += 0.01f;                    
@@ -93,14 +92,6 @@ namespace WarTornLands.Entities.Modules.Think.Parts
                 }
             }
             return false;
-            /*
-            if (!closest.Equals(_owner))
-            {
-                closest.Interact(_owner);
-                return true;
-            }
-            else
-                return false;*/
         }
 
         public bool TryCancel()

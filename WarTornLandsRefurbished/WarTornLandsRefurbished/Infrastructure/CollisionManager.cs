@@ -77,14 +77,16 @@ namespace WarTornLands.Infrastructure
                     newPos += step * distance;
                     distance = 0;
                 }
-                
-                // Check whether the rectangle at newPos collides
+
+                // Get the source rectangle
                 Rectangle rect = source.MovingRect;
+
+                // Find entities for collision
+                entities.UnionWith(Game1.Instance.Level.GetEntitiesAt(OffsetRectangle(rect, newPos)));
+
+                // Check whether the rectangle at newPos collides
                 if (!IsAccessible(OffsetRectangle(rect, newPos), true, source))
                 {
-                    // Add entities to collision list
-                    entities.UnionWith(Game1.Instance.Level.GetEntitiesAt(OffsetRectangle(rect, newPos)));
-
                     if (slide)
                     {
                         // Get possibly capped vector for this step
@@ -96,7 +98,6 @@ namespace WarTornLands.Infrastructure
                         if (IsAccessible(OffsetRectangle(rect, newPosSlide), true, source))
                         {
                             // X successful
-                            entities.Union(Game1.Instance.Level.GetEntitiesAt(rect));
                             newPos = newPosSlide;
                         }
                         else
@@ -122,14 +123,14 @@ namespace WarTornLands.Infrastructure
                         blocked = true;
                     }
                 }
-                
+
                 // Update position if check was successful
                 if (!blocked)
                 {
                     pos = newPos;
                 }
             }
-            
+
             // Remove source so it doesn't collide with itself
             entities.Remove(source);
 
@@ -181,7 +182,7 @@ namespace WarTornLands.Infrastructure
             }
 
             // Return result of tile collision or true if we don't want to check
-            return testTiles? Game1.Instance.Level.IsRectAccessible(rect) : true;
+            return testTiles ? Game1.Instance.Level.IsRectAccessible(rect) : true;
         }
 
         // TODO IsAccessible for point+radius, maybe lines and stuff...
