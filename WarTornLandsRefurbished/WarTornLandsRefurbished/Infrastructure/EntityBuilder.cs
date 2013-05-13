@@ -75,6 +75,7 @@ namespace WarTornLands.Infrastructure
 
         /// <summary>
         /// Creates an Entity from a given XML DataSet.
+        /// Used locally by other CreateEntity routines
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns></returns>
@@ -113,6 +114,7 @@ namespace WarTornLands.Infrastructure
         }
         /// <summary>
         /// Creates an Entity of the given Type.
+        /// Used locally by other CreateEntity routines
         /// </summary>
         /// <param name="area">The area.</param>
         /// <param name="entityType">The EntityType.</param>
@@ -136,9 +138,9 @@ namespace WarTornLands.Infrastructure
                             data["gid"].ToString()
                                )));
 
-            entity.Position = new Vector2(int.Parse(data["x"].ToString()) + tilesetBox.DimensionsOf(int.Parse(data["gid"].ToString())).X * .5f,
-                                       int.Parse(data["y"].ToString()));
-
+            entity.Position = new Vector2(
+                int.Parse(data["x"].ToString()) + tilesetBox.DimensionsOf(int.Parse(data["gid"].ToString())).X * .5f,
+                int.Parse(data["y"].ToString()));
 
             // Handle special types
             #region Chest
@@ -165,7 +167,7 @@ namespace WarTornLands.Infrastructure
             #region Door
             if (entity.Categorie.Equals("Door"))
             {
-                entity.AddModule(new OpenDoorOnCollide(CurrentArea.AreaID));
+                entity.AddModule(new OpenDoorOnCollide(data));
             }
             #endregion
             #region JumpPoint

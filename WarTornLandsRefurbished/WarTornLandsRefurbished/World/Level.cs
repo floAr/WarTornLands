@@ -64,10 +64,11 @@ namespace WarTornLands.World
         {
             List<Area> current = new List<Area>();
             Vector2 position = Player.Instance.Position;
+            Rectangle playerRec = Player.Instance.BoundingRect;
 
             foreach(Area a in _areas.Values)
             {
-                if (a.Contains(position))
+                if (a.Contains(playerRec))
                     current.Add(a);
             }
 
@@ -91,9 +92,9 @@ namespace WarTornLands.World
         public bool IsPositionAccessible(Vector2 position)
         {
             // TODO only check areas near the player
-            foreach (KeyValuePair<string, Area> pair in _areas)
+            foreach (Area area in GetCurrentAreas())
             {
-                if (pair.Value.IsPositionAccessible(position) == false)
+                if (area.IsPositionAccessible(position) == false)
                     return false;
             }
 
@@ -103,9 +104,9 @@ namespace WarTornLands.World
         public bool IsRectAccessible(Rectangle rect)
         {
             // TODO only check areas near the player
-            foreach (KeyValuePair<string, Area> pair in _areas)
+            foreach (Area area in GetCurrentAreas())
             {
-                if (pair.Value.IsRectAccessible(rect) == false)
+                if (area.IsRectAccessible(rect) == false)
                     return false;
             }
 

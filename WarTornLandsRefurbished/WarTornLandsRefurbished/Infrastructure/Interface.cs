@@ -54,17 +54,15 @@ namespace WarTornLands.Infrastructure
 
             if (Game1.Instance.Level != null)
             {
-
                 #region Draw Keys
 
                 _normalKey.Draw();
                 g.SpriteBatch.DrawString(_keyFont, PlayerClasses.Player.Instance.Inventory.GetNormalKeys.ToString(), _normalKey.Position + new Vector2(KeyStringSpacer + _normalKey.Width, 0), Color.White);
 
                 _masterKey.Draw();
-                g.SpriteBatch.DrawString(_keyFont, PlayerClasses.Player.Instance.Inventory.GetNormalKeys.ToString(), _masterKey.Position + new Vector2(KeyStringSpacer + _masterKey.Width, 0), Color.White);
+                g.SpriteBatch.DrawString(_keyFont, PlayerClasses.Player.Instance.Inventory.GetMasterKeys.ToString(), _masterKey.Position + new Vector2(KeyStringSpacer + _masterKey.Width, 0), Color.White);
 
                 #endregion
-
             }
         }
     }

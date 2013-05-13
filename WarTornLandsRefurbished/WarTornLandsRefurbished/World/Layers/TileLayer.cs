@@ -12,8 +12,8 @@ namespace WarTornLands.World.Layers
         private int[,] _grid;
         private TileSetBox _tileSets;
 
-        public TileLayer(int[,] grid)
-            : base()
+        public TileLayer(int[,] grid, Area area)
+            : base(area)
         {
             _grid = grid;
         }
@@ -31,13 +31,13 @@ namespace WarTornLands.World.Layers
             // Check whether Tiles are visible and just draw them if they are
             for (int y = 0; y < _grid.GetLength(1); ++y)
             {
-                int yPos = y * Constants.TileSize;
+                int yPos = (y + base._area.Bounds.Y) * Constants.TileSize;
                 if (yPos < Game1.Instance.Camera.Center.Y - Game1.Instance.ClientBoundsHalf.Y - Constants.TileSize ||
                     yPos > Game1.Instance.Camera.Center.Y + Game1.Instance.ClientBoundsHalf.Y + Constants.TileSize)
                     continue;
                 for (int x = 0; x < _grid.GetLength(0); ++x)
                 {
-                    int xPos = x * Constants.TileSize;
+                    int xPos = (x + base._area.Bounds.X) * Constants.TileSize;
                     if (xPos < Game1.Instance.Camera.Center.X - Game1.Instance.ClientBoundsHalf.X - Constants.TileSize ||
                         xPos > Game1.Instance.Camera.Center.X + Game1.Instance.ClientBoundsHalf.X + Constants.TileSize)
                         continue;
@@ -76,6 +76,9 @@ namespace WarTornLands.World.Layers
 
         public bool IsPositionAccessible(Vector2 position)
         {
+            position.X -= base._area.Bounds.X * Constants.TileSize;
+            position.Y -= base._area.Bounds.Y * Constants.TileSize;
+
             int x = (int)position.X / Constants.TileSize;
             int y = (int)position.Y / Constants.TileSize;
 
@@ -101,6 +104,10 @@ namespace WarTornLands.World.Layers
             {
                 for (int y = y0; y <= y1; y++)
                 {
+                    // Skip a pixel if it lays outside of the area bounds
+                    if (x < 0 || y < 0 || x >= _grid.GetLength(0) || y >= _grid.GetLength(1))
+                        continue;
+
                     // Return false if tile is set and not accesible
                     if (_grid[x, y] != 0 && _tileSets.ModifierOf(_grid[x, y] - 1) == 0)
                         return false;

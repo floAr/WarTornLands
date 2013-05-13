@@ -31,11 +31,17 @@ namespace WarTornLands.World
             AreaID = id;
             IsDungeon = isDungeon;
 
+
             _entityLayer = new EntityLayer();
         }
 
         public void AddEntityLayer(EntityLayer layer)
         {
+            foreach (Entity ent in layer.GetAllEntities())
+            {
+                ent.Position += new Vector2(this.Bounds.X * Constants.TileSize, this.Bounds.Y * Constants.TileSize);
+            }
+
             _entityLayer = layer;
         }
 
@@ -74,14 +80,26 @@ namespace WarTornLands.World
                 return true;
             
             // Iterate through layers, check all TileLayers
+            Vector2 checkPos = position - new Vector2(Bounds.X * Constants.TileSize, Bounds.Y * Constants.TileSize);
             foreach (Layer layer in _lowTileLayers)
             {
-                if (layer is TileLayer && (layer as TileLayer).IsPositionAccessible(position) == false)
+                if (layer is TileLayer && (layer as TileLayer).IsPositionAccessible(checkPos) == false)
                     return false;
             }
 
             // Accessible if all TileLayers had empty tiles
             return true;
+        }
+
+        private Rectangle CopyRec(Rectangle original)
+        {
+            Rectangle res = new Rectangle(
+                original.X,
+                original.Y,
+                original.Width,
+                original.Height);
+
+            return res;
         }
 
         public bool IsRectAccessible(Rectangle rect)
@@ -91,9 +109,12 @@ namespace WarTornLands.World
                 return true;
 
             // Iterate through layers, check all TileLayers
+            Rectangle checkRec = CopyRec(rect);
+            checkRec.Location = new Point(rect.X - this.Bounds.X * Constants.TileSize, rect.Y - this.Bounds.Y * Constants.TileSize);
+
             foreach (Layer layer in _lowTileLayers)
             {
-                if (layer is TileLayer && (layer as TileLayer).IsRectAccessible(rect) == false)
+                if (layer is TileLayer && (layer as TileLayer).IsRectAccessible(checkRec) == false)
                     return false;
             }
 

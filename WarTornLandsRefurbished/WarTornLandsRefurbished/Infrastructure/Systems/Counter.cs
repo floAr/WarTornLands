@@ -269,6 +269,12 @@ namespace WarTornLands.Counter
         {
             if (_active)
             {
+                if (_stepCalling)
+                {
+                    if (Step != null)
+                        Step(null, new BangEventArgs(this.ID));
+                }
+
                 _elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
 
                 if (_elapsedTime >= _term
@@ -281,12 +287,6 @@ namespace WarTornLands.Counter
 
                     if (!_loop)
                         _active = false;
-                }
-
-                if (_stepCalling)
-                {
-                    if (Step != null)
-                        Step(null, new BangEventArgs(this.ID));
                 }
             }
         }

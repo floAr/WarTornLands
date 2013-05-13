@@ -21,7 +21,7 @@ namespace WarTornLands.World.Layers
         private readonly List<Entity> _entities = new List<Entity>();
 #endif
         public EntityLayer()
-            : base()
+            : base(null)
         {
         }
 #if USEGRID
@@ -52,7 +52,6 @@ namespace WarTornLands.World.Layers
 #else
         public void AddEntity(Entity entity)
         {
-
             _entities.Add(entity);
         }
 

@@ -421,13 +421,15 @@ namespace WarTornLands.Entities
         /// </summary>
         /// <param name="source"></param>
         /// <returns>True if entity is passable, false otherwise.</returns>
-        public void Collide(Entity source)
+        public Vector2 Collide(Entity source)
         {
             if (_collideModule != null)
             {
                 CollideInformation info = new CollideInformation() { Collider = source, IsPlayer = source is Player };
-                _collideModule.OnCollide(info);
+                return _collideModule.OnCollide(info);
             }
+
+            return Vector2.Zero;
         }
 
         public bool IsPassable(Entity source, float altitude, float bodyHeight)

@@ -7,6 +7,7 @@ using WarTornLands.Infrastructure;
 using System.Runtime.Serialization;
 using WarTornLands.Infrastructure.Systems.SaveLoad;
 using WarTornLands.PlayerClasses;
+using Microsoft.Xna.Framework;
 
 namespace WarTornLands.Entities.Modules.Collide
 {
@@ -15,9 +16,9 @@ namespace WarTornLands.Entities.Modules.Collide
     {
         private bool _locked;
         private string _areaID;
+        private bool _needsMaster;
 
-
-        public OpenDoorOnCollide(string areaID)
+        private OpenDoorOnCollide(string areaID)
         {
             _areaID = areaID;
             _locked = true;
@@ -25,27 +26,36 @@ namespace WarTornLands.Entities.Modules.Collide
         public OpenDoorOnCollide(DataRow data)
             : this(EntityBuilder.Instance.CurrentArea.AreaID)
         {
+            DataRow props = data.GetChildRows("object_properties")[0];
+
+            try
+            {
+                _needsMaster = bool.Parse(XMLParser.ValueOfProperty(props, "master"));
+            }
+            catch (PropertyNotFoundException e)
+            { }
         }
 
-        public void OnCollide(CollideInformation info)
+        public Vector2 OnCollide(CollideInformation info)
         {
-            // TODO open only if player has key!
             if (_locked)
             {
                 if (Player.Instance.Inventory.HasKey(_areaID))
                 {
                     _owner.ToBeRemoved = true;
-                    return;
+                    return Vector2.Zero;
                 }
                 else
                 {
-                    return;
+                    return Vector2.Zero;
                 }
             }
             else
             {
                 _owner.ToBeRemoved = true;
             }
+
+            return Vector2.Zero;
         }
 
         public bool IsPassable(CollideInformation info)

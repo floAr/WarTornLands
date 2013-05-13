@@ -104,9 +104,7 @@ namespace WarTornLands.Infrastructure
 
             DataRow info = areaMeta.Tables["BaseInfo"].Rows[0];
             DataRow posData = info.GetChildRows("BaseInfo_Position")[0];
-            int width = int.Parse(info["Width"].ToString());
-            int height = int.Parse(info["Height"].ToString());
-            Rectangle bounds = new Rectangle(int.Parse(posData["X"].ToString()) * Constants.TileSize, int.Parse(posData["Y"].ToString()) * Constants.TileSize, width, height);
+            Rectangle bounds = new Rectangle(int.Parse(posData["X"].ToString()), int.Parse(posData["Y"].ToString()), 0, 0);
             string name = info["Name"].ToString();
             bool isDungeon = (info["IsDungeon"].ToString() == "1") ? true : false;
 
@@ -126,6 +124,9 @@ namespace WarTornLands.Infrastructure
             {
                 data.ReadXml(file);
             }
+
+            bounds.Width = int.Parse(data.Tables["map"].Rows[0]["width"].ToString());
+            bounds.Height = int.Parse(data.Tables["map"].Rows[0]["height"].ToString());
 
             Area area = new Area(bounds, name, areaID, isDungeon);
 
@@ -154,6 +155,7 @@ namespace WarTornLands.Infrastructure
             }
 
             area.TileSets = tileSets;
+
 
             #region Read TileLayers
 
@@ -188,7 +190,7 @@ namespace WarTornLands.Infrastructure
                     }
                 }
 
-                TileLayer tileLayer = new TileLayer(tileGrid);
+                TileLayer tileLayer = new TileLayer(tileGrid, area);
 
                 foreach (DataRow properties in layerData.GetChildRows("layer_properties"))
                 {
@@ -307,7 +309,16 @@ namespace WarTornLands.Infrastructure
             foreach (DataRow property in data.GetChildRows("properties_property"))
             {
                 if (property["name"].ToString().Equals(propertyName))
+                {
+                    if (property["name"].ToString().Equals("master"))
+                    {
+                        if (property["value"].ToString().Equals("1"))
+                            return "true";
+                        if (property["value"].ToString().Equals("0"))
+                            return "false";
+                    }
                     return property["value"].ToString();
+                }
             }
 
             throw new PropertyNotFoundException(propertyName);

@@ -5,15 +5,18 @@ using System.Text;
 using System.Data;
 using System.Runtime.Serialization;
 using WarTornLands.Infrastructure.Systems.SaveLoad;
+using Microsoft.Xna.Framework;
 
 namespace WarTornLands.Entities.Modules.Collide
 {
       [Serializable]
     class Obstacle : BaseModule, ICollideModule, ISerializable
     {
-        public void OnCollide(CollideInformation info)
+        public Vector2 OnCollide(CollideInformation info)
         {
             // Do nothing
+
+            return Vector2.Zero;
         }
 
         public bool IsPassable(CollideInformation info)
@@ -49,7 +52,7 @@ namespace WarTornLands.Entities.Modules.Collide
             set;
         }
 
-                public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             SaveLoadHelper.SaveRectangle(ref info, BodyShape, "bodyShape");
             SaveLoadHelper.SaveRectangle(ref info, MovingShape, "movingShape");

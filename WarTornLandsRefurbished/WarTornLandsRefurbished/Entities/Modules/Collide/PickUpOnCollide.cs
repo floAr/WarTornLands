@@ -6,6 +6,7 @@ using WarTornLands.PlayerClasses;
 using System.Data;
 using WarTornLands.Infrastructure.Systems.SaveLoad;
 using System.Runtime.Serialization;
+using Microsoft.Xna.Framework;
 
 namespace WarTornLands.Entities.Modules.Collide
 {
@@ -42,7 +43,7 @@ namespace WarTornLands.Entities.Modules.Collide
                 _isOnCD = false;
         }
 
-        public void OnCollide(CollideInformation info)
+        public Vector2 OnCollide(CollideInformation info)
         {
             if (_charges == 0)
                 _owner.ToBeRemoved = true;
@@ -59,6 +60,8 @@ namespace WarTornLands.Entities.Modules.Collide
                 _pushItemCooldown.StartCounter("cdDrop");
                 _isOnCD = true;
             }
+
+            return Vector2.Zero;
         }
 
         public bool IsPassable(CollideInformation info)

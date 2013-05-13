@@ -216,6 +216,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Data\Areas\ChristmasCavernsAddOn\ChristmasCavernsAddOn_Evil.tmx">
+      <Name>ChristmasCavernsAddOn_Evil</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Data\Types\Frederik_Type.xml">
       <Name>Frederik_Type</Name>
       <Importer>XmlImporter</Importer>
@@ -425,6 +429,14 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Areas\ChristmasCavernsAddOn\ChristmasCavernsAddOn_Area.xml">
+      <Name>ChristmasCavernsAddOn_Area</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

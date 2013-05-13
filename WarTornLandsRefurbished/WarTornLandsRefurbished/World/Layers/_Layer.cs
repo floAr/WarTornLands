@@ -9,9 +9,11 @@ namespace WarTornLands.World.Layers
 {
     public abstract class Layer
     {
-        public Layer()           
+        protected Area _area;
+
+        public Layer(Area area)           
         {
-           
+            _area = area;
         }
 
 

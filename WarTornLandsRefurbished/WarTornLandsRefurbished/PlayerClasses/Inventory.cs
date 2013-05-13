@@ -30,8 +30,6 @@ namespace WarTornLands.PlayerClasses
         private Texture2D _itemPicture;
 
 
-
-
         #endregion
 
         #region Itemvariables
@@ -65,8 +63,8 @@ namespace WarTornLands.PlayerClasses
                 {
                     if (a.IsDungeon)
                     {
-                        if (dungeonFound)
-                            throw new Exception("Two Dungeons should not be overlapping.");
+                        //if (dungeonFound)
+                        //    throw new Exception("Two Dungeons should not be overlapping.");
                         
                         count = _keys.NormalCount(a.AreaID);
                         dungeonFound = true;
@@ -81,17 +79,17 @@ namespace WarTornLands.PlayerClasses
         {
             get
             {
-                bool dungeonFound = false;
+                bool dungeonFound = false;  // Used to check if two dungeons are overlapping in the world
                 int count = 0;
 
                 foreach (Area a in Game1.Instance.Level.GetCurrentAreas())
                 {
                     if (a.IsDungeon)
                     {
-                        if (dungeonFound)
-                            throw new Exception("Two Dungeons should not be overlapping.");
+                        //if (dungeonFound)
+                        //    throw new Exception("Two Dungeons should not be overlapping.");
 
-                        count = _keys.NormalCount(a.AreaID);
+                        count = _keys.MasterCount(a.AreaID);
                         dungeonFound = true;
                     }
                 }
@@ -153,7 +151,7 @@ namespace WarTornLands.PlayerClasses
             #region MasterKey
             if (item is MasterKey)
             {
-                _keys.AddKey((item as MasterKey).AreaID);
+                _keys.AddMasterKey((item as MasterKey).AreaID);
                 return true;
             }
             #endregion

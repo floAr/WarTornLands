@@ -21,6 +21,7 @@ namespace WarTornLands.Entities.Modules.Collide
         private Entity _collider;
 
         private string _cUpdater = "JPUpdater";
+        private const int COOLDOWN = 100;
 
         private bool _locked;
         private bool _collided;
@@ -43,8 +44,9 @@ namespace WarTornLands.Entities.Modules.Collide
         {
             base.SetOwner(owner);
 
-            Owner.CM.AddCounter(_cUpdater, 500, true);
+            Owner.CM.AddCounter(_cUpdater, COOLDOWN, true);
             Owner.CM.Bang += new EventHandler<BangEventArgs>(OnBang);
+            Owner.CM.Step += new EventHandler<BangEventArgs>(OnStep);
         }
 
         public void Connect(Entity target)
@@ -55,29 +57,35 @@ namespace WarTornLands.Entities.Modules.Collide
             _target = target;
         }
 
-        public void OnCollide(CollideInformation info)
+        public Vector2 OnCollide(CollideInformation info)
         {
+            // Set flag that the JumpPoint collided in this update
+            _collided = true;
+
             // If you want that only the Player may use JumpPoint uncomment these 2 lines
             if (!info.IsPlayer)
-                return;
+                return Vector2.Zero;
 
-            if (_locked && Owner.CM.GetPercentage(_cUpdater) > 0)
+            // If the JumpPoint is locked and the counter didnt reach 0 refresh the counter
+            if (_locked)
             {
-                _collided = true;
-                return;
+                Owner.CM.StartCounter(_cUpdater, true, false);
+                return Vector2.Zero;
             }
 
-            Owner.CM.StartCounter(_cUpdater, false, true);
-
-            (_target.CollideModule as JumpPoint).LockJP();
-
             _collider = info.Collider;
-            _collided = true;
+
+            // If the JumpPoint is not locked execute jump and lock the target JumpPoint
+            (_target.CollideModule as JumpPoint).LockJP(_collider);
+            return _target.Position - _collider.Position;      
         }
 
-        public void LockJP()
+        public void LockJP(Entity collider)
         {
+            _collider = collider;
             _locked = true;
+            Owner.CM.StartCounter(_cUpdater, true, false);
+
         }
 
         public bool IsPassable(CollideInformation info)
@@ -99,22 +107,21 @@ namespace WarTornLands.Entities.Modules.Collide
 
         #region Subscribed events
 
+        private void OnStep(object sender, BangEventArgs e)
+        {
+            if (e.IsDesiredCounter(_cUpdater))
+            {
+                if(_owner.BoundingRect.Intersects(_collider.BoundingRect))
+                    Owner.CM.StartCounter(_cUpdater, true, false);
+            }
+        }
+
         private void OnBang(object sender, BangEventArgs e)
         {
             if (e.IsDesiredCounter(_cUpdater))
             {
-                if (_collided)
-                {
-                    _collided = false;
-                    _collider.Position = _target.Position;
-                    return;
-                }
-                else
-                {
-                    _locked = false;
-                    Owner.CM.CancelCounter(_cUpdater);
-                    return;
-                }
+                _locked = false;
+                _collider = null;
             }
         }
 

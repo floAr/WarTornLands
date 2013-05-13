@@ -47,7 +47,7 @@ namespace WarTornLands.Infrastructure
         {
             // Don't do anything for a Vector2.Zero move vector
             if (moveVector.LengthSquared() == 0)
-                return moveVector;
+                return moveVector + source.Position;
 
             // Save squared length of move vector
             float distance = moveVector.Length();
@@ -137,11 +137,11 @@ namespace WarTornLands.Infrastructure
             // Call Collide methods
             foreach (Entity ent in entities)
             {
-                ent.Collide(source);
+                pos += ent.Collide(source);
                 source.Collide(ent);
             }
 
-            return pos;
+            return source.Position + pos;
         }
 
         /// <summary>
